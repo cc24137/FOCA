@@ -1,0 +1,42 @@
+.seletor {
+  width: 220px;
+  height: 35px;
+
+  display: flex;
+
+  border: 4px solid black;
+  border-radius: 20px;
+  overflow: hidden;
+
+  background-color: white;
+}
+
+/* botão base */
+.campo-seletor {
+  flex: 1;
+
+  border: none;
+  background-color: white;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  font-family: var(--fonte-ubuntu);
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* linha do meio */
+.campo-seletor.esquerda {
+  border-right: 4px solid var(--preto);
+}
+
+/* estado ativo */
+.campo-seletor.ativo {
+  background-color: var(--azul-menos-claro); 
+  color: white;
+}

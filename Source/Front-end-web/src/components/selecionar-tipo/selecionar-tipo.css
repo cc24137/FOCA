@@ -1,6 +1,6 @@
 .selector {
-  width: 220px;
-  height: 35px;
+  width: 350px;
+  height: 50px;
 
   display: flex;
 
@@ -21,7 +21,7 @@
   font-size: 0.8rem;
   font-weight: 700;
 
-  font-family: var(--font-scada);
+  font-family: var(--font-inter);
   font-size: larger;
 
   cursor: pointer;

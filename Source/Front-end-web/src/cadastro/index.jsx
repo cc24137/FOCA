@@ -36,9 +36,9 @@ export default function Cadastro(){
                     className="sign-in-button"
                     onClick={() => goTo("/")}
                 >
-                    <div className="content-button">
+                    <div className="sign-in-content-button">
                         <HomeIcon className="home-icon" />
-                        Início
+                        <span className='sign-in-button-text'>Início</span>
                     </div>
 
                 </button>

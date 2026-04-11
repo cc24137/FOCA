@@ -21,7 +21,7 @@
 
 .header-titulo {
   font-size: 2rem;
-  font-family: var(--fonte-ubuntu);
+  font-family: var(--font-inter);
   font-weight: 500;
 }
 
@@ -40,7 +40,7 @@
 
 .header-botao {
   background-color: #56639c;
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: 6px;
   padding: 10px 22px;

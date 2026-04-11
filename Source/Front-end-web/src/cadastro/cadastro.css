@@ -35,6 +35,27 @@
     height: 160px;
 }
 
+.home-icon{
+    width: 25px;
+    height: 25px;
+    scale: 1.1;
+}
+
+.sign-in-content-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    padding: 0px 22px;
+    min-height: 42px;
+
+    color: var(--black);
+    font-size: 24px;
+    font-weight: 500;
+    font-family: var(--font-inter);
+}
+
 .start-text{
     color: var(--deep-blue-accent);
     font-weight: 700;
@@ -55,7 +76,7 @@
     background: var(--transparent-grayish-blue);
     border: none;
     border-radius: 25px;
-    padding: 10px;
+    padding: 3px;
     cursor: pointer;
     color: var(--black);
     font-size: 18px;

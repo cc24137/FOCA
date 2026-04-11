@@ -5,18 +5,18 @@ export default function SelecionarTipo({option, onSelect}){
         <div className="selector">
             <button
             className={`selector-field selector-left ${
-                option === "teacher" ? "active" : "" //se opção selecionada for professor adiciona ativo no nome da classe se não adiciona ""
+                option === "professor" ? "active" : "" //se opção selecionada for professor adiciona ativo no nome da classe se não adiciona ""
             }`}
-            onClick={() => onSelect("teacher")}
+            onClick={() => onSelect("professor")}
             >
                 Professor
             </button>
 
             <button
             className={`selector-field selector-right ${
-                option === "institution" ? "active" : "" //se opção selecionada for Instituição adiciona ativo no nome da classe se não adiciona ""
+                option === "instituição" ? "active" : "" //se opção selecionada for Instituição adiciona ativo no nome da classe se não adiciona ""
             }`}
-            onClick={() => onSelect("institution")}
+            onClick={() => onSelect("instituição")}
             >
                 Instituição
             </button>

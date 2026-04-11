@@ -67,9 +67,9 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    padding: 40px 40px;
+    padding: 40px 40px 80px 40px;
 }
 
 .sign-in-button{
@@ -83,4 +83,104 @@
     font-weight: 500;
     transition: 0.2s;
     align-self: flex-end;  
+}
+
+.field-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--font-inter);
+  color: var(--black);
+}
+
+.text-field {
+  width: 100%;
+  height: 50px;
+
+  border: 1px solid var(--black);
+  border-radius: 4px;
+  outline: none;
+
+  padding: 0 14px;
+
+  font-size: 16px;
+  font-family: var(--font-inter);
+
+  background-color: var(--white);
+  color: var(--black);
+
+  box-sizing: border-box;
+}
+
+.input-wrapper {
+  position: relative;
+
+}
+
+.text-field.with-icon {
+  padding-right: 45px; /* space for the icon */
+}
+
+
+.eye-button {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%); /* THIS centers it */
+
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.eye-button svg {
+  width: 20px;
+  height: 20px;
+  color: var(--black);
+}
+
+.sign-in-submit-button{
+    background-color: var(--button-dark-blue);
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 26px;
+    font-weight: 500;
+    border: none;
+    color: var(--white);
+}
+
+.text-to-login{
+    font-size: 20px;
+}
+
+.redirect-to-login{
+    color: var(--deep-blue-accent);
+}
+
+.sign-in-bottom{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 10px;
+}
+
+.sign-in-center{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 16px;
 }

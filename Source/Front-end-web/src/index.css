@@ -1,18 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Sans+Mono:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Scada:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root{
-  --branco: #ffffff;
-  --menos-branco: #f5f5f5;
+  --white: #ffffff;
+  --less-white: #f5f5f5;
   --background-off-white: #f9f8f4;
-  --preto: #000000;
-  --bege: #fff0e3;
-  --azul-claro: #8d9fd8;
-  --azul-meio-claro: #7a86ab;
-  --azul-menos-claro: #566399;
-  --azul-escuro: #a0afd1;
-  --fonte-inter: 'Inter';
-  --fonte-ubuntu: 'Ubuntu Sans Mono'
+  --black: #000000;
+  --transparent-light-blue: #2564ec1a;
+  --transparent-grayish-blue: #8d9fd840;
+  --bar-light-blue: #a0afd19d;
+  --grayish-blue : #7a86ab;
+  --button-dark-blue: #566399;
+  --deep-blue-accent: #263a8e;
+  --light-blue: #a0afd1;
+  --side-login-blue: #a0afd1bf;
+
+  --font-inter: 'Inter';
+  --font-scada: 'Scada';
 }
 
 * {

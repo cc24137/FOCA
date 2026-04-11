@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
-import logoFoca from "../assets/foca.svg";
 
 export default function Inicial(){
     const navigate = useNavigate()

@@ -1,6 +1,6 @@
 import "./header.css";
 import { useNavigate } from "react-router-dom";
-import logoFoca from "../../assets/foca.svg";
+import logoFoca from "../../assets/seal.svg";
 
 export default function Header({
   titulo = "FOCA",

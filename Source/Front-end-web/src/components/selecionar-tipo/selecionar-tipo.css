@@ -1,27 +1,28 @@
-.seletor {
+.selector {
   width: 220px;
   height: 35px;
 
   display: flex;
 
-  border: 3px solid var(--preto);
+  border: 3px solid var(--black);
   border-radius: 20px;
   overflow: hidden;
 
-  background-color: var(--branco);
+  background-color: var(--white);
 }
 
 /* botão base */
-.campo-seletor {
+.selector-field {
   flex: 1;
 
   border: none;
-  background-color: var(--branco);
+  background-color: var(--white);
 
   font-size: 0.8rem;
   font-weight: 700;
 
-  font-family: var(--fonte-ubuntu);
+  font-family: var(--font-scada);
+  font-size: larger;
 
   cursor: pointer;
 
@@ -31,12 +32,12 @@
 }
 
 /* linha do meio */
-.campo-seletor.esquerda {
-  border-right: 3px solid var(--preto);
+.selector-field.selector-left {
+  border-right: 3px solid var(--black);
 }
 
 /* estado ativo */
-.campo-seletor.ativo {
-  background-color: var(--azul-menos-claro); 
-  color: var(--branco);
+.selector-field.active {
+  background-color: var(--button-dark-blue); 
+  color: var(--white);
 }

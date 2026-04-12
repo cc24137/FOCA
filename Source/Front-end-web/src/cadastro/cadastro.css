@@ -6,34 +6,6 @@
     align-items: center;
 }
 
-.left{
-    width: 40%;
-    min-height: 100vh;
-    background-color: var(--side-login-blue);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.top-left{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 40px 80px;
-
-}
-
-.title-text{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: large;
-}
-
-.seal-icon{
-    width: 160px;
-    height: 160px;
-}
 
 .home-icon{
     width: 25px;
@@ -53,12 +25,6 @@
     color: var(--black);
     font-size: 24px;
     font-weight: 500;
-    font-family: var(--font-inter);
-}
-
-.start-text{
-    color: var(--deep-blue-accent);
-    font-weight: 700;
     font-family: var(--font-inter);
 }
 

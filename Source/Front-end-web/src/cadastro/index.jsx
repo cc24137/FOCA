@@ -6,6 +6,7 @@ import SeletorTipo from '../components/selecionar-tipo';
 import { useState } from "react";
 import EyeOnIcon from "../assets/eye-on.svg?react";      // open eye
 import EyeOffIcon from "../assets/eye-off.svg?react"; // closed eye
+import TituloLateral from '../components/titulo-lateral';
 
 export default function Cadastro(){
     const navigate = useNavigate();
@@ -33,18 +34,7 @@ export default function Cadastro(){
     return (
         <div className='cadastro-body'>
             {/*esquerda*/}
-            <div className='left'>
-                {/*topo-esquerda*/}
-                <div className='top-left'>
-                    <SealIcon className='seal-icon' />
-                    <div className='title-text'>
-                        <h1 className='text'><span className='start-text'>F</span>erramenta de</h1>
-                        <h1 className='text'><span className='start-text'>O</span>bservação e</h1>
-                        <h1 className='text'><span className='start-text'>C</span>lassificação de</h1>
-                        <h1 className='text'><span className='start-text'>A</span>tenção</h1>
-                    </div>
-                </div>
-            </div>
+            <TituloLateral />
 
             {/*direita*/}
             <div className='right'>

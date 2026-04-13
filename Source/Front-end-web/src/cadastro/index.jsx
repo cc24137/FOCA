@@ -20,7 +20,7 @@ export default function Cadastro(){
 
     function formSubmit(){
         if (
-            (document.getElementById("email").value == "")
+            (document.getElementById("email").value != "")
         ){
             if(selectedType == "professor"){
                 goTo("/inicial-professor")

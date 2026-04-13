@@ -1,7 +1,7 @@
 .titulo-lateral-left{
-    width: 40%;
+    width: 30%;
     min-height: 100vh;
-    background-color: var(--side-login-blue);
+    background-image: linear-gradient(to bottom, var(--top-gradient-blue), var(--bottom-gradient-blue));
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -23,11 +23,11 @@
 }
 
 .titulo-lateral-seal-icon{
-    width: 160px;
-    height: 160px;
+    width: 110px;
+    height: 110px;
 }
 
-.titulo-lateral-start-text{
+/* .titulo-lateral-start-text{
     color: var(--deep-blue-accent);
     font-weight: 700;
     font-family: var(--font-inter);
@@ -37,4 +37,20 @@
     color: var(--black);
     font-weight: 400;
     font-family: var(--font-inter);
+} */
+
+.titulo-lateral-title{
+    color: var(--black);
+    font-weight: lighter;
+    font-family: var(--font-scada);
+    font-size: 100px;
+}
+
+.titulo-lateral-phrase{
+    color: var(--black);
+    font-weight: 200;
+    font-family: var(--font-inter);
+    font-size: 44px;
+    margin-top: 20px;
+    text-align: center;
 }

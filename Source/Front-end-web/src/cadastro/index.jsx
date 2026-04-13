@@ -72,7 +72,7 @@ export default function Cadastro(){
 
                     <div className="field-group">
                         <label className="field-label" htmlFor='name'>
-                            Nome {selectedType == "professor" ? "do " + selectedType : "da " + selectedType}
+                            Nome {selectedType == "professor" ? "do " : "da "} {selectedType}
                         </label>
                         <input
                             id="name"

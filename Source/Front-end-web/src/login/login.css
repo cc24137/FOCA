@@ -13,7 +13,16 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 40px 40px 80px 40px;
+    padding: 40px 40px 200px 40px;
+}
+
+.login-center{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 26px;
+    padding-top: 80px;
 }
 
 .login-button{
@@ -46,6 +55,75 @@
 
     color: var(--black);
     font-size: 24px;
+    font-weight: 500;
+    font-family: var(--font-inter);
+}
+
+.login-submit-button{
+    background-color: var(--button-dark-blue);
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 26px;
+    font-weight: 500;
+    border: none;
+    color: var(--white);
+}
+
+.login-bottom{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 10px;
+}
+
+.text-to-cadastro{
+    font-size: 20px;
+    font-family: var(--font-inter);
+}
+
+.redirect-to-cadastro{
+    color: var(--deep-blue-accent);
+}
+
+.login-field-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.login-field-label {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: var(--font-inter);
+  color: var(--black);
+}
+
+.login-text-field {
+  width: 100%;
+  height: 50px;
+
+  border: 1px solid var(--black);
+  border-radius: 4px;
+  outline: none;
+
+  padding: 0 14px;
+
+  font-size: 16px;
+  font-family: var(--font-inter);
+
+  background-color: var(--white);
+  color: var(--black);
+
+  box-sizing: border-box;
+}
+
+.forgot-password{
+    align-self: flex-end;
+    color: var(--deep-blue-accent);
+    font-size: 16px;
     font-weight: 500;
     font-family: var(--font-inter);
 }

@@ -1,0 +1,77 @@
+.codigo-email-body{
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+}
+
+.codigo-email-right{
+    width: 70%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 40px 160px 40px;
+}
+
+.codigo-email-button{
+    background: var(--transparent-grayish-blue);
+    border: none;
+    border-radius: 25px;
+    padding: 3px;
+    cursor: pointer;
+    color: var(--black);
+    font-size: 18px;
+    font-weight: 500;
+    transition: 0.2s;
+    align-self: flex-end;  
+}
+
+.codigo-email-content-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    padding: 0px 22px;
+    min-height: 42px;
+
+    color: var(--black);
+    font-size: 24px;
+    font-weight: 500;
+    font-family: var(--font-inter);
+}
+
+.codigo-email-bottom{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    gap: 10px;
+}
+
+.codigo-email-submit-button{
+    background-color: var(--button-dark-blue);
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 26px;
+    font-weight: 500;
+    border: none;
+    color: var(--white);
+}
+
+.codigo-email-box{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-weight: bold;
+    font-size: 18px;
+    background-color: var(--transparent-grayish-blue);
+    padding: 25px 110px;
+    border-radius: 10px;
+}

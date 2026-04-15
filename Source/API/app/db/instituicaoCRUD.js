@@ -11,10 +11,15 @@ class InstituicaoCRUD{
         const pool = await db.getConnection();
         const result = await pool.request()
           .input("email", sql.VarChar, email)
-          .input("password", sql.VarChar, encryptedPassword)
-          .query("SELECT * FROM FOCA.INSTITUICAO WHERE email=@email AND senha_hash=@password");
+          .query("SELECT * FROM FOCA.INSTITUICAO WHERE email=@email");
         if (result.recordset.length > 0){
-          resolve(result.recordset);
+          const correctPassword = await bcrypt.compare(password, result.recordset[0].senha_hash);
+          if (correctPassword){
+            resolve(result.recordset);
+          }
+          let er = new Error();
+          er.name = "Incorrect password";
+          reject(er);
         }
         let er = new Error();
         er.name = "Not found";

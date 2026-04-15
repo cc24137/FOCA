@@ -27,9 +27,15 @@ class UserController{
       })
       .catch((error)=>{
         if (error.name != "Not found"){
-          console.log(error);
-          res.status(500).json({error: "Internal server error"});
-          found = true;
+          if (error.name == "Incorrect password"){
+            res.status(404).json({message: "Incorrect password"});
+            found = true;
+          }
+          else{
+            console.log(error);
+            res.status(500).json({error: "Internal server error"});
+            found = true;
+          }
         }
       });
     // tries to login as INSTITUICAO
@@ -52,6 +58,43 @@ class UserController{
           }
         })
     }
+  }
+
+
+  /*
+  expects such req.body:
+  {
+	  "isProfessor": bool,
+	  "nome": str,
+	  "email": str,
+	  "senha": str
+  }
+  */ 
+  signUp = async (req, res) =>{
+    const {email, nome, senha_hash} = req.body;
+
+    if (req.body.isProfessor){
+      // create PROFESSOR
+      const professorCRUD = new ProfessorCRUD();
+      await professorCRUD.createProfessor(email, senha_hash, nome)
+      .then(()=>{
+        res.status(201).send();
+      })
+      .catch((error)=>{
+        res.status(500).json({error: error});
+      })
+    }
+    // create INSTITUICAO 
+    else{
+      const instituicaoCRUD = new InstituicaoCRUD();
+      await instituicaoCRUD.createInstituicao(email, senha_hash, nome)
+      .then(()=>{
+        res.status(201).send();
+      })
+      .catch((error)=>{
+        res.status(500).json({error: error});
+      })
+    } 
   }
   
 

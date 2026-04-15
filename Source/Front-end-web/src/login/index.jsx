@@ -64,7 +64,7 @@ export default function Login(){
                     </div>
 
                     <div className='forgot-password'>
-                        <span className='redirect-to-esqueceu-senha' onClick={() => goTo("/recuperar-senha")}>Esqueci minha senha</span>
+                        <span className='redirect-to-esqueceu-senha' onClick={() => goTo("/alterar-senha")}>Esqueci minha senha</span>
                     </div>
                 </div>
 

@@ -7,27 +7,58 @@ import { useState } from "react";
 import EyeOnIcon from "../assets/eye-on.svg?react";      // open eye
 import EyeOffIcon from "../assets/eye-off.svg?react"; // closed eye
 import TituloLateral from '../components/titulo-lateral';
+import axios from 'axios';
 
 export default function Cadastro(){
     const navigate = useNavigate();
     const [selectedType, setSelectedType] = useState("professor");
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [form, setForm] = useState({
+        email: "",
+        name: "",
+        password: ""
+    });
+
+    const [confirmarSenha, setConfirmarSenha] = useState("");
 
     function goTo(path) {
         navigate(path);
     }
 
-    function formSubmit(){
-        if (
-            (document.getElementById("email").value != "")
-        ){
-            if(selectedType == "professor"){
-                goTo("/inicial-professor")
-            }
-            else{
-                goTo("/inicial-instituicao")
-            }
+    function handleChange(e) {
+        setForm({
+            ...form,
+            [e.target.id]: e.target.value
+        });
+    }
+
+    async function formSubmit(e ){
+        e.preventDefault();
+        
+        if(
+            (form.password !== confirmarSenha) ||
+            (form.password === "") ||
+            (form.email === "") ||
+            (form.name === "")
+        ) {
+            alert("As senhas não coincidem!");
+            return;
+        }
+        try {
+            const response = await axios.post(
+                "/api/cadastro",
+                form
+            );
+
+            setMessage("Usuário cadastrado com sucesso!");
+            console.log(response.data);
+
+            setForm({ nome: "", email: "", senha: "" });
+
+        } catch (error) {
+            console.error(error);
+            setMessage("Erro ao cadastrar usuário");
         }
     }
 
@@ -64,6 +95,8 @@ export default function Cadastro(){
                         <input
                             id="email"
                             type="email"
+                            value={form.email}
+                            onChange={handleChange}
                             className="text-field"
                             placeholder=""
                         />
@@ -72,10 +105,12 @@ export default function Cadastro(){
 
                     <div className="field-group">
                         <label className="field-label" htmlFor='name'>
-                            Nome {selectedType == "professor" ? "do " : "da "} {selectedType}
+                            Nome {selectedType === "professor" ? "do " : "da "} {selectedType}
                         </label>
                         <input
                             id="name"
+                            value={form.name}
+                            onChange={handleChange}
                             className="text-field"
                             placeholder=""
                         />
@@ -87,8 +122,11 @@ export default function Cadastro(){
 
                         <div className="input-wrapper">
                             <input
-                            type={showPassword ? "text" : "password"}
-                            className="text-field with-icon"
+                                id='password'
+                                type={showPassword ? "text" : "password"}
+                                className="text-field with-icon"
+                                value={form.password}
+                                onChange={handleChange}
                             />
 
                             <button
@@ -109,6 +147,8 @@ export default function Cadastro(){
                             <input
                             type={showConfirmPassword ? "text" : "password"}
                             className="text-field with-icon"
+                            value={confirmarSenha}
+                            onChange={(e) => setConfirmarSenha(e.target.value)}
                             />
 
                             <button

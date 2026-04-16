@@ -17,7 +17,8 @@ export default function Cadastro(){
     const [form, setForm] = useState({
         email: "",
         name: "",
-        password: ""
+        password: "",
+        isProfessor: true,
     });
 
     const [confirmarSenha, setConfirmarSenha] = useState("");
@@ -34,7 +35,7 @@ export default function Cadastro(){
     }
 
     async function formSubmit(e ){
-        e.preventDefault();
+        //e.preventDefault();
         
         if(
             (form.password !== confirmarSenha) ||
@@ -46,19 +47,25 @@ export default function Cadastro(){
             return;
         }
         try {
+            if (selectedType === "professor"){
+                form.isProfessor = true;
+            }
+            else{
+                form.isProfessor = false;
+            }
             const response = await axios.post(
-                "/api/cadastro",
+                "http://localhost:3000/api/cadastro",
                 form
             );
 
-            setMessage("Usuário cadastrado com sucesso!");
+            //setMessage("Usuário cadastrado com sucesso!");
             console.log(response.data);
 
             setForm({ nome: "", email: "", senha: "" });
 
         } catch (error) {
             console.error(error);
-            setMessage("Erro ao cadastrar usuário");
+            //setMessage("Erro ao cadastrar usuário");
         }
     }
 

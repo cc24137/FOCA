@@ -53,3 +53,9 @@ import { useState } from 'react';
 //         </div>
 //     );
 // }
+
+export default function CodigoEmail(){
+    return (
+        <h1>Código de Email</h1>
+    )
+}

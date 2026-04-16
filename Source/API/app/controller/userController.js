@@ -3,6 +3,10 @@ const ProfessorCRUD = require('../db/professorCRUD');
 const InstituicaoCRUD = require('../db/instituicaoCRUD');
 const UserViewModel = require('../viewmodel/userViewmodel');
 
+const {sendMail} = require('../utils/mailer');
+const crypto = require('crypto');
+const EmailVerificationCRUD = require('../db/emailVerificationCRUD');
+
 // handles methods that are from PROFESSOR and from INSTITUICAO at the same time. Login, for example.
 
 class UserController{  
@@ -30,6 +34,10 @@ class UserController{
             res.status(404).json({message: "Incorrect password"});
             found = true;
           }
+          else if (error.name == "Email not verified"){
+            res.status(404).json({message: "Email not verified"});
+            found = true;
+          }
           else{
             console.log(error);
             res.status(500).json({error: "Internal server error"});
@@ -37,6 +45,7 @@ class UserController{
           }
         }
       });
+
     // tries to login as INSTITUICAO
     if (!found) {
       console.log("Tries to login as INSTITUICAO");
@@ -51,6 +60,9 @@ class UserController{
           if (error.name == "Not found"){
             res.status(404).json({message: "No user with such credentials"})
           }
+          else if (error.name == "Email not verified"){
+            res.status(404).json({message: "Email not verified"});
+          }
           else {
             console.log(error);
             res.status(500).json({error: "Internal server error"});
@@ -59,6 +71,52 @@ class UserController{
     }
   }
 
+
+  // -------------------------------------------
+  // sign up logic:
+
+
+  async register(){
+    const { email, name } = req.body;
+    try {
+      
+      const code = crypto.randomInt(100000, 999999).toString();
+
+      await emailConfirmationCRUD.deleteCodesByEmail(email);
+      await emailConfirmationCRUD.saveCode(email, code);
+
+      const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
+      await sendMail(email, "Código de verificação", html);
+
+      res.status(200).json({ message: "Código enviado!" });
+    } catch (error) {
+      console.log("Erro", error);
+    }
+  };
+
+  verify = async (req, res) => {
+    const { email, code } = req.body;
+    try {
+      const professorCRUD = new ProfessorCRUD();
+      const instituicaoCRUD = new InstituicaoCRUD();
+      const emailVerificationCRUD = new EmailVerificationCRUD();
+      // Verificar se o código existe e é válido
+      const validRecord = await emailConfirmationCRUD.getValidCode(email, code);
+
+      if (!validRecord) {
+        return res.status(400).json({ error: "Código inválido ou expirado." });
+      }
+
+      await professorCRUD.verifYEmail(email);
+      await instituicaoCRUD.verifYEmail(email);
+
+      await emailVerificationCRUD.deleteCodesByEmail(email);
+
+      res.status(200).json({ message: "E-mail verificado com sucesso!" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 
   /*
   expects such req.body:
@@ -77,7 +135,13 @@ class UserController{
       // create PROFESSOR
       const professorCRUD = new ProfessorCRUD();
       await professorCRUD.createProfessor(email, password, name)
-      .then(()=>{
+      .then(async ()=>{
+        const code = crypto.randomInt(100000, 999999).toString();
+        await emailConfirmationCRUD.deleteCodesByEmail(email);
+        await emailConfirmationCRUD.saveCode(email, code);
+
+        const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
+        await sendMail(email, "Código de verificação", html);
         res.status(201).send();
       })
       .catch((error)=>{
@@ -88,7 +152,13 @@ class UserController{
     else{
       const instituicaoCRUD = new InstituicaoCRUD();
       await instituicaoCRUD.createInstituicao(email, password, name)
-      .then(()=>{
+      .then(async ()=>{
+        const code = crypto.randomInt(100000, 999999).toString();
+        await emailConfirmationCRUD.deleteCodesByEmail(email);
+        await emailConfirmationCRUD.saveCode(email, code);
+
+        const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
+        await sendMail(email, "Código de verificação", html);
         res.status(201).send();
       })
       .catch((error)=>{

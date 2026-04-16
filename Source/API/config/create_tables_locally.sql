@@ -86,3 +86,19 @@ ALTER TABLE foca.Turma_Disciplina_Professor ADD FOREIGN KEY(id_turma) REFERENCES
 ALTER TABLE foca.Turma_Disciplina_Professor ADD FOREIGN KEY(id_professor) REFERENCES foca.Professor (id);
 
 EXEC sp_rename 'foca.MomentoDestaque', 'Momento_Destaque';
+
+
+CREATE TABLE foca.Codigo_Verificacao
+(
+ id INT PRIMARY KEY IDENTITY(1, 1),
+ o_codigo CHAR(6),
+ email VARCHAR(100)
+ CreatedAt DATETIME DEFAULT GETDATE(),
+ ExpiresAt DATETIME NOT NULL,
+);
+
+alter table foca.Professor
+add emailVerificado bit default 0
+
+alter table foca.Instituicao
+add emailVerificado bit default 0

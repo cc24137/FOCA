@@ -4,7 +4,6 @@ const { sql } = require('../../config/dbConfig');
 const bcrypt = require('bcrypt');
 
 // database acess logic
-
 class ProfessorCRUD {
 
   findProfessorByEmail(email){
@@ -30,6 +29,11 @@ class ProfessorCRUD {
           .query("SELECT * FROM FOCA.PROFESSOR WHERE email=@email");
         if (result.recordset.length > 0){
           const correctPassword = await bcrypt.compare(password, result.recordset[0].senha_hash);
+          if (result.recordset[0].emailVerificado == 0){
+            let er = new Error();
+            er.name = "Email not verified";
+            reject(er);
+          }
           if (correctPassword){
             resolve(result.recordset);
           }
@@ -57,7 +61,25 @@ class ProfessorCRUD {
         .input("email", sql.VarChar, email)
         .input("nome", sql.VarChar, nome)
         .input("password", sql.VarChar, encryptedPassword)
-        .query("INSERT INTO FOCA.PROFESSOR (EMAIL, NOME, SENHA_HASH) VALUES (@email, @nome, @password)")
+        .query("INSERT INTO FOCA.PROFESSOR (EMAIL, NOME, SENHA_HASH, emailVerificado) VALUES (@email, @nome, @password, 0)")
+
+        resolve();
+      }
+      catch(error){
+        reject(error);
+      }
+    });
+  }
+
+  verifYEmail(email){
+    return new Promise(async (resolve, reject ) =>{
+      try{
+        const saltNumber = 12;
+        const encryptedPassword = await bcrypt.hash(password, saltNumber);
+        const pool = await db.getConnection();
+        const result = await pool.request()
+        .input("email", sql.VarChar, email)
+        .query("update FOCA.PROFESSOR set emailVerificado = 1 where email = @email)")
 
         resolve();
       }

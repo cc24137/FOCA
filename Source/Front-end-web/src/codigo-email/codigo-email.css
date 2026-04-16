@@ -12,7 +12,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 40px 40px 160px 40px;
+    padding: 40px 40px 200px 40px;
 }
 
 .codigo-email-button{
@@ -44,7 +44,7 @@
 }
 
 .codigo-email-bottom{
-    width: 60%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center; 
@@ -53,7 +53,7 @@
 
 .codigo-email-submit-button{
     background-color: var(--button-dark-blue);
-    width: 80%;
+    width: 100%;
     height: 50px;
     border-radius: 10px;
     font-size: 26px;
@@ -63,6 +63,7 @@
 }
 
 .codigo-email-box{
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -72,6 +73,70 @@
     font-weight: bold;
     font-size: 18px;
     background-color: var(--transparent-grayish-blue);
-    padding: 25px 110px;
-    border-radius: 10px;
+    padding: 25px 55px;
+    border-radius: 30px;
+}
+
+.codigo-email-center{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    width: 50%;
+}
+
+.codigo-email-otp-container {
+  display: flex;
+  justify-content: space-between; 
+  gap: 16px;               
+  margin: 10px 0;
+  width: 100%;             
+}
+
+.codigo-email-otp-inputs {
+  flex: 1;                
+  max-width: 65px;         
+  height: 70px;
+  font-size: 1.5rem;
+  text-align: center;
+  border-radius: 8px;
+  border: 2px solid var(--bar-light-blue);
+  background-color: var(--white);
+  outline: none;
+  box-sizing: border-box;  
+}
+
+.codigo-email-otp-inputs:focus {
+  border-color: var(--deep-blue-accent);
+  box-shadow: 0 0 5px var(--grayish-blue);
+}
+
+.codigo-email-container-code{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    gap: 5px;
+}
+
+.codigo-email-title-code{
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--black);
+    align-self: flex-start;
+}
+
+.codigo-email-text-code{
+    font-size: 16px;
+    color: var(--black);
+    align-self: flex-end;
+    padding-right: 10px;
+}
+
+.codigo-email-resend-code{
+    color: var(--deep-blue-accent);
+    cursor: pointer;
+    font-weight: 500;
 }

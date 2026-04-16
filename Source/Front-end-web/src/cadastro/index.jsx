@@ -1,20 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import './cadastro.css';
-import SealIcon from "../assets/seal.svg?react";
 import HomeIcon from "../assets/home.svg?react";
 import SeletorTipo from '../components/selecionar-tipo';
 import { useState } from "react";
 import EyeOnIcon from "../assets/eye-on.svg?react";      // open eye
 import EyeOffIcon from "../assets/eye-off.svg?react"; // closed eye
 import TituloLateral from '../components/titulo-lateral';
-import axios from 'axios';
+import api from '../services/api';
 
 export default function Cadastro(){
+
     const navigate = useNavigate();
     const [selectedType, setSelectedType] = useState("professor");
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-    const [message, setMessage] = useState("");
+
     const [form, setForm] = useState({
         email: "",
         name: "",
@@ -50,19 +50,19 @@ export default function Cadastro(){
         try {
             form.isProfessor = selectedType === "professor";
 
-            const response = await axios.post(
-                "/api/cadastro",
+            const response = await api.post(
+                "/users/cadastro",
                 form
             );
 
-            setMessage("Usuário cadastrado com sucesso!");
             console.log(response.data);
 
             setForm({ email: "", name: "", password: "" });
+            setConfirmarSenha("");
+            goTo(`/${selectedType === "professor" ? "inicial-professor" : "inicial-instituicao"}`);
 
         } catch (error) {
             console.error(error);
-            setMessage("Erro ao cadastrar usuário");
         }
     }
 

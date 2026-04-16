@@ -14,7 +14,6 @@ class UserController{
     const instituicaoCRUD = new InstituicaoCRUD();
     let found = false;
     let {email, password} = req.body;
-    // hashing logic TODO
     password = password;
     //
     // tries to login as PROFESSOR
@@ -65,18 +64,19 @@ class UserController{
   expects such req.body:
   {
 	  "isProfessor": bool,
-	  "nome": str,
+	  "name": str,
 	  "email": str,
-	  "senha": str
+	  "password": str
   }
   */ 
   signUp = async (req, res) =>{
-    const {email, nome, senha_hash} = req.body;
+    console.log("Cadastro chamado");
+    const {email, name, password} = req.body;
 
     if (req.body.isProfessor){
       // create PROFESSOR
       const professorCRUD = new ProfessorCRUD();
-      await professorCRUD.createProfessor(email, senha_hash, nome)
+      await professorCRUD.createProfessor(email, password, name)
       .then(()=>{
         res.status(201).send();
       })
@@ -87,7 +87,7 @@ class UserController{
     // create INSTITUICAO 
     else{
       const instituicaoCRUD = new InstituicaoCRUD();
-      await instituicaoCRUD.createInstituicao(email, senha_hash, nome)
+      await instituicaoCRUD.createInstituicao(email, password, name)
       .then(()=>{
         res.status(201).send();
       })

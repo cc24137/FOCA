@@ -20,7 +20,7 @@ class ProfessorCRUD {
     });
   }
 
-  // hashing not implemented yet
+
   professorLogin(email, password) {
     return new Promise(async (resolve, reject) => {
       try{

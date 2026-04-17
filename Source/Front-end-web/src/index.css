@@ -11,12 +11,13 @@
   --bar-light-blue               : #a0afd19d;
   --grayish-blue                 : #7a86ab;
   --button-dark-blue             : #566399;
-  --deep-blue-accent             : #263a8e;
+  --deep-blue-accent             : #1A2968;
   --light-blue                   : #a0afd1;
   --side-login-blue              : #a0afd1bf;
   --top-gradient-blue            : #b8c4df;
   --bottom-gradient-blue         : #2b54b1;
   --transparent-dark-grayish-blue: #8085b44d;
+  --card-gradient                : linear-gradient(180deg, #7A86AB 0%, #1A2968 100%);
 
   --font-inter              : 'Inter';
   --font-scada              : 'Scada';

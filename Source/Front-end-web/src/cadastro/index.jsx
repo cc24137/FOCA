@@ -16,7 +16,6 @@ export default function Cadastro(){
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [passwordTouched, setPasswordTouched] = useState(false);
-    const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
     const [form, setForm] = useState({
         email: "",
@@ -50,7 +49,8 @@ export default function Cadastro(){
             (form.password !== confirmarSenha) ||
             (form.password === "") ||
             (form.email === "") ||
-            (form.name === "")
+            (form.name === "") ||
+            (verifyPassword() !== "")
         ) {
             alert("As senhas não coincidem!");
             return;
@@ -78,11 +78,11 @@ export default function Cadastro(){
         if (!passwordTouched) return "";
         if (form.password === "") return "A senha é obrigatória.";
         if(form.password.length < 8) return "A senha deve conter pelo menos 8 caracteres.";
-        if(form.password.length > 20) return "A senha deve conter no máximo 20 caracteres.";
-        if(!/[A-Z]/.test(form.password)) return "A senha deve conter pelo menos uma letra maiúscula.";
         if(!/[a-z]/.test(form.password)) return "A senha deve conter pelo menos uma letra minúscula.";
+        if(!/[A-Z]/.test(form.password)) return "A senha deve conter pelo menos uma letra maiúscula.";
         if(!/[0-9]/.test(form.password)) return "A senha deve conter pelo menos um número.";
         if(!/[!@#$%^&*(),.?":{}|<>]/.test(form.password)) return "A senha deve conter pelo menos um caractere especial.";
+        if(form.password.length > 30) return "A senha deve conter no máximo 30 caracteres.";
         return "";
     }
     return (
@@ -143,7 +143,7 @@ export default function Cadastro(){
                     <div className="field-group">
                         <div className="label-with-asterisk">
                             <label className="field-label">Senha</label>
-                            <Asterisk className={`asterisk ${verifyPassword() != "" ? "hidden" : "visible"}`} />
+                            <Asterisk className={`asterisk ${verifyPassword() != "" ? "visible" : "hidden"}`} />
                             <p className='text-password'>{verifyPassword()}</p>
                         </div>
                         
@@ -172,7 +172,7 @@ export default function Cadastro(){
                     <div className="field-group">
                         <div className="label-with-asterisk">
                             <label className="field-label">Confirmar Senha</label>
-                            <Asterisk className={`asterisk ${form.password != confirmarSenha ? "hidden" : "visible"}`} />
+                            <Asterisk className={`asterisk ${form.password != confirmarSenha ? "visible" : "hidden"}`} />
                             <p className={`text-confirm-password ${form.password != confirmarSenha ? "visible" : "hidden"}`}>As senhas devem ser iguais.</p>
                         </div>
 

@@ -165,18 +165,18 @@
 .asterisk.hidden {
     width: 8px;
     height: 12px;
-    fill: red;
+    fill: none;
 }
 
 .asterisk.visible {
     width: 8px;
     height: 12px;
-    fill: none;
+    fill: var(--red);
 }
 
 .text-confirm-password.visible {
     font-size: 18px;
-    color: red;
+    color: var(--red);
 }
 
 .text-confirm-password.hidden {

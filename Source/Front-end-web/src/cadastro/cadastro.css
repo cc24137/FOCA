@@ -133,6 +133,7 @@
 
 .redirect-to-login{
     color: var(--deep-blue-accent);
+    border-bottom: 2px solid var(--deep-blue-accent);
 }
 
 .sign-in-bottom{
@@ -149,4 +150,40 @@
     flex-direction: column;
     align-items: center; 
     gap: 16px;
+}
+
+.label-with-asterisk {
+    display: flex;
+    align-items: baseline;
+    max-height: 21px;
+    gap: 4px;
+}
+
+.asterisk{
+  margin-left: 10px;
+}
+.asterisk.hidden {
+    width: 8px;
+    height: 12px;
+    fill: red;
+}
+
+.asterisk.visible {
+    width: 8px;
+    height: 12px;
+    fill: none;
+}
+
+.text-confirm-password.visible {
+    font-size: 18px;
+    color: red;
+}
+
+.text-confirm-password.hidden {
+    display: none;
+}
+
+.text-password{
+    font-size: 18px;
+    color: red;
 }

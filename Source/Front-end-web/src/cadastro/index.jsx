@@ -7,6 +7,7 @@ import EyeOnIcon from "../assets/eye-on.svg?react";      // open eye
 import EyeOffIcon from "../assets/eye-off.svg?react"; // closed eye
 import TituloLateral from '../components/titulo-lateral';
 import api from '../services/api';
+import Asterisk from '../assets/asterisk.svg?react';
 
 export default function Cadastro(){
 
@@ -14,6 +15,8 @@ export default function Cadastro(){
     const [selectedType, setSelectedType] = useState("professor");
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [passwordTouched, setPasswordTouched] = useState(false);
+    const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
     const [form, setForm] = useState({
         email: "",
@@ -29,10 +32,15 @@ export default function Cadastro(){
     }
 
     function handleChange(e) {
+        const { id, value } = e.target;
         setForm({
             ...form,
-            [e.target.id]: e.target.value
+            [id]: value
         });
+
+        if (id === 'password' && value.length > 0) {
+            setPasswordTouched(true);
+        }
     }
 
     async function formSubmit(e ){
@@ -66,6 +74,17 @@ export default function Cadastro(){
         }
     }
 
+    function verifyPassword() {
+        if (!passwordTouched) return "";
+        if (form.password === "") return "A senha é obrigatória.";
+        if(form.password.length < 8) return "A senha deve conter pelo menos 8 caracteres.";
+        if(form.password.length > 20) return "A senha deve conter no máximo 20 caracteres.";
+        if(!/[A-Z]/.test(form.password)) return "A senha deve conter pelo menos uma letra maiúscula.";
+        if(!/[a-z]/.test(form.password)) return "A senha deve conter pelo menos uma letra minúscula.";
+        if(!/[0-9]/.test(form.password)) return "A senha deve conter pelo menos um número.";
+        if(!/[!@#$%^&*(),.?":{}|<>]/.test(form.password)) return "A senha deve conter pelo menos um caractere especial.";
+        return "";
+    }
     return (
         <div className='cadastro-body'>
             {/*esquerda*/}
@@ -122,45 +141,55 @@ export default function Cadastro(){
                     {/*senha*/}
 
                     <div className="field-group">
-                        <label className="field-label">Senha</label>
+                        <div className="label-with-asterisk">
+                            <label className="field-label">Senha</label>
+                            <Asterisk className={`asterisk ${verifyPassword() != "" ? "hidden" : "visible"}`} />
+                            <p className='text-password'>{verifyPassword()}</p>
+                        </div>
+                        
 
                         <div className="input-wrapper">
                             <input
                                 id='password'
                                 type={showPassword ? "text" : "password"}
-                                className="text-field with-icon"
+                                className={`text-field with-icon `}
                                 value={form.password}
                                 onChange={handleChange}
+                                onBlur={() => setPasswordTouched(true)}
                             />
 
                             <button
-                            type="button"
-                            className="eye-button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            >
-                            {showPassword ? <EyeOnIcon /> : <EyeOffIcon />}
+                                type="button"
+                                className="eye-button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                >
+                                {showPassword ? <EyeOnIcon /> : <EyeOffIcon />}
                             </button>
                         </div>
                     </div>
                     {/*confirmar senha*/}
 
                     <div className="field-group">
-                        <label className="field-label">Confirmar Senha</label>
+                        <div className="label-with-asterisk">
+                            <label className="field-label">Confirmar Senha</label>
+                            <Asterisk className={`asterisk ${form.password != confirmarSenha ? "hidden" : "visible"}`} />
+                            <p className={`text-confirm-password ${form.password != confirmarSenha ? "visible" : "hidden"}`}>As senhas devem ser iguais.</p>
+                        </div>
 
                         <div className="input-wrapper">
                             <input
-                            type={showConfirmPassword ? "text" : "password"}
-                            className="text-field with-icon"
-                            value={confirmarSenha}
-                            onChange={(e) => setConfirmarSenha(e.target.value)}
+                                type={showConfirmPassword ? "text" : "password"}
+                                className={`text-field with-icon `}
+                                value={confirmarSenha}
+                                onChange={(e) => setConfirmarSenha(e.target.value)}
                             />
 
                             <button
-                            type="button"
-                            className="eye-button"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            >
-                            {showConfirmPassword ? <EyeOnIcon /> : <EyeOffIcon />}
+                                type="button"
+                                className="eye-button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                >
+                                {showConfirmPassword ? <EyeOnIcon /> : <EyeOffIcon />}
                             </button>
                         </div>
                     </div>

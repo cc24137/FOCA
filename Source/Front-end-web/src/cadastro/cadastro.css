@@ -1,18 +1,61 @@
 .cadastro-body{
-    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
+    width: 100%;
 }
 
-
+/* Icons */
 .home-icon{
     width: 25px;
     height: 25px;
     scale: 1.1;
 }
 
+.eye-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%); 
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  
+}
+
+.eye-button svg {
+  width: 20px;
+  height: 20px;
+  
+  color: var(--black);
+}
+
+.asterisk{
+  margin-left: 10px;
+}
+
+.asterisk.hidden {
+    width: 8px;
+    height: 12px;
+    
+    fill: none;
+}
+
+.asterisk.visible {
+    width: 8px;
+    height: 12px;
+    
+    fill: var(--red);
+}
+
+/* buttons */
 .sign-in-content-button {
     display: flex;
     align-items: center;
@@ -28,16 +71,6 @@
     font-family: var(--font-inter);
 }
 
-.right{
-    width: 70%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 40px 40px 120px 40px;
-}
-
 .sign-in-button{
     background: var(--transparent-grayish-blue);
     border: none;
@@ -51,6 +84,20 @@
     align-self: flex-end;  
 }
 
+.sign-in-submit-button{
+    background-color: var(--button-dark-blue);
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 26px;
+    font-weight: 500;
+    border: none;
+    color: var(--white);
+}
+
+
+/* text fields */
+
 .field-group {
   width: 80%;
   display: flex;
@@ -63,6 +110,13 @@
   font-weight: 700;
   font-family: var(--font-inter);
   color: var(--black);
+}
+
+.label-with-asterisk {
+    display: flex;
+    align-items: baseline;
+    max-height: 21px;
+    gap: 4px;
 }
 
 .text-field {
@@ -90,43 +144,11 @@
 }
 
 .text-field.with-icon {
-  padding-right: 45px; /* space for the icon */
+  padding-right: 45px; 
 }
 
 
-.eye-button {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%); /* THIS centers it */
-
-  background: none;
-  border: none;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-.eye-button svg {
-  width: 20px;
-  height: 20px;
-  color: var(--black);
-}
-
-.sign-in-submit-button{
-    background-color: var(--button-dark-blue);
-    width: 80%;
-    height: 50px;
-    border-radius: 10px;
-    font-size: 26px;
-    font-weight: 500;
-    border: none;
-    color: var(--white);
-}
-
+/* text links */
 .text-to-login{
     font-size: 20px;
 }
@@ -134,6 +156,19 @@
 .redirect-to-login{
     color: var(--deep-blue-accent);
     border-bottom: 2px solid var(--deep-blue-accent);
+}
+
+
+/* positions */
+
+.right{
+    width: 70%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 40px 120px 40px;
 }
 
 .sign-in-bottom{
@@ -152,28 +187,8 @@
     gap: 16px;
 }
 
-.label-with-asterisk {
-    display: flex;
-    align-items: baseline;
-    max-height: 21px;
-    gap: 4px;
-}
 
-.asterisk{
-  margin-left: 10px;
-}
-.asterisk.hidden {
-    width: 8px;
-    height: 12px;
-    fill: none;
-}
-
-.asterisk.visible {
-    width: 8px;
-    height: 12px;
-    fill: var(--red);
-}
-
+/* error messages */
 .text-confirm-password.visible {
     font-size: 18px;
     color: var(--red);
@@ -185,5 +200,5 @@
 
 .text-password{
     font-size: 18px;
-    color: red;
+    color: var(--red);
 }

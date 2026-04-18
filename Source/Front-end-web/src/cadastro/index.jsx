@@ -42,8 +42,7 @@ export default function Cadastro(){
         }
     }
 
-    async function formSubmit(e ){
-        //e.preventDefault();
+    async function formSubmit(){
         
         if(
             (form.password !== confirmarSenha) ||

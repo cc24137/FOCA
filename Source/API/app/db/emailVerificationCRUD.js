@@ -1,4 +1,3 @@
-
 const sql = require('mssql');
 const db = require('../config/dbConfig');
 

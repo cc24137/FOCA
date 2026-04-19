@@ -1,4 +1,3 @@
-
 const db = require('../../config/dbConfig');
 const { sql } = require('../../config/dbConfig');
 const bcrypt = require('bcrypt');
@@ -18,7 +17,6 @@ class ProfessorCRUD {
       }
     });
   }
-
 
   professorLogin(email, password) {
     return new Promise(async (resolve, reject) => {
@@ -88,25 +86,6 @@ class ProfessorCRUD {
       }
     });
   }
-
-
-
-  // test route
-  listProfessors() {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const pool = await db.getConnection(); 
-        const result = await pool.request().query('SELECT * FROM FOCA.PROFESSOR'); 
-      
-        resolve(result.recordset);
-      }
-      catch(error){
-        reject(error);
-      }
-    });
-  }
-
-
 }
 
 module.exports = ProfessorCRUD;

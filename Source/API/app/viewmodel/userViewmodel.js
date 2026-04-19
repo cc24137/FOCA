@@ -24,4 +24,3 @@ class UserViewModel{
 }
 
 module.exports = UserViewModel;
-

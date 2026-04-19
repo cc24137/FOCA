@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 
 class InstituicaoCRUD{
 
-  // hashing not implemented yet
   instituicaoLogin(email, password) {
     return new Promise(async (resolve, reject) => {
       try{

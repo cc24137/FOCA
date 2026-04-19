@@ -11,21 +11,18 @@ const EmailVerificationCRUD = require('../db/emailVerificationCRUD');
 
 class UserController{  
 
-  
   login = async (req, res)=>{
-    console.log("Tried logging in");
     const professorCRUD = new ProfessorCRUD();
     const instituicaoCRUD = new InstituicaoCRUD();
     let found = false;
     let {email, password} = req.body;
     password = password;
-    //
+    
     // tries to login as PROFESSOR
     await professorCRUD.professorLogin(email, password)
       .then((recordset) => {
         let finalResult = new UserViewModel(recordset[0], true);
         res.status(200).json(finalResult);
-        console.log("Found professor");
         found = true;
       })
       .catch((error)=>{
@@ -48,7 +45,6 @@ class UserController{
 
     // tries to login as INSTITUICAO
     if (!found) {
-      console.log("Tries to login as INSTITUICAO");
       instituicaoCRUD.instituicaoLogin(email, password)
         .then((recordset) => {
           if (recordset.length > 0){
@@ -71,10 +67,8 @@ class UserController{
     }
   }
 
-
   // -------------------------------------------
   // sign up logic:
-
 
   async register(){
     const { email, name } = req.body;
@@ -128,7 +122,6 @@ class UserController{
   }
   */ 
   signUp = async (req, res) =>{
-    console.log("Cadastro chamado");
     const {email, name, password} = req.body;
 
     if (req.body.isProfessor){
@@ -166,8 +159,6 @@ class UserController{
       })
     } 
   }
-  
-
 }
 
 module.exports = UserController;

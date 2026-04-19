@@ -5,8 +5,6 @@ const UserViewModel = require('../viewmodel/userViewmodel');
 // handles the responses from the CRUD class and apply business logic
 
 class ProfessorController{
-
-  // test route
   listAllProfessors = 
     async (req, res) =>{
       const professorCRUD = new ProfessorCRUD();

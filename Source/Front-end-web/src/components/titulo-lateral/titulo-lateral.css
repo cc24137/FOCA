@@ -1,56 +1,73 @@
-.titulo-lateral-left{
-    width: 30%;
-    min-height: 100vh;
-    background-image: linear-gradient(to bottom, var(--top-gradient-blue), var(--bottom-gradient-blue));
+/* -----------------------------------------
+   Layout and wrappers
+----------------------------------------- */
+
+.titulo-lateral-left {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    width: 30%;
+    min-height: 100vh;
+
+    background-image: linear-gradient(to bottom, var(--top-gradient-blue), var(--bottom-gradient-blue));
 }
 
-.titulo-lateral-top-left{
-    display: flex; 
-    align-items: center;
+/* -----------------------------------------
+   Containers and sections
+----------------------------------------- */
+
+.titulo-lateral-top-left {
+    display: flex;
     justify-content: space-between;
-    padding: 40px 80px;
+    align-items: center;
 
+    padding: 40px 80px;
 }
 
-.titulo-lateral-title-text{
+.titulo-lateral-title-text {
     display: flex;
     flex-direction: column;
     gap: 10px;
+
     font-size: large;
 }
 
-.titulo-lateral-seal-icon{
+/* -----------------------------------------
+   UI elements
+----------------------------------------- */
+
+.titulo-lateral-seal-icon {
     width: 110px;
     height: 110px;
 }
 
-/* .titulo-lateral-start-text{
+/* .titulo-lateral-start-text {
     color: var(--deep-blue-accent);
-    font-weight: 700;
     font-family: var(--font-inter);
+    font-weight: 700;
 }
 
-.titulo-lateral-text{
+.titulo-lateral-text {
     color: var(--black);
-    font-weight: 400;
     font-family: var(--font-inter);
-} */
+    font-weight: 400;
+} 
+*/
 
-.titulo-lateral-title{
+.titulo-lateral-title {
     color: var(--black);
-    font-weight: lighter;
     font-family: var(--font-scada);
     font-size: 100px;
+    font-weight: lighter;
 }
 
-.titulo-lateral-phrase{
+.titulo-lateral-phrase {
+    margin-top: 20px;
+
+    text-align: center;
     color: var(--black);
-    font-weight: 200;
     font-family: var(--font-inter);
     font-size: 44px;
-    margin-top: 20px;
-    text-align: center;
+    font-weight: 200;
 }

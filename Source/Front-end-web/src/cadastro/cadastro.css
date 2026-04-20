@@ -1,4 +1,8 @@
-.cadastro-body{
+/* -----------------------------------------
+   Layout and Wrappers
+----------------------------------------- */
+
+.cadastro-body {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -7,38 +11,180 @@
     width: 100%;
 }
 
-/* Icons */
-.home-icon{
+.right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 70%;
+    min-height: 100vh;
+    padding: 40px 40px 120px 40px;
+}
+
+/* -----------------------------------------
+   Containers and sections
+----------------------------------------- */
+
+.sign-in-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    width: 60%;
+}
+
+.sign-in-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    width: 60%;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    width: 80%;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.label-with-asterisk {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+
+    max-height: 21px;
+}
+
+/* -----------------------------------------
+   UI elements (Inputs, Labels, Buttons, Text)
+----------------------------------------- */
+
+.field-label {
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.text-field {
+    width: 100%;
+    height: 50px;
+    padding: 0 14px;
+    box-sizing: border-box;
+
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-size: 16px;
+
+    background-color: var(--white);
+    border: 1px solid var(--black);
+    border-radius: 4px;
+    outline: none;
+}
+
+.text-field.with-icon {
+    padding-right: 45px; 
+}
+
+.sign-in-content-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    min-height: 42px;
+    padding: 0px 22px;
+
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.sign-in-button {
+    align-self: flex-end;
+    
+    padding: 3px;
+
+    color: var(--black);
+    font-size: 18px;
+    font-weight: 500;
+
+    background: var(--transparent-grayish-blue);
+    border: none;
+    border-radius: 25px;
+    
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.sign-in-submit-button {
+    width: 80%;
+    height: 50px;
+
+    color: var(--white);
+    font-size: 26px;
+    font-weight: 500;
+
+    background-color: var(--button-dark-blue);
+    border: none;
+    border-radius: 10px;
+}
+
+.text-to-login {
+    font-size: 20px;
+}
+
+.redirect-to-login {
+    color: var(--deep-blue-accent);
+    border-bottom: 2px solid var(--deep-blue-accent);
+}
+
+/* -----------------------------------------
+   Icons and decorations
+----------------------------------------- */
+
+.home-icon {
     width: 25px;
     height: 25px;
+
     scale: 1.1;
 }
 
 .eye-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%); 
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%); 
 
-  background: none;
-  border: none;
-  cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   
+    background: none;
+    border: none;
+
+    cursor: pointer;
 }
 
 .eye-button svg {
-  width: 20px;
-  height: 20px;
+    width: 20px;
+    height: 20px;
   
-  color: var(--black);
+    color: var(--black);
 }
 
-.asterisk{
-  margin-left: 10px;
+.asterisk {
+    margin-left: 10px;
 }
 
 .asterisk.hidden {
@@ -55,150 +201,20 @@
     fill: var(--red);
 }
 
-/* buttons */
-.sign-in-content-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+/* -----------------------------------------
+   States and feedback
+----------------------------------------- */
 
-    padding: 0px 22px;
-    min-height: 42px;
-
-    color: var(--black);
-    font-size: 24px;
-    font-weight: 500;
-    font-family: var(--font-inter);
-}
-
-.sign-in-button{
-    background: var(--transparent-grayish-blue);
-    border: none;
-    border-radius: 25px;
-    padding: 3px;
-    cursor: pointer;
-    color: var(--black);
-    font-size: 18px;
-    font-weight: 500;
-    transition: 0.2s;
-    align-self: flex-end;  
-}
-
-.sign-in-submit-button{
-    background-color: var(--button-dark-blue);
-    width: 80%;
-    height: 50px;
-    border-radius: 10px;
-    font-size: 26px;
-    font-weight: 500;
-    border: none;
-    color: var(--white);
-}
-
-
-/* text fields */
-
-.field-group {
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field-label {
-  font-size: 18px;
-  font-weight: 700;
-  font-family: var(--font-inter);
-  color: var(--black);
-}
-
-.label-with-asterisk {
-    display: flex;
-    align-items: baseline;
-    max-height: 21px;
-    gap: 4px;
-}
-
-.text-field {
-  width: 100%;
-  height: 50px;
-
-  border: 1px solid var(--black);
-  border-radius: 4px;
-  outline: none;
-
-  padding: 0 14px;
-
-  font-size: 16px;
-  font-family: var(--font-inter);
-
-  background-color: var(--white);
-  color: var(--black);
-
-  box-sizing: border-box;
-}
-
-.input-wrapper {
-  position: relative;
-
-}
-
-.text-field.with-icon {
-  padding-right: 45px; 
-}
-
-
-/* text links */
-.text-to-login{
-    font-size: 20px;
-}
-
-.redirect-to-login{
-    color: var(--deep-blue-accent);
-    border-bottom: 2px solid var(--deep-blue-accent);
-}
-
-
-/* positions */
-
-.right{
-    width: 70%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 40px 40px 120px 40px;
-}
-
-.sign-in-bottom{
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    gap: 10px;
-}
-
-.sign-in-center{
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    gap: 16px;
-}
-
-
-/* error messages */
-.text-confirm-password.visible {
-    font-size: 18px;
+.text-password {
     color: var(--red);
+    font-size: 18px;
+}
+
+.text-confirm-password.visible {
+    color: var(--red);
+    font-size: 18px;
 }
 
 .text-confirm-password.hidden {
     display: none;
-}
-
-.text-password{
-    font-size: 18px;
-    color: var(--red);
 }

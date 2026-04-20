@@ -1,49 +1,69 @@
+/* -----------------------------------------
+   Layout and wrappers
+----------------------------------------- */
+
 .header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 32px;
-  background-color: var(--background-off-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    padding: 16px 32px;
+
+    background-color: var(--background-off-white);
 }
+
+/* -----------------------------------------
+   Containers and sections
+----------------------------------------- */
 
 .header-esquerda {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.header-logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-
-.header-titulo {
-  font-size: 2rem;
-  font-family: var(--font-inter);
-  font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .header-direita {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* -----------------------------------------
+   UI elements
+----------------------------------------- */
+
+.header-logo {
+    width: 40px;
+    height: 40px;
+
+    object-fit: contain;
+}
+
+.header-titulo {
+    font-family: var(--font-inter);
+    font-size: 2rem;
+    font-weight: 500;
 }
 
 .header-link {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
+    font-size: 1.2rem;
+
+    background: none;
+    border: none;
+
+    cursor: pointer;
 }
 
 .header-botao {
-  background-color: #56639c;
-  color: var(--white);
-  border: none;
-  border-radius: 6px;
-  padding: 10px 22px;
-  font-size: 1rem;
-  cursor: pointer;
+    padding: 10px 22px;
+
+    color: var(--white);
+    font-size: 1rem;
+
+    background-color: #56639c;
+    border: none;
+    border-radius: 6px;
+
+    cursor: pointer;
 }

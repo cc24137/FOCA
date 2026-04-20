@@ -1,113 +1,145 @@
+/* -----------------------------------------
+   Layout and wrappers
+----------------------------------------- */
+
 .alterar-senha-body {
+    /* Display & Layout */
     display: flex;
     flex-direction: row;
-    height: 100vh;
+
+    /* Box Model */
     width: 100vw;
+    height: 100vh;
 }
 
-.alterar-senha-right{
-    width: 70%;
-    min-height: 100vh;
+.alterar-senha-right {
+    /* Display & Layout */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
+    /* Box Model */
+    width: 70%;
+    min-height: 100vh;
     padding: 40px 40px 160px 40px;
 }
 
-.alterar-senha-content-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+/* -----------------------------------------
+   Containers and sections
+----------------------------------------- */
 
-    padding: 0px 22px;
-    min-height: 42px;
-
-    color: var(--black);
-    font-size: 24px;
-    font-weight: 500;
-    font-family: var(--font-inter);
-}
-
-.alterar-senha-button{
-    background: var(--transparent-grayish-blue);
-    border: none;
-    border-radius: 25px;
-    padding: 3px;
-    cursor: pointer;
-    color: var(--black);
-    font-size: 18px;
-    font-weight: 500;
-    transition: 0.2s;
-    align-self: flex-end;  
-}
-
-
-.alterar-senha-box{
+.alterar-senha-box {
     display: flex;
     flex-direction: column;
     gap: 12px;
+
+    padding: 25px 110px;
+
+    /* Typography */
     text-align: center;
     color: var(--black);
     font-family: var(--font-inter);
-    font-weight: bold;
     font-size: 18px;
+    font-weight: bold;
+
+    /* Visuals */
     background-color: var(--transparent-grayish-blue);
-    padding: 25px 110px;
     border-radius: 10px;
 }
 
-.alterar-senha-center{
+.alterar-senha-center {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 50px;
+
     width: 50%;
+
     color: var(--black);
     font-family: var(--font-inter);
-    font-weight: bold;
     font-size: 18px;
+    font-weight: bold;
 }
 
-
-.alterar-senha-bottom{
+.alterar-senha-bottom {
     display: flex;
     flex-direction: column;
-    gap: 12px;
     align-items: center;
+    gap: 12px;
+
     width: 50%;
 }
 
 .alterar-senha-field-group {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    width: 100%;
 }
 
+/* -----------------------------------------
+   UI elements (Inputs, Labels, Buttons)
+----------------------------------------- */
+
 .alterar-senha-field-label {
-  font-size: 18px;
-  font-weight: 700;
-  font-family: var(--font-inter);
-  color: var(--black);
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-size: 18px;
+    font-weight: 700;
 }
 
 .alterar-senha-input-wrapper {
-  position: relative;
-}
-
-.alterar-senha-submit-button{
-    background-color: var(--button-dark-blue);
-    width: 100%;
-    height: 50px;
-    border-radius: 10px;
-    font-size: 26px;
-    font-weight: 500;
-    border: none;
-    color: var(--white);
+    position: relative;
 }
 
 .alterar-senha-text-field.with-icon {
-  padding-right: 45px; /* space for the icon */
+    padding-right: 45px; /* space for the icon */
+}
+
+.alterar-senha-content-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    min-height: 42px;
+    padding: 0px 22px;
+
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.alterar-senha-button {
+    align-self: flex-end;
+    
+    padding: 3px;
+
+    color: var(--black);
+    font-size: 18px;
+    font-weight: 500;
+
+    background: var(--transparent-grayish-blue);
+    border: none;
+    border-radius: 25px;
+
+    /* Misc */
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.alterar-senha-submit-button {
+    width: 100%;
+    height: 50px;
+
+    color: var(--white);
+    font-size: 26px;
+    font-weight: 500;
+
+    background-color: var(--button-dark-blue);
+    border: none;
+    border-radius: 10px;
 }

@@ -1,43 +1,64 @@
+/* -----------------------------------------
+   Layout and wrappers
+----------------------------------------- */
+
 .preview-container {
-  width: 700px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    width: 700px;
 }
 
+/* -----------------------------------------
+   Containers and sections
+----------------------------------------- */
+
 .preview-box {
-  background: #111;
-  border-radius: 12px;
-  padding: 16px;
-  color: white;
+    padding: 16px;
+
+    color: white;
+
+    background: #111;
+    border-radius: 12px;
 }
 
 .preview-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.hidden-video {
-  display: none;
-}
-
-.preview-canvas {
-  width: 100%;
-  max-height: 320px;
-  border-radius: 8px;
-  background: black;
-  object-fit: contain;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .sliders {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .slider-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* -----------------------------------------
+   UI elements
+----------------------------------------- */
+
+.preview-canvas {
+    width: 100%;
+    max-height: 320px;
+
+    background: black;
+    border-radius: 8px;
+
+    object-fit: contain;
+}
+
+/* -----------------------------------------
+   States and feedback
+----------------------------------------- */
+
+.hidden-video {
+    display: none;
 }

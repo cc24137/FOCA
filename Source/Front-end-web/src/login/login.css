@@ -1,129 +1,155 @@
-.login-body{
-    width: 100%;
+/* -----------------------------------------
+   Layout and wrappers
+----------------------------------------- */
+
+.login-body {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
+    width: 100%;
 }
 
-.login-right{
-    width: 70%;
-    min-height: 100vh;
+.login-right {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+
+    width: 70%;
+    min-height: 100vh;
     padding: 40px 40px 200px 40px;
 }
 
-.login-center{
-    width: 50%;
+/* -----------------------------------------
+   Containers and sections
+----------------------------------------- */
+
+.login-center {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     gap: 26px;
+
+    width: 50%;
     padding-top: 80px;
 }
 
-.login-button{
-    background: var(--transparent-grayish-blue);
-    border: none;
-    border-radius: 25px;
-    padding: 3px;
-    cursor: pointer;
-    color: var(--black);
-    font-size: 18px;
-    font-weight: 500;
-    transition: 0.2s;
-    align-self: flex-end;  
+.login-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    width: 60%;
 }
 
-.login-home-icon{
-    width: 25px;
-    height: 25px;
-    scale: 1.1;
+.login-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    width: 100%;
+}
+
+/* -----------------------------------------
+   UI elements
+----------------------------------------- */
+
+.login-field-label {
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.login-text-field {
+    width: 100%;
+    height: 50px;
+    padding: 0 14px;
+    box-sizing: border-box;
+
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-size: 16px;
+
+    background-color: var(--white);
+    border: 1px solid var(--black);
+    border-radius: 4px;
+    outline: none;
 }
 
 .login-content-button {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     gap: 12px;
 
-    padding: 0px 22px;
     min-height: 42px;
+    padding: 0px 22px;
 
     color: var(--black);
+    font-family: var(--font-inter);
     font-size: 24px;
     font-weight: 500;
-    font-family: var(--font-inter);
 }
 
-.login-submit-button{
-    background-color: var(--button-dark-blue);
+.login-button {
+    align-self: flex-end;
+
+    padding: 3px;
+
+    color: var(--black);
+    font-size: 18px;
+    font-weight: 500;
+
+    background: var(--transparent-grayish-blue);
+    border: none;
+    border-radius: 25px;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.login-submit-button {
     width: 80%;
     height: 50px;
-    border-radius: 10px;
+
+    color: var(--white);
     font-size: 26px;
     font-weight: 500;
+
+    background-color: var(--button-dark-blue);
     border: none;
-    color: var(--white);
+    border-radius: 10px;
 }
 
-.login-bottom{
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    gap: 10px;
-}
-
-.text-to-cadastro{
-    font-size: 20px;
+.text-to-cadastro {
     font-family: var(--font-inter);
+    font-size: 20px;
 }
 
-.redirect-to-cadastro{
+.redirect-to-cadastro {
     color: var(--deep-blue-accent);
 }
 
-.login-field-group {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.login-field-label {
-  font-size: 18px;
-  font-weight: 700;
-  font-family: var(--font-inter);
-  color: var(--black);
-}
-
-.login-text-field {
-  width: 100%;
-  height: 50px;
-
-  border: 1px solid var(--black);
-  border-radius: 4px;
-  outline: none;
-
-  padding: 0 14px;
-
-  font-size: 16px;
-  font-family: var(--font-inter);
-
-  background-color: var(--white);
-  color: var(--black);
-
-  box-sizing: border-box;
-}
-
-.forgot-password{
+.forgot-password {
     align-self: flex-end;
+
     color: var(--deep-blue-accent);
+    font-family: var(--font-inter);
     font-size: 16px;
     font-weight: 500;
-    font-family: var(--font-inter);
+}
+
+/* -----------------------------------------
+   Icons and decorations
+----------------------------------------- */
+
+.login-home-icon {
+    width: 25px;
+    height: 25px;
+
+    scale: 1.1;
 }

@@ -32,6 +32,7 @@ function App() {
         <Route path="/informacoes-turma"   element={<InformacoesTurma />} />
         <Route path="/inicial-instituicao" element={<InicialInstituicao />} />
         <Route path="/inicial-professor"   element={<InicialProfessor />} />
+        <Route path="/vinculos-professor"  element={<VinculosProfessor />} />
         <Route path="/login"               element={<Login />} />
         <Route path="/professores"         element={<Professores />} />
         <Route path="/teste-video"         element={<TesteVideo />} />

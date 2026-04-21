@@ -15,6 +15,7 @@ import Professores        from "./professores";
 import TesteVideo         from "./teste-video";
 import Turmas             from "./turmas";
 import UploadVideo        from "./upload-video";
+import VinculosProfessor  from "./vinculos-professor"
 
 function App() {
   return (
@@ -22,7 +23,6 @@ function App() {
       <Routes>
         <Route path="/"                    element={<Inicial />} />
         <Route path="/inicial"             element={<Inicial />} />
-
         <Route path="/alterar-senha"       element={<AlterarSenha />} />
         <Route path="/cadastro"            element={<Cadastro />} />
         <Route path="/codigo-email"        element={<CodigoEmail />} />

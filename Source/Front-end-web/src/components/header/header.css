@@ -3,30 +3,35 @@
 ----------------------------------------- */
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    width: 100%;
-    padding: 16px 32px;
-
-    background-color: var(--background-off-white);
+  width: 100%;
+  padding: 8px 64px;
+  background-color: var(--background-off-white);
+  box-sizing: border-box;
 }
 
 /* -----------------------------------------
    Containers and sections
 ----------------------------------------- */
 
-.header-esquerda {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.header-elements {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--bar-light-blue);
+  padding: 5px 50px 10px 50px;
 }
 
-.header-direita {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 70px;
 }
 
 /* -----------------------------------------
@@ -34,36 +39,47 @@
 ----------------------------------------- */
 
 .header-logo {
-    width: 40px;
-    height: 40px;
-
-    object-fit: contain;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
 
-.header-titulo {
-    font-family: var(--font-inter);
-    font-size: 2rem;
-    font-weight: 500;
+.header-title {
+  font-size: 2.5rem;
+  font-family: var(--font-scada);
+  font-weight: 500;
 }
 
 .header-link {
-    font-size: 1.2rem;
-
-    background: none;
-    border: none;
-
-    cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
 
-.header-botao {
-    padding: 10px 22px;
+.header-button {
+  background: var(--transparent-grayish-blue);
+  border: none;
+  border-radius: 14px;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: var(--black);
+  font-size: 18px;
+  font-weight: 500;
+  transition: 0.2s;
+}
 
-    color: var(--white);
-    font-size: 1rem;
+.content-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 
-    background-color: #56639c;
-    border: none;
-    border-radius: 6px;
-
-    cursor: pointer;
+.user-icon, .home-icon, .info-icon {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  display: block;
+  flex-shrink: 0;
 }

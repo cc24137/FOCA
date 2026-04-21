@@ -70,23 +70,6 @@ class UserController{
   // -------------------------------------------
   // sign up logic:
 
-  async register(){
-    const { email, name } = req.body;
-    try {
-      
-      const code = crypto.randomInt(100000, 999999).toString();
-
-      await emailConfirmationCRUD.deleteCodesByEmail(email);
-      await emailConfirmationCRUD.saveCode(email, code);
-
-      const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
-      await sendMail(email, "Código de verificação", html);
-
-      res.status(200).json({ message: "Código enviado!" });
-    } catch (error) {
-      console.log("Erro", error);
-    }
-  };
 
   verify = async (req, res) => {
     const { email, code } = req.body;
@@ -95,10 +78,10 @@ class UserController{
       const instituicaoCRUD = new InstituicaoCRUD();
       const emailVerificationCRUD = new EmailVerificationCRUD();
       // Verificar se o código existe e é válido
-      const validRecord = await emailConfirmationCRUD.getValidCode(email, code);
+      const validRecord = await emailVerificationCRUD.getValidCode(email, code);
 
       if (!validRecord) {
-        return res.status(400).json({ error: "Código inválido ou expirado." });
+        return res.status(400).json({ error: "Invalid or expired code." });
       }
 
       await professorCRUD.verifYEmail(email);
@@ -106,7 +89,7 @@ class UserController{
 
       await emailVerificationCRUD.deleteCodesByEmail(email);
 
-      res.status(200).json({ message: "E-mail verificado com sucesso!" });
+      res.status(200).json({ message: "E-mail verified successfuly." });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -127,11 +110,12 @@ class UserController{
     if (req.body.isProfessor){
       // create PROFESSOR
       const professorCRUD = new ProfessorCRUD();
+      const emailVerificationCRUD = new EmailVerificationCRUD();
       await professorCRUD.createProfessor(email, password, name)
       .then(async ()=>{
         const code = crypto.randomInt(100000, 999999).toString();
-        await emailConfirmationCRUD.deleteCodesByEmail(email);
-        await emailConfirmationCRUD.saveCode(email, code);
+        await emailVerificationCRUD.deleteCodesByEmail(email);
+        await emailVerificationCRUD.saveCode(email, code);
 
         const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
         await sendMail(email, "Código de verificação", html);
@@ -144,11 +128,12 @@ class UserController{
     // create INSTITUICAO 
     else{
       const instituicaoCRUD = new InstituicaoCRUD();
+      const emailVerificationCRUD = new EmailVerificationCRUD();
       await instituicaoCRUD.createInstituicao(email, password, name)
       .then(async ()=>{
         const code = crypto.randomInt(100000, 999999).toString();
-        await emailConfirmationCRUD.deleteCodesByEmail(email);
-        await emailConfirmationCRUD.saveCode(email, code);
+        await emailVerificationCRUD.deleteCodesByEmail(email);
+        await emailVerificationCRUD.saveCode(email, code);
 
         const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
         await sendMail(email, "Código de verificação", html);

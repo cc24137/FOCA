@@ -58,10 +58,8 @@ class InstituicaoCRUD{
   verifYEmail(email){
     return new Promise(async (resolve, reject ) =>{
       try{
-        const saltNumber = 12;
-        const encryptedPassword = await bcrypt.hash(password, saltNumber);
         const pool = await db.getConnection();
-        const result = await pool.request()
+        await pool.request()
         .input("email", sql.VarChar, email)
         .query("update FOCA.INSTITUICAO set emailVerificado = 1 where email = @email)")
 

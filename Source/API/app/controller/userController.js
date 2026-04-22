@@ -25,7 +25,7 @@ class UserController{
         res.status(200).json(finalResult);
         found = true;
       })
-      .catch((error)=>{
+      .catch(error=>{
         if (error.name != "Not found"){
           if (error.name == "Incorrect password"){
             res.status(404).json({message: "Incorrect password"});
@@ -72,6 +72,7 @@ class UserController{
 
 
   verify = async (req, res) => {
+    console.log("Tentativa de verificação de email");
     const { email, code } = req.body;
     try {
       const professorCRUD = new ProfessorCRUD();
@@ -95,6 +96,27 @@ class UserController{
     }
   };
 
+  sendCode = async (req, res) =>{
+    try{
+      console.log("Enviar código chamado");
+      const {email} = req.body;
+      const emailVerificationCRUD = new EmailVerificationCRUD();
+
+      const code = crypto.randomInt(100000, 999999).toString();
+      await emailVerificationCRUD.deleteCodesByEmail(email);
+      await emailVerificationCRUD.saveCode(email, code);
+
+      const html = `<h1>Olá!</h1><p>Seu código é: <b>${code}</b></p>`;
+      await sendMail(email, "Código de verificação", html);
+
+      res.status(201).send();
+    }
+    catch(error){
+      console.log(error);
+      res.status(500).json({error: error});
+    }
+  }
+
   /*
   expects such req.body:
   {
@@ -105,6 +127,7 @@ class UserController{
   }
   */ 
   signUp = async (req, res) =>{
+    console.log("Sign Up chamado!");
     const {email, name, password} = req.body;
 
     if (req.body.isProfessor){
@@ -119,9 +142,12 @@ class UserController{
 
         const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
         await sendMail(email, "Código de verificação", html);
+        console.log("Professor criado. Código de verificação mandado!");
         res.status(201).send();
       })
-      .catch((error)=>{
+      .catch(error=>{
+        console.log(error);
+        console.log("Deu erro ao cadastrar professor.");
         res.status(500).json({error: error});
       })
     }
@@ -137,9 +163,11 @@ class UserController{
 
         const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
         await sendMail(email, "Código de verificação", html);
+        console.log("Professor criado. Código de verificação mandado!");
         res.status(201).send();
       })
-      .catch((error)=>{
+      .catch(error=>{
+        console.log("Deu erro ao cadastrar professor.");
         res.status(500).json({error: error});
       })
     } 

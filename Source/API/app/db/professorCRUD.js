@@ -75,7 +75,7 @@ class ProfessorCRUD {
         const pool = await db.getConnection();
         await pool.request()
         .input("email", sql.VarChar, email)
-        .query("update FOCA.PROFESSOR set emailVerificado = 1 where email = @email)")
+        .query("update FOCA.PROFESSOR set emailVerificado = 1 where email = @email")
 
         resolve();
       }

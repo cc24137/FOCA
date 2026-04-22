@@ -1,5 +1,5 @@
 const sql = require('mssql');
-const db = require('../config/dbConfig');
+const db = require('../../config/dbConfig');
 
 class EmailVerificationCRUD{
 

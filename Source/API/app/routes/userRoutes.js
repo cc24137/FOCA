@@ -5,7 +5,7 @@ const userController = new UserController();
 
 router.post("/login", userController.login);
 router.post("/cadastro", userController.signUp);
-router.post("/enviarCodigo", userController.register);
+router.post("/enviarCodigo", userController.sendCode);
 router.put("/validarCodigo", userController.verify);
 
 module.exports = router;

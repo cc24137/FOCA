@@ -8,10 +8,53 @@ import EyeOffIcon from "../assets/eye-off.svg?react"; // closed eye
   
 export default function Login(){
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     function goTo(path) {
         navigate(path);
+    }
+
+    async function formSubmit() {
+        if (email === "" || password === "") {
+            alert("Por favor, preencha todos os campos.");
+            return;
+        }
+        
+        try{
+            const response = await api.get(
+                "/users/login",
+                {email, password}
+            );
+            console.log(response.data);
+            if (response.status === 200) {
+                if (response.data.isProfessor) {
+                    goTo("/inicial-professor");
+                } else {
+                    goTo("/inicial-instituicao");
+                }
+            }
+            else if (response.data == "Email not verified"){
+                alert("Email não verificado. Por favor, verifique seu email para concluir o cadastro.");
+                goTo("/codigo-email")
+            }
+            else if (response.data == "Incorrect password"){
+                alert("Senha incorreta. Por favor, tente novamente.");
+                setPassword("");
+            }
+            else if (response.data == "No user with such credentials"){
+                alert("Nenhum usuário encontrado com essas credenciais. Por favor, verifique seu email e senha.");
+                setEmail("");
+                setPassword("");
+            }
+        }
+        catch(error){
+            if (error.response) {
+                console.log(error.response.data);
+            }
+        }
+
     }
 
     return (
@@ -38,6 +81,8 @@ export default function Login(){
                         <input
                             id="email"
                             type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="login-text-field"
                             placeholder=""
                         />
@@ -49,16 +94,18 @@ export default function Login(){
 
                         <div className="input-wrapper">
                             <input
-                            type={showPassword ? "text" : "password"}
-                            className="login-text-field with-icon"
+                                type={showPassword ? "text" : "password"}
+                                className="login-text-field with-icon"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
 
                             <button
-                            type="button"
-                            className="eye-button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            >
-                            {showPassword ? <EyeOnIcon /> : <EyeOffIcon />}
+                                type="button"
+                                className="eye-button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                >
+                                {showPassword ? <EyeOnIcon /> : <EyeOffIcon />}
                             </button>
                         </div>
                     </div>

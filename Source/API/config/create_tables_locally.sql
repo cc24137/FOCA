@@ -5,6 +5,7 @@ CREATE TABLE foca.Professor
  email VARCHAR(100),  
  nome VARCHAR(100) NOT NULL,  
  senha_hash VARCHAR(255) NOT NULL,  
+ emailVerificado bit default 0,
  CHECK (email LIKE '%@%'),
  UNIQUE (email)
 );
@@ -47,6 +48,7 @@ CREATE TABLE foca.Instituicao
  nome VARCHAR(100) NOT NULL,  
  senha_hash VARCHAR(255) NOT NULL,  
  email VARCHAR(100),  
+ emailVerificado bit default 0,
  UNIQUE (nome),
  unique (email)
 );
@@ -74,6 +76,16 @@ CREATE TABLE foca.Turma_Disciplina_Professor
  id INT PRIMARY KEY identity(1, 1),  
 );
 
+CREATE TABLE foca.Codigo_Verificacao
+(
+ id INT PRIMARY KEY IDENTITY(1, 1),
+ o_codigo CHAR(6),
+ email VARCHAR(100)
+ CreatedAt DATETIME DEFAULT GETDATE(),
+ ExpiresAt DATETIME NOT NULL,
+);
+
+
 ALTER TABLE foca.Turma ADD FOREIGN KEY(id_instituicao) REFERENCES foca.Instituicao (id);
 ALTER TABLE foca.Disciplina ADD FOREIGN KEY(id_instituicao) REFERENCES foca.Instituicao (id);
 ALTER TABLE foca.Relatorio ADD FOREIGN KEY(id_aula) REFERENCES foca.Aula (id);
@@ -87,18 +99,3 @@ ALTER TABLE foca.Turma_Disciplina_Professor ADD FOREIGN KEY(id_professor) REFERE
 
 EXEC sp_rename 'foca.MomentoDestaque', 'Momento_Destaque';
 
-
-CREATE TABLE foca.Codigo_Verificacao
-(
- id INT PRIMARY KEY IDENTITY(1, 1),
- o_codigo CHAR(6),
- email VARCHAR(100)
- CreatedAt DATETIME DEFAULT GETDATE(),
- ExpiresAt DATETIME NOT NULL,
-);
-
-alter table foca.Professor
-add emailVerificado bit default 0
-
-alter table foca.Instituicao
-add emailVerificado bit default 0

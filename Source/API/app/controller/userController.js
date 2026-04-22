@@ -106,7 +106,7 @@ class UserController{
       await emailVerificationCRUD.deleteCodesByEmail(email);
       await emailVerificationCRUD.saveCode(email, code);
 
-      const html = `<h1>Olá!</h1><p>Seu código é: <b>${code}</b></p>`;
+      const html = `<h1>Olá!</h1><p>Seu código é: <b>${code}</b></p><br><p>Ele expira em 15 minutos.</p>`;
       await sendMail(email, "Código de verificação", html);
 
       res.status(201).send();
@@ -140,7 +140,7 @@ class UserController{
         await emailVerificationCRUD.deleteCodesByEmail(email);
         await emailVerificationCRUD.saveCode(email, code);
 
-        const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
+        const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p><br><p>Ele expira em 15 minutos.</p>`;
         await sendMail(email, "Código de verificação", html);
         console.log("Professor criado. Código de verificação mandado!");
         res.status(201).send();

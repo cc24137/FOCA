@@ -51,7 +51,7 @@ export default function Cadastro(){
             (form.name === "") ||
             (verifyPassword() !== "")
         ) {
-            alert("As senhas não coincidem!");
+            alert("As senhas não coincidem ou algum campo está inválido!");
             return;
         }
         try {

@@ -145,6 +145,7 @@
 }
 
 .redirect-to-login {
+    font-family: var(--font-inter);
     color: var(--deep-blue-accent);
     border-bottom: 2px solid var(--deep-blue-accent);
 }

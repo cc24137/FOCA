@@ -21,7 +21,10 @@ export default function InicialInstituicao(){
                 ]}
             />
             <div className='inicial-instituicao-body'>
-                <h1 className='inicial-instituicao-title'>Olá, [nome da instituição]</h1>
+                <div className='inicial-instituicao-title'>
+                    <h1>Olá, [nome da instituição]</h1>
+                </div>
+                
 
                 <div className='inicial-instituicao-cards-container'>
                     <div className='inicial-instituicao-card'>
@@ -30,7 +33,7 @@ export default function InicialInstituicao(){
                             <p>Professores</p>
                         </div>
                         <p className='inicial-instituicao-card-subtitle'>Gerencie seus professores</p>
-                        <p>Adicionar novos, editar, excluir, analisar gráficos ...</p>
+                        <p className='inicial-instituicao-card-text'>Adicionar novos, editar, excluir, analisar gráficos ...</p>
                     </div>
 
                     <div className='inicial-instituicao-card'>
@@ -39,7 +42,7 @@ export default function InicialInstituicao(){
                             <p>Turmas</p>
                         </div>
                         <p className='inicial-instituicao-card-subtitle'>Gerencie suas turmas</p>
-                        <p>Adicionar novas, editar, excluir, analisar gráficos ...</p>
+                        <p className='inicial-instituicao-card-text'>Adicionar novas, editar, excluir, analisar gráficos ...</p>
                     </div>
 
                     <div className='inicial-instituicao-card'>
@@ -48,16 +51,16 @@ export default function InicialInstituicao(){
                             <p>Disciplinas</p>
                         </div>
                         <p className='inicial-instituicao-card-subtitle'>Gerencie suas disciplinas</p>
-                        <p>Adicionar novas, editar, excluir, analisar gráficos</p>
+                        <p className='inicial-instituicao-card-text'>Adicionar novas, editar, excluir, analisar gráficos</p>
                     </div>
 
                     <div className='inicial-instituicao-card'>
                         <div className='inicial-instituicao-card-top'>
                             <Bookmark className="icons" />
-                            <p>Estatísticas Gerais</p>
+                            <p >Estatísticas Gerais</p>
                         </div>
                         <p className='inicial-instituicao-card-subtitle'>Compare os dados obtidos</p>
-                        <p>Selecione as categorias e gere ps gráficos desejados com toda a instituição</p>
+                        <p className='inicial-instituicao-card-text'>Selecione as categorias e gere ps gráficos desejados com toda a instituição</p>
                     </div>
                 </div>
             </div>

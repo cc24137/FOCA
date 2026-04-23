@@ -1,46 +1,90 @@
-.inicial-instituicao-body{
+.inicial-instituicao-body {
     display: flex;
     flex-direction: column;
-    align-items: center;
-
-    padding: 2%;
+    align-items: center; 
+    padding: 20px 64px; 
+    min-height: 100vh;
+    background-color: var(--background-off-white);
 }
 
-.inicial-instituicao-title{
+.inicial-instituicao-title {
+    width: 100%;
+    margin-bottom: 60px;
+    text-align: left;
     align-self: flex-start;
-}
-.inicial-instituicao-cards-container{
-    width: 60%;
-    height: 50%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+
 }
 
-.inicial-instituicao-card{
+.inicial-instituicao-title h1 {
+    font-size: 32px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.inicial-instituicao-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 30px;
+    width: 70%;
+    max-width: 1000px; 
+}
+
+.inicial-instituicao-card {
     background: var(--card-gradient);
     color: var(--white);
-    width: 40%;
-    font-family: var(--font-scada);
-    padding: 20px;
-    border-radius: 16px;
+    padding: 40px 30px 20px 30px; 
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    min-height: 250px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
 }
 
-.icons{
+.inicial-instituicao-card:hover {
+    transform: translateY(-5px);
 }
 
-.inicial-instituicao-card-top{
+.inicial-instituicao-card-top {
     display: flex;
     align-items: center;
-    font-size: 30px;
-    align-self: flex-start;
-    gap: 50px;
+    gap: 25px; 
+    margin-bottom: 30px;
 }
 
-.inicial-instituicao-card-subtitle{
-    font-size: 20px;
+.icons {
+    width: 48px; 
+    height: 48px;
 }
+
+.inicial-instituicao-card-top p {
+    font-size: 35px; 
+    font-weight: 600;
+    margin: 0;
+    font-family: var(--font-scada);
+}
+
+.inicial-instituicao-card-subtitle {
+    font-size: 28px; 
+    text-align: center;
+    width: 100%;
+    margin-bottom: 15px;
+    font-weight: 400;
+    font-family: var(--font-inter);
+}
+
+.inicial-instituicao-card-title{
+    font-size: 20px; 
+    font-weight: 600;
+    margin: 0;
+}
+
+.inicial-instituicao-card-text {
+    font-size: 18px; 
+    text-align: center;
+    width: 100%;
+    font-weight: 100;
+    font-family: var(--font-inter);
+}
+
+

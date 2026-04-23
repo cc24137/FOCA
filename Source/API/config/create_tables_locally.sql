@@ -16,7 +16,7 @@ CREATE TABLE foca.Turma
  nome VARCHAR(100),  
  id_instituicao INT,  
  numero_alunos INT,  
- ano INT,  
+ ano TINYINT,
 );
 
 CREATE TABLE foca.Disciplina

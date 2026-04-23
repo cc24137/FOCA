@@ -5,8 +5,7 @@ const bcrypt = require('bcrypt');
 // database acess logic
 class ProfessorCRUD {
 
-  findProfessorByEmail(email){
-    return new Promise(async (resolve, reject) => {
+  async findProfessorByEmail(email){
       try{
         const result = await pool.request()
           .input("email", sql.VarChar, email)
@@ -16,7 +15,6 @@ class ProfessorCRUD {
       catch(error){
         throw error;
       }
-    });
   }
 
   async professorLogin(email, password) {
@@ -49,19 +47,19 @@ class ProfessorCRUD {
   }
 
   async createProfessor(email, password, nome){
-      try{
-        const saltNumber = 12;
-        const encryptedPassword = await bcrypt.hash(password, saltNumber);
-        const pool = await db.getConnection();
-        const result = await pool.request()
-        .input("email", sql.VarChar, email)
-        .input("nome", sql.VarChar, nome)
-        .input("password", sql.VarChar, encryptedPassword)
-        .query("INSERT INTO FOCA.PROFESSOR (EMAIL, NOME, SENHA_HASH, emailVerificado) VALUES (@email, @nome, @password, 0)")
-      }
-      catch(error){
-        throw error;
-      }
+    try{
+      const saltNumber = 12;
+      const encryptedPassword = await bcrypt.hash(password, saltNumber);
+      const pool = await db.getConnection();
+      const result = await pool.request()
+      .input("email", sql.VarChar, email)
+      .input("nome", sql.VarChar, nome)
+      .input("password", sql.VarChar, encryptedPassword)
+      .query("INSERT INTO FOCA.PROFESSOR (EMAIL, NOME, SENHA_HASH, emailVerificado) VALUES (@email, @nome, @password, 0)")
+    }
+    catch(error){
+      throw error;
+    }
   }
 
   async verifYEmail(email){

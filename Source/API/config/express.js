@@ -17,11 +17,16 @@ app.use(cors()) // change this for the commented code afterwards
 
 const professorRoutes = require('../app/routes/professorRoutes');
 const userRoutes = require('../app/routes/userRoutes');
+const disciplinaRoutes = require('../app/routes/disciplinaRoutes');
+const turmaRoutes = require('../app/routes/turmaRoutes');
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.use('/professor', professorRoutes);
 app.use('/users', userRoutes);
+app.use('/disciplinas', disciplinaRoutes);
+app.use('/turmas', turmaRoutes);
+
 
 module.exports = app;

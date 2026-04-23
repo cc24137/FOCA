@@ -4,8 +4,7 @@ const bcrypt = require('bcrypt');
 
 class InstituicaoCRUD{
 
-  instituicaoLogin(email, password) {
-    return new Promise(async (resolve, reject) => {
+  async instituicaoLogin(email, password) {
       try{
         const pool = await db.getConnection();
         const result = await pool.request()
@@ -16,27 +15,25 @@ class InstituicaoCRUD{
           if (result.recordset[0].emailVerificado == 0){
             let er = new Error();
             er.name = "Email not verified";
-            reject(er);
+            throw er;
           }
           if (correctPassword){
-            resolve(result.recordset);
+            return result.recordset;
           }
           let er = new Error();
           er.name = "Incorrect password";
-          reject(er);
+          throw er;
         }
         let er = new Error();
         er.name = "Not found";
-        reject(er);
+        throw er;
       }
       catch(error){
-        reject(error);
+        throw error;
       }
-    });
   }
 
-  createInstituicao(email, password, nome){
-    return new Promise(async (resolve, reject ) =>{
+  async createInstituicao(email, password, nome){
       try{
         const saltNumber = 12;
         const encryptedPassword = await bcrypt.hash(password, saltNumber);
@@ -47,28 +44,39 @@ class InstituicaoCRUD{
         .input("password", sql.VarChar, encryptedPassword)
         .query("INSERT INTO FOCA.INSTITUICAO (EMAIL, NOME, SENHA_HASH) VALUES (@email, @nome, @password)")
 
-        resolve();
       }
       catch(error){
-        reject(error);
+        throw error;
       }
-    });
   }
 
-  verifYEmail(email){
-    return new Promise(async (resolve, reject ) =>{
-      try{
-        const pool = await db.getConnection();
-        await pool.request()
-        .input("email", sql.VarChar, email)
-        .query("update FOCA.INSTITUICAO set emailVerificado = 1 where email = @email")
+  async verifYEmail(email){
+    try{
+      const pool = await db.getConnection();
+      await pool.request()
+      .input("email", sql.VarChar, email)
+      .query("update FOCA.INSTITUICAO set emailVerificado = 1 where email = @email")
 
-        resolve();
-      }
-      catch(error){
-        reject(error);
-      }
-    });
+    }
+    catch(error){
+      throw error;
+    }
+  }
+
+  async changePassword(email, newPwd){
+    try{
+      const saltNumber = 12;
+      const encryptedPassword = await bcrypt.hash(newPwd, saltNumber);
+      const pool = await db.getConnection();
+
+      await pool.request()
+      .input("email", sql.VarChar, email)
+      .input("pwd", sql.VarChar, encryptedPassword)
+      .query(`UPDATE FOCA.INSTITUICAO SET senha_hash = @pwd WHERE email=@email`);
+    }
+    catch(error){
+      throw error;
+    }
   }
 
 }

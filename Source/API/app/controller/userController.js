@@ -53,15 +53,24 @@ class UserController{
           }
         })
         .catch((error)=>{
-          if (error.name == "Not found"){
-            res.status(404).json({message: "No user with such credentials"})
+          console.log(error.name);
+          if (error.name != "Not found"){
+            if (error.name == "Incorrect password"){
+              res.status(404).json({message: "Incorrect password"});
+              found = true;
+            }
+            else if (error.name == "Email not verified"){
+              res.status(404).json({message: "Email not verified"});
+              found = true;
+            }
+            else{
+              console.log(error);
+              res.status(500).json({error: "Internal server error"});
+              found = true;
+            }
           }
-          else if (error.name == "Email not verified"){
-            res.status(404).json({message: "Email not verified"});
-          }
-          else {
-            console.log(error);
-            res.status(500).json({error: "Internal server error"});
+          else{
+            res.status(404).json({message: "User not found"});
           }
         })
     }
@@ -84,8 +93,10 @@ class UserController{
       if (!validRecord) {
         return res.status(400).json({ error: "Invalid or expired code." });
       }
-
-      await professorCRUD.verifYEmail(email);
+      try{
+        await professorCRUD.verifYEmail(email);
+      }
+      catch{}
       await instituicaoCRUD.verifYEmail(email);
 
       await emailVerificationCRUD.deleteCodesByEmail(email);
@@ -172,6 +183,37 @@ class UserController{
       })
     } 
   }
+
+  // change password
+  // the app flow should be:
+  // call sendCode() and then call changePassword()
+  changePassword = async (req, res) =>{
+    console.log("Chamada de mudar a senha.");
+    const { email, code, password } = req.body;
+    try {
+      const professorCRUD = new ProfessorCRUD();
+      const instituicaoCRUD = new InstituicaoCRUD();
+      const emailVerificationCRUD = new EmailVerificationCRUD();
+      // Verificar se o código existe e é válido
+      const validRecord = await emailVerificationCRUD.getValidCode(email, code);
+
+      if (!validRecord) {
+        return res.status(400).json({ error: "Invalid or expired code." });
+      }
+      try{
+        await professorCRUD.changePassword(email, password);
+      }
+      catch{}
+      await instituicaoCRUD.changePassword  (email, password);
+
+      await emailVerificationCRUD.deleteCodesByEmail(email);
+
+      res.status(200).json({ message: "Password changed." });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+
 }
 
 module.exports = UserController;

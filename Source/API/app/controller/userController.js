@@ -3,6 +3,8 @@ const ProfessorCRUD = require('../db/professorCRUD');
 const InstituicaoCRUD = require('../db/instituicaoCRUD');
 const UserViewModel = require('../viewmodel/userViewmodel');
 
+const jwt = require('jsonwebtoken');
+
 const {sendMail} = require('../utils/mailer');
 const crypto = require('crypto');
 const EmailVerificationCRUD = require('../db/emailVerificationCRUD');
@@ -16,23 +18,31 @@ class UserController{
     const instituicaoCRUD = new InstituicaoCRUD();
     let found = false;
     let {email, password} = req.body;
-    password = password;
     
     // tries to login as PROFESSOR
     await professorCRUD.professorLogin(email, password)
       .then((recordset) => {
         let finalResult = new UserViewModel(recordset[0], true);
-        res.status(200).json(finalResult);
+          
+          // generates the teachers token
+          const token = jwt.sign(
+            { email: finalResult.email, isProfessor: true }, // payload with email and role
+            process.env.JWT_SECRET,                          // .env password
+            { expiresIn: '2h' }                              // expiration time
+          );
+        
+        // returns user and token
+        res.status(200).json({ user: finalResult, token: token });
         found = true;
       })
       .catch(error=>{
         if (error.name != "Not found"){
           if (error.name == "Incorrect password"){
-            res.status(404).json({message: "Incorrect password"});
+            res.status(401).json({message: "Incorrect password"}); // 401 incorrect password
             found = true;
           }
           else if (error.name == "Email not verified"){
-            res.status(404).json({message: "Email not verified"});
+            res.status(403).json({message: "Email not verified"}); // 403 forbidden, email not verified
             found = true;
           }
           else{
@@ -42,25 +52,34 @@ class UserController{
           }
         }
       });
-
+    
     // tries to login as INSTITUICAO
     if (!found) {
       instituicaoCRUD.instituicaoLogin(email, password)
         .then((recordset) => {
           if (recordset.length > 0){
             let finalResult = new UserViewModel(recordset[0], false);
-            res.status(200).json(finalResult);
+              
+              // generates token for instituicao
+              const token = jwt.sign(
+                { email: finalResult.email, isProfessor: false }, // payload
+                process.env.JWT_SECRET,                           // .env password
+                { expiresIn: '2h' }                               // expiration time
+              );
+            
+            // returns user and token
+            res.status(200).json({ user: finalResult, token: token });
           }
         })
         .catch((error)=>{
           console.log(error.name);
           if (error.name != "Not found"){
             if (error.name == "Incorrect password"){
-              res.status(404).json({message: "Incorrect password"});
+              res.status(401).json({message: "Incorrect password"});
               found = true;
             }
             else if (error.name == "Email not verified"){
-              res.status(404).json({message: "Email not verified"});
+              res.status(403).json({message: "Email not verified"});
               found = true;
             }
             else{
@@ -73,12 +92,11 @@ class UserController{
             res.status(404).json({message: "User not found"});
           }
         })
-    }
-  }
+      }
+   }
 
   // -------------------------------------------
   // sign up logic:
-
 
   verify = async (req, res) => {
     console.log("Tentativa de verificação de email");

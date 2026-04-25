@@ -4,10 +4,10 @@ const UserController = require('../controller/userController');
 const userController = new UserController();
 const verifyToken = require('../middlewares/authMiddleware');
 
-router.post("/login", verifyToken, userController.login);
-router.post("/cadastro", verifyToken, userController.signUp);
-router.post("/enviarCodigo", verifyToken, userController.sendCode);
-router.put("/validarCodigo", verifyToken, userController.verify);
-router.put("/mudarSenha", verifyToken, userController.changePassword);
+router.post("/login", userController.login);
+router.post("/cadastro", userController.signUp);
+router.post("/enviarCodigo", userController.sendCode);
+router.put("/validarCodigo", userController.verify);
+router.put("/mudarSenha", userController.changePassword);
 
 module.exports = router;

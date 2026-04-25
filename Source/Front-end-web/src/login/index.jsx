@@ -33,10 +33,10 @@ export default function Login(){
 
         if (response.status === 200) {
           // saves token in localStorage
-          localStorage.setItem('@SeuApp:token', response.data.token);
+          localStorage.setItem('@FOCA:token', response.data.token);
           
           // saves user data in localStorage
-          localStorage.setItem('@SeuApp:user', JSON.stringify(response.data.user));
+          localStorage.setItem('@FOCA:user', JSON.stringify(response.data.user));
 
           // 3. Acessa o isProfessor dentro do objeto user que o back-end agora devolve
           if (response.data.user.isProfessor) {

@@ -7,7 +7,7 @@ const api = axios.create({
 // interceptor -> runs before every request is sent
 api.interceptors.request.use(async config => {
   // gets token from localStorage
-  const token = localStorage.getItem('@SeuApp:token');
+  const token = localStorage.getItem('@FOCA:token');
   
   if (token) {
     // adds token to Authorization header if it exists

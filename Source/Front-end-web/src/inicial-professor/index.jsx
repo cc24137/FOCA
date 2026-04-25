@@ -33,21 +33,38 @@ export default function InicialProfessor(){
                     {textButton: "Perfil"         , routeButton: "/editar-dados"}
                 ]}
             />
-
+                
             <div className='inicial-professor-body'>
-
-                <div className="search-container">
-                    <SearchIcon className="search-icon" />
-                    <input
-                        type="text"
-                        placeholder="Pesquisar por turma, matéria ou instituição..."
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        className="search-input"
-                    />
+                <div className='inicial-professor-middle-line'>
+                    <div className='inicial-professor-middle-line-title'>
+                        <h1 className='inicial-professor-middle-text'>Turmas</h1>
+                    </div>
+                                    
+                    <div className="search-container">
+                        <SearchIcon className="search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Pesquisar por turma, matéria ou instituição..."
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            className="search-input"
+                        />
+                    </div>  
+                    
+                    <button className='inicial-professor-middle-button'>
+                        <div>
+                            <p className='inicial-professor-middle-button-text'>
+                                Gerenciar Instituições
+                            </p>
+                        </div>
+                        
+                    </button>
                 </div>
+                
 
-                {/* Mudamos de <ul> para um container de cards similar ao anterior */}
+                
+                
+                
                 <div className="inicial-professor-cards-container">
                     {filteredItems.map((item, index) => (
                         <div key={index} className='inicial-professor-card'>

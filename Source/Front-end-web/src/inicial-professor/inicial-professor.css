@@ -9,15 +9,13 @@
 
 .inicial-professor-title {
     width: 100%;
-    max-width: 1000px;
     margin-bottom: 30px;
 }
 
 .search-container {
     position: relative;
     width: 100%;
-    max-width: 1000px; 
-    margin-bottom: 40px;
+    max-width: 800px; 
 }
 
 .search-icon {
@@ -47,10 +45,9 @@
 
 .inicial-professor-cards-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
     gap: 25px;
-    width: 100%;
-    max-width: 1000px;
+    width: 80%;
 }
 
 .inicial-professor-card {
@@ -60,6 +57,10 @@
     display: flex;
     flex-direction: column;
     transition: transform 0.2s;
+    width: 400px;
+    min-width: 200px;
+    height: 250px;
+    min-width: 75px;
 }
 
 .inicial-professor-card:hover {
@@ -69,7 +70,7 @@
 
 .card-subject {
     color: var(--white);
-    font-size: 20px;
+    font-size: 25px;
     font-family: var(--font-inter);
     margin-bottom: 25px;
 }
@@ -78,12 +79,49 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 15px;
+    margin-bottom:40px;
 }
 
 .inicial-professor-card-title {
-    font-size: 30px;
+    font-size: 35px;
     font-weight: 600;
     color: var(--white);
     font-family: var(--font-scada);
+}
+
+.inicial-professor-middle-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+    margin-bottom: 60px;
+    padding: 15px 0 0 0; 
+}
+
+.inicial-professor-middle-button{
+    background: var(--button-dark-blue);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font-inter);
+    border: none;
+    cursor: pointer;
+    min-width: 16%;
+}
+
+.inicial-professor-middle-text{
+    font-size: 36px;
+    color: var(--black);
+    font-family: var(--font-inter);
+}
+
+.inicial-professor-middle-button-text{
+    font-size: 22px;
+}
+
+.inicial-professor-middle-line-title{
+    min-width: 16%;
 }

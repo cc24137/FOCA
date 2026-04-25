@@ -10,8 +10,15 @@ import "./inicial-instituicao.css"
 
 
 export default function InicialInstituicao(){
+
+    const navigate = useNavigate();
+
+    function goTo(route){
+        navigate(route);
+    }
+
     return (
-        <div>
+        <div className='inicial-instituicao-container'>
             <Header
 
                 routes = {[
@@ -27,7 +34,7 @@ export default function InicialInstituicao(){
                 
 
                 <div className='inicial-instituicao-cards-container'>
-                    <div className='inicial-instituicao-card'>
+                    <div className='inicial-instituicao-card' onClick={() => goTo("/professores")}>
                         <div className='inicial-instituicao-card-top'>
                             <User className="icons" />
                             <p>Professores</p>
@@ -36,7 +43,7 @@ export default function InicialInstituicao(){
                         <p className='inicial-instituicao-card-text'>Adicionar novos, editar, excluir, analisar gráficos ...</p>
                     </div>
 
-                    <div className='inicial-instituicao-card'>
+                    <div className='inicial-instituicao-card' onClick={() => goTo("/turmas")}>
                         <div className='inicial-instituicao-card-top'>
                             <Book className="icons" />
                             <p>Turmas</p>
@@ -45,7 +52,7 @@ export default function InicialInstituicao(){
                         <p className='inicial-instituicao-card-text'>Adicionar novas, editar, excluir, analisar gráficos ...</p>
                     </div>
 
-                    <div className='inicial-instituicao-card'>
+                    <div className='inicial-instituicao-card' onClick={() => goTo("/disciplinas")}>
                         <div className='inicial-instituicao-card-top'>
                             <Pen className="icons" />
                             <p>Disciplinas</p>
@@ -54,7 +61,7 @@ export default function InicialInstituicao(){
                         <p className='inicial-instituicao-card-text'>Adicionar novas, editar, excluir, analisar gráficos</p>
                     </div>
 
-                    <div className='inicial-instituicao-card'>
+                    <div className='inicial-instituicao-card' onClick={() => goTo("/estatisticas")}>
                         <div className='inicial-instituicao-card-top'>
                             <Bookmark className="icons" />
                             <p >Estatísticas Gerais</p>

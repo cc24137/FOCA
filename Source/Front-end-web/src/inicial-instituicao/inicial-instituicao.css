@@ -1,15 +1,22 @@
+.inicial-instituicao-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .inicial-instituicao-body {
+    flex: 1; 
     display: flex;
     flex-direction: column;
     align-items: center; 
+    justify-content: center; 
     padding: 20px 64px; 
-    min-height: 100vh;
+    box-sizing: border-box; 
     background-color: var(--background-off-white);
 }
 
 .inicial-instituicao-title {
     width: 100%;
-    margin-bottom: 60px;
     text-align: left;
     align-self: flex-start;
 
@@ -21,12 +28,14 @@
     margin: 0;
 }
 
-.inicial-instituicao-cards-container {
+ .inicial-instituicao-cards-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
-    gap: 30px;
-    width: 70%;
+    gap: 50px;
+    width: 100%; 
     max-width: 1000px; 
+    margin: auto; 
+    justify-content: center; 
 }
 
 .inicial-instituicao-card {

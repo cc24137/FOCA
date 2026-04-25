@@ -5,6 +5,7 @@ import TituloLateral from '../components/titulo-lateral';
 import HomeIcon from "../assets/home.svg?react";
 import EyeOnIcon from "../assets/eye-on.svg?react";      // open eye
 import EyeOffIcon from "../assets/eye-off.svg?react"; // closed eye
+import api from '../services/api';
   
 export default function Login(){
     const [showPassword, setShowPassword] = useState(false);
@@ -17,44 +18,59 @@ export default function Login(){
     }
 
     async function formSubmit() {
-        if (email === "" || password === "") {
-            alert("Por favor, preencha todos os campos.");
-            return;
-        }
+      if (email === "" || password === "") {
+        alert("Por favor, preencha todos os campos.");
+        return;
+      }
+          
+      try {
+        const response = await api.post(
+            "/users/login",
+            { email, password }
+      );
         
-        try{
-            const response = await api.get(
-                "/users/login",
-                {email, password}
-            );
-            console.log(response.data);
-            if (response.status === 200) {
-                if (response.data.isProfessor) {
-                    goTo("/inicial-professor");
-                } else {
-                    goTo("/inicial-instituicao");
-                }
-            }
-            else if (response.data == "Email not verified"){
+        console.log("Resposta do servidor:", response.data);
+
+        if (response.status === 200) {
+          // saves token in localStorage
+          localStorage.setItem('@SeuApp:token', response.data.token);
+          
+          // saves user data in localStorage
+          localStorage.setItem('@SeuApp:user', JSON.stringify(response.data.user));
+
+          // 3. Acessa o isProfessor dentro do objeto user que o back-end agora devolve
+          if (response.data.user.isProfessor) {
+              goTo("/inicial-professor");
+          } else {
+              goTo("/inicial-instituicao");
+          }
+        }
+      }
+      catch (error) {
+        // catches errors from API 
+        if (error.response) {
+            const errorMessage = error.response.data.message;
+            console.log("Erro da API:", errorMessage);
+
+            if (errorMessage === "Email not verified"){
                 alert("Email não verificado. Por favor, verifique seu email para concluir o cadastro.");
-                goTo("/codigo-email")
+                goTo("/codigo-email");
             }
-            else if (response.data == "Incorrect password"){
+            else if (errorMessage === "Incorrect password"){
                 alert("Senha incorreta. Por favor, tente novamente.");
                 setPassword("");
             }
-            else if (response.data == "No user with such credentials"){
+            else if (errorMessage === "User not found" || error.response.status === 404){
                 alert("Nenhum usuário encontrado com essas credenciais. Por favor, verifique seu email e senha.");
                 setEmail("");
                 setPassword("");
+            } else {
+                alert("Ocorreu um erro inesperado. Tente novamente mais tarde.");
             }
+        } else {
+            alert("Erro de conexão com o servidor.");
         }
-        catch(error){
-            if (error.response) {
-                console.log(error.response.data);
-            }
-        }
-
+      }
     }
 
     return (

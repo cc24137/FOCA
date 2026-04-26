@@ -35,7 +35,7 @@ export default function InicialProfessor(){
             />
                 
             <div className='inicial-professor-body'>
-                <div className='inicial-professor-middle-line'>
+                    <div className='inicial-professor-middle-line'>
                     <div className='inicial-professor-middle-line-title'>
                         <h1 className='inicial-professor-middle-text'>Turmas</h1>
                     </div>

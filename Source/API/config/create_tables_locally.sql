@@ -66,7 +66,7 @@ CREATE TABLE foca.Aula
     id_classificacao_conteudo INT,
     -- dados do relatorio
     arquivo_video VARCHAR(255),
-    media_atencao_total FLOAT,  
+    media_atencao_total DECIMAL(5,2),  
     data_processamento DATE
 );
 

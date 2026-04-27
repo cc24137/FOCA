@@ -9,7 +9,7 @@ const dbConfig = {
   port: parseInt(process.env.DB_PORT) || 1433, // Porta dinâmica ou 1433 por padrão
   options: {
     encrypt: true, 
-    trustServerCertificate: false 
+    trustServerCertificate: true 
   }
 };
 

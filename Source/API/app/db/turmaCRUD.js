@@ -42,11 +42,11 @@ class TurmaCRUD {
         .input("nome", sql.VarChar, name)
         .input("id_instituicao", sql.Int, institutionId)
         .input("numero_alunos", sql.Int, studentCount)
-        .input("ano", sql.Int, year)
+        .input("serie", sql.TinyInt, year)
         .query(`
-          INSERT INTO FOCA.TURMA (nome, id_instituicao, numero_alunos, ano)
+          INSERT INTO FOCA.TURMA (nome, id_instituicao, numero_alunos, serie)
           OUTPUT INSERTED.id
-          VALUES (@nome, @id_instituicao, @numero_alunos, @ano)
+          VALUES (@nome, @id_instituicao, @numero_alunos, @serie)
         `);
       return result.recordset[0].id;
     }
@@ -62,12 +62,12 @@ class TurmaCRUD {
         .input("id", sql.Int, id)
         .input("nome", sql.VarChar, name)
         .input("numero_alunos", sql.Int, studentCount)
-        .input("ano", sql.Int, year)
+        .input("serie", sql.TinyInt, year)
         .query(`
           UPDATE FOCA.TURMA
           SET nome = @nome,
               numero_alunos = @numero_alunos,
-              ano = @ano
+              serie = @serie
           WHERE id = @id
         `);
       if (result.rowsAffected[0] === 0) {

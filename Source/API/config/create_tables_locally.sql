@@ -26,7 +26,7 @@ CREATE TABLE foca.Turma
     nome VARCHAR(100),  
     id_instituicao INT,  
     numero_alunos INT,  
-    ano TINYINT
+    serie TINYINT
 );
 
 CREATE TABLE foca.Disciplina
@@ -47,7 +47,8 @@ CREATE TABLE foca.Turma_Disciplina_Professor
 CREATE TABLE foca.Instituicao_Professor
 (
     id_instituicao INT,  
-    id_professor INT
+    id_professor INT,
+    professorAceitou BIT DEFAULT 0
 );
 
 CREATE TABLE foca.Classificacao_Conteudo

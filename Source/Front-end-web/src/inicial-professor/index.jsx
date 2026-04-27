@@ -7,6 +7,11 @@ import { useState } from 'react';
 
 
 export default function InicialProfessor(){
+    const navigate = useNavigate();
+
+    const goTo = (route) => () => {
+        navigate(route);
+    }
     const [query, setQuery] = useState("");
     
     const items = [
@@ -51,7 +56,10 @@ export default function InicialProfessor(){
                         />
                     </div>  
                     
-                    <button className='inicial-professor-middle-button'>
+                    <button 
+                        className='inicial-professor-middle-button'
+                        onClick={goTo("/vinculos-professor")}
+                    >
                         <div>
                             <p className='inicial-professor-middle-button-text'>
                                 Gerenciar Instituições

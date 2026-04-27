@@ -4,7 +4,7 @@
 
 .header {
   width: 100%;
-  padding: 8px 64px;
+  padding: 8px 64px 0 64px;
   background-color: var(--background-off-white);
   box-sizing: border-box;
 }

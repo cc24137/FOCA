@@ -1,0 +1,102 @@
+.editar-dados-body{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.editar-dados-middle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 100%;
+
+}
+
+.editar-dados-box{
+    background-color: var(--transparent-grayish-blue);
+    padding: 80px 70px;
+    border-radius: 20px;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.editar-dados-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 24px 0;
+    width: 100%;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.input-field label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+}
+
+.input-field input {
+    background: var(--white);
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.input-field input:focus {
+    background: var(--white);
+    border-color: var(--button-dark-blue);
+    box-shadow: 0 0 0 3px rgba(155, 143, 126, 0.13);
+}
+
+.editar-dados-title{
+    font-family: var(--font-scada);
+    font-size: 50px;
+}
+
+.editar-dados-buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.btn-excluir {
+    background-color: var(--button-light-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.btn-salvar {
+    background-color: var(--button-dark-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.btn-excluir-text {
+    color: var(----black);
+    font-family: var(--font-inter);
+    font-weight: 500;
+}
+
+.btn-salvar-text {
+    color: var(--white);
+    font-family: var(--font-inter);
+    font-weight: 500;
+}

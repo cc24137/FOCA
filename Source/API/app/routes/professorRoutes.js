@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const ProfessorController = require('../controller/professorController');
 const professorController = new ProfessorController();
-const verifyToken = require('../middlewares/authMiddleware');
+const verifyToken = require('../middleware/authMiddleware');
 
 router.get("/listar", verifyToken, professorController.listAllProfessors);
 

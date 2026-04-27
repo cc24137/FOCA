@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const TurmaController = require('../controller/turmaController');
 const turmaController = new TurmaController();
-const verifyToken = require('../middlewares/authMiddleware');
+const verifyToken = require('../middleware/authMiddleware');
 
 
 router.get("/porId", verifyToken, turmaController.getById);

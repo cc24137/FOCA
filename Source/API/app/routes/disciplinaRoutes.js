@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const DisciplinaController = require('../controller/disciplinaController');
 const disciplinaController = new DisciplinaController();
-const verifyToken = require('../middlewares/authMiddleware');
+const verifyToken = require('../middleware/authMiddleware');
 
 router.get("/porId", verifyToken, disciplinaController.getById);
 router.get("/porInstituicao", verifyToken, disciplinaController.getByInstitution);

@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 const sql = require("mssql"); 
 
@@ -7,9 +6,10 @@ const dbConfig = {
   password: process.env.DB_PASSWORD,
   server: process.env.DB_SERVER,
   database: process.env.DB_NAME,
-  options: {          // should chage when it's no longer local
+  port: parseInt(process.env.DB_PORT) || 1433, // Porta dinâmica ou 1433 por padrão
+  options: {
     encrypt: true, 
-    trustServerCertificate: true,
+    trustServerCertificate: false 
   }
 };
 
@@ -17,7 +17,7 @@ const dbConfig = {
 const poolPromise = new sql.ConnectionPool(dbConfig)
   .connect()
   .then(pool => {
-    console.log('Connected successfully!');
+    console.log('Connected to database successfully!');
     return pool;
   })
   .catch(err => {

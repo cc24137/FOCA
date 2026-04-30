@@ -44,9 +44,9 @@ class ProfessorController{
 
   update = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();
-    const { id, email, name } = req.body;
+    const { id, name, password } = req.body;
 
-    await professorCRUD.update(id, email, name)
+    await professorCRUD.update(id, name, password)
       .then(() => {
         res.status(200).json({ message: "Professor updated successfully" });
       })

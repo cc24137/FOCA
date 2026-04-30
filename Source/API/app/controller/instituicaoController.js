@@ -25,9 +25,9 @@ class InstituicaoController{
 
   update = async (req, res) => {
     const instituicaoCRUD = new InstituicaoCRUD();
-    const { id, email, name } = req.body;
+    const { id, name, password } = req.body;
 
-    await instituicaoCRUD.update(id, email, name)
+    await instituicaoCRUD.update(id, name, password)
       .then(() => {
         res.status(200).json({ message: "Instituicao updated successfully" });
       })

@@ -1,0 +1,207 @@
+.informacoes-turma-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-off-white);
+    font-family: var(--font-inter);
+}
+
+.informacoes-turma-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 64px;
+    align-items: center;
+    gap: 50px;
+}
+
+.informacoes-turma-box {
+    background-color: var(--transparent-grayish-blue);
+    width: 90%;
+    padding: 20px 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.informacoes-turma-box-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.informacoes-turma-box-title {
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.informacoes-turma-box-button {
+    background-color: var(--button-dark-blue);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+.informacoes-turma-box-button-text {
+    color: var(--white);
+    font-size: 18px;
+}
+
+.informacoes-turma-box-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    font-size: 21px;
+}
+.informacoes-turma-box-container-column{
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+    gap: 15px;
+}
+
+.informacoes-turma-box-container-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    gap: 10px;
+
+}
+
+.informacoes-turma-box-container-row-title {
+    font-size: 21px;
+}
+
+.informacoes-turma-box-container-row-text {
+    font-size: 21px;
+}
+
+.informacoes-turma-box-atencao-media {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.informacoes-turma-box-atencao-media-title {
+    font-size: 25px;
+    font-weight: 600;
+    align-self: flex-start;
+}
+
+.informacoes-turma-box-atencao-media-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
+}
+
+.informacoes-turma-box-historico-aulas {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.informacoes-turma-box-historico-aulas-title {
+    font-size: 25px;
+    font-weight: 600;
+    align-self: flex-start;
+}
+
+.informacoes-turma-box-historico-aulas-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
+}
+
+.informacoes-turma-box-comparacao-aulas {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.informacoes-turma-box-comparacao-aulas-title {
+    font-size: 35px;
+    font-weight: 600;
+    align-self: flex-start;
+    font-family: var(--font-scada);
+
+}
+
+.informacoes-turma-box-comparacao-aulas-subtitle-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.informacoes-turma-box-comparacao-aulas-subtitle-row-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+}
+
+.informacoes-turma-comparacao-aulas-label{
+    font-size: 20px;
+    width: 300px;
+    font-weight: 500;
+}
+
+.informacoes-turma-box-comparacao-aulas-button {
+    background-color: var(--button-dark-blue);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+}
+
+.informacoes-turma-box-comparacao-aulas-button-text {
+    color: var(--white);
+    font-size: 18px;
+}
+
+.turma-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.turma-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--transparent-light-blue);
+    border: 1px solid var(--deep-blue-accent);
+    padding: 6px 10px;
+    border-radius: 16px;
+    font-size: 13px;
+    color: var(--deep-blue-accent);
+}
+
+.turma-tag-check-icon {
+    color: var(--deep-blue-accent);
+}
+
+.turma-tag-remove-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    color: var(--deep-blue-accent);
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.turma-tag-remove-button:hover {
+    background-color: var(--red);
+    color: var(--white);
+    border-radius: 50%;
+}
+
+.informacoes-turma-box-comparacao-aulas-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
+}

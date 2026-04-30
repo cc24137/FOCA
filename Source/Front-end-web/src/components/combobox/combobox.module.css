@@ -1,0 +1,168 @@
+/* Combobox.module.css */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-family: inherit;
+  width: 100%;
+  max-width: 400px; /* Adjust this as needed */
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.inputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  padding: 4px 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Highlights the whole box when the input is focused */
+.inputGroup:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 6px;
+  font-size: 14px;
+  background: transparent;
+  min-width: 0; /* Prevents input from breaking flexbox */
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+/* Button Resets & Styles */
+.clearButton,
+.triggerButton,
+.tagRemoveButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: #666;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.clearButton:hover,
+.triggerButton:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.chevronIcon {
+  transition: transform 0.2s ease;
+}
+
+.chevronIcon.open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--grayish-light-blue);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px var(--black);
+  z-index: 1000;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.emptyMessage {
+  padding: 12px;
+  color: #666;
+  text-align: center;
+  font-size: 14px;
+}
+
+.optionList {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+}
+
+.option {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.1s;
+}
+
+.option.active {
+  background-color: #f0f8ff; /* Light blue highlight */
+  color: #0056b3;
+  font-weight: 500;
+}
+
+/* Tags and Counter */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #495057;
+}
+
+.tagCheckIcon {
+  color: var(--deep-blue-accent); /* Green checkmark */
+}
+
+.tagRemoveButton {
+  padding: 2px;
+  color: var(--grayish-light-blue);
+}
+
+.tagRemoveButton:hover {
+  background-color: #dc3545;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.count {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 6px;
+  margin-bottom: 0;
+}

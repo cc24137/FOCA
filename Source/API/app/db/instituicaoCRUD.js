@@ -96,13 +96,13 @@ class InstituicaoCRUD{
   async update(id, nome, password) {
     try {
       const saltNumber = 12;
-      const encryptedPassword = await bcrypt.hash(newPwd, saltNumber);
+      const encryptedPassword = await bcrypt.hash(password, saltNumber);
       const pool = await db.getConnection();
       const result = await pool.request()
         .input("id", sql.Int, id)
         .input("nome", sql.VarChar, nome)
         .input("senha", sql.VarChar, encryptedPassword)
-        .query(`UPDATE FOCA.INSTITUICAO SET nome = @nome, senhahash = @senha WHERE id = @id`);
+        .query(`UPDATE FOCA.INSTITUICAO SET nome = @nome, senha_hash = @senha WHERE id = @id`);
       if (result.rowsAffected[0] === 0) {
         const er = new Error(); er.name = "Not found"; throw er;
       }

@@ -35,14 +35,14 @@ class TurmaCRUD {
     }
   }
 
-  async createTurma(name, institutionId, studentCount, year) {
+  async createTurma(name, institutionId, studentCount, grade) {
     try {
       const pool = await db.getConnection();
       const result = await pool.request()
         .input("nome", sql.VarChar, name)
         .input("id_instituicao", sql.Int, institutionId)
         .input("numero_alunos", sql.Int, studentCount)
-        .input("serie", sql.TinyInt, year)
+        .input("serie", sql.VarChar, grade)
         .query(`
           INSERT INTO FOCA.TURMA (nome, id_instituicao, numero_alunos, serie)
           OUTPUT INSERTED.id
@@ -55,14 +55,14 @@ class TurmaCRUD {
     }
   }
 
-  async updateTurma(id, name, studentCount, year) {
+  async updateTurma(id, name, studentCount, grade) {
     try {
       const pool = await db.getConnection();
       const result = await pool.request()
         .input("id", sql.Int, id)
         .input("nome", sql.VarChar, name)
         .input("numero_alunos", sql.Int, studentCount)
-        .input("serie", sql.TinyInt, year)
+        .input("serie", sql.VarChar, grade)
         .query(`
           UPDATE FOCA.TURMA
           SET nome = @nome,

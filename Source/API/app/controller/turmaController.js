@@ -36,9 +36,9 @@ class TurmaController {
 
   create = async (req, res) => {
     const turmaCRUD = new TurmaCRUD();
-    const { name, institutionId, studentCount, year } = req.body;
+    const { name, institutionId, studentCount, grade } = req.body;
 
-    await turmaCRUD.createTurma(name, institutionId, studentCount, year)
+    await turmaCRUD.createTurma(name, institutionId, studentCount, grade)
       .then((insertedId) => {
         res.status(201).json({ id: insertedId });
       })
@@ -50,9 +50,9 @@ class TurmaController {
 
   update = async (req, res) => {
     const turmaCRUD = new TurmaCRUD();
-    const { id, name, studentCount, year } = req.body;
+    const { id, name, studentCount, grade } = req.body;
 
-    await turmaCRUD.updateTurma(id, name, studentCount, year)
+    await turmaCRUD.updateTurma(id, name, studentCount, grade)
       .then(() => {
         res.status(200).json({ message: "Turma updated successfully" });
       })

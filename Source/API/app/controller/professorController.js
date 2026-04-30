@@ -23,6 +23,60 @@ class ProfessorController{
         res.status(500).json({error: "Internal server error"});
       });
     }
+
+  getById = async (req, res) => {
+    const professorCRUD = new ProfessorCRUD();
+    const { id } = req.body;
+
+    await professorCRUD.getById(id)
+      .then((record) => {
+        res.status(200).json(record);
+      })
+      .catch((error) => {
+        if (error.name === "Not found") {
+          res.status(404).json({ message: "Professor not found" });
+        } else {
+          console.log(error);
+          res.status(500).json({ error: "Internal server error" });
+        }
+      });
+  }
+
+  update = async (req, res) => {
+    const professorCRUD = new ProfessorCRUD();
+    const { id, email, name } = req.body;
+
+    await professorCRUD.update(id, email, name)
+      .then(() => {
+        res.status(200).json({ message: "Professor updated successfully" });
+      })
+      .catch((error) => {
+        if (error.name === "Not found") {
+          res.status(404).json({ message: "Professor not found" });
+        } else {
+          console.log(error);
+          res.status(500).json({ error: "Internal server error" });
+        }
+      });
+  }
+
+  delete = async (req, res) => {
+    const professorCRUD = new ProfessorCRUD();
+    const { id } = req.body;
+
+    await professorCRUD.delete(id)
+      .then(() => {
+        res.status(200).json({ message: "Professor deleted successfully" });
+      })
+      .catch((error) => {
+        if (error.name === "Not found") {
+          res.status(404).json({ message: "Professor not found" });
+        } else {
+          console.log(error);
+          res.status(500).json({ error: "Internal server error" });
+        }
+      });
+  }
 }
 
 module.exports = ProfessorController;

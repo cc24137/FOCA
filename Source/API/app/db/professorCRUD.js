@@ -6,15 +6,30 @@ const bcrypt = require('bcrypt');
 class ProfessorCRUD {
 
   async findProfessorByEmail(email){
-      try{
-        const result = await pool.request()
-          .input("email", sql.VarChar, email)
-          .query("SELECT * FROM FOCA.PROFESSOR WHERE email=@email");
-        return result;
+    try{
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("email", sql.VarChar, email)
+        .query("SELECT * FROM FOCA.PROFESSOR WHERE email=@email");
+      return result;
+    }
+    catch(error){
+      throw error;
+    }
+  }
+
+  async getById(id) {
+    try {
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, id)
+        .query("SELECT * FROM FOCA.PROFESSOR WHERE id = @id");
+      if (result.recordset.length === 0) {
+        const er = new Error(); er.name = "Not found"; throw er;
       }
-      catch(error){
-        throw error;
-      }
+      return result.recordset[0];
+    }
+    catch (error) { throw error; }
   }
 
   async professorLogin(email, password) {
@@ -55,7 +70,7 @@ class ProfessorCRUD {
       .input("email", sql.VarChar, email)
       .input("nome", sql.VarChar, nome)
       .input("password", sql.VarChar, encryptedPassword)
-      .query("INSERT INTO FOCA.PROFESSOR (EMAIL, NOME, SENHA_HASH, emailVerificado) VALUES (@email, @nome, @password, 0)")
+      .query("INSERT INTO FOCA.PROFESSOR (EMAIL, NOME, SENHA_HASH, emailVerificado) OUTPUT INSERTED.id VALUES (@email, @nome, @password, 0)")
     }
     catch(error){
       throw error;
@@ -89,6 +104,21 @@ class ProfessorCRUD {
     catch(error){
       throw error;
     }
+  }
+
+  async update(id, email, nome) {
+    try {
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, id)
+        .input("email", sql.VarChar, email)
+        .input("nome", sql.VarChar, nome)
+        .query(`UPDATE FOCA.PROFESSOR SET email = @email, nome = @nome WHERE id = @id`);
+      if (result.rowsAffected[0] === 0) {
+        const er = new Error(); er.name = "Not found"; throw er;
+      }
+    }
+    catch (error) { throw error; }
   }
 }
 

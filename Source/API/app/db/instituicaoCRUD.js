@@ -79,6 +79,48 @@ class InstituicaoCRUD{
     }
   }
 
+  async getById(id) {
+    try {
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, id)
+        .query("SELECT * FROM FOCA.INSTITUICAO WHERE id = @id");
+      if (result.recordset.length === 0) {
+        const er = new Error(); er.name = "Not found"; throw er;
+      }
+      return result.recordset[0];
+    }
+    catch (error) { throw error; }
+  } 
+
+  async update(id, email, nome) {
+    try {
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, id)
+        .input("email", sql.VarChar, email)
+        .input("nome", sql.VarChar, nome)
+        .query(`UPDATE FOCA.INSTITUICAO SET email = @email, nome = @nome WHERE id = @id`);
+      if (result.rowsAffected[0] === 0) {
+        const er = new Error(); er.name = "Not found"; throw er;
+      }
+    }
+    catch (error) { throw error; }
+  }
+
+  async delete(id) {
+    try {
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, id)
+        .query("DELETE FROM FOCA.INSTITUICAO WHERE id = @id");
+      if (result.rowsAffected[0] === 0) {
+        const er = new Error(); er.name = "Not found"; throw er;
+      }
+    }
+    catch (error) { throw error; }
+  }
+
 }
 
 

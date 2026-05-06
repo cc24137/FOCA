@@ -133,7 +133,7 @@
 // }
 
 import { useState } from 'react';
-import Header from '../components/Header';
+import Header from '../components/header';
 import Combobox from '../components/combobox'; 
 import './informacoes-turma.css';
 
@@ -249,7 +249,7 @@ export default function InformacoesTurma() {
                             <Combobox 
                                 items={listaDeAulas} 
                                 placeholder="Buscar aula..."
-                                selectedItems={aulasSelecionadas} /* NOVO: Enviando a lista atualizada pro Combobox */
+                                selectedItems={aulasSelecionadas} 
                                 onSelectionChange={(selectedItems) => setAulasSelecionadas(selectedItems)} 
                             />
 
@@ -264,7 +264,6 @@ export default function InformacoesTurma() {
                     </div>
                     
                     <div className='informacoes-turma-box-comparacao-aulas-aulas-selecionadas'>
-                        {/* AQUI ESTÁ O LAYOUT DAS TAGS IGUAL ERA ANTES */}
                         {aulasSelecionadas.length > 0 ? (
                             <div className='turma-tags-container'>
                                 {aulasSelecionadas.map((aula) => (

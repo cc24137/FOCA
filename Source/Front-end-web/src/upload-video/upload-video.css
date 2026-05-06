@@ -1,0 +1,83 @@
+.upload-video-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    font-family: var(--font-inter);
+}
+
+.upload-video-content{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 64px;
+    align-items: center;
+}
+
+.upload-video-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
+.upload-video-left{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: var(--transparent-grayish-blue);
+    padding: 20px 40px;
+    border-radius: 20px;
+}
+
+.upload-video-left-turma-disciplina{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.upload-video-left-title{
+    font-size: 40px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+.upload-video-left-turma{
+    font-size: 20px;
+    color: var(--black);
+}
+
+.upload-video-left-disciplina{
+    font-size: 20px;
+    color: var(--black);
+}
+
+.upload-video-data-label{
+    font-size: 20px;
+    color: var(--black);
+}
+
+.upload-video-left-data{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.upload-video-historico-aulas{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 80%;
+}
+
+.upload-video-historico-aulas-title{
+    font-size: 40px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+.upload-video-historico-aulas-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
+}

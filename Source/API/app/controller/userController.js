@@ -23,10 +23,9 @@ class UserController{
     await professorCRUD.professorLogin(email, password)
       .then((recordset) => {
         let finalResult = new UserViewModel(recordset[0], true);
-          
           // generates the teachers token
           const token = jwt.sign(
-            { email: finalResult.email, isProfessor: true }, // payload with email and role
+            { id: finalResult.id, email: finalResult.email, isProfessor: true }, // payload with email and role
             process.env.JWT_SECRET,                          // .env password
             { expiresIn: '2h' }                              // expiration time
           );
@@ -59,10 +58,9 @@ class UserController{
         .then((recordset) => {
           if (recordset.length > 0){
             let finalResult = new UserViewModel(recordset[0], false);
-              
               // generates token for instituicao
               const token = jwt.sign(
-                { email: finalResult.email, isProfessor: false }, // payload
+                { id: finalResult.id, email: finalResult.email, isProfessor: false }, // payload
                 process.env.JWT_SECRET,                           // .env password
                 { expiresIn: '2h' }                               // expiration time
               );

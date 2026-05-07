@@ -44,8 +44,8 @@ class ProfessorController{
 
   update = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();
-    const { id, name, password } = req.body;
-
+    const { name, password } = req.body;
+    const id = req.user.id;
     await professorCRUD.update(id, name, password)
       .then(() => {
         res.status(200).json({ message: "Professor updated successfully" });
@@ -62,7 +62,7 @@ class ProfessorController{
 
   delete = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();
-    const { id } = req.body;
+    const id = req.user.id;
 
     await professorCRUD.delete(id)
       .then(() => {
@@ -77,6 +77,37 @@ class ProfessorController{
         }
       });
   }
+
+  denyInvitation = async (req, res) => {
+    const professorCRUD = new ProfessorCRUD();
+    const {instituicaoId} = req.body;
+    const {id} = req.user;
+
+    await professorCRUD.denyInvitation(instituicaoId, id)
+      .then(()=>{
+        res.status(200).json({ message: "Invitation denied" });
+      })
+      .catch((error) =>{
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      })
+  }
+
+  acceptInvitation = async (req, res) => {
+    const professorCRUD = new ProfessorCRUD();
+    const {instituicaoId} = req.body;
+    const {id} = req.user;
+
+    await professorCRUD.accepetInvitation(instituicaoId, id)
+      .then(()=>{
+        res.status(200).json({ message: "Invitation accepted" });
+      })
+      .catch((error) =>{
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      })
+  }
+
 }
 
 module.exports = ProfessorController;

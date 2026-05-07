@@ -122,6 +122,32 @@ class ProfessorCRUD {
     }
     catch (error) { throw error; }
   }
+
+  async denyInvitation(idInstituicao, idProfesor){
+    try{
+      const pool = await db.getConnection();
+      const result = await pool.request()
+      .input("idInstituicao", sql.Int, idInstituicao)
+      .input("idProfessor", sql.Int, idProfesor)
+      .query(`DELETE FROM FOCA.INSTITUICAO_PROFESSOR 
+        WHERE ID_INSTITUICAO=@idInstituicao and id_professor=@idProfessor`);
+    }
+    catch(error){
+      throw error;
+    }
+  }
+
+  async accepetInvitation(idInstituicao, idProfesor){
+    try{
+      const pool = await db.getConnection();
+      const result = await pool.request()
+      .input("idInstituicao", sql.Int, idInstituicao)
+      .input("idProfessor", sql.Int, idProfesor)
+      .query(`UPDATE FOCA.INSTITUICAO_PROFESSOR set professorAceitou=1 
+        WHERE ID_INSTITUICAO=@idInstituicao and id_professor=@idProfessor`)
+    }
+    catch (error) { throw error; }
+  }
 }
 
 module.exports = ProfessorCRUD;

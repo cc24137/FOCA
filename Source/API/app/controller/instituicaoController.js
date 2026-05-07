@@ -25,7 +25,8 @@ class InstituicaoController{
 
   update = async (req, res) => {
     const instituicaoCRUD = new InstituicaoCRUD();
-    const { id, name, password } = req.body;
+    const { name, password } = req.body;
+    const id = req.user.id;
 
     await instituicaoCRUD.update(id, name, password)
       .then(() => {
@@ -43,7 +44,7 @@ class InstituicaoController{
 
   delete = async (req, res) => {
     const instituicaoCRUD = new InstituicaoCRUD();
-    const { id } = req.body;
+    const { id } = req.user;
 
     await instituicaoCRUD.delete(id)
       .then(() => {
@@ -58,6 +59,28 @@ class InstituicaoController{
         }
       });
   }
+
+  inviteProfessor = async(req, res) => {
+    const instituicaoCRUD = new InstituicaoCRUD();
+    const {emailProfessor} = req.body;
+    const id = req.user.id;
+    console.log("ID: " + id);
+
+    await instituicaoCRUD.inviteProfessor(id, emailProfessor)
+      .then(() =>{
+        res.status(201).json({message: "Invitation sent."});
+      })
+      .catch((error) =>{
+        if (error.number == 50001){ 
+          res.status(404).json({message: "Professor not found"});
+        }
+        else{
+          console.log(error);
+          res.status(500).json({ error: "Internal server error" });
+        }
+      })
+  }
+  
 }
 
 module.exports = InstituicaoController;

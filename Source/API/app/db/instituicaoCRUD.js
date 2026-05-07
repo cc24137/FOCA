@@ -123,6 +123,29 @@ class InstituicaoCRUD{
     catch (error) { throw error; }
   }
 
+  async inviteProfessor(id, email){
+    try{
+      const pool = await db.getConnection();
+      console.log("Email que chegou no CRUD: " +email);
+      const result = await pool.request()
+        .input("id", sql.Int, id)
+        .input("email", sql.VarChar, email)
+        .query(`declare @idProfessor int
+                select @idProfessor = id from foca.professor where email = @email
+
+                IF @idProfessor IS NULL
+                BEGIN
+                    THROW 50001, 'Professor not found', 1;
+                END
+
+                INSERT INTO FOCA.INSTITUICAO_PROFESSOR 
+                (id_instituicao, professorAceitou, id_professor) VALUES
+                (@id, 0, @idProfessor)`)
+    }
+    catch (error) { throw error; }
+  }
+
+
 }
 
 

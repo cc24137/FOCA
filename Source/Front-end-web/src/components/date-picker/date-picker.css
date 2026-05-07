@@ -100,7 +100,7 @@
 }
 
 .cal-day.selected {
-  background: #3b5bdb;
+  background: var(--light-blue);
   color: white;
   font-weight: 600;
 }

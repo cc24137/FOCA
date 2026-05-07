@@ -146,3 +146,9 @@
 .btn-sair:hover {
     background: #ffffff30;
 }
+
+.vinculo-card-icon{
+    color: var(--white);
+    width: 32px;
+    height: 32px;
+}

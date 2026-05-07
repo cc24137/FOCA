@@ -65,7 +65,7 @@ export default function VinculosProfessor() {
                             ) : (
                                 <div key={vinculo.id} className="vinculo-card">
                                     <div className="vinculo-card-header">
-                                        <IconVinculado />
+                                        <IconVinculado className="vinculo-card-icon" />
                                         <span className="vinculo-card-title">{vinculo.nome}</span>
                                     </div>
                                     <p className="vinculo-card-info">

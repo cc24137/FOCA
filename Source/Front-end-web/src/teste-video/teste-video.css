@@ -1,12 +1,93 @@
-/* -----------------------------------------
-   Layout and wrappers
------------------------------------------ */
+.teste-video-content{
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    padding: 20px 64px;
+    align-items: center;
+}
 
-.teste-video-container {
+.teste-video-upload-aulas-title{
+    font-size: 20px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+.teste-video-historico-aulas{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    gap: 15px;
+    width: 80%;
+}
 
-    padding: 20px;
+.teste-video-historico-aulas-title{
+    font-size: 20px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+.teste-video-historico-aulas-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
+}
+
+.area-upload{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 80%;
+}
+
+.teste-video-processar{
+    background-color: var(--button-dark-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    height: 50px;
+    align-self: flex-end;
+}
+
+.teste-video-processar-row-text{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.teste-video-salvar-row-icon{
+    width: 30px;
+    height: 30px;
+    color: var(--white);
+    position: absolute;
+    left: 20px;
+    top: 50%;                        
+    transform: translateY(-50%);
+}
+
+.teste-video-salvar{
+    background-color: var(--button-dark-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    height: 50px;
+    align-self: flex-end;
+    position: relative;
+}
+
+.teste-video-salvar-row{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.teste-video-salvar-row-text{
+    font-size: 18px;
+    margin-left: 15px;
+    font-weight: 600;
 }

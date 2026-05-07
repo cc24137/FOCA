@@ -1,0 +1,113 @@
+.professores-body{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.professores-content{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 40px 64px 80px 64px;
+    height: 100%;
+}
+
+.professores-esquerda{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    width: 50%;
+    height: 100%;
+}
+
+.professores-esquerda-title{
+    font-size: 30px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+.professores-adicionar{
+    background-color: var(--button-light-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.professores-adicionar-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.professores-remover{
+    background-color: var(--button-dark-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    align-self: flex-end;
+}
+
+.professores-remover-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.professores-direita{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
+    border-left: 2px solid var(--transparent-grayish-blue);
+    padding-left: 50px;
+
+    justify-content: space-between;
+}
+
+.professores-direita-title{
+    font-size: 30px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+
+
+.professores-list-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 50%;
+}
+
+.professores-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.professores-list-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.professores-list-container::-webkit-scrollbar-thumb {
+    background-color: var(--transparent-grayish-blue);
+    border-radius: 10px;
+}
+
+.professor-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--black);
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.professor-item.selected {
+    background-color: var(--button-dark-blue);
+    color: var(--white);
+}

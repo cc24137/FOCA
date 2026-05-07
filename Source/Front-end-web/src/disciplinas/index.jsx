@@ -1,7 +1,62 @@
-import { useNavigate } from 'react-router-dom';
+import Header from '../components/header';
+import './disciplinas.css';
+import { useState } from 'react';
 
 export default function Disciplinas(){
+    const disciplinas = [
+        { nome: "Matemática", mediaDeAtencao: 78.2, turmas: ["7B, 8A"] },
+        { nome: "Português", mediaDeAtencao: 82.5, turmas: ["9C, 10D"] },
+        { nome: "Ciências", mediaDeAtencao: 75.0, turmas: ["6A, 7C"] },
+        { nome: "História", mediaDeAtencao: 80.0, turmas: ["8B, 9E"] },
+    ];
+
+    const [selectedDisciplina, setSelectedDisciplina] = useState(null);
+
     return (
-        <h1>Disciplinas</h1>
+        <div className='disciplinas-body'>
+            <Header />
+            <div className='disciplinas-content'>
+                <div className='disciplinas-esquerda'>
+                    <p className='disciplinas-esquerda-title'>Lista de disciplinas</p>
+
+                    <div className='disciplinas-list-container'>
+                        {disciplinas.map((disciplina, index) => (
+                            <div
+                                key={index}
+                                className={`disciplina-item ${selectedDisciplina === index ? 'selected' : ''}`}
+                                onClick={() => setSelectedDisciplina(index)}
+                            >
+                                {disciplina.nome}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div>
+                        <button className='disciplinas-adicionar'>
+                            <p className='disciplinas-adicionar-text'>Adicionar disciplina</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div className='disciplinas-direita'>
+                    <p className='disciplinas-direita-title'>{disciplinas[selectedDisciplina]?.nome || 'Detalhes da disciplina'}</p>
+
+                    <div>
+                        {selectedDisciplina !== null ? (
+                            <div className='disciplina-detalhes'>
+                                <p><strong>Media de Atenção:</strong> {disciplinas[selectedDisciplina].mediaDeAtencao}</p>
+                                <p><strong>Turmas:</strong> {disciplinas[selectedDisciplina].turmas.join(', ')}</p>
+                            </div>
+                        ) : (
+                            <p className='disciplina-selecione'>Selecione uma disciplina para ver os detalhes</p>
+                        )}
+                    </div>
+
+                    <button className='disciplinas-remover'>
+                        <p className='disciplinas-remover-text'>Remover disciplina</p>
+                    </button>
+                </div>
+            </div>
+        </div>
     )
 }

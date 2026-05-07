@@ -1,0 +1,113 @@
+.disciplinas-body{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.disciplinas-content{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 40px 64px 80px 64px;
+    height: 100%;
+}
+
+.disciplinas-esquerda{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    width: 50%;
+    height: 100%;
+}
+
+.disciplinas-esquerda-title{
+    font-size: 30px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+.disciplinas-adicionar{
+    background-color: var(--button-light-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.professores-adicionar-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.disciplinas-remover{
+    background-color: var(--button-dark-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    align-self: flex-end;
+}
+
+.disciplinas-remover-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.disciplinas-direita{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
+    border-left: 2px solid var(--transparent-grayish-blue);
+    padding-left: 50px;
+
+    justify-content: space-between;
+}
+
+.disciplinas-direita-title{
+    font-size: 30px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+
+
+.disciplinas-list-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 50%;
+}
+
+.disciplinas-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.disciplinas-list-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.disciplinas-list-container::-webkit-scrollbar-thumb {
+    background-color: var(--transparent-grayish-blue);
+    border-radius: 10px;
+}
+
+.disciplina-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--black);
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.disciplina-item.selected {
+    background-color: var(--button-dark-blue);
+    color: var(--white);
+}

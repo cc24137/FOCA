@@ -1,7 +1,5 @@
-
 const db = require('../../config/dbConfig');
 const { sql } = require('../../config/dbConfig');
-
 
 class TurmaDisciplinaProfessorCRUD{
 
@@ -32,8 +30,6 @@ class TurmaDisciplinaProfessorCRUD{
     }
     catch (error) {throw error;}
   }
-
 }
-
 
 module.exports = TurmaDisciplinaProfessorCRUD;

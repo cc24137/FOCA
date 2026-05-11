@@ -148,5 +148,4 @@ class InstituicaoCRUD{
 
 }
 
-
 module.exports = InstituicaoCRUD;

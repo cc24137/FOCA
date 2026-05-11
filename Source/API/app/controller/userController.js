@@ -1,4 +1,3 @@
-
 const ProfessorCRUD = require('../db/professorCRUD');
 const InstituicaoCRUD = require('../db/instituicaoCRUD');
 const UserViewModel = require('../viewmodel/userViewmodel');
@@ -13,7 +12,7 @@ const EmailVerificationCRUD = require('../db/emailVerificationCRUD');
 
 class UserController{  
 
-  login = async (req, res)=>{
+  login = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();
     const instituicaoCRUD = new InstituicaoCRUD();
     let found = false;
@@ -178,6 +177,7 @@ class UserController{
         res.status(500).json({error: error});
       })
     }
+    
     // create INSTITUICAO 
     else{
       const instituicaoCRUD = new InstituicaoCRUD();
@@ -229,7 +229,6 @@ class UserController{
       res.status(500).json({ error: error.message });
     }
   }
-
 }
 
 module.exports = UserController;

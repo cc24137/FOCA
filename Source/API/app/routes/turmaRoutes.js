@@ -4,7 +4,6 @@ const TurmaController = require('../controller/turmaController');
 const turmaController = new TurmaController();
 const verifyToken = require('../middleware/authMiddleware');
 
-
 router.get("/porId", verifyToken, turmaController.getById);
 router.get("/porInstituicao", verifyToken, turmaController.getByInstitution);
 router.post("/cadastrar", verifyToken, turmaController.create);

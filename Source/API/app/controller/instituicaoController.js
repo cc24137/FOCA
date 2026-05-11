@@ -83,4 +83,4 @@ class InstituicaoController{
   
 }
 
-module.exports = InstituicaoController;
+module.exports = InstituicaoControlle;

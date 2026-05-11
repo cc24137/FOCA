@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-
 const cors = require('cors');
 
 const corsOptions = {
@@ -28,6 +27,5 @@ app.use('/users', userRoutes);
 app.use('/disciplinas', disciplinaRoutes);
 app.use('/turmas', turmaRoutes);
 app.use('/turmaRelacao', turma_disciplina_professorRoutes);
-
 
 module.exports = app;

@@ -17,7 +17,7 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    width: 50%;
+    width: 35%;
     height: 100%;
 }
 
@@ -62,7 +62,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 50%;
+    width: 65%;
     border-left: 2px solid var(--transparent-grayish-blue);
     padding-left: 50px;
 
@@ -103,6 +103,7 @@
     cursor: pointer;
     font-size: 15px;
     color: var(--black);
+    font-family: var(--font-inter);
     border-radius: 8px;
     transition: background-color 0.2s;
 }
@@ -110,4 +111,9 @@
 .professor-item.selected {
     background-color: var(--button-dark-blue);
     color: var(--white);
+}
+
+.professores-historico-aulas-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
 }

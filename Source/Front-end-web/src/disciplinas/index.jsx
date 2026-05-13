@@ -52,9 +52,20 @@ export default function Disciplinas(){
                         )}
                     </div>
 
-                    <button className='disciplinas-remover'>
-                        <p className='disciplinas-remover-text'>Remover disciplina</p>
-                    </button>
+                    <div className='disciplinas-historico-aulas-content'>
+                    
+                    </div>
+                    
+                    <div className='disciplinas-row'>
+                        <button className='disciplinas-editar'>
+                            <p className='disciplinas-editar-text'>Editar disciplina</p>
+                        </button>
+
+                        <button className='disciplinas-remover'>
+                            <p className='disciplinas-remover-text'>Remover disciplina</p>
+                        </button>
+                    </div>
+                    
                 </div>
             </div>
         </div>

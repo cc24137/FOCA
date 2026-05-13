@@ -57,6 +57,10 @@ export default function Professores(){
                         )}      
                     </div> 
 
+                    <div className='professores-historico-aulas-content'>
+                    
+                    </div>
+
                     <button className='professores-remover'>
                         <p className='professores-remover-text'>Remover professor</p>
                     </button>

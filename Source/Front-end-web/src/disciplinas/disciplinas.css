@@ -139,3 +139,25 @@
     background-color: rgb(114, 116, 118);
     height: 280px;
 }
+
+.disciplinas-direita-title-input {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--black);
+
+    background-color: var(--white);
+    border: 2px solid #9b9fc4;
+    border-radius: 10px;
+
+    padding: 6px 14px;
+    width: 100%;
+    max-width: 420px;
+
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.disciplinas-direita-title-input:focus {
+    border-color: var(--light-blue);
+    box-shadow: 0 0 0 3px rgba(107, 111, 168, 0.2);
+}

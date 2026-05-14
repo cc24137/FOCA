@@ -1,0 +1,259 @@
+.turmas-body{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.turmas-content{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 40px 64px 80px 64px;
+    height: 100%;
+}
+
+.turmas-esquerda{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    width: 35%;
+    height: 100%;
+}
+
+.turmas-esquerda-title{
+    font-size: 30px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+.turmas-adicionar{
+    background-color: var(--button-light-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.turmas-adicionar-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.turmas-remover{
+    background-color: var(--button-dark-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    align-self: flex-end;
+}
+
+.turmas-remover-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.turmas-editar{
+    background-color: var(--button-light-blue);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    align-self: flex-end;
+}
+
+.turmas-editar-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.turmas-row{
+    display: flex;
+    flex-direction: row;  
+    justify-content: space-between; 
+}
+
+.turmas-direita{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 65%;
+    border-left: 2px solid var(--transparent-grayish-blue);
+    padding-left: 50px;
+
+    justify-content: space-between;
+}
+
+.turmas-direita-title{
+    font-size: 30px;
+    font-family: var(--font-scada);
+    color: var(--black);
+}
+
+
+
+.turmas-list-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 50%;
+}
+
+.turmas-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.turmas-list-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.turmas-list-container::-webkit-scrollbar-thumb {
+    background-color: var(--transparent-grayish-blue);
+    border-radius: 10px;
+}
+
+.turma-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--black);
+    font-family: var(--font-inter);
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.turma-item.selected {
+    background-color: var(--button-dark-blue);
+    color: var(--white);
+}
+
+.turma-detalhes {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.turma-professores-tabela {
+    width: 50%;
+    border-collapse: collapse;
+    font-family: var(--font-inter);
+    font-size: 14px;
+}
+
+.turma-professores-tabela thead tr {
+    border-bottom: 2px solid var(--transparent-grayish-blue);
+}
+
+.turma-professores-tabela th {
+    text-align: left;
+    padding: 8px 12px;
+    font-weight: 600;
+    color: var(--grayish-blue);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.turma-professores-tabela td {
+    padding: 8px 12px;
+    color: var(--black);
+    border-bottom: 1px solid var(--transparent-grayish-blue);
+}
+
+.turma-professores-tabela tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.turma-professores-tabela tbody tr:hover td {
+    background-color: var(--transparent-light-blue);
+}
+
+.turma-prof-remover {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--grayish-blue);
+    font-size: 14px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.turma-prof-adicionar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--grayish-blue);
+    font-size: 18px;
+    font-weight: 400;
+    padding: 0px 6px;
+    border-radius: 4px;
+    line-height: 1;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.turma-prof-adicionar:hover {
+    color: var(--button-dark-blue);
+    background-color: var(--transparent-light-blue);
+}
+
+.turma-prof-remover:hover {
+    color: var(--red);
+    background-color: rgba(255, 0, 0, 0.08);
+}
+
+.turma-prof-confirmar:hover {
+    color: #3a7d44;
+    background-color: rgba(58, 125, 68, 0.08);
+}
+
+.turma-prof-nova-linha td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.turma-prof-nova-acoes {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.turma-prof-remover:hover {
+    color: var(--red);
+    background-color: rgba(255, 0, 0, 0.08);
+}
+
+.turmas-historico-aulas-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
+}
+
+.turmas-direita-title-input {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--black);
+
+    background-color: var(--white);
+    border: 2px solid #9b9fc4;
+    border-radius: 10px;
+
+    padding: 6px 14px;
+    width: 100%;
+    max-width: 420px;
+
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.turmas-direita-title-input:focus {
+    border-color: var(--light-blue);
+    box-shadow: 0 0 0 3px rgba(107, 111, 168, 0.2);
+}

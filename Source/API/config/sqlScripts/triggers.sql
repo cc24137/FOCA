@@ -1,27 +1,4 @@
 
-CREATE OR ALTER TRIGGER trg_InsteadOfDelete_Relatorio
-ON foca.Relatorio
-INSTEAD OF DELETE
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    IF NOT EXISTS (SELECT 1 FROM deleted) RETURN;
-
-
-    DELETE md
-    FROM foca.Momento_Destaque md
-    INNER JOIN deleted d ON md.id_relatorio = d.id;
-
-
-    DELETE r
-    FROM foca.Relatorio r
-    INNER JOIN deleted d ON r.id = d.id;
-END;
-GO
-
-
-
 CREATE OR ALTER TRIGGER trg_InsteadOfDelete_Aula
 ON foca.Aula
 INSTEAD OF DELETE
@@ -33,7 +10,7 @@ BEGIN
 
 
     DELETE r
-    FROM foca.Relatorio r
+    FROM foca.Leitura_Atencao r
     INNER JOIN deleted d ON r.id_aula = d.id;
 
 
@@ -41,7 +18,6 @@ BEGIN
     FROM foca.Aula a
     INNER JOIN deleted d ON a.id = d.id;
 END;
-GO
 
 
 
@@ -64,7 +40,6 @@ BEGIN
     FROM foca.Turma_Disciplina_Professor tdp
     INNER JOIN deleted d ON tdp.id = d.id;
 END;
-GO
 
 
 CREATE OR ALTER TRIGGER trg_InsteadOfDelete_Turma
@@ -86,7 +61,6 @@ BEGIN
     FROM foca.Turma t
     INNER JOIN deleted d ON t.id = d.id;
 END;
-GO
 
 
 CREATE OR ALTER TRIGGER trg_InsteadOfDelete_Disciplina
@@ -106,8 +80,6 @@ BEGIN
     FROM foca.Disciplina disc
     INNER JOIN deleted d ON disc.id = d.id;
 END;
-GO
-
 
 
 CREATE OR ALTER TRIGGER trg_InsteadOfDelete_Professor
@@ -131,7 +103,6 @@ BEGIN
     FROM Professor p
     INNER JOIN deleted d ON p.id = d.id;
 END;
-GO
 
 
 
@@ -160,7 +131,6 @@ BEGIN
     FROM foca.Instituicao inst
     INNER JOIN deleted d ON inst.id = d.id;
 END;
-GO
 
 
 
@@ -210,11 +180,3 @@ BEGIN
     SELECT email, nome, senha_hash, emailVerificado
     FROM inserted;
 END
-
-
-
-
-
-
-
-

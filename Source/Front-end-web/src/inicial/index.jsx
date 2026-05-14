@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
+import Footer from '../components/footer'
+import './inicial.css'
 
 export default function Inicial(){
     const navigate = useNavigate()
@@ -9,7 +11,7 @@ export default function Inicial(){
     }
 
     return(
-        <div>
+        <div className='inicial-body'>
             <Header
             titulo="FOCA"
             links={[
@@ -17,7 +19,10 @@ export default function Inicial(){
                 { texto: "Criar conta", destino: "/cadastro" }
             ]}
             />
+            
             <h1>Tela Inicial</h1>
+
+            <Footer />
         </div>
         
     )

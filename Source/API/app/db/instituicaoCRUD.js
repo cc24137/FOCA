@@ -126,7 +126,6 @@ class InstituicaoCRUD{
   async inviteProfessor(id, email){
     try{
       const pool = await db.getConnection();
-      console.log("Email que chegou no CRUD: " +email);
       const result = await pool.request()
         .input("id", sql.Int, id)
         .input("email", sql.VarChar, email)
@@ -145,6 +144,16 @@ class InstituicaoCRUD{
     catch (error) { throw error; }
   }
 
+  async removeProfessor(professorId, instituicaoId){
+    try{
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("professorId", sql.Int, professorId)
+        .input("instituicaoId", sql.Int, instituicaoId)
+        .query(`delete from foca.instituicao_professor where (id_professor = @professorId and id_instituicao = @instituicaoId)`)
+    }
+    catch(error) {throw error;}
+  }
 
 }
 

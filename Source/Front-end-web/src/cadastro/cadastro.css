@@ -3,23 +3,32 @@
 ----------------------------------------- */
 
 .cadastro-body {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 
-    width: 100%;
+  width: 100%;
 }
 
 .right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 
-    width: 70%;
-    min-height: 100vh;
-    padding: 40px 40px 120px 40px;
+  width: 70%;
+  min-height: 100vh;
+  padding: 40px 40px 120px 40px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
 }
 
 /* -----------------------------------------
@@ -27,127 +36,135 @@
 ----------------------------------------- */
 
 .sign-in-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 
-    width: 60%;
+  width: 60%;
 }
 
 .sign-in-bottom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 
-    width: 60%;
+  width: 60%;
 }
 
 .field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 
-    width: 80%;
+  width: 80%;
 }
 
 .input-wrapper {
-    position: relative;
+  position: relative;
 }
 
 .label-with-asterisk {
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 
-    max-height: 21px;
+  max-height: 21px;
 }
 
 /* -----------------------------------------
    UI elements (Inputs, Labels, Buttons, Text)
 ----------------------------------------- */
 
+.sign-in-title-text {
+  color: var(--black);
+  font-family: var(--font-inter);
+  font-size: 36px;
+  font-weight: 700;
+  padding-bottom: 20px;
+}
+
 .field-label {
-    color: var(--black);
-    font-family: var(--font-inter);
-    font-size: 18px;
-    font-weight: 700;
+  color: var(--black);
+  font-family: var(--font-inter);
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .text-field {
-    width: 100%;
-    height: 50px;
-    padding: 0 14px;
-    box-sizing: border-box;
+  width: 100%;
+  height: 50px;
+  padding: 0 14px;
+  box-sizing: border-box;
 
-    color: var(--black);
-    font-family: var(--font-inter);
-    font-size: 16px;
+  color: var(--black);
+  font-family: var(--font-inter);
+  font-size: 16px;
 
-    background-color: var(--white);
-    border: 1px solid var(--black);
-    border-radius: 4px;
-    outline: none;
+  background-color: var(--white);
+  border: 1px solid var(--black);
+  border-radius: 4px;
+  outline: none;
 }
 
 .text-field.with-icon {
-    padding-right: 45px; 
+  padding-right: 45px;
 }
 
 .sign-in-content-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 
-    min-height: 42px;
-    padding: 0px 22px;
+  min-height: 42px;
+  padding: 0px 22px;
 
-    color: var(--black);
-    font-family: var(--font-inter);
-    font-size: 24px;
-    font-weight: 500;
+  color: var(--black);
+  font-family: var(--font-inter);
+  font-size: 24px;
+  font-weight: 500;
 }
 
 .sign-in-button {
-    align-self: flex-end;
-    
-    padding: 3px;
+  align-self: flex-start;
 
-    color: var(--black);
-    font-size: 18px;
-    font-weight: 500;
+  padding: 3px;
 
-    background: var(--transparent-grayish-blue);
-    border: none;
-    border-radius: 25px;
-    
-    cursor: pointer;
-    transition: 0.2s;
+  color: var(--black);
+  font-size: 18px;
+  font-weight: 500;
+
+  background: var(--transparent-grayish-blue);
+  border: none;
+  border-radius: 25px;
+
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .sign-in-submit-button {
-    width: 80%;
-    height: 50px;
+  width: 80%;
+  height: 50px;
 
-    color: var(--white);
-    font-size: 26px;
-    font-weight: 500;
+  color: var(--white);
+  font-size: 26px;
+  font-weight: 500;
 
-    background-color: var(--button-dark-blue);
-    border: none;
-    border-radius: 10px;
+  background-color: var(--button-dark-blue);
+  border: none;
+  border-radius: 10px;
 }
 
 .text-to-login {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .redirect-to-login {
-    font-family: var(--font-inter);
-    color: var(--deep-blue-accent);
-    border-bottom: 2px solid var(--deep-blue-accent);
+  font-family: var(--font-inter);
+  color: var(--deep-blue-accent);
+  border-bottom: 2px solid var(--deep-blue-accent);
 }
 
 /* -----------------------------------------
@@ -155,51 +172,51 @@
 ----------------------------------------- */
 
 .home-icon {
-    width: 25px;
-    height: 25px;
+  width: 25px;
+  height: 25px;
 
-    scale: 1.1;
+  scale: 1.1;
 }
 
 .eye-button {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%); 
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  
-    background: none;
-    border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    cursor: pointer;
+  background: none;
+  border: none;
+
+  cursor: pointer;
 }
 
 .eye-button svg {
-    width: 20px;
-    height: 20px;
-  
-    color: var(--black);
+  width: 20px;
+  height: 20px;
+
+  color: var(--black);
 }
 
 .asterisk {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .asterisk.hidden {
-    width: 8px;
-    height: 12px;
-    
-    fill: none;
+  width: 8px;
+  height: 12px;
+
+  fill: none;
 }
 
 .asterisk.visible {
-    width: 8px;
-    height: 12px;
-    
-    fill: var(--red);
+  width: 8px;
+  height: 12px;
+
+  fill: var(--red);
 }
 
 /* -----------------------------------------
@@ -207,15 +224,15 @@
 ----------------------------------------- */
 
 .text-password {
-    color: var(--red);
-    font-size: 18px;
+  color: var(--red);
+  font-size: 18px;
 }
 
 .text-confirm-password.visible {
-    color: var(--red);
-    font-size: 18px;
+  color: var(--red);
+  font-size: 18px;
 }
 
 .text-confirm-password.hidden {
-    display: none;
+  display: none;
 }

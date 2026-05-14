@@ -5,6 +5,23 @@ const bcrypt = require('bcrypt');
 // database acess logic
 class ProfessorCRUD {
 
+  async getProfessorByInstitution(institutionId) {
+      try {
+        const pool = await db.getConnection();
+        const result = await pool.request()
+          .input("institutionId", sql.Int, institutionId)
+          .query(`
+            select * from foca.professor p 
+            inner join foca.Instituicao_Professor ip on ip.id_professor = p.id
+            where (ip.id_instituicao =  @institutionId and ip.professorAceitou=1)
+            `);
+        return result.recordset;
+      }
+      catch (error) {
+        throw error;
+      }
+    }
+
   async findProfessorByEmail(email){
     try{
       const pool = await db.getConnection();

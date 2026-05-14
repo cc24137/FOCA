@@ -4,24 +4,20 @@ const UserViewModel = require('../viewmodel/userViewmodel');
 // handles the responses from the CRUD class and apply business logic
 
 class ProfessorController{
-  listAllProfessors = 
-    async (req, res) =>{
-      const professorCRUD = new ProfessorCRUD();
-      professorCRUD.listProfessors()
+
+  getByInstitution = async (req, res) => {
+    const professorCRUD = new ProfessorCRUD();
+    const { institutionId } = req.body;
+
+    await professorCRUD.getProfessorByInstitution(institutionId)
       .then((recordset) => {
-        let finalResult = [];
-        for (let i in recordset){
-          console.log(recordset[i]);
-          let dbo = new UserViewModel(recordset[i], true); // transform data to viewmodel: takes out the password
-          finalResult.push(dbo.jsonReturn());
-        }
-        res.status(200).json(finalResult);
+        res.status(200).json(recordset);
       })
-      .catch((error) =>{
+      .catch((error) => {
         console.log(error);
-        res.status(500).json({error: "Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
       });
-    }
+  }
 
   getById = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();

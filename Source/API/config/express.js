@@ -17,6 +17,7 @@ const userRoutes = require('../app/routes/userRoutes');
 const disciplinaRoutes = require('../app/routes/disciplinaRoutes');
 const turmaRoutes = require('../app/routes/turmaRoutes');
 const turma_disciplina_professorRoutes = require('../app/routes/turma_disciplina_professorRoutes');
+const aulaRoutes = require('../app/routes/aulaRoutes');
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -27,5 +28,6 @@ app.use('/users', userRoutes);
 app.use('/disciplinas', disciplinaRoutes);
 app.use('/turmas', turmaRoutes);
 app.use('/turmaRelacao', turma_disciplina_professorRoutes);
+app.use('/aula', aulaRoutes);
 
 module.exports = app;

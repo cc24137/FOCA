@@ -6,6 +6,7 @@ const verifyToken = require('../middleware/authMiddleware');
 
 router.get("/listar", verifyToken, professorController.listAllProfessors);
 router.get("/porId", verifyToken, professorController.getById);
+router.get("/porInstituicao", verifyToken, professorController.getByInstitution);
 
 router.put("/aceitarConvite", verifyToken, professorController.acceptInvitation);
 router.put("/atualizar", verifyToken, professorController.update);

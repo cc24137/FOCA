@@ -104,3 +104,7 @@ ALTER TABLE foca.Aula ADD FOREIGN KEY(id_turma_disciplina_professor) REFERENCES 
 ALTER TABLE foca.Aula ADD FOREIGN KEY(id_classificacao_conteudo) REFERENCES foca.Classificacao_Conteudo (id);
 
 ALTER TABLE foca.Leitura_Atencao ADD FOREIGN KEY(id_aula) REFERENCES foca.Aula (id);
+
+
+
+

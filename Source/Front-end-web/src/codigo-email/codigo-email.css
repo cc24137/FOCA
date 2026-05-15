@@ -89,6 +89,7 @@
     align-self: flex-start;
 
     color: var(--black);
+    font-family: var(--font-inter);
     font-size: 24px;
     font-weight: 500;
 }
@@ -99,11 +100,13 @@
     padding-right: 10px;
 
     color: var(--black);
+    font-family: var(--font-inter);
     font-size: 16px;
 }
 
 .codigo-email-resend-code {
     color: var(--deep-blue-accent);
+    font-family: var(--font-inter); 
     font-weight: 500;
 
     cursor: pointer;
@@ -117,6 +120,7 @@
     box-sizing: border-box;
 
     text-align: center;
+    font-family: var(--font-inter);
     font-size: 1.5rem;
 
     background-color: var(--white);
@@ -146,6 +150,7 @@
     padding: 3px;
 
     color: var(--black);
+    font-family: var(--font-inter); /* Adicionado aqui */
     font-size: 18px;
     font-weight: 500;
 
@@ -162,12 +167,15 @@
     height: 50px;
 
     color: var(--white);
+    font-family: var(--font-inter);
     font-size: 26px;
     font-weight: 500;
 
     background-color: var(--button-dark-blue);
     border: none;
     border-radius: 10px;
+    
+    cursor: pointer;
 }
 
 /* -----------------------------------------

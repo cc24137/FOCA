@@ -3,8 +3,8 @@ import Header from '../components/header';
 import "./inicial-professor.css"
 import SearchIcon from "../assets/search.svg?react" 
 import Book from "../assets/book.svg?react"
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
+import api from '../services/api';
 
 export default function InicialProfessor(){
     const navigate = useNavigate();
@@ -12,16 +12,33 @@ export default function InicialProfessor(){
     const goTo = (route) => () => {
         navigate(route);
     }
-    const [query, setQuery] = useState("");
     
-    const items = [
-        {name: "PD24", subject: "Matemática", institution: "Cotuca"},
-        {name: "TA24", subject: "Português", institution: "Cotuca"},
-        {name: "PD24", subject: "Matemática", institution: "Etec"},
-        {name: "TA24", subject: "Português", institution: "Etec"},
-        {name: "PD24", subject: "Matemática", institution: "Fatec"},
-        {name: "TA24", subject: "Português", institution: "Fatec"},
-    ];
+    const [query, setQuery] = useState("");
+    const [items, setItems] = useState([]); // array vazio
+    const [loading, setLoading] = useState(true); // estado de carregamento
+    
+    useEffect(() => {
+        async function fetchTurmas() {
+            try {
+                const response = await api.get('/turmaRelacao/porProfessor');
+
+              const turmasFormatadas = response.data.map(item => ({
+                  // alterar nomes dos campos
+                    name: item.nomeTurma || "Sem nome",
+                    subject: item.nomeDisciplina || "Sem disciplina",
+                    institution: item.nomeInstituicao || "Sem instituição"
+                }));
+
+                setItems(turmasFormatadas);
+            } catch (error) {
+                console.error("Erro ao buscar turmas:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchTurmas();
+    }, []);
 
     const filteredItems = items.filter((item) =>
         item.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -35,16 +52,16 @@ export default function InicialProfessor(){
                 routes = {[
                     {textButton: "Início", routeButton: "/inicial"},
                     {textButton: "Sobre o Projeto", routeButton: "/inicial"},
-                    {textButton: "Perfil"         , routeButton: "/editar-dados"}
+                    {textButton: "Perfil", routeButton: "/editar-dados"}
                 ]}
             />
                 
             <div className='inicial-professor-body'>
-                    <div className='inicial-professor-middle-line'>
+                <div className='inicial-professor-middle-line'>
                     <div className='inicial-professor-middle-line-title'>
                         <h1 className='inicial-professor-middle-text'>Turmas</h1>
                     </div>
-                                    
+                                        
                     <div className="search-container">
                         <SearchIcon className="search-icon" />
                         <input
@@ -65,28 +82,29 @@ export default function InicialProfessor(){
                                 Gerenciar Instituições
                             </p>
                         </div>
-                        
                     </button>
                 </div>
                 
-
-                
-                
-                
                 <div className="inicial-professor-cards-container">
-                    {filteredItems.map((item, index) => (
-                        <div key={index} className='inicial-professor-card'>
-                            <div className='card-header'>
-                                <Book />
-                                <h2 className='inicial-professor-card-title'>{item.name}</h2>
-                            </div>
-                            <p className='card-subject'>Disciplina: {item.subject}</p>
-                            <p className='card-subject'>Instituição: {item.institution}</p>
-                        </div>
-                    ))}
-                    
-                    {filteredItems.length === 0 && (
-                        <p className="no-results">Nenhum resultado encontrado para "{query}"</p>
+                    {loading ? (
+                        <p>Carregando turmas...</p>
+                    ) : (
+                        <>
+                            {filteredItems.map((item, index) => (
+                                <div key={index} className='inicial-professor-card'>
+                                    <div className='card-header'>
+                                        <Book />
+                                        <h2 className='inicial-professor-card-title'>{item.name}</h2>
+                                    </div>
+                                    <p className='card-subject'>Disciplina: {item.subject}</p>
+                                    <p className='card-subject'>Instituição: {item.institution}</p>
+                                </div>
+                            ))}
+                            
+                            {filteredItems.length === 0 && !loading && (
+                                <p className="no-results">Nenhum resultado encontrado para "{query}"</p>
+                            )}
+                        </>
                     )}
                 </div>
             </div>

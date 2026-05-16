@@ -3,6 +3,20 @@ const { sql } = require('../../config/dbConfig');
 
 class TurmaDisciplinaProfessorCRUD{
 
+  async getByProfessor(idProfessor){
+    try{
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("idProfessor", sql.Int, idProfessor)
+        .query(`
+          SELECT * FROM FOCA.Turma_Disciplina_Professor
+          WHERE id_professor = @idProfessor
+          `)
+      return result.recordset;
+    }
+    catch(error) {throw error}
+  }
+
   async create(idDisciplina, idTurma, idProfessor){
     try{
       const pool = await db.getConnection();

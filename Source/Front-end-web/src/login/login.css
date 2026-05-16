@@ -22,7 +22,7 @@
   padding: 40px 40px 180px 40px;
 }
 
-top {
+.top {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -109,6 +109,8 @@ top {
   font-family: var(--font-inter);
   font-size: 24px;
   font-weight: 500;
+
+  cursor: pointer;
 }
 
 .login-button {
@@ -139,11 +141,15 @@ top {
   background-color: var(--button-dark-blue);
   border: none;
   border-radius: 10px;
+
+  cursor: pointer;
 }
 
 .text-to-cadastro {
   font-family: var(--font-inter);
   font-size: 20px;
+
+  cursor: pointer;
 }
 
 .redirect-to-cadastro {
@@ -157,6 +163,8 @@ top {
   font-family: var(--font-inter);
   font-size: 16px;
   font-weight: 500;
+
+  cursor: pointer;
 }
 
 /* -----------------------------------------

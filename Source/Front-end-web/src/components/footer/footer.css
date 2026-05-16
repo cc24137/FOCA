@@ -1,0 +1,36 @@
+.footer-body{
+    padding: 20px;
+    margin: 0px 64px 0px 64px;
+    margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border-top: 3px solid black;
+}
+
+.footer-about{
+    width: 35%;
+}
+
+.footer-contacts{
+    width: 30%;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+    padding-left: 20px;
+    
+}
+
+.footer-contacts ul{
+    list-style: none;
+    padding-left: 10px;
+}
+
+.footer-more-about{
+    width: 35%;
+    padding-left: 20px;
+}
+
+.footer-title{
+    font-family: var(--font-scada);
+    font-size: 28px;
+}

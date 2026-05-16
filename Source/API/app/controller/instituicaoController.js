@@ -80,7 +80,22 @@ class InstituicaoController{
         }
       })
   }
+
+  removeProfessor = async (req, res) =>{
+    const instituicaoCRUD = new InstituicaoCRUD();
+    const {id} = req.user;
+    const {idProfessor} = req.body;
+
+    await instituicaoCRUD.removeProfessor(idProfessor, id)
+      .then(()=>{
+        res.status(200).json({message: "Professor removed from institution"});
+      })
+      .catch((error)=>{
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      })
+  }
   
 }
 
-module.exports = InstituicaoControlle;
+module.exports = InstituicaoController;

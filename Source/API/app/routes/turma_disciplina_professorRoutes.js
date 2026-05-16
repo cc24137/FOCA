@@ -4,7 +4,11 @@ const TurmaDisciplinaProfessorController = require('../controller/turma_discipli
 const turmaDisciplinaProfessorController = new TurmaDisciplinaProfessorController();
 const verifyToken = require('../middleware/authMiddleware');
 
+
+router.get("/porProfessor", verifyToken, turmaDisciplinaProfessorController.getByProfessor);
+
 router.post("/relacionar", verifyToken, turmaDisciplinaProfessorController.create);
+
 router.delete("/excluir", verifyToken, turmaDisciplinaProfessorController.delete);
 
 module.exports = router;

@@ -2,6 +2,19 @@ const TurmaDisciplinaProfessorCRUD = require("../db/turma_disciplina_professorCR
 
 class TurmaDisciplinaProfessorController{
 
+  getByProfessor = async(req, res) =>{
+    const turmaDisciplinaProfessorCRUD = new TurmaDisciplinaProfessorCRUD();
+    const id = req.user.id;
+    await turmaDisciplinaProfessorCRUD.getByProfessor(id)
+      .then((recordset)=>{
+        res.status(200).json(recordset);
+      })
+      .catch((error) =>{
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      })
+  }
+
   create = async(req, res) => {
     const turmaDisciplinaProfessorCRUD = new TurmaDisciplinaProfessorCRUD();
     const {idDisciplina, idTurma, idProfessor} = req.body;

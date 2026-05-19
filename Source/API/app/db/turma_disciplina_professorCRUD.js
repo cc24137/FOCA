@@ -3,19 +3,27 @@ const { sql } = require('../../config/dbConfig');
 
 class TurmaDisciplinaProfessorCRUD{
 
-  async getByProfessor(idProfessor){
-    try{
-      const pool = await db.getConnection();
-      const result = await pool.request()
-        .input("idProfessor", sql.Int, idProfessor)
-        .query(`
-          SELECT * FROM FOCA.Turma_Disciplina_Professor
-          WHERE id_professor = @idProfessor
-          `)
-      return result.recordset;
+    async getByProfessor(idProfessor) {
+        try {
+            const pool = await db.getConnection();
+            const result = await pool.request()
+                .input("idProfessor", sql.Int, idProfessor)
+                .query(`
+                    SELECT
+                        T.nome AS nomeTurma,
+                        D.nome AS nomeDisciplina,
+                        I.nome AS nomeInstituicao
+                    FROM foca.Turma_Disciplina_Professor TDP
+                    INNER JOIN foca.Turma T ON TDP.id_turma = T.id
+                    INNER JOIN foca.Disciplina D ON TDP.id_disciplina = D.id
+                    INNER JOIN foca.Instituicao I ON T.id_instituicao = I.id
+                    WHERE TDP.id_professor = @idProfessor
+                `);
+            return result.recordset;
+        } catch (error) {
+            throw error;
+        }
     }
-    catch(error) {throw error}
-  }
 
   async create(idDisciplina, idTurma, idProfessor){
     try{
@@ -25,7 +33,7 @@ class TurmaDisciplinaProfessorCRUD{
         .input("idTurma", sql.Int, idTurma)
         .input("idProfessor", sql.Int, idProfessor)
         .query(`
-          INSERT INTO FOCA.Turma_Disciplina_Professor 
+          INSERT INTO FOCA.Turma_Disciplina_Professor
           (ID_DISCIPLINA, ID_TURMA, ID_PROFESSOR)
           VALUES (@idDisciplina, @idTurma, @idProfessor)
           `)

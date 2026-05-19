@@ -14,21 +14,20 @@ export default function InicialProfessor(){
     }
     
     const [query, setQuery] = useState("");
-    const [items, setItems] = useState([]); // array vazio
-    const [loading, setLoading] = useState(true); // estado de carregamento
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
     
     useEffect(() => {
         async function fetchTurmas() {
             try {
                 const response = await api.get('/turmaRelacao/porProfessor');
-
-              const turmasFormatadas = response.data.map(item => ({
-                  // alterar nomes dos campos
+    
+                const turmasFormatadas = response.data.map(item => ({
                     name: item.nomeTurma || "Sem nome",
                     subject: item.nomeDisciplina || "Sem disciplina",
                     institution: item.nomeInstituicao || "Sem instituição"
                 }));
-
+    
                 setItems(turmasFormatadas);
             } catch (error) {
                 console.error("Erro ao buscar turmas:", error);

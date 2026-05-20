@@ -140,7 +140,33 @@ class ProfessorCRUD {
     catch (error) { throw error; }
   }
 
-  async denyInvitation(idInstituicao, idProfesor){
+  async getInstitutionLinks(idProfessor){
+      try{
+        const pool = await db.getConnection();
+        const result = await pool.request()
+        .input("idProfessor", sql.Int, idProfessor)
+        .query(`
+          SELECT 
+              i.id, 
+              i.nome, 
+              ip.professorAceitou,
+              COUNT(DISTINCT tdp.id_turma) AS turmas
+          FROM FOCA.INSTITUICAO_PROFESSOR ip
+          INNER JOIN FOCA.INSTITUICAO i ON i.id = ip.id_instituicao
+          LEFT JOIN FOCA.Turma t ON t.id_instituicao = i.id
+          LEFT JOIN FOCA.Turma_Disciplina_Professor tdp 
+              ON tdp.id_turma = t.id AND tdp.id_professor = ip.id_professor
+          WHERE ip.id_professor = @idProfessor
+          GROUP BY i.id, i.nome, ip.professorAceitou
+        `);
+        return result.recordset;
+      }
+      catch(error){
+        throw error;
+      }
+    }
+
+    async denyInvitation(idInstituicao, idProfesor) {
     try{
       const pool = await db.getConnection();
       const result = await pool.request()

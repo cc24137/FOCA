@@ -10,7 +10,9 @@ export default function CodigoEmail() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Recebe o email e a senha passados pelo router
   const email = location.state?.email || "";
+  const password = location.state?.password || ""; // Virá preenchido apenas se vier da tela AlterarSenha
 
   const [code, setCode] = useState("");
 
@@ -44,24 +46,38 @@ export default function CodigoEmail() {
 
     if (!email) {
       alert(
-        "Email não encontrado. Por favor, volte e faça o cadastro novamente."
+        "Email não encontrado. Por favor, volte e faça o processo novamente."
       );
       return;
     }
 
     try {
-      const response = await api.put("/users/validarCodigo", {
-        email: email,
-        code: code
-      });
+        // redefinir a senha
+      if (password) {
+        const response = await api.put("/users/mudarSenha", {
+          email: email,
+          code: code,
+          password: password
+        });
 
-      console.log(response.data);
-      alert("Conta validada com sucesso!");
+        console.log("Resposta alterar senha:", response.data);
+        alert("Senha redefinida com sucesso!");
+        goTo("/login");
+      }
+      // validar cadastro
+      else {
+        const response = await api.put("/users/validarCodigo", {
+          email: email,
+          code: code
+        });
 
-      goTo("/login");
+        console.log("Resposta validar cadastro:", response.data);
+        alert("Conta validada com sucesso!");
+        goTo("/login");
+      }
     } catch (error) {
       console.error(error);
-      if (error.code == 400) {
+      if (error.response?.status === 400 || error.code == 400) {
         alert("Código inválido ou expirado, tente novamente.");
       } else {
         alert("Erro ao validar o código. Verifique e tente novamente.");

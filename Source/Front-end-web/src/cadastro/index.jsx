@@ -55,8 +55,6 @@ export default function Cadastro() {
     try {
       const response = await api.post("/users/cadastro", form);
 
-      console.log(response.data);
-
       const userEmail = form.email;
 
       setForm({ email: "", name: "", password: "" });

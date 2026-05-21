@@ -6,8 +6,13 @@ const verifyToken = require('../middleware/authMiddleware');
 
 router.get("/porId", verifyToken, turmaController.getById);
 router.get("/porInstituicao", verifyToken, turmaController.getByInstitution);
+
+router.get("/infosPorInstituicao", verifyToken, turmaController.getInfoByInstitution);
+
 router.post("/cadastrar", verifyToken, turmaController.create);
+
 router.put("/atualizar", verifyToken, turmaController.update);
+
 router.delete("/excluir", verifyToken, turmaController.delete);
 
 module.exports = router;

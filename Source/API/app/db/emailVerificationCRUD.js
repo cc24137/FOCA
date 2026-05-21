@@ -3,7 +3,7 @@ const db = require('../../config/dbConfig');
 
 class EmailVerificationCRUD{
 
-  createVerificationCode = async (email, code) => {
+  saveCode = async (email, code) => {
       const pool = await db.getConnection();
       const expiresAt = new Date();
       expiresAt.setMinutes(expiresAt.getMinutes() + 15);

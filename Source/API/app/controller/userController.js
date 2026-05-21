@@ -152,53 +152,51 @@ class UserController{
 	  "password": str
   }
   */
-  signUp = async (req, res) =>{
-    console.log("Sign Up chamado!");
-    const {email, name, password} = req.body;
-
-    if (req.body.isProfessor){
-      // create PROFESSOR
+  signUp = async (req, res) => {
+      console.log("Sign Up chamado!");
+      const { email, name, password, isProfessor } = req.body;
+  
+      // Instâncias dos CRUDs
       const professorCRUD = new ProfessorCRUD();
-      const emailVerificationCRUD = new EmailVerificationCRUD();
-      await professorCRUD.createProfessor(email, password, name)
-      .then(async ()=>{
-        const code = crypto.randomInt(100000, 999999).toString();
-        await emailVerificationCRUD.deleteCodesByEmail(email);
-        await emailVerificationCRUD.saveCode(email, code);
-
-        const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p><br><p>Ele expira em 15 minutos.</p>`;
-        await sendMail(email, "Código de verificação", html);
-        console.log("Professor criado. Código de verificação mandado!");
-        res.status(201).send();
-      })
-      .catch(error=>{
-        console.log(error);
-        console.log("Deu erro ao cadastrar professor.");
-        res.status(500).json({error: error});
-      })
-    }
-
-    // create INSTITUICAO
-    else{
       const instituicaoCRUD = new InstituicaoCRUD();
       const emailVerificationCRUD = new EmailVerificationCRUD();
-      await instituicaoCRUD.createInstituicao(email, password, name)
-      .then(async ()=>{
+  
+      try {
+        if (isProfessor) {
+          // 1. Cria o Professor
+          await professorCRUD.createProfessor(email, password, name);
+          console.log("Passo 1: Professor criado no banco.");
+        } else {
+          // 1. Cria a Instituição
+          await instituicaoCRUD.createInstituicao(email, password, name);
+          console.log("Passo 1: Instituição criada no banco.");
+        }
+  
+        // 2. Lógica de código de verificação (comum para ambos)
         const code = crypto.randomInt(100000, 999999).toString();
         await emailVerificationCRUD.deleteCodesByEmail(email);
         await emailVerificationCRUD.saveCode(email, code);
-
-        const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p>`;
+        console.log("Passo 2: Código de verificação salvo.");
+  
+        // 3. Envio de e-mail
+        const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p><br><p>Ele expira em 15 minutos.</p>`;
         await sendMail(email, "Código de verificação", html);
-        console.log("Professor criado. Código de verificação mandado!");
-        res.status(201).send();
-      })
-      .catch(error=>{
-        console.log("Deu erro ao cadastrar professor.");
-        res.status(500).json({error: error});
-      })
+        console.log("Passo 3: E-mail enviado!");
+  
+        // Sucesso!
+        return res.status(201).send();
+  
+      } catch (error) {
+        // Aqui você verá o erro real no terminal do seu servidor Node
+        console.error("ERRO NO SIGNUP:", error); 
+        
+        // Retorna uma mensagem legível para o front-end
+        return res.status(500).json({ 
+          message: "Erro interno no servidor ao realizar cadastro.",
+          details: error.message 
+        });
+      }
     }
-  }
 
   // change password
   // the app flow should be:

@@ -19,6 +19,20 @@ class ProfessorController{
       });
   }
 
+  getInfoByInstitution = async(req, res) => {
+    const professorCRUD = new ProfessorCRUD();
+    const {id} = req.user;
+
+    await professorCRUD.getInfoProfessorByInstituicao(id)
+      .then((recordset)=>{
+        res.status(200).json(recordset);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      })
+  }
+
   getById = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();
     const { id } = req.body;

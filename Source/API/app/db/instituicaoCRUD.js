@@ -91,7 +91,7 @@ class InstituicaoCRUD{
       return result.recordset[0];
     }
     catch (error) { throw error; }
-  } 
+  }
 
   async update(id, nome, password) {
     try {
@@ -103,6 +103,21 @@ class InstituicaoCRUD{
         .input("nome", sql.VarChar, nome)
         .input("senha", sql.VarChar, encryptedPassword)
         .query(`UPDATE FOCA.INSTITUICAO SET nome = @nome, senha_hash = @senha WHERE id = @id`);
+      if (result.rowsAffected[0] === 0) {
+        const er = new Error(); er.name = "Not found"; throw er;
+      }
+    }
+    catch (error) { throw error; }
+  }
+
+  async updateProfile(id, nome, email) {
+    try {
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, id)
+        .input("nome", sql.VarChar, nome)
+        .input("email", sql.VarChar, email)
+        .query(`UPDATE FOCA.INSTITUICAO SET nome = @nome, email = @email WHERE id = @id`);
       if (result.rowsAffected[0] === 0) {
         const er = new Error(); er.name = "Not found"; throw er;
       }
@@ -137,7 +152,7 @@ class InstituicaoCRUD{
                     THROW 50001, 'Professor not found', 1;
                 END
 
-                INSERT INTO FOCA.INSTITUICAO_PROFESSOR 
+                INSERT INTO FOCA.INSTITUICAO_PROFESSOR
                 (id_instituicao, professorAceitou, id_professor) VALUES
                 (@id, 0, @idProfessor)`)
     }

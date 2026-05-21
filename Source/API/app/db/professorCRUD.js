@@ -11,7 +11,7 @@ class ProfessorCRUD {
         const result = await pool.request()
           .input("institutionId", sql.Int, institutionId)
           .query(`
-            select * from foca.professor p 
+            select * from foca.professor p
             inner join foca.Instituicao_Professor ip on ip.id_professor = p.id
             where (ip.id_instituicao =  @institutionId and ip.professorAceitou=1)
             `);
@@ -140,21 +140,36 @@ class ProfessorCRUD {
     catch (error) { throw error; }
   }
 
+  async updateProfile(id, nome, email) {
+    try {
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, id)
+        .input("nome", sql.VarChar, nome)
+        .input("email", sql.VarChar, email)
+        .query(`UPDATE FOCA.PROFESSOR SET nome = @nome, email = @email WHERE id = @id`);
+      if (result.rowsAffected[0] === 0) {
+        const er = new Error(); er.name = "Not found"; throw er;
+      }
+    }
+    catch (error) { throw error; }
+  }
+
   async getInstitutionLinks(idProfessor){
       try{
         const pool = await db.getConnection();
         const result = await pool.request()
         .input("idProfessor", sql.Int, idProfessor)
         .query(`
-          SELECT 
-              i.id, 
-              i.nome, 
+          SELECT
+              i.id,
+              i.nome,
               ip.professorAceitou,
               COUNT(DISTINCT tdp.id_turma) AS turmas
           FROM FOCA.INSTITUICAO_PROFESSOR ip
           INNER JOIN FOCA.INSTITUICAO i ON i.id = ip.id_instituicao
           LEFT JOIN FOCA.Turma t ON t.id_instituicao = i.id
-          LEFT JOIN FOCA.Turma_Disciplina_Professor tdp 
+          LEFT JOIN FOCA.Turma_Disciplina_Professor tdp
               ON tdp.id_turma = t.id AND tdp.id_professor = ip.id_professor
           WHERE ip.id_professor = @idProfessor
           GROUP BY i.id, i.nome, ip.professorAceitou
@@ -172,7 +187,7 @@ class ProfessorCRUD {
       const result = await pool.request()
       .input("idInstituicao", sql.Int, idInstituicao)
       .input("idProfessor", sql.Int, idProfesor)
-      .query(`DELETE FROM FOCA.INSTITUICAO_PROFESSOR 
+      .query(`DELETE FROM FOCA.INSTITUICAO_PROFESSOR
         WHERE ID_INSTITUICAO=@idInstituicao and id_professor=@idProfessor`);
     }
     catch(error){
@@ -186,7 +201,7 @@ class ProfessorCRUD {
       const result = await pool.request()
       .input("idInstituicao", sql.Int, idInstituicao)
       .input("idProfessor", sql.Int, idProfesor)
-      .query(`UPDATE FOCA.INSTITUICAO_PROFESSOR set professorAceitou=1 
+      .query(`UPDATE FOCA.INSTITUICAO_PROFESSOR set professorAceitou=1
         WHERE ID_INSTITUICAO=@idInstituicao and id_professor=@idProfessor`)
     }
     catch (error) { throw error; }

@@ -10,14 +10,14 @@ const EmailVerificationCRUD = require('../db/emailVerificationCRUD');
 
 // handles methods that are from PROFESSOR and from INSTITUICAO at the same time. Login, for example.
 
-class UserController{  
+class UserController{
 
   login = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();
     const instituicaoCRUD = new InstituicaoCRUD();
     let found = false;
     let {email, password} = req.body;
-    
+
     // tries to login as PROFESSOR
     await professorCRUD.professorLogin(email, password)
       .then((recordset) => {
@@ -28,7 +28,7 @@ class UserController{
             process.env.JWT_SECRET,                          // .env password
             { expiresIn: '2h' }                              // expiration time
           );
-        
+
         // returns user and token
         res.status(200).json({ user: finalResult, token: token });
         found = true;
@@ -50,7 +50,7 @@ class UserController{
           }
         }
       });
-    
+
     // tries to login as INSTITUICAO
     if (!found) {
       instituicaoCRUD.instituicaoLogin(email, password)
@@ -63,7 +63,7 @@ class UserController{
                 process.env.JWT_SECRET,                           // .env password
                 { expiresIn: '2h' }                               // expiration time
               );
-            
+
             // returns user and token
             res.status(200).json({ user: finalResult, token: token });
           }
@@ -151,7 +151,7 @@ class UserController{
 	  "email": str,
 	  "password": str
   }
-  */ 
+  */
   signUp = async (req, res) =>{
     console.log("Sign Up chamado!");
     const {email, name, password} = req.body;
@@ -177,8 +177,8 @@ class UserController{
         res.status(500).json({error: error});
       })
     }
-    
-    // create INSTITUICAO 
+
+    // create INSTITUICAO
     else{
       const instituicaoCRUD = new InstituicaoCRUD();
       const emailVerificationCRUD = new EmailVerificationCRUD();
@@ -197,7 +197,7 @@ class UserController{
         console.log("Deu erro ao cadastrar professor.");
         res.status(500).json({error: error});
       })
-    } 
+    }
   }
 
   // change password
@@ -227,6 +227,35 @@ class UserController{
       res.status(200).json({ message: "Password changed." });
     } catch (error) {
       res.status(500).json({ error: error.message });
+    }
+  }
+
+  updateProfile = async (req, res) => {
+    try {
+      const { id, isProfessor } = req.user;
+      const { nome, email } = req.body;
+
+      if (!nome || !email) {
+        return res.status(400).json({ message: "Name and e-mail are required." });
+      }
+
+      if (isProfessor) {
+        const professorCRUD = new ProfessorCRUD();
+        await professorCRUD.updateProfile(id, nome, email);
+        return res.status(200).json({ message: "Perfil de professor atualizado com sucesso!" });
+      } else {
+        const instituicaoCRUD = new InstituicaoCRUD();
+        await instituicaoCRUD.updateProfile(id, nome, email);
+        return res.status(200).json({ message: "Perfil de instituição atualizado com sucesso!" });
+      }
+    } catch (error) {
+      console.error("Error while trying to update profile:", error);
+
+      if (error.name === "Not found") {
+        return res.status(404).json({ message: "User not found." });
+      }
+
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
 }

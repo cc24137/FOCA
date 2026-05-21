@@ -36,9 +36,10 @@ class TurmaController {
 
   create = async (req, res) => {
     const turmaCRUD = new TurmaCRUD();
-    const { name, institutionId, studentCount, grade } = req.body;
+    const {id} = req.user;
+    const { name, studentCount, grade } = req.body;
 
-    await turmaCRUD.createTurma(name, institutionId, studentCount, grade)
+    await turmaCRUD.createTurma(name, id, studentCount, grade)
       .then((insertedId) => {
         res.status(201).json({ id: insertedId });
       })

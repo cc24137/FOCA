@@ -36,9 +36,10 @@ class DisciplinaController {
 
   create = async (req, res) => {
     const disciplinaCRUD = new DisciplinaCRUD();
-    const { name, institutionId } = req.body;
+    const {id} = req.user;
+    const { name } = req.body;
 
-    await disciplinaCRUD.createDisciplina(name, institutionId)
+    await disciplinaCRUD.createDisciplina(name, id)
       .then((insertedId) => {
         res.status(201).json({ id: insertedId });
       })

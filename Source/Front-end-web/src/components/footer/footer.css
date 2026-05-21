@@ -1,7 +1,14 @@
 .footer-body{
-    padding: 20px;
-    margin: 0px 64px 0px 64px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     margin-top: auto;
+    padding: 0px 64px 0px 64px;
+    font-family: var(--font-inter);
+}
+
+.footer-elements{
+    padding-top: 20px;
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -9,7 +16,7 @@
 }
 
 .footer-about{
-    width: 35%;
+    width: 40%;
 }
 
 .footer-contacts{
@@ -26,11 +33,29 @@
 }
 
 .footer-more-about{
-    width: 35%;
+    width: 30%;
     padding-left: 20px;
 }
 
 .footer-title{
     font-family: var(--font-scada);
     font-size: 28px;
+    padding-bottom: 8px;
+}
+
+.more-about-row{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.footer-text{
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+.more-about-text{
+    padding-left: 8px;
+    font-size: 20px;
 }

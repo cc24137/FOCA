@@ -6,6 +6,7 @@ const verifyToken = require('../middleware/authMiddleware');
 
 
 router.get("/porProfessor", verifyToken, turmaDisciplinaProfessorController.getByProfessor);
+router.get("/:linkId", verifyToken, turmaDisciplinaProfessorController.getByLinkId);
 
 router.post("/relacionar", verifyToken, turmaDisciplinaProfessorController.create);
 

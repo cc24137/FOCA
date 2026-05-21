@@ -1,7 +1,31 @@
 const db = require('../../config/dbConfig');
 const { sql } = require('../../config/dbConfig');
 
-class TurmaDisciplinaProfessorCRUD{
+class TurmaDisciplinaProfessorCRUD {
+
+    async getByLinkId(linkId) {
+        try {
+            const pool = await db.getConnection();
+            const result = await pool.request()
+                .input("id", sql.Int, linkId)
+                .query(`
+                    SELECT
+                        T.nome AS nomeTurma,
+                        D.nome AS nomeDisciplina,
+                        P.nome AS nomeProfessor,
+                        I.nome AS nomeInstituicao
+                    FROM foca.Turma_Disciplina_Professor TDP
+                    INNER JOIN foca.Turma T ON TDP.id_turma = T.id
+                    INNER JOIN foca.Disciplina D ON TDP.id_disciplina = D.id
+                    INNER JOIN foca.Professor P ON TDP.id_professor = P.id
+                    INNER JOIN foca.Instituicao I ON T.id_instituicao = I.id
+                    WHERE TDP.id = @id
+                `);
+            return result.recordset[0];
+        } catch (error) {
+            throw error;
+        }
+    }
 
     async getByProfessor(idProfessor) {
         try {

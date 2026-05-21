@@ -13,9 +13,7 @@ export default function InicialProfessor() {
     navigate(route);
   };
 
-  // Nova função para ir para a página da turma específica
   const goToTurma = idTurma => {
-    // Redireciona para a rota passando o ID na URL
     navigate(`/informacoes-turma/${idTurma}`);
   };
 

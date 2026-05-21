@@ -15,7 +15,26 @@ class TurmaDisciplinaProfessorController{
       })
   }
 
-  create = async(req, res) => {
+    getByLinkId = async (req, res) => {
+    const turmaDisciplinaProfessorCRUD = new TurmaDisciplinaProfessorCRUD();
+    const { linkId } = req.params;
+
+    await turmaDisciplinaProfessorCRUD.getByLinkId(linkId)
+      .then((record) => {
+        if (record) {
+          res.status(200).json(record);
+        } else {
+          res.status(404).json({ message: "Relation not found" });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      });
+
+    }
+
+    create = async (req, res) => {
     const turmaDisciplinaProfessorCRUD = new TurmaDisciplinaProfessorCRUD();
     const {idDisciplina, idTurma, idProfessor} = req.body;
     await turmaDisciplinaProfessorCRUD.create(idDisciplina, idTurma, idProfessor)

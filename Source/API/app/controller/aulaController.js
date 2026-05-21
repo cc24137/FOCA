@@ -2,6 +2,25 @@ const AulaCRUD = require('../db/aulaCRUD');
 
 class AulaController {
 
+    getByLinkId = async (req, res) => {
+        const aulaCRUD = new AulaCRUD();
+        const { linkId } = req.params;
+    
+        await aulaCRUD.getByLinkId(linkId)
+        .then((aula) => {
+            if (aula) {
+            res.status(200).json(aula);
+            } else {
+            res.status(404).json({ message: "Aula not found" });
+            }
+        })
+        .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      });
+
+    }
+
   create = async (req, res) => {
     const aulaCRUD = new AulaCRUD();
     const { date, content, classSubjectTeacherId } = req.body;

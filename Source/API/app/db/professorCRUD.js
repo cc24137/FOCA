@@ -79,20 +79,21 @@ class ProfessorCRUD {
   }
 
   async createProfessor(email, password, nome){
-    try{
-      const saltNumber = 12;
-      const encryptedPassword = await bcrypt.hash(password, saltNumber);
-      const pool = await db.getConnection();
-      const result = await pool.request()
-      .input("email", sql.VarChar, email)
-      .input("nome", sql.VarChar, nome)
-      .input("password", sql.VarChar, encryptedPassword)
-      .query("INSERT INTO FOCA.PROFESSOR (EMAIL, NOME, SENHA_HASH, emailVerificado) OUTPUT INSERTED.id VALUES (@email, @nome, @password, 0)")
+      try{
+        const saltNumber = 12;
+        const encryptedPassword = await bcrypt.hash(password, saltNumber);
+        const pool = await db.getConnection();
+        
+        const result = await pool.request()
+        .input("email", sql.VarChar, email)
+        .input("nome", sql.VarChar, nome)
+        .input("password", sql.VarChar, encryptedPassword)
+        .query("INSERT INTO FOCA.PROFESSOR (EMAIL, NOME, SENHA_HASH, emailVerificado) VALUES (@email, @nome, @password, 0)")
+      }
+      catch(error){
+        throw error;
+      }
     }
-    catch(error){
-      throw error;
-    }
-  }
 
   async verifYEmail(email){
       try{

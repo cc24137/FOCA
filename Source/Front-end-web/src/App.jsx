@@ -21,24 +21,24 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/"                    element={<Inicial />} />
-        <Route path="/inicial"             element={<Inicial />} />
-        <Route path="/alterar-senha"       element={<AlterarSenha />} />
-        <Route path="/cadastro"            element={<Cadastro />} />
-        <Route path="/codigo-email"        element={<CodigoEmail />} />
-        <Route path="/disciplinas"         element={<Disciplinas />} />
-        <Route path="/editar-dados"        element={<EditarDados />} />
-        <Route path="/estatisticas"        element={<Estatisticas />} />
-        <Route path="/informacoes-turma"   element={<InformacoesTurma />} />
-        <Route path="/inicial-instituicao" element={<InicialInstituicao />} />
-        <Route path="/inicial-professor"   element={<InicialProfessor />} />
-        <Route path="/vinculos-professor"  element={<VinculosProfessor />} />
-        <Route path="/login"               element={<Login />} />
-        <Route path="/professores"         element={<Professores />} />
-        <Route path="/teste-video"         element={<TesteVideo />} />
-        <Route path="/turmas"              element={<Turmas />} />
-        <Route path="/upload-video"        element={<UploadVideo />} />
-        <Route path="*"                    element={<Inicial />} /> {/*Fallback leva para a tela inicial*/}
+        <Route path="/"                      element={<Inicial />} />
+        <Route path="/inicial"               element={<Inicial />} />
+        <Route path="/alterar-senha"         element={<AlterarSenha />} />
+        <Route path="/cadastro"              element={<Cadastro />} />
+        <Route path="/codigo-email"          element={<CodigoEmail />} />
+        <Route path="/disciplinas"           element={<Disciplinas />} />
+        <Route path="/editar-dados"          element={<EditarDados />} />
+        <Route path="/estatisticas"          element={<Estatisticas />} />
+        <Route path="/informacoes-turma/:id" element={<InformacoesTurma />} />
+        <Route path="/inicial-instituicao"   element={<InicialInstituicao />} />
+        <Route path="/inicial-professor"     element={<InicialProfessor />} />
+        <Route path="/vinculos-professor"    element={<VinculosProfessor />} />
+        <Route path="/login"                 element={<Login />} />
+        <Route path="/professores"           element={<Professores />} />
+        <Route path="/teste-video"           element={<TesteVideo />} />
+        <Route path="/turmas"                element={<Turmas />} />
+        <Route path="/upload-video"          element={<UploadVideo />} />
+        <Route path="*"                      element={<Inicial />} /> {/*Fallback leva para a tela inicial*/}
       </Routes>
     </BrowserRouter>
   );

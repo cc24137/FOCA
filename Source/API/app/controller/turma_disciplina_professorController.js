@@ -21,7 +21,6 @@ class TurmaDisciplinaProfessorController{
 
     await turmaDisciplinaProfessorCRUD.getByLinkId(linkId)
         .then((record) => {
-          console.log(record);
         if (record) {
           res.status(200).json(record);
         } else {

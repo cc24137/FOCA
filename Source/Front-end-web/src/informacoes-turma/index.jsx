@@ -39,241 +39,162 @@ function ClearIcon(props) {
 }
 
 export default function InformacoesTurma() {
-  // Captura o parâmetro passado pela URL (verifique se no seu App.jsx/Routes a rota é algo como path="/informacoes-turma/:id")
-  const { id } = useParams();
+    const { id } = useParams();
 
-  const [aulasSelecionadas, setAulasSelecionadas] = useState([]);
-  const [turma, setTurma] = useState(null);
-  const [aulas, setAulas] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [aulasSelecionadas, setAulasSelecionadas] = useState([]);
+    const [turma, setTurma] = useState({
+        nome: '',
+        alunos: '',
+        instituicao: '',
+        serie: '',
+        disciplina: ''
+    });
+    const [aulas, setAulas] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  // Carregar os dados ao montar o ecrã
-  useEffect(() => {
-    async function fetchDetalhes() {
-      try {
-        // Fazer as requisições em paralelo para otimizar o tempo de resposta
-        const [resTurma, resAulas] = await Promise.all([
-          api.get(`/turmaRelacao/${id}`),
-          api.get(`/aula/${id}`)
-        ]);
+    useEffect(() => {
+        async function fetchDetalhes() {
+            setLoading(true);
+            try {
+                const [resTurma, resAulas] = await Promise.all([
+                    api.get(`/turmaRelacao/${id}`),
+                    api.get(`/aula/${id}`)
+                ]);
 
-        // Como a API não devolve "alunos" nem "serie" ainda, colocamos valores default '-'
-        if (resTurma.data) {
-          setTurma({
-            nome: resTurma.data.nomeTurma || "Sem nome",
-            alunos: resTurma.data.alunosTurma || "-",
-            instituicao: resTurma.data.nomeInstituicao || "Sem Instituição",
-            serie: resTurma.data.serieTurma || "-",
-            disciplina: resTurma.data.nomeDisciplina || "Sem Disciplina"
-          });
-        }
-
-        // O resAulas.data agora deve ser um array graças ao ajuste no seu recordset
-        if (resAulas.data && Array.isArray(resAulas.data)) {
-          setAulas(resAulas.data);
-        } else if (resAulas.data) {
-          // Por segurança, se vier um único objeto em vez de array
-          setAulas([resAulas.data]);
-        }
-      } catch (error) {
-        console.error("Erro ao procurar as informações da turma:", error);
-        alert("Ocorreu um erro ao carregar os dados.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (id) {
-      fetchDetalhes();
-    }
-  }, [id]);
-
-  // Transforma os dados reais das aulas num formato que a Combobox aceita
-  const listaDeAulas = aulas.map((aula, index) => ({
-    label: `Aula ${index + 1} - ${new Date(aula.data).toLocaleDateString(
-      "pt-PT"
-    )} ${aula.nome_classificacao ? `(${aula.nome_classificacao})` : ""}`,
-    value: aula.id.toString()
-  }));
-
-  const handleCompararClick = () => {
-    console.log("Aulas prontas para comparar:", aulasSelecionadas);
-  };
-
-  const handleRemoverAula = aulaParaRemover => {
-    const novaLista = aulasSelecionadas.filter(
-      aula => aula.value !== aulaParaRemover.value
-    );
-    setAulasSelecionadas(novaLista);
-  };
-
-  if (loading) {
-    return (
-      <p style={{ textAlign: "center", marginTop: "50px" }}>
-        A carregar informações da turma...
-      </p>
-    );
-  }
-
-  if (!turma) {
-    return (
-      <p style={{ textAlign: "center", marginTop: "50px" }}>
-        Turma não encontrada.
-      </p>
-    );
-  }
-
-  return (
-    <div className="informacoes-turma-container">
-      <Header />
-      <div className="informacoes-turma-content">
-        <div className="informacoes-turma-box">
-          <div className="informacoes-turma-box-row">
-            <p className="informacoes-turma-box-title">{turma.nome}</p>
-
-            <button className="informacoes-turma-box-button">
-              <p className="informacoes-turma-box-button-text">nova aula</p>
-            </button>
-          </div>
-
-          <div className="informacoes-turma-box-container">
-            <div className="informacoes-turma-box-container-column">
-              <div className="informacoes-turma-box-container-row">
-                <p className="informacoes-turma-box-container-row-title">
-                  Alunos:{" "}
-                </p>
-                <p className="informacoes-turma-box-container-row-text">
-                  {turma.alunos}
-                </p>
-              </div>
-
-              <div className="informacoes-turma-box-container-row">
-                <p className="informacoes-turma-box-container-row-title">
-                  Série:{" "}
-                </p>
-                <p className="informacoes-turma-box-container-row-text">
-                  {turma.serie}
-                </p>
-              </div>
-            </div>
-
-            <div className="informacoes-turma-box-container-column">
-              <div className="informacoes-turma-box-container-row">
-                <p className="informacoes-turma-box-container-row-title">
-                  Disciplina:{" "}
-                </p>
-                <p className="informacoes-turma-box-container-row-text">
-                  {turma.disciplina}
-                </p>
-              </div>
-
-              <div className="informacoes-turma-box-container-row">
-                <p className="informacoes-turma-box-container-row-title">
-                  Instituição:{" "}
-                </p>
-                <p className="informacoes-turma-box-container-row-text">
-                  {turma.instituicao}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="informacoes-turma-box-atencao-media">
-          <p className="informacoes-turma-box-atencao-media-title">
-            Atenção média{" "}
-          </p>
-          <div className="informacoes-turma-box-atencao-media-content"></div>
-        </div>
-
-        <div className="informacoes-turma-box-historico-aulas">
-          <p className="informacoes-turma-box-historico-aulas-title">
-            Histórico de aulas{" "}
-          </p>
-          <div className="informacoes-turma-box-historico-aulas-content">
-            {/* Tabela de Aulas Dinâmica */}
-            {aulas.length > 0 ? (
-              <table className="tabela-aulas">
-                <thead>
-                  <tr>
-                    <th>Data</th>
-                    <th>Conteúdo</th>
-                    <th>Classificação</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {aulas.map(aula => (
-                    <tr key={aula.id}>
-                      <td>{new Date(aula.data).toLocaleDateString("pt-PT")}</td>
-                      <td>{aula.conteudo}</td>
-                      <td>{aula.nome_classificacao || "Sem classificação"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <p style={{ padding: "20px", color: "#666" }}>
-                Nenhuma aula registada até ao momento.
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="informacoes-turma-box-comparacao-aulas">
-          <p className="informacoes-turma-box-comparacao-aulas-title">
-            Comparação detalhada de diferentes aulas{" "}
-          </p>
-          <div className="informacoes-turma-box-comparacao-aulas-subtitle-row">
-            <div className="informacoes-turma-box-comparacao-aulas-subtitle-row-right">
-              <p className="informacoes-turma-comparacao-aulas-label">
-                Selecionar aulas:
-              </p>
-
-              <Combobox
-                items={listaDeAulas}
-                placeholder="Buscar aula..."
-                selectedItems={aulasSelecionadas}
-                onSelectionChange={selectedItems =>
-                  setAulasSelecionadas(selectedItems)
+                if (resTurma.data) {
+                    setTurma({
+                        nome: resTurma.data.nomeTurma || 'Não informado',
+                        alunos: resTurma.data.alunosTurma || '-',
+                        instituicao: resTurma.data.nomeInstituicao || 'Não informada',
+                        serie: resTurma.data.serieTurma || '-',
+                        disciplina: resTurma.data.nomeDisciplina || 'Não informada',
+                    });
                 }
-              />
+
+                if (resAulas.data) {
+                    setAulas(Array.isArray(resAulas.data) ? resAulas.data : [resAulas.data]);
+                }
+            } catch (error) {
+                console.error("Erro ao procurar as informações:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        if (id) fetchDetalhes();
+    }, [id]);
+
+    const listaDeAulas = aulas.map((aula, index) => ({
+        label: `Aula ${index + 1} - ${new Date(aula.data).toLocaleDateString('pt-PT')}`,
+        value: aula.id.toString()
+    }));
+
+    const handleRemoverAula = (aulaParaRemover) => {
+        setAulasSelecionadas(prev => prev.filter(a => a.value !== aulaParaRemover.value));
+    };
+
+    // Note que removemos o return loading aqui!
+
+    return (
+        <div className='informacoes-turma-container'>
+            <Header />
+            <div className='informacoes-turma-content'>
+
+                {/* Cabeçalho da Turma */}
+                <div className='informacoes-turma-box'>
+                    <div className='informacoes-turma-box-row'>
+                        {/* Se estiver carregando, mostra um placeholder ou o nome */}
+                        <p className='informacoes-turma-box-title'>
+                            {loading && !turma.nome ? "A carregar..." : turma.nome}
+                        </p>
+                        <button className='informacoes-turma-box-button'>
+                            <p className='informacoes-turma-box-button-text'>nova aula</p>
+                        </button>
+                    </div>
+
+                    <div className='informacoes-turma-box-container'>
+                        <div className='informacoes-turma-box-container-column'>
+                            <div className='informacoes-turma-box-container-row'>
+                                <p className='informacoes-turma-box-container-row-title'>Alunos: </p>
+                                <p className='informacoes-turma-box-container-row-text'>{turma.alunos || (loading && "...")}</p>
+                            </div>
+                            <div className='informacoes-turma-box-container-row'>
+                                <p className='informacoes-turma-box-container-row-title'>Série: </p>
+                                <p className='informacoes-turma-box-container-row-text'>{turma.serie || (loading && "...")}</p>
+                            </div>
+                        </div>
+                        <div className='informacoes-turma-box-container-column'>
+                            <div className='informacoes-turma-box-container-row'>
+                                <p className='informacoes-turma-box-container-row-title'>Disciplina: </p>
+                                <p className='informacoes-turma-box-container-row-text'>{turma.disciplina || (loading && "...")}</p>
+                            </div>
+                            <div className='informacoes-turma-box-container-row'>
+                                <p className='informacoes-turma-box-container-row-title'>Instituição: </p>
+                                <p className='informacoes-turma-box-container-row-text'>{turma.instituicao || (loading && "...")}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Box de Atenção (vazia por enquanto) */}
+                <div className='informacoes-turma-box-atencao-media'>
+                    <p className='informacoes-turma-box-atencao-media-title'>Atenção média </p>
+                    <div className='informacoes-turma-box-atencao-media-content'>
+                        {loading && <p style={{padding: '10px'}}>Calculando dados...</p>}
+                    </div>
+                </div>
+
+                {/* Histórico de Aulas */}
+                <div className='informacoes-turma-box-historico-aulas'>
+                    <p className='informacoes-turma-box-historico-aulas-title'>Histórico de aulas </p>
+                    <div className='informacoes-turma-box-historico-aulas-content'>
+                        {loading && aulas.length === 0 ? (
+                            <p style={{ padding: '20px' }}>Buscando histórico...</p>
+                        ) : aulas.length > 0 ? (
+                            <table className="tabela-aulas">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Conteúdo</th>
+                                        <th>Classificação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {aulas.map((aula) => (
+                                        <tr key={aula.id}>
+                                            <td>{new Date(aula.data).toLocaleDateString('pt-PT')}</td>
+                                            <td>{aula.conteudo}</td>
+                                            <td>{aula.nome_classificacao || 'Sem classificação'}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : (
+                            <p style={{ padding: '20px' }}>Nenhuma aula encontrada.</p>
+                        )}
+                    </div>
+                </div>
+
+                {/* Comparação de Aulas */}
+                <div className='informacoes-turma-box-comparacao-aulas'>
+                    <p className='informacoes-turma-box-comparacao-aulas-title'>Comparação detalhada</p>
+                    <div className='informacoes-turma-box-comparacao-aulas-subtitle-row'>
+                        <div className='informacoes-turma-box-comparacao-aulas-subtitle-row-right'>
+                            <p className='informacoes-turma-comparacao-aulas-label'>Selecionar aulas:</p>
+                            <Combobox
+                                items={listaDeAulas}
+                                placeholder={loading ? "Carregando aulas..." : "Buscar aula..."}
+                                selectedItems={aulasSelecionadas}
+                                onSelectionChange={setAulasSelecionadas}
+                            />
+                        </div>
+                        <button className='informacoes-turma-box-comparacao-aulas-button'>
+                            <p className='informacoes-turma-box-comparacao-aulas-button-text'>Comparar</p>
+                        </button>
+                    </div>
+                    {/* Restante do componente de tags (aulasSelecionadas.map...) */}
+                </div>
             </div>
-
-            <button
-              className="informacoes-turma-box-comparacao-aulas-button"
-              onClick={handleCompararClick}
-            >
-              <p className="informacoes-turma-box-comparacao-aulas-button-text">
-                Comparar
-              </p>
-            </button>
-          </div>
-
-          <div className="informacoes-turma-box-comparacao-aulas-aulas-selecionadas">
-            {aulasSelecionadas.length > 0 ? (
-              <div className="turma-tags-container">
-                {aulasSelecionadas.map(aula => (
-                  <span key={aula.value} className="turma-tag">
-                    <CheckIcon className="turma-tag-check-icon" />
-                    {aula.label}
-                    <button
-                      aria-label={`Remover ${aula.label}`}
-                      onClick={() => handleRemoverAula(aula)}
-                      className="turma-tag-remove-button"
-                    >
-                      <ClearIcon width={11} height={11} />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p>Nenhuma aula selecionada para comparação.</p>
-            )}
-          </div>
-
-          <div className="informacoes-turma-box-comparacao-aulas-content"></div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

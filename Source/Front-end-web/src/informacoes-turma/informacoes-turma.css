@@ -74,6 +74,7 @@
 
 .informacoes-turma-box-container-row-text {
     font-size: 21px;
+    white-space: nowrap;
 }
 
 .informacoes-turma-box-atencao-media {

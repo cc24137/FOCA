@@ -231,33 +231,33 @@ class UserController{
   }
 
   updateProfile = async (req, res) => {
-    try {
-      const { id, isProfessor } = req.user;
-      const { nome, email } = req.body;
+      try {
+        const { id, isProfessor } = req.user;
+        const { nome, senha } = req.body;
 
-      if (!nome || !email) {
-        return res.status(400).json({ message: "Name and e-mail are required." });
+        if (!nome && !senha) {
+          return res.status(400).json({ message: "Name or password is required." });
+        }
+  
+        if (isProfessor) {
+          const professorCRUD = new ProfessorCRUD();
+          await professorCRUD.updateProfile(id, nome, senha);
+          return res.status(200).json({ message: "Profile updated successfully." });
+        } else {
+          const instituicaoCRUD = new InstituicaoCRUD();
+          await instituicaoCRUD.updateProfile(id, nome, senha);
+          return res.status(200).json({ message: "Profile updated successfully." });
+        }
+      } catch (error) {
+        console.error("Error while trying to update profile:", error);
+  
+        if (error.name === "Not found") {
+          return res.status(404).json({ message: "User not found." });
+        }
+  
+        return res.status(500).json({ error: "Internal server error" });
       }
-
-      if (isProfessor) {
-        const professorCRUD = new ProfessorCRUD();
-        await professorCRUD.updateProfile(id, nome, email);
-        return res.status(200).json({ message: "Perfil de professor atualizado com sucesso!" });
-      } else {
-        const instituicaoCRUD = new InstituicaoCRUD();
-        await instituicaoCRUD.updateProfile(id, nome, email);
-        return res.status(200).json({ message: "Perfil de instituição atualizado com sucesso!" });
-      }
-    } catch (error) {
-      console.error("Error while trying to update profile:", error);
-
-      if (error.name === "Not found") {
-        return res.status(404).json({ message: "User not found." });
-      }
-
-      return res.status(500).json({ error: "Internal server error" });
     }
-  }
 }
 
 module.exports = UserController;

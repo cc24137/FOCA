@@ -140,20 +140,36 @@ class ProfessorCRUD {
     catch (error) { throw error; }
   }
 
-  async updateProfile(id, nome, email) {
-    try {
-      const pool = await db.getConnection();
-      const result = await pool.request()
-        .input("id", sql.Int, id)
-        .input("nome", sql.VarChar, nome)
-        .input("email", sql.VarChar, email)
-        .query(`UPDATE FOCA.PROFESSOR SET nome = @nome, email = @email WHERE id = @id`);
-      if (result.rowsAffected[0] === 0) {
-        const er = new Error(); er.name = "Not found"; throw er;
+  async updateProfile(id, nome, senha) {
+      try {
+        const pool = await db.getConnection();
+        const request = pool.request().input("id", sql.Int, id);
+        let updateFields = [];
+  
+        if (nome) {
+          request.input("nome", sql.VarChar, nome);
+          updateFields.push("nome = @nome");
+        }
+
+        if (senha) {
+          const saltNumber = 12;
+          const encryptedPassword = await bcrypt.hash(senha, saltNumber);
+          request.input("senha", sql.VarChar, encryptedPassword);
+          updateFields.push("senha_hash = @senha");
+        }
+
+        if (updateFields.length === 0) return;
+  
+        const query = `UPDATE FOCA.PROFESSOR SET ${updateFields.join(", ")} WHERE id = @id`;
+        
+        const result = await request.query(query);
+  
+        if (result.rowsAffected[0] === 0) {
+          const er = new Error(); er.name = "Not found"; throw er;
+        }
       }
+      catch (error) { throw error; }
     }
-    catch (error) { throw error; }
-  }
 
   async getInstitutionLinks(idProfessor){
       try{

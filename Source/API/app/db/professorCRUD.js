@@ -6,21 +6,47 @@ const bcrypt = require('bcrypt');
 class ProfessorCRUD {
 
   async getProfessorByInstitution(institutionId) {
-      try {
-        const pool = await db.getConnection();
-        const result = await pool.request()
-          .input("institutionId", sql.Int, institutionId)
-          .query(`
-            select * from foca.professor p
-            inner join foca.Instituicao_Professor ip on ip.id_professor = p.id
-            where (ip.id_instituicao =  @institutionId and ip.professorAceitou=1)
-            `);
-        return result.recordset;
-      }
-      catch (error) {
-        throw error;
-      }
+    try {
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("institutionId", sql.Int, institutionId)
+        .query(`
+          select * from foca.professor p
+          inner join foca.Instituicao_Professor ip on ip.id_professor = p.id
+          where (ip.id_instituicao =  @institutionId and ip.professorAceitou=1)
+          `);
+      return result.recordset;
     }
+    catch (error) {
+      throw error;
+    }
+  }
+
+  async getInfoProfessorByInstituicao(id_institution){
+    try{
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, id_institution)
+        .query(`
+            SELECT P.id, P.nome, P.email, T.NOME as turma, D.NOME AS disciplina, sub.MEDIA_ATENCAO as media_atencao FROM FOCA.PROFESSOR P
+            INNER JOIN FOCA.Turma_Disciplina_Professor TDP ON P.ID = TDP.ID_PROFESSOR
+            INNER JOIN FOCA.DISCIPLINA D ON D.ID = TDP.ID_DISCIPLINA
+            INNER JOIN FOCA.TURMA T ON T.ID = TDP.ID_DISCIPLINA
+            INNER JOIN FOCA.INSTITUICAO_PROFESSOR IP ON IP.ID_PROFESSOR = P.ID
+            INNER JOIN (
+            	SELECT A.ID_TURMA_DISCIPLINA_PROFESSOR AS ID_TDP, AVG(A.MEDIA_ATENCAO_TOTAL) AS MEDIA_ATENCAO 
+            	FROM FOCA.AULA A
+            	GROUP BY A.ID_TURMA_DISCIPLINA_PROFESSOR 
+            ) sub
+            ON TDP.ID = sub.ID_TDP
+            WHERE IP.ID_INSTITUICAO = 32
+          `)
+      return result.recordset;
+    }
+    catch(error){
+      throw error;
+    }
+  }
 
   async findProfessorByEmail(email){
     try{

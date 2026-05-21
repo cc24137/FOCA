@@ -53,19 +53,16 @@ export default function Cadastro() {
       return;
     }
     try {
-        const response = await api.post("/users/cadastro", form);
+      const response = await api.post("/users/cadastro", form);
 
-        if (response.status !== 200) {
-            alert("Erro ao criar a conta. Tente novamente.");
-            return;
-            }
-
-      const userEmail = form.email;
-
-      setForm({ email: "", name: "", password: "" });
-      setConfirmarSenha("");
-
-      goTo(`/codigo-email`, { email: userEmail });
+      if (response.status === 201 || response.status === 200) {
+        const userEmail = form.email;
+        setForm({ email: "", name: "", password: "", isProfessor: true });
+        setConfirmarSenha("");
+        goTo(`/codigo-email`, { email: userEmail });
+      } else {
+        alert("Erro ao criar a conta.");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -93,26 +90,21 @@ export default function Cadastro() {
     <div className="cadastro-body">
       {/*esquerda*/}
       <TituloLateral />
-		  
+
       {/*direita*/}
-		  <div className="right">
+      <div className="right">
+        <div className="top">
+          {/* Título adicionado aqui */}
+          <h2 className="sign-in-title-text">Cadastro</h2>
 
-			  <div className="top">
-				  {/* Título adicionado aqui */}
-			        <h2 className="sign-in-title-text">Cadastro</h2>
-						
-
-				  {/*botao inicio*/}
-		        <button className="sign-in-button" onClick={() => goTo("/")}>
-		          <div className="sign-in-content-button">
-		            <HomeIcon className="home-icon" />
-		            <span className="sign-in-button-text">Início</span>
-		          </div>
-		        </button>
-			  </div>
-      
-        
-
+          {/*botao inicio*/}
+          <button className="sign-in-button" onClick={() => goTo("/")}>
+            <div className="sign-in-content-button">
+              <HomeIcon className="home-icon" />
+              <span className="sign-in-button-text">Início</span>
+            </div>
+          </button>
+        </div>
 
         <SeletorTipo option={selectedType} onSelect={setSelectedType} />
 

@@ -181,7 +181,7 @@ class UserController{
         // 3. Envio de e-mail
         const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p><br><p>Ele expira em 15 minutos.</p>`;
         await sendMail(email, "Código de verificação", html);
-        console.log("Passo 3: E-mail enviado!");
+        console.log("Passo 3: E-mail enviado!");    
   
         // Sucesso!
         return res.status(201).send();

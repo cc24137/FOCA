@@ -24,9 +24,9 @@ class TurmaCRUD {
         .input("id", sql.Int, id_institution)
         .query(`
             SELECT T.*, P.NOME as professor, D.NOME as disciplina FROM FOCA.TURMA T
-            INNER JOIN FOCA.Turma_Disciplina_Professor TDP ON T.ID = TDP.ID_TURMA
-            INNER JOIN FOCA.DISCIPLINA D ON D.ID = TDP.ID_DISCIPLINA
-            INNER JOIN FOCA.PROFESSOR P ON P.ID = TDP.ID_PROFESSOR
+            LEFT JOIN FOCA.Turma_Disciplina_Professor TDP ON T.ID = TDP.ID_TURMA
+            LEFT JOIN FOCA.DISCIPLINA D ON D.ID = TDP.ID_DISCIPLINA
+            LEFT JOIN FOCA.PROFESSOR P ON P.ID = TDP.ID_PROFESSOR
             WHERE T.ID_INSTITUICAO = @id
           `)
       return result.recordset;

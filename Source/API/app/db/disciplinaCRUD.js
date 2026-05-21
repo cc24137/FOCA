@@ -17,6 +17,28 @@ class DisciplinaCRUD {
     }
   }
 
+  async getInfoDisciplinasByInstitution(institutionId){
+    try{
+      const pool = await db.getConnection();
+      const result = await pool.request()
+        .input("id", sql.Int, institutionId)
+        .query(`
+          SELECT D.id, D.nome, T.NOME as turma, P.NOME AS professor, sub.MEDIA_ATENCAO as media_atencao FROM FOCA.DISCIPLINA D
+            LEFT JOIN FOCA.Turma_Disciplina_Professor TDP ON D.ID = TDP.ID_DISCIPLINA
+            LEFT JOIN FOCA.PROFESSOR P ON P.ID = TDP.ID_PROFESSOR
+            LEFT JOIN FOCA.TURMA T ON T.ID = TDP.ID_TURMA
+            LEFT JOIN (
+            	SELECT A.ID_TURMA_DISCIPLINA_PROFESSOR AS ID_TDP, AVG(A.MEDIA_ATENCAO_TOTAL) AS MEDIA_ATENCAO 
+            	FROM FOCA.AULA A
+            	GROUP BY A.ID_TURMA_DISCIPLINA_PROFESSOR 
+            ) sub
+            ON TDP.ID = sub.ID_TDP
+            WHERE D.ID_INSTITUICAO = @id
+          `)
+      return result.recordset;
+    } catch (error) {throw error;}
+  }
+
   async getDisciplinaById(id) {
     try {
       const pool = await db.getConnection();

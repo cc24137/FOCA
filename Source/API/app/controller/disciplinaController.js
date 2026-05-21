@@ -16,6 +16,20 @@ class DisciplinaController {
       });
   }
 
+  getInfoByInstitution = async(req, res) => {
+    const disciplinaCRUD = new DisciplinaCRUD();
+    const {id} = req.user;
+
+    await disciplinaCRUD.getInfoDisciplinasByInstitution(id)
+      .then((recordset)=>{
+        res.status(200).json(recordset);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      })
+  } 
+
   getById = async (req, res) => {
     const disciplinaCRUD = new DisciplinaCRUD();
     const { id } = req.body;

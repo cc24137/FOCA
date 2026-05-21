@@ -29,17 +29,17 @@ class ProfessorCRUD {
         .input("id", sql.Int, id_institution)
         .query(`
             SELECT P.id, P.nome, P.email, T.NOME as turma, D.NOME AS disciplina, sub.MEDIA_ATENCAO as media_atencao FROM FOCA.PROFESSOR P
-            INNER JOIN FOCA.Turma_Disciplina_Professor TDP ON P.ID = TDP.ID_PROFESSOR
-            INNER JOIN FOCA.DISCIPLINA D ON D.ID = TDP.ID_DISCIPLINA
-            INNER JOIN FOCA.TURMA T ON T.ID = TDP.ID_DISCIPLINA
-            INNER JOIN FOCA.INSTITUICAO_PROFESSOR IP ON IP.ID_PROFESSOR = P.ID
-            INNER JOIN (
+            LEFT JOIN FOCA.Turma_Disciplina_Professor TDP ON P.ID = TDP.ID_PROFESSOR
+            LEFT JOIN FOCA.DISCIPLINA D ON D.ID = TDP.ID_DISCIPLINA
+            LEFT JOIN FOCA.TURMA T ON T.ID = TDP.ID_TURMA
+            LEFT JOIN FOCA.INSTITUICAO_PROFESSOR IP ON IP.ID_PROFESSOR = P.ID
+            LEFT JOIN (
             	SELECT A.ID_TURMA_DISCIPLINA_PROFESSOR AS ID_TDP, AVG(A.MEDIA_ATENCAO_TOTAL) AS MEDIA_ATENCAO 
             	FROM FOCA.AULA A
             	GROUP BY A.ID_TURMA_DISCIPLINA_PROFESSOR 
             ) sub
             ON TDP.ID = sub.ID_TDP
-            WHERE IP.ID_INSTITUICAO = 32
+            WHERE IP.ID_INSTITUICAO = @id
           `)
       return result.recordset;
     }

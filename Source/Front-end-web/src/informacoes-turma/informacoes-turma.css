@@ -205,3 +205,29 @@
     background-color: rgb(114, 116, 118);
     height: 280px;
 }
+
+/* Estilos para a tabela de histórico de aulas */
+.tabela-aulas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-family: var(--font-inter), sans-serif;
+}
+
+.tabela-aulas th {
+    background-color: var(--button-dark-blue); /* Ou qualquer cor neutra que esteja a usar */
+    color: var(--white);
+    text-align: left;
+    padding: 12px;
+    font-weight: 500;
+}
+
+.tabela-aulas td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+.tabela-aulas tr:hover {
+    background-color: #f9f9f9;
+}

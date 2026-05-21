@@ -17,7 +17,7 @@ class AulaCRUD {
                         ON a.id_classificacao_conteudo = c.id
                     WHERE a.id_turma_disciplina_professor = @id_turma_disciplina_professor
                 `);
-            return result.recordset[0];
+            return result.recordset;
         }
         catch (error) { throw error; }
     }

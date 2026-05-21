@@ -20,7 +20,8 @@ class TurmaDisciplinaProfessorController{
     const { linkId } = req.params;
 
     await turmaDisciplinaProfessorCRUD.getByLinkId(linkId)
-      .then((record) => {
+        .then((record) => {
+          console.log(record);
         if (record) {
           res.status(200).json(record);
         } else {

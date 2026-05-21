@@ -11,6 +11,8 @@ class TurmaDisciplinaProfessorCRUD {
                 .query(`
                     SELECT
                         T.nome AS nomeTurma,
+                        T.serie AS serieTurma,
+                        T.numero_alunos AS alunosTurma,
                         D.nome AS nomeDisciplina,
                         P.nome AS nomeProfessor,
                         I.nome AS nomeInstituicao

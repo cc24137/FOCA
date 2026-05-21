@@ -53,7 +53,12 @@ export default function Cadastro() {
       return;
     }
     try {
-      const response = await api.post("/users/cadastro", form);
+        const response = await api.post("/users/cadastro", form);
+
+        if (response.status !== 200) {
+            alert("Erro ao criar a conta. Tente novamente.");
+            return;
+            }
 
       const userEmail = form.email;
 

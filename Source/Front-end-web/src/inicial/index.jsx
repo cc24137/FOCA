@@ -198,13 +198,15 @@ export default function Inicial(){
                         </div>
 
                         <div className='inicial-our-values-card'>
-                            <p>
+                            <p className='inicial-our-values-card-text'>
                                 Buscamos trazer uma forma acessível para que professores possam explorar os resultados de suas didáticas.
                             </p>
                         </div>
 
-                      <div className='inicial-our-values-card'>
-
+                        <div className='inicial-our-values-card'>
+                            <p className='inicial-our-values-card-text'>
+                                Prezamos pela segurança dos dados usados, principalmente com o tratamento de informações sensíveis.
+                            </p>
                         </div>
                         
                     </div>

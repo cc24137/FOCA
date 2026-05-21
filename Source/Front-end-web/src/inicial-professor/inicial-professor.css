@@ -58,9 +58,9 @@
   flex-direction: column;
   transition: transform 0.2s;
 
-  /* Voltamos com a sua largura fixa! */
   width: 370px;
   height: 250px;
+  cursor: pointer;
 }
 
 .inicial-professor-card:hover {

@@ -10,6 +10,7 @@ class TurmaDisciplinaProfessorCRUD{
                 .input("idProfessor", sql.Int, idProfessor)
                 .query(`
                     SELECT
+                        TDP.id AS id,
                         T.nome AS nomeTurma,
                         D.nome AS nomeDisciplina,
                         I.nome AS nomeInstituicao

@@ -1,0 +1,20 @@
+.estatisticas-content{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px 64px;
+}
+
+.estatisticas-selector-row{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 20%;
+    align-items: center;
+
+}
+
+.estatisticas-selector-row p{
+    font-size: 26px;
+    font-weight: 500;
+}

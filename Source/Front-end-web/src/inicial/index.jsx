@@ -66,21 +66,21 @@ export default function Inicial(){
 
                 <div className='inicial-how-it-works'>
                     <div className='inicial-how-it-works-top-row'>
-                        <BookIcon />
+                        <BookIcon className='inicial-how-it-works-icon' />
                         <p className='inicial-how-it-works-title'>Como <span className='inicial-how-it-works-title-span'>funciona</span> ?</p>
                     </div>
 
                     <div className='inicial-how-it-works-cards-row'>
                         <div className='inicial-how-it-works-cards-element'>
                             <p className='inicial-how-it-works-card-title'>1. Acesse a plataforma</p>
-                            <div className='inicial-how-it-works-card-text'>
+                            <div className='inicial-how-it-works-card'>
                                 <p className='inicial-how-it-works-card-text'>Faça login ou cadastre-se como um professor ou instituição.</p>
                             </div>
                         </div>
 
                         <div className='inicial-how-it-works-cards-element'>
                             <p className='inicial-how-it-works-card-title'>2. Selecione uma turma</p>
-                            <div className='inicial-how-it-works-card-text'>
+                            <div className='inicial-how-it-works-card'>
                                 <p className='inicial-how-it-works-card-text'>Após a instituição criar a turma e vinculá-la ao professor, ele pode então acessá-las pela sua tela inicial.</p>
                             </div>
                         </div>
@@ -89,14 +89,14 @@ export default function Inicial(){
                     <div className='inicial-how-it-works-cards-row'>
                         <div className='inicial-how-it-works-cards-element'>
                             <p className='inicial-how-it-works-card-title'>3. Crie uma nova aula</p>
-                            <div className='inicial-how-it-works-card-text'>
+                            <div className='inicial-how-it-works-card'>
                                 <p className='inicial-how-it-works-card-text'>Na área da turma, o professor pode registrar uma nova aula, adicionando informações sobre ela.</p>
                             </div>
                         </div>
 
                         <div className='inicial-how-it-works-cards-element'>
                             <p className='inicial-how-it-works-card-title'>4. Anexe o vídeo</p>
-                            <div className='inicial-how-it-works-card-text'>
+                            <div className='inicial-how-it-works-card'>
                                 <p className='inicial-how-it-works-card-text'>Ao criar a aula, anexe o arquivo da gravação da turma para análise.</p>
                             </div>
                         </div>
@@ -105,14 +105,14 @@ export default function Inicial(){
                     <div className='inicial-how-it-works-cards-row'>
                         <div className='inicial-how-it-works-cards-element'>
                             <p className='inicial-how-it-works-card-title'>5. Espere os resultados !</p>
-                            <div className='inicial-how-it-works-card-text'>
+                            <div className='inicial-how-it-works-card'>
                                 <p className='inicial-how-it-works-card-text'>Após o processamento, a plataforma gerará um relatório compreensivo dos dados obtidos do vídeo.</p>
                             </div>
                         </div>
 
                         <div className='inicial-how-it-works-cards-element'>
                             <p className='inicial-how-it-works-card-title'>6.Compare diferentes aulas</p>
-                            <div className='inicial-how-it-works-card-text'>
+                            <div className='inicial-how-it-works-card'>
                                 <p className='inicial-how-it-works-card-text'>Gráficos da atenção da aula individual e comparações com outras aulas. Relatório em formato PDF também!</p>
                             </div>
                         </div>
@@ -123,7 +123,7 @@ export default function Inicial(){
 
                 <div className='inicial-goals'>
                     <div className='inicial-goals-top-row'>
-                        <BookmarkIcon />
+                        <BookmarkIcon className='inicial-goals-icon' />
                         <p className='inicial-goals-title'>Objetivos</p>
 
                         <div className='inicial-goals-content'>

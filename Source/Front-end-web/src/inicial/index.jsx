@@ -125,59 +125,59 @@ export default function Inicial(){
                     <div className='inicial-goals-top-row'>
                         <BookmarkIcon className='inicial-goals-icon' />
                         <p className='inicial-goals-title'>Objetivos</p>
-
-                        <div className='inicial-goals-content'>
-                            <div className='inicial-goals-right'>
-                                <div className='inicial-goals-right-row'>
-                                    <CheckIcon />
-                                    <p className='inicial-goals-right-row-text'>Trazer uma nova forma de avaliar as próprias aulas.</p>
-                                </div>
-
-                                <div className='inicial-goals-right-row'>
-                                    <CheckIcon />
-                                    <p className='inicial-goals-right-row-text'>Proporcionar novos parâmetros de avaliação das turmas.</p>
-                                </div>
-
-                                <div className='inicial-goals-right-row'>
-                                    <CheckIcon />
-                                    <p className='inicial-goals-right-row-text'>Melhorar a forma em que os professores compreendem suas turmas e didátiacas.</p>
-                                </div>
+                    </div>
+                    
+                    <div className='inicial-goals-content'>
+                        <div className='inicial-goals-right'>
+                            <div className='inicial-goals-right-row'>
+                                <CheckIcon className='inicial-goals-right-row-icon' />
+                                <p className='inicial-goals-right-row-text'>Trazer uma nova forma de <br></br>avaliar as próprias aulas.</p>
                             </div>
 
-                            <div className='inicial-goals-left'>
-                                <SealIcon />
+                            <div className='inicial-goals-right-row'>
+                                <CheckIcon className='inicial-goals-right-row-icon' />
+                                <p className='inicial-goals-right-row-text'>Proporcionar novos parâmetros <br />de avaliação das turmas.</p>
                             </div>
 
+                            <div className='inicial-goals-right-row'>
+                                <CheckIcon className='inicial-goals-right-row-icon' />
+                                <p className='inicial-goals-right-row-text'>Melhorar a forma em que os <br />professores compreendem <br />suas turmas e didátiacas.</p>
+                            </div>
+                        </div>
+
+                        <div className='inicial-goals-left'>
+                            <SealIcon className='inicial-goals-left-icon' />
                         </div>
                     </div>
+                    
                 </div>
 
                 <Divider />
 
                 <div className='inicial-security'>
-                    <div className='inicial-instituicao-top-row'>
-                        <LockIcon />
-                        <p className='inicial-security-title'></p>
+                    <div className='inicial-security-top-row'>
+                        <LockIcon className='inicial-security-icon' />
+                        <p className='inicial-security-title'>Segurança</p>
                     </div>
 
                     <div className='inicial-security-content'>
                         <div className='inicial-security-content-row'>
-                            <CheckIcon />
-                            <p className='inicial-security-content-row-text'>Nenhum dado cadastrado de professores, instituições ou turmas é público.</p>
+                            <CheckIcon className='inicial-security-content-row-icon' />
+                            <p className='inicial-security-content-row-text'>Nenhum dado cadastrado de professores, <br />instituições ou turmas é público.</p>
                         </div>
 
                         <div className='inicial-security-content-row'>
-                            <CheckIcon />
-                            <p className='inicial-security-content-row-text'>As imagens usadas não são armazenadas, são apenas processadas localmente.</p>
+                            <CheckIcon className='inicial-security-content-row-icon' />
+                            <p className='inicial-security-content-row-text'>As imagens usadas não são armazenadas, são <br />apenas processadas localmente.</p>
                         </div>
 
                         <div className='inicial-security-content-row'>
-                            <CheckIcon />
-                            <p className='inicial-security-content-row-text'>Quaisquer informações de alunos obtidas via imagens são usadas apenas para os relatórios gerados, que não incluem identificação do aluno</p>
+                            <CheckIcon className='inicial-security-content-row-icon' />
+                            <p className='inicial-security-content-row-text'>Quaisquer informações de alunos obtidas via <br />imagens são usadas apenas para os relatórios <br /> gerados, que não incluem identificação do aluno.</p>
                         </div>
 
                         <div className='inicial-security-content-row'>
-                            <CheckIcon />
+                            <CheckIcon className='inicial-security-content-row-icon' />
                             <p className='inicial-security-content-row-text'>Dados sensíveis são criptografados e seguros.</p>
                         </div>
                     </div>
@@ -187,29 +187,34 @@ export default function Inicial(){
                 <Divider />
 
                 <div className='inicial-our-values'>
-                    <div className='inicial-our-values-left'>
-
+                    <div className='inicial-our-values-top-row'>
+                        <BookmarkIcon className='inicial-our-values-icon' />
+                        <p className='inicial-our-values-title'>Nossos Valores</p>
                     </div>
 
-                    <div className='inicial-our-values-right'>
-                        <div className='inicial-our-values-right-title-row'>
-                            <BookmarkIcon />
-                            <p className='inicial-our-values-title'>Nossos Valores</p>
+                    <div className='inicial-our-values-content'>
+                        <div className='inicial-our-values-left'>
+                            <SealIcon className='inicial-our-values-left-icon' />
                         </div>
 
-                        <div className='inicial-our-values-card'>
-                            <p className='inicial-our-values-card-text'>
-                                Buscamos trazer uma forma acessível para que professores possam explorar os resultados de suas didáticas.
-                            </p>
-                        </div>
+                        <div className='inicial-our-values-right'>
+                            
 
-                        <div className='inicial-our-values-card'>
-                            <p className='inicial-our-values-card-text'>
-                                Prezamos pela segurança dos dados usados, principalmente com o tratamento de informações sensíveis.
-                            </p>
+                            <div className='inicial-our-values-card'>
+                                <p className='inicial-our-values-card-text'>
+                                    Buscamos trazer uma forma acessível para que professores possam explorar os resultados de suas didáticas.
+                                </p>
+                            </div>
+
+                            <div className='inicial-our-values-card'>
+                                <p className='inicial-our-values-card-text'>
+                                    Prezamos pela segurança dos dados usados, principalmente com o tratamento de informações sensíveis.
+                                </p>
+                            </div>
+                            
                         </div>
-                        
                     </div>
+                    
                 </div>
 
             </div>

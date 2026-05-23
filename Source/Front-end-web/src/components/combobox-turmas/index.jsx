@@ -38,7 +38,7 @@ export default function Combobox({ options, value, onChange, placeholder }) {
                             key={i}
                             className='combobox-option'
                             onMouseDown={() => {
-                                setQuery(opt);
+                                setQuery('');
                                 onChange(opt);
                                 setOpen(false);
                             }}

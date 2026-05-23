@@ -9,12 +9,30 @@
     display: flex;
     flex-direction: row;
     gap: 20px;
-    width: 20%;
+    width: 25%;
     align-items: center;
 
 }
 
 .estatisticas-selector-row p{
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.estatisticas-filter-row{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 30%;
+    align-items: center;
+}
+
+.estatisticas-filters{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.estatisticas-filter-row p{
     font-size: 26px;
     font-weight: 500;
 }

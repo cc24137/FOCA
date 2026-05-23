@@ -83,39 +83,56 @@ export default function Estatisticas(){
                     
                 </div>
 
-                {option && (
-                    <Combobox
-                        options={getAvailable(cfg.filterAIdx, selectedA)}
-                        value=""
-                        onChange={v => handleSelect(v, selectedA, setSelectedA)}
-                        placeholder={`Filtrar por ${cfg.filterALabel}`}
-                    />
-                )}
-
-                {option && (
-                    <Combobox
-                        options={getAvailable(cfg.filterBIdx, selectedB)}
-                        value=""
-                        onChange={v => handleSelect(v, selectedB, setSelectedB)}
-                        placeholder={`Filtrar por ${cfg.filterBLabel}`}
-                    />
-                )}
-                {(selectedA.length > 0 || selectedB.length > 0) && (
-                    <div className='estatisticas-chips'>
-                        {selectedA.map(item => (
-                            <div key={`a-${item}`} className='estatisticas-chip chip-a'>
-                                <span>{item}</span>
-                                <button onClick={() => removeChip(item, selectedA, setSelectedA)}>✕</button>
-                            </div>
-                        ))}
-                        {selectedB.map(item => (
-                            <div key={`b-${item}`} className='estatisticas-chip chip-b'>
-                                <span>{item}</span>
-                                <button onClick={() => removeChip(item, selectedB, setSelectedB)}>✕</button>
-                            </div>
-                        ))}
+                <div className='estatisticas-filters'>
+                    <div className="estatisticas-filter-row">
+                        {option && <p style={{textTransform: 'capitalize'}}>{cfg?.filterALabel}{cfg?.filterALabel.slice(-1) === 'r' ? 'es' : 's'}: </p>}
+                        {option && (
+                            <Combobox
+                                options={getAvailable(cfg.filterAIdx, selectedA)}
+                                value=""
+                                onChange={v => handleSelect(v, selectedA, setSelectedA)}
+                                placeholder={`Filtrar por ${cfg.filterALabel}`}
+                            />
+                        )}
                     </div>
-                )}
+                    {selectedA.map(item => (
+                        <div key={`a-${item}`} className='estatisticas-chip chip-a'>
+                            <span>{item}</span>
+                            <button onClick={() => removeChip(item, selectedA, setSelectedA)}>✕</button>
+                        </div>
+                    ))}
+
+                    <div className="estatisticas-filter-row">
+                        {option && <p style={{textTransform: 'capitalize'}}>{cfg?.filterBLabel}s: </p>}
+                        {option && (
+                            <Combobox
+                                options={getAvailable(cfg.filterBIdx, selectedB)}
+                                value=""
+                                onChange={v => handleSelect(v, selectedB, setSelectedB)}
+                                placeholder={`Filtrar por ${cfg.filterBLabel}`}
+                            />
+                        )}
+                        
+                    </div>
+                        {(selectedA.length > 0 || selectedB.length > 0) && (
+                            <div className='estatisticas-chips'>
+                                
+                                {selectedB.map(item => (
+                                    <div key={`b-${item}`} className='estatisticas-chip chip-b'>
+                                        <span>{item}</span>
+                                        <button onClick={() => removeChip(item, selectedB, setSelectedB)}>✕</button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    
+                </div>
+
+
+
+                
+
+                
 
                 {listagem.length > 0 && (
                     <div className='estatisticas-listagem'>

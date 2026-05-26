@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/header';
 import Footer from '../components/footer'
@@ -9,23 +10,49 @@ import CheckIcon from '../assets/check.svg?react';
 import SealIcon from '../assets/seal.svg?react';
 import LockIcon from '../assets/lock.svg?react';
 
-export default function Inicial(){
-    const navigate = useNavigate()
+export default function Inicial() {
+    const navigate = useNavigate();
 
-    function goTo(path){
-        navigate(path)
+    // Inicialização do estado lendo o localStorage
+    const [isLoggedIn] = useState(() => {
+        const token = localStorage.getItem('token');
+        return !!token;
+    });
+
+    const [userType] = useState(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        return user?.tipo || null;
+    });
+
+    function goTo(path) {
+        navigate(path);
     }
 
-    return(
+    // Lógica para o link "Início"
+    const getHomePath = () => {
+        if (!isLoggedIn) return "/";
+        return userType === 'professor' ? "/inicial-professor" : "/inicial-instituicao";
+    };
+
+    const getAccessPath = () => {
+        return isLoggedIn ? "/editar-dados" : "/login";
+    };
+
+    const getAccessText = () => {
+        return isLoggedIn ? "Meu Perfil" : "Login";
+    };
+
+    return (
         <div className='inicial-body'>
             <Header
-            titulo="FOCA"
-            links={[
-                { texto: "Início", destino: "/" },
-                { texto: "Criar conta", destino: "/cadastro" }
-            ]}
+                titulo="FOCA"
+                routes={[
+                        { texto: "Início", destino: getHomePath() },
+                        { texto: "Sobre o Projeto", destino: "/sobre" },
+                        { texto: getAccessText(), destino: getAccessPath() }
+                    ]}
             />
-            
+
             <div className='inicial-content'>
 
                 <div className='inicial-intro'>
@@ -41,7 +68,6 @@ export default function Inicial(){
                             <p className='inicial-intro-top-title'>
                                 Uma Nova Forma de <span className='inicial-intro-top-title-span'>Entender</span> Suas Turmas
                             </p>
-                            
                         </div>
 
                         <div className='inicial-intro-bottom'>
@@ -54,11 +80,18 @@ export default function Inicial(){
 
                 <Divider />
 
+                {/* Seção de teste - Ajustada para reagir ao login também */}
                 <div className='inicial-test-offer'>
-                    <p className='inicial-test-offer-title'>Teste <span className='inicial-test-offer-title-span'>agora</span> sem criar uma conta!</p>
-                    <p className='inicial-test-offer-text'>Utilize a versão teste da análise de vídeos e geração de relatório</p>
-                    <button className='inicial-test-offer-button' onClick={() => goTo("/teste-video")}>
-                        <p className='inicial-test-offer-button-text'>Acesse aqui</p>
+                    <p className='inicial-test-offer-title'>
+                        {isLoggedIn ? "Bem-vindo de volta!" : <>Teste <span className='inicial-test-offer-title-span'>agora</span> sem criar uma conta!</>}
+                    </p>
+                    <p className='inicial-test-offer-text'>
+                        {isLoggedIn ? "Acesse sua área restrita para gerenciar suas turmas e aulas." : "Utilize a versão teste da análise de vídeos e geração de relatório"}
+                    </p>
+                    <button className='inicial-test-offer-button' onClick={() => goTo(isLoggedIn ? getHomePath() : "/teste-video")}>
+                        <p className='inicial-test-offer-button-text'>
+                            {isLoggedIn ? "Acessar Painel" : "Acesse aqui"}
+                        </p>
                     </button>
                 </div>
 
@@ -126,7 +159,7 @@ export default function Inicial(){
                         <BookmarkIcon className='inicial-goals-icon' />
                         <p className='inicial-goals-title'>Objetivos</p>
                     </div>
-                    
+
                     <div className='inicial-goals-content'>
                         <div className='inicial-goals-right'>
                             <div className='inicial-goals-right-row'>
@@ -149,7 +182,6 @@ export default function Inicial(){
                             <SealIcon className='inicial-goals-left-icon' />
                         </div>
                     </div>
-                    
                 </div>
 
                 <Divider />
@@ -181,7 +213,6 @@ export default function Inicial(){
                             <p className='inicial-security-content-row-text'>Dados sensíveis são criptografados e seguros.</p>
                         </div>
                     </div>
-
                 </div>
 
                 <Divider />
@@ -198,8 +229,6 @@ export default function Inicial(){
                         </div>
 
                         <div className='inicial-our-values-right'>
-                            
-
                             <div className='inicial-our-values-card'>
                                 <p className='inicial-our-values-card-text'>
                                     Buscamos trazer uma forma acessível para que professores possam explorar os resultados de suas didáticas.
@@ -211,16 +240,13 @@ export default function Inicial(){
                                     Prezamos pela segurança dos dados usados, principalmente com o tratamento de informações sensíveis.
                                 </p>
                             </div>
-                            
                         </div>
                     </div>
-                    
                 </div>
 
             </div>
 
             <Footer />
         </div>
-        
     )
 }

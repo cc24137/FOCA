@@ -13,15 +13,28 @@ const EmailVerificationCRUD = require('../db/emailVerificationCRUD');
 class UserController{
 
     verifyToken = (req, res) => {
-        const authHeader = req.headers['authorization'];
-        const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
-        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-            if (err) {
-                return res.status(401).json({ message: "Invalid token" });
+            const authHeader = req.headers['authorization'];
+            const token = authHeader && authHeader.split(' ')[1];
+
+            if (!token) {
+                return res.status(401).json({ message: "Token not provided" });
             }
-            res.status(200).json({ message: "Token is valid", user: decoded });
-        });
-    };
+
+            jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+                if (err) {
+                    return res.status(401).json({ message: "Invalid token" });
+                }
+
+                res.status(200).json({
+                    message: "Token is valid",
+                    user: {
+                        id: decoded.id,
+                        email: decoded.email,
+                        isProfessor: decoded.isProfessor
+                    }
+                });
+            });
+        };
 
   login = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();

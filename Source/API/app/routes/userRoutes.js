@@ -4,7 +4,7 @@ const UserController = require('../controller/userController');
 const userController = new UserController();
 const verifyToken = require('../middleware/authMiddleware');
 
-router.get("/validarToken", verifyToken, userController.verifyToken);
+router.get("/validarToken", userController.verifyToken);
 router.post("/login", userController.login);
 router.post("/cadastro", userController.signUp);
 router.post("/enviarCodigo", userController.sendCode);

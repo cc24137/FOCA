@@ -12,6 +12,17 @@ const EmailVerificationCRUD = require('../db/emailVerificationCRUD');
 
 class UserController{
 
+    verifyToken = (req, res) => {
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                return res.status(401).json({ message: "Invalid token" });
+            }
+            res.status(200).json({ message: "Token is valid", user: decoded });
+        });
+    };
+
   login = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();
     const instituicaoCRUD = new InstituicaoCRUD();
@@ -155,12 +166,12 @@ class UserController{
   signUp = async (req, res) => {
       console.log("Sign Up chamado!");
       const { email, name, password, isProfessor } = req.body;
-  
+
       // Instâncias dos CRUDs
       const professorCRUD = new ProfessorCRUD();
       const instituicaoCRUD = new InstituicaoCRUD();
       const emailVerificationCRUD = new EmailVerificationCRUD();
-  
+
       try {
         if (isProfessor) {
           // 1. Cria o Professor
@@ -171,29 +182,29 @@ class UserController{
           await instituicaoCRUD.createInstituicao(email, password, name);
           console.log("Passo 1: Instituição criada no banco.");
         }
-  
+
         // 2. Lógica de código de verificação (comum para ambos)
         const code = crypto.randomInt(100000, 999999).toString();
         await emailVerificationCRUD.deleteCodesByEmail(email);
         await emailVerificationCRUD.saveCode(email, code);
         console.log("Passo 2: Código de verificação salvo.");
-  
+
         // 3. Envio de e-mail
         const html = `<h1>Olá, ${name}!</h1><p>Seu código é: <b>${code}</b></p><br><p>Ele expira em 15 minutos.</p>`;
         await sendMail(email, "Código de verificação", html);
-        console.log("Passo 3: E-mail enviado!");    
-  
+        console.log("Passo 3: E-mail enviado!");
+
         // Sucesso!
         return res.status(201).send();
-  
+
       } catch (error) {
         // Aqui você verá o erro real no terminal do seu servidor Node
-        console.error("ERRO NO SIGNUP:", error); 
-        
+        console.error("ERRO NO SIGNUP:", error);
+
         // Retorna uma mensagem legível para o front-end
-        return res.status(500).json({ 
+        return res.status(500).json({
           message: "Erro interno no servidor ao realizar cadastro.",
-          details: error.message 
+          details: error.message
         });
       }
     }
@@ -236,7 +247,7 @@ class UserController{
         if (!nome && !senha) {
           return res.status(400).json({ message: "Name or password is required." });
         }
-  
+
         if (isProfessor) {
           const professorCRUD = new ProfessorCRUD();
           await professorCRUD.updateProfile(id, nome, senha);
@@ -248,11 +259,11 @@ class UserController{
         }
       } catch (error) {
         console.error("Error while trying to update profile:", error);
-  
+
         if (error.name === "Not found") {
           return res.status(404).json({ message: "User not found." });
         }
-  
+
         return res.status(500).json({ error: "Internal server error" });
       }
     }

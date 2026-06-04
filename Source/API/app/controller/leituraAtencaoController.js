@@ -1,4 +1,4 @@
-const LeituraAtencaoCRUD = require('../db/leituraAtencaoController');
+const LeituraAtencaoCRUD = require('../db/leituraAtencaoCRUD');
 
 class LeituraAtencaoController {
 

@@ -3,7 +3,8 @@ import Header from '../../components/header';
 import DatePicker from '../../components/date-picker';
 import AreaUploadVideo from '../../components/area-upload-video';
 import './upload-video.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import api from '../../services/api';
 import IconTexto from '../../assets/file-text.svg?react';
 
 export default function UploadVideo(){
@@ -12,9 +13,26 @@ export default function UploadVideo(){
 
     const { idRelacao, nomeTurma, nomeDisciplina } = location.state || {};
 
-    const [classificacao, setClassificacao] = useState('Explicação');
+    const [classificacoes, setClassificacoes] = useState([]);
+    const [classificacao, setClassificacao] = useState('');
     const [conteudo, setConteudo] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
+
+    useEffect(() => {
+        async function loadClassificacoes() {
+            try {
+                const response = await api.get('aula/classificacao-conteudo');
+                console.log(response);
+                setClassificacoes(response.data);
+                if (response.data.length > 0) {
+                    setClassificacao(response.data[0].idClassificacaoConteudo);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        loadClassificacoes();
+    }, []);
 
     const handleSelectDate = (date) => {
         setSelectedDate(date);
@@ -35,7 +53,6 @@ export default function UploadVideo(){
                             <p className='upload-video-left-title'>Nova Aula</p>
                         </div>
                         <div className='upload-video-left-turma-disciplina'>
-                            {/* 4. Substituímos os asteriscos pelas variáveis reais recebidas */}
                             <p className='upload-video-left-turma'>Turma: {nomeTurma || "Não informada"}</p>
                             <p className='upload-video-left-disciplina'>Disciplina: {nomeDisciplina || "Não informada"}</p>
                         </div>
@@ -70,10 +87,15 @@ export default function UploadVideo(){
                         <div className="upload-video-left-classificacao">
                             <label>Classificação da aula</label>
                             <select value={classificacao} onChange={e => setClassificacao(e.target.value)}>
-                                <option>Explicação</option>
-                                <option>Exercícios</option>
-                                <option>Avaliação</option>
-                                <option>Revisão</option>
+                                {classificacoes.map((item) => (
+                                    <option
+                                        key={item.idClassificacaoConteudo}
+                                        value={item.idClassificacaoConteudo}
+                                        title={item.descricaoClassificacaoConteudo}
+                                    >
+                                        {item.nomeClassificacaoConteudo}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 

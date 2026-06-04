@@ -55,23 +55,22 @@ class AulaController {
     };
 
     getAllClassificacaoConteudo = async (req, res) => {
-        const aulaCRUD = new AulaCRUD();
+            const aulaCRUD = new AulaCRUD();
 
-        await aulaCRUD
-        .getAllClassificacaoConteudo()
-        .then(() => {
-            res.status(200).json({ message: "Classificacao Conteudo retrieved successfully" });
-        })
-            .catch((error) => {
-            if (error,name === "Not found") {
-                res.status(404).json({ message: "Classificacao Conteudo not found" });
-            } else {
-                console.log(error);
-                res.status(500).json({ error: "Internal server error" });
-            }
-        })
-        
-    }
+            await aulaCRUD
+                .getAllClassificacaoConteudo()
+                .then((data) => {
+                    res.status(200).json(data);
+                })
+                .catch((error) => {
+                    if (error.name === "Not found") {
+                        res.status(404).json({ message: "Classificacao Conteudo not found" });
+                    } else {
+                        console.log(error);
+                        res.status(500).json({ error: "Internal server error" });
+                    }
+                });
+        };
 }
 
 module.exports = AulaController;

@@ -1,12 +1,12 @@
-const RelatorioCRUD = require('../db/relatorioCRUD');
+const LeituraAtencaoCRUD = require('../db/leituraAtencaoController');
 
-class RelatorioController {
+class LeituraAtencaoController {
 
   create = async (req, res) => {
-    const relatorioCRUD = new RelatorioCRUD();
+    const LeituraAtencaoCRUD = new LeituraAtencaoCRUD();
     const { classId, totalAttentionAverage, processingDate } = req.body;
 
-    await relatorioCRUD.create(classId, totalAttentionAverage, processingDate)
+    await LeituraAtencaoCRUD.create(classId, totalAttentionAverage, processingDate)
       .then((id) => {
         res.status(201).json({ id });
       })
@@ -17,4 +17,4 @@ class RelatorioController {
   }
 }
 
-module.exports = RelatorioController;
+module.exports = LeituraAtencaoController;

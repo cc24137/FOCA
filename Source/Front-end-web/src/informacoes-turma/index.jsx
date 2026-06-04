@@ -46,7 +46,7 @@ export default function InformacoesTurma() {
             setLoading(true);
             try {
                 // Pega os dados do usuário logado no localStorage
-                const user = JSON.parse(localStorage.getItem('user'));
+                const user = JSON.parse(localStorage.getItem('@FOCA:user'));
                 const loggedUserId = user?.id;
 
                 const [resTurma, resAulas] = await Promise.all([
@@ -93,7 +93,6 @@ export default function InformacoesTurma() {
     };
 
 
-    // TELA DE ACESSO NEGADO: Se a verificação falhar, renderizamos apenas isto
     if (!isAuthorized) {
         return (
             <div className='informacoes-turma-container'>
@@ -112,7 +111,7 @@ export default function InformacoesTurma() {
         );
     }
 
-    // Se estiver autorizado, renderiza a tela normalmente
+    // autorizado
     return (
         <div className='informacoes-turma-container'>
             <Header

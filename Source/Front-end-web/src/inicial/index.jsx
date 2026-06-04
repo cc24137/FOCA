@@ -15,13 +15,13 @@ export default function Inicial() {
 
     // Inicialização do estado lendo o localStorage
     const [isLoggedIn] = useState(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('@FOCA:token');
         return !!token;
     });
 
-    const [userType] = useState(() => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        return user?.tipo || null;
+    const [isProfessor] = useState(() => {
+        const user = JSON.parse(localStorage.getItem('@FOCA:user'));
+        return user?.isProfessor || null;
     });
 
     function goTo(path) {
@@ -31,7 +31,7 @@ export default function Inicial() {
     // Lógica para o link "Início"
     const getHomePath = () => {
         if (!isLoggedIn) return "/";
-        return userType === 'professor' ? "/inicial-professor" : "/inicial-instituicao";
+        return isProfessor === true ? "/inicial-professor" : "/inicial-instituicao";
     };
 
     const getAccessPath = () => {

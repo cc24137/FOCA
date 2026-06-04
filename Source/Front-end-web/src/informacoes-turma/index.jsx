@@ -27,6 +27,10 @@ export default function InformacoesTurma() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    function goTo(path, state = null) {
+        navigate(path, state ? { state } : undefined);
+    }
+
     // Estado para controlar a autorização da página
     const [isAuthorized, setIsAuthorized] = useState(true);
 
@@ -101,7 +105,7 @@ export default function InformacoesTurma() {
                     <h2 style={{ color: '#d9534f', marginBottom: '20px' }}>Acesso Negado</h2>
                     <p>Você não tem permissão para visualizar os dados desta turma.</p>
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => goTo('/')}
                         style={{ marginTop: '20px', padding: '10px 20px', cursor: 'pointer' }}
                     >
                         Voltar para o Início
@@ -129,7 +133,7 @@ export default function InformacoesTurma() {
                         <p className='informacoes-turma-box-title'>
                             {loading && !turma.nome ? "A carregar..." : turma.nome}
                         </p>
-                        <button className='informacoes-turma-box-button'>
+                        <button className='informacoes-turma-box-button' onClick={() => goTo('/upload-video', { idRelacao: id, nomeTurma: turma.nome, nomeDisciplina: turma.nomeDisciplina })}>
                             <p className='informacoes-turma-box-button-text'>nova aula</p>
                         </button>
                     </div>

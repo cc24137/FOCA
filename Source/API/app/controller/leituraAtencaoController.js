@@ -15,6 +15,34 @@ class LeituraAtencaoController {
         res.status(500).json({ error: "Internal server error" });
       });
   }
+
+  getByIdAula = async (req, res) => {
+    const LeituraAtencaoCRUD = new LeituraAtencaoCRUD();
+    const { aulaId } = req.params;
+
+    await LeituraAtencaoCRUD.getByIdAula(aulaId)
+      .then((leituraAtencao) => {
+        res.status(200).json(leituraAtencao);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      });
+  }
+
+    getByIdAulaESegundoVideo = async (req, res) => {
+        const LeituraAtencaoCRUD = new LeituraAtencaoCRUD();
+        const { aulaId, segundoVideo } = req.params;
+
+        await LeituraAtencaoCRUD.getByIdAulaESegundoVideo(aulaId, segundoVideo)
+            .then((leituraAtencao) => {
+                res.status(200).json(leituraAtencao);
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(500).json({ error: "Internal server error" });
+            });
+    }
 }
 
 module.exports = LeituraAtencaoController;

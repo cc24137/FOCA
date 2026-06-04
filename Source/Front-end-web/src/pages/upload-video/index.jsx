@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../../components/header';
 import DatePicker from '../../components/date-picker';
 import AreaUploadVideo from '../../components/area-upload-video';
+import SelectCustomizado from '../../components/select-customizado';
 import './upload-video.css';
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
@@ -86,17 +87,16 @@ export default function UploadVideo(){
 
                         <div className="upload-video-left-classificacao">
                             <label>Classificação da aula</label>
-                            <select value={classificacao} onChange={e => setClassificacao(e.target.value)}>
-                                {classificacoes.map((item) => (
-                                    <option
-                                        key={item.idClassificacaoConteudo}
-                                        value={item.idClassificacaoConteudo}
-                                        title={item.descricaoClassificacaoConteudo}
-                                    >
-                                        {item.nomeClassificacaoConteudo}
-                                    </option>
-                                ))}
-                            </select>
+                            <SelectCustomizado
+                                placeholder="Selecione uma classificação..."
+                                value={classificacao} // O ID selecionado
+                                onChange={(novoId) => setClassificacao(novoId)} // Atualiza o estado
+                                options={classificacoes.map(item => ({
+                                    value: item.idClassificacaoConteudo,
+                                    label: item.nomeClassificacaoConteudo,
+                                    title: item.descricaoClassificacaoConteudo // Repassado para o tooltip do li
+                                }))}
+                            />
                         </div>
 
                         <div className="upload-video-left-conteudo">

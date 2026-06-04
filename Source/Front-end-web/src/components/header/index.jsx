@@ -5,11 +5,19 @@ import UserIcon from "../../assets/user.svg?react";
 import HomeIcon from "../../assets/home.svg?react";
 import InfoIcon from "../../assets/info.svg?react";
 
-export default function Header({ routes = [] }) {
+export default function Header({ routes }) {
     const navigate = useNavigate();
 
+    const rotasPadrao = [
+        { textButton: "Início", routeButton: "/" },
+        { textButton: "Sobre o Projeto", routeButton: "/" },
+        { textButton: "Perfil", routeButton: "/perfil" }
+    ];
+    
+    const rotasAtivas = routes && routes.length > 0 ? routes : rotasPadrao;
+
     function goTo(route) {
-        navigate(route);
+        if (route) navigate(route);
     }
 
     const getIcon = (index) => {
@@ -27,15 +35,15 @@ export default function Header({ routes = [] }) {
                 </div>
 
                 <div className="header-right">
-                    {routes.map((link, index) => (
+                    {rotasAtivas.map((link, index) => (
                         <button
                             key={index}
                             className={index === 2 ? "header-button" : "header-link"}
-                            onClick={() => goTo(link.destino)}
+                            onClick={() => goTo(link.routeButton)}
                         >
                             <div className="content-button">
                                 {getIcon(index)}
-                                {link.texto}
+                                {link.textButton}
                             </div>
                         </button>
                     ))}

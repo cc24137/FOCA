@@ -15,6 +15,7 @@ class TurmaDisciplinaProfessorCRUD {
                         T.numero_alunos AS alunosTurma,
                         D.nome AS nomeDisciplina,
                         P.nome AS nomeProfessor,
+                        P.id AS idProfessor,
                         I.nome AS nomeInstituicao
                     FROM foca.Turma_Disciplina_Professor TDP
                     INNER JOIN foca.Turma T ON TDP.id_turma = T.id

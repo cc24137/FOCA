@@ -47,9 +47,9 @@ export default function Inicial() {
             <Header
                 titulo="FOCA"
                 routes={[
-                        { texto: "Início", destino: getHomePath() },
-                        { texto: "Sobre o Projeto", destino: "/sobre" },
-                        { texto: getAccessText(), destino: getAccessPath() }
+                        { textButton: "Início", routeButton: getHomePath() },
+                        { textButton: "Sobre o Projeto", routeButton: "/sobre" },
+                        { textButton: getAccessText(), routeButton: getAccessPath() }
                     ]}
             />
 

@@ -30,12 +30,14 @@
     padding: 28px 48px;
     border-radius: 20px;
     min-width: 480px;
+    font-family: var(--font-inter);
 }
 
 .upload-video-left-turma-disciplina{
     display: flex;
     flex-direction: row;
     gap: 20px;
+    font-family: var(--font-inter);
 }
 
 .upload-video-left-title{
@@ -47,11 +49,13 @@
 .upload-video-left-turma{
     font-size: 16px;
     color: var(--black);
+    font-family: var(--font-inter);
 }
 
 .upload-video-left-disciplina{
     font-size: 16px;
     color: var(--black);
+    font-family: var(--font-inter);
 }
 
 .upload-video-data-label{
@@ -64,12 +68,14 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
+    font-family: var(--font-inter);
 }
 
 .date-inputs {
     display: flex;
     flex-direction: row;
     gap: 8px;
+    font-family: var(--font-inter);
 }
 
 .date-inputs input {
@@ -92,12 +98,14 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
+    font-family: var(--font-inter);
 }
 
 .upload-video-left-classificacao label {
     font-size: 16px;
     color: var(--black);
     white-space: nowrap;
+    font-family: var(--font-inter);
 }
 
 .upload-video-left-classificacao select {

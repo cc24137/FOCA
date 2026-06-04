@@ -80,6 +80,7 @@
     text-align: center;
     background-color: var(--white);
     color: var(--black);
+    font-family: var(--font-inter);
 }
 
 .date-inputs .dd  { width: 48px; }
@@ -110,6 +111,7 @@
     min-width: 140px;
     appearance: auto;
     -webkit-appearance: auto;
+    font-family: var(--font-inter);
 }
 
 .upload-video-left-conteudo {
@@ -134,6 +136,7 @@
     width: 280px;
     outline: none;
     padding: 4px 8px;
+    font-family: var(--font-inter);
 }
 
 .upload-video-historico-aulas{
@@ -177,6 +180,7 @@
     width: 200px;
     height: 50px;
     align-self: flex-end;
+    font-family: var(--font-inter);
 }
 
 .upload-video-processar-row-text{
@@ -190,7 +194,7 @@
     color: var(--white);
     position: absolute;
     left: 20px;
-    top: 50%;                        
+    top: 50%;
     transform: translateY(-50%);
 }
 
@@ -205,6 +209,7 @@
     height: 50px;
     align-self: flex-end;
     position: relative;
+    font-family: var(--font-inter);
 }
 
 .upload-video-salvar-row{

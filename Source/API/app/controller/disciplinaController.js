@@ -3,10 +3,10 @@ const DisciplinaCRUD = require("../db/disciplinaCRUD");
 class DisciplinaController {
     getByInstitution = async (req, res) => {
         const disciplinaCRUD = new DisciplinaCRUD();
-        const { institutionId } = req.body;
+        const { id } = req.user;
 
         await disciplinaCRUD
-            .getDisciplinasByInstitution(institutionId)
+            .getInfoDisciplinasByInstitution(id)
             .then((recordset) => {
                 res.status(200).json(recordset);
             })

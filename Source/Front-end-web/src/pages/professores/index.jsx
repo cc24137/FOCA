@@ -29,20 +29,20 @@ export default function Professores() {
             data.forEach(prof => {
                 const professorExistente = professoresAgrupados.find(e => e.id === prof.id);
 
+                const infoTurma = (prof.turma && prof.disciplina)
+                    ? `${prof.turma} (${prof.disciplina})`
+                    : null;
+
                 if (professorExistente) {
-                    if (prof.turma && !professorExistente.turmas.includes(prof.turma)) {
-                        professorExistente.turmas.push(prof.turma);
-                    }
-                    if (prof.disciplina && !professorExistente.disciplinas.includes(prof.disciplina)) {
-                        professorExistente.disciplinas.push(prof.disciplina);
+                    if (infoTurma && !professorExistente.turmas.includes(infoTurma)) {
+                        professorExistente.turmas.push(infoTurma);
                     }
                 } else {
                     professoresAgrupados.push({
                         id: prof.id,
                         nome: prof.nome,
                         email: prof.email,
-                        turmas: prof.turma ? [prof.turma] : [],
-                        disciplinas: prof.disciplina ? [prof.disciplina] : [],
+                        turmas: infoTurma ? [infoTurma] : [],
                         mediaAtencao: prof.media_atencao
                     });
                 }
@@ -186,7 +186,6 @@ export default function Professores() {
                             <div className='professor-detalhes'>
                                 <p><strong>Email:</strong> {professores[selectedProfessor].email}</p>
                                 <p><strong>Turmas:</strong> {professores[selectedProfessor].turmas.join(', ') || 'Nenhuma'}</p>
-                                <p><strong>Disciplinas:</strong> {professores[selectedProfessor].disciplinas.join(', ') || 'Nenhuma'}</p>
                                 <p><strong>Média de Atenção:</strong> {professores[selectedProfessor].mediaAtencao || 0}%</p>
                             </div>
                         ) : (

@@ -1,10 +1,10 @@
-.disciplinas-body{
+.disciplinas-body {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
-.disciplinas-content{
+.disciplinas-content {
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -12,22 +12,21 @@
     height: 100%;
 }
 
-.disciplinas-esquerda{
+.disciplinas-esquerda {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 20px;
     width: 35%;
     height: 100%;
 }
 
-.disciplinas-esquerda-title{
+.disciplinas-esquerda-title {
     font-size: 30px;
     font-family: var(--font-scada);
     color: var(--black);
 }
 
-.disciplinas-adicionar{
+.disciplinas-adicionar {
     background-color: var(--button-light-blue);
     border: none;
     border-radius: 8px;
@@ -36,13 +35,13 @@
     width: 200px;
 }
 
-.disciplinas-adicionar-text{
+.disciplinas-adicionar-text {
     font-size: 16px;
     font-weight: 600;
     color: var(--black);
 }
 
-.disciplinas-remover{
+.disciplinas-remover {
     background-color: var(--button-dark-blue);
     border: none;
     border-radius: 8px;
@@ -52,13 +51,13 @@
     align-self: flex-end;
 }
 
-.disciplinas-remover-text{
+.disciplinas-remover-text {
     font-size: 16px;
     font-weight: 600;
     color: var(--white);
 }
 
-.disciplinas-editar{
+.disciplinas-editar {
     background-color: var(--button-light-blue);
     border: none;
     border-radius: 8px;
@@ -68,43 +67,43 @@
     align-self: flex-end;
 }
 
-.disciplinas-editar-text{
+.disciplinas-editar-text {
     font-size: 16px;
     font-weight: 600;
     color: var(--black);
 }
 
-.disciplinas-row{
+.disciplinas-row {
     display: flex;
-    flex-direction: row;  
-    justify-content: space-between; 
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.disciplinas-direita{
+.disciplinas-direita {
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 65%;
     border-left: 2px solid var(--transparent-grayish-blue);
     padding-left: 50px;
-
     justify-content: space-between;
 }
 
-.disciplinas-direita-title{
+.disciplinas-direita-title {
     font-size: 30px;
     font-family: var(--font-scada);
     color: var(--black);
 }
 
-
-
 .disciplinas-list-container {
     display: flex;
     flex-direction: column;
-    max-height: 300px;
+    justify-content: flex-start;
+    max-height: 600px;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
-    width: 50%;
+    width: 100%;
 }
 
 .disciplinas-list-container::-webkit-scrollbar {
@@ -135,6 +134,15 @@
     color: var(--white);
 }
 
+.disciplina-detalhes {
+    font-family: var(--font-inter);
+    font-size: 20px;
+}
+
+.disciplina-detalhes p {
+    padding: 8px 0;
+}
+
 .disciplinas-historico-aulas-content {
     background-color: rgb(114, 116, 118);
     height: 280px;
@@ -144,15 +152,12 @@
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--black);
-
     background-color: var(--white);
     border: 2px solid #9b9fc4;
     border-radius: 10px;
-
     padding: 6px 14px;
     width: 100%;
     max-width: 420px;
-
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }

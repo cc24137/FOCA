@@ -21,26 +21,29 @@ export default function Disciplinas() {
     }, []);
 
     async function loadData() {
-        console.log("Loading data from api to disciplinas");
         try {
             const response = await api.get("/disciplinas/porInstituicao");
 
             const data = response.data;
             const disciplinasAgrupadas = [];
 
-            // Lógica de agrupamento (preparada para quando o backend retornar as turmas usando getInfoDisciplinasByInstitution)
+            // Lógica de agrupamento (preparada para quando o backend retornar as turmas e professores usando getInfoDisciplinasByInstitution)
             data.forEach(disc => {
                 const discExistente = disciplinasAgrupadas.find(e => e.id === disc.id);
 
+                const infoTurma = (disc.turma && disc.professor)
+                    ? `${disc.turma} (${disc.professor})`
+                    : null;
+
                 if (discExistente) {
-                    if (disc.turma && !discExistente.turmas.includes(disc.turma)) {
-                        discExistente.turmas.push(disc.turma);
+                    if (infoTurma && !discExistente.turmas.includes(infoTurma)) {
+                        discExistente.turmas.push(infoTurma);
                     }
                 } else {
                     disciplinasAgrupadas.push({
                         id: disc.id,
                         nome: disc.nome,
-                        turmas: disc.turma ? [disc.turma] : [],
+                        turmas: infoTurma ? [infoTurma] : [],
                         mediaDeAtencao: disc.media_atencao || 0
                     });
                 }
@@ -201,6 +204,9 @@ export default function Disciplinas() {
                             value={nomeDisciplina}
                             onChange={(e) => setNomeDisciplina(e.target.value)}
                             autoFocus
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleEditDisciplina();
+                            }}
                         />
                     ) : (
                         <p className='disciplinas-direita-title'>
@@ -211,8 +217,8 @@ export default function Disciplinas() {
                     <div>
                         {selectedDisciplina !== null && disciplinas[selectedDisciplina] ? (
                             <div className='disciplina-detalhes'>
+                                <p><strong>Turmas e Professores:</strong> {disciplinas[selectedDisciplina].turmas.join(', ') || 'Nenhum vínculo'}</p>
                                 <p><strong>Média de Atenção:</strong> {disciplinas[selectedDisciplina].mediaDeAtencao}%</p>
-                                <p><strong>Turmas:</strong> {disciplinas[selectedDisciplina].turmas.join(', ') || 'Nenhuma'}</p>
                             </div>
                         ) : (
                             <p className='disciplina-selecione'>Selecione uma disciplina para ver os detalhes</p>

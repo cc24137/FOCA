@@ -1,64 +1,122 @@
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header';
 import './professores.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from "../../services/api";
 
-export default function Professores(){
-    
-    let professores = [];
+export default function Professores() {
+    const navigate = useNavigate();
 
-    function putDataInProfessoresArray(prof){
-        professores.forEach((e)=>{
-            if (e.id === prof.id){
-                e.turmas.push(prof.turma);
-                e.disciplinas.push(prof.disciplina);
-            }
-            else{
-                professores.push({
-                    nome: prof.nome, 
-                    email: prof.email,
-                    turmas: [],
-                    disciplinas: [],
-                    mediaAtencao: prof.media_atencao
-                });
-            }
-        });
-    }
+    const [professores, setProfessores] = useState([]);
+    const [selectedProfessor, setSelectedProfessor] = useState(null);
 
-    async function loadData(){
+    // Novos estados para a funcionalidade de adicionar professor
+    const [isAddingProfessor, setIsAddingProfessor] = useState(false);
+    const [newProfessorEmail, setNewProfessorEmail] = useState("");
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    async function loadData() {
         console.log("Loading data from api to professores");
-        try{
+        try {
             const response = await api.get("/professor/infosPorInstituicao");
             const data = response.data;
-            data.forEach(e => {
-                putDataInProfessoresArray(e);
+
+            const professoresAgrupados = [];
+
+            data.forEach(prof => {
+                const professorExistente = professoresAgrupados.find(e => e.id === prof.id);
+
+                if (professorExistente) {
+                    if (prof.turma && !professorExistente.turmas.includes(prof.turma)) {
+                        professorExistente.turmas.push(prof.turma);
+                    }
+                    if (prof.disciplina && !professorExistente.disciplinas.includes(prof.disciplina)) {
+                        professorExistente.disciplinas.push(prof.disciplina);
+                    }
+                } else {
+                    professoresAgrupados.push({
+                        id: prof.id,
+                        nome: prof.nome,
+                        email: prof.email,
+                        turmas: prof.turma ? [prof.turma] : [],
+                        disciplinas: prof.disciplina ? [prof.disciplina] : [],
+                        mediaAtencao: prof.media_atencao
+                    });
+                }
             });
-        } 
-        catch(error) {
-            if (error.response){
+
+            setProfessores(professoresAgrupados);
+
+        } catch (error) {
+            if (error.response) {
                 console.log("Erro na API: " + error.response.data.message);
-                alert("Ocorreu um erro inesperado. Tente novamente mais tarde.");
-            }
-            else{
+            } else {
+                console.log(error);
                 alert("Erro de conexão com o servidor.");
             }
         }
     }
 
-    /*
-    const professores = [
-        { nome: "Ana Paula Souza", email: "ana.souza@escola.com", turmas: ["9A", "9B", "8A"], mediaAtencao: 87.4 },
-        { nome: "Carlos Eduardo Lima", email: "carlos.lima@escola.com", turmas: ["7A", "7B"], mediaAtencao: 72.1 },
-        { nome: "Fernanda Oliveira", email: "fernanda.oliveira@escola.com", turmas: ["6A", "6B", "6C"], mediaAtencao: 91.3 },
-        { nome: "Roberto Mendes", email: "roberto.mendes@escola.com", turmas: ["8B", "9C"], mediaAtencao: 65.8 },
-        { nome: "Juliana Costa", email: "juliana.costa@escola.com", turmas: ["7C", "8C", "9A"], mediaAtencao: 83.0 },
-        { nome: "Marcos Vinicius Rocha", email: "marcos.rocha@escola.com", turmas: ["6A", "7A"], mediaAtencao: 78.5 },
-        { nome: "Patricia Almeida", email: "patricia.almeida@escola.com", turmas: ["8A", "8B", "8C"], mediaAtencao: 95.2 },
-    ];
-    */
+    // convidar professor
+    async function handleAddProfessor() {
+        // Se não estava adicionando, apenas exibe o input
+        if (!isAddingProfessor) {
+            setIsAddingProfessor(true);
+            return;
+        }
 
-    const [selectedProfessor, setSelectedProfessor] = useState(null);
+        // Se estava adicionando, verifica se o email foi preenchido
+        if (newProfessorEmail.trim() === "") {
+            // Se clicar no botão com o input vazio, cancela a ação
+            setIsAddingProfessor(false);
+            return;
+        }
+
+        try {
+            await api.post("/instituicao/convidar", { emailProfessor: newProfessorEmail });
+
+            alert("Convite enviado com sucesso para o email: " + newProfessorEmail);
+
+            // Limpa os estados
+            setNewProfessorEmail("");
+            setIsAddingProfessor(false);
+
+        } catch (error) {
+            console.log(error);
+            alert("Erro ao convidar professor: " + (error.response?.data?.message || "Tente novamente."));
+        }
+    }
+
+    // remover professor
+    async function handleRemoveProfessor() {
+        // Verifica se há alguém selecionado
+        if (selectedProfessor === null || !professores[selectedProfessor]) return;
+
+        const prof = professores[selectedProfessor];
+
+        // Mostra o alerta de confirmação do navegador
+        const confirmacao = window.confirm(`Tem certeza que deseja remover o professor ${prof.nome}?`);
+
+        if (confirmacao) {
+            try {
+                await api.delete("/instituicao/removerProfessor", {
+                    data: { idProfessor: prof.id }
+                });
+
+                alert("Professor removido com sucesso!");
+
+                // Tira a seleção do painel da direita e recarrega a lista
+                setSelectedProfessor(null);
+                loadData();
+            } catch (error) {
+                console.log(error);
+                alert("Erro ao remover professor: " + (error.response?.data?.message || "Tente novamente."));
+            }
+        }
+    }
 
     return (
         <div className='professores-body'>
@@ -70,46 +128,84 @@ export default function Professores(){
                     <div className='professores-list-container'>
                         {professores.map((professor, index) => (
                             <div
-                                key={index}
+                                key={professor.id || index}
                                 className={`professor-item ${selectedProfessor === index ? 'selected' : ''}`}
                                 onClick={() => setSelectedProfessor(index)}
                             >
                                 {professor.nome}
                             </div>
                         ))}
+
+                        {/* Se estiver adicionando, exibe a caixa de input no final da lista */}
+                        {isAddingProfessor && (
+                            <div className="professor-item">
+                                <input
+                                    type="email"
+                                    placeholder="Digite o e-mail e clique em enviar..."
+                                    value={newProfessorEmail}
+                                    onChange={(e) => setNewProfessorEmail(e.target.value)}
+                                    autoFocus
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') handleAddProfessor();
+                                    }}
+                                    style={{
+                                        width: '100%',
+                                        border: 'none',
+                                        outline: 'none',
+                                        background: 'transparent',
+                                        fontFamily: 'inherit',
+                                        fontSize: 'inherit',
+                                        color: 'inherit'
+                                    }}
+                                />
+                            </div>
+                        )}
+
+                        {professores.length === 0 && !isAddingProfessor && (
+                            <p className='professor-selecione'>Nenhum professor encontrado.</p>
+                        )}
                     </div>
 
                     <div>
-                        <button className='professores-adicionar'>
-                            <p className='professores-adicionar-text'>Adicionar professor</p>
+                        <button className='professores-adicionar' onClick={handleAddProfessor}>
+                            {/* Altera o texto do botão dependendo do estado */}
+                            <p className='professores-adicionar-text'>
+                                {isAddingProfessor ? 'Enviar Convite' : 'Adicionar professor'}
+                            </p>
                         </button>
                     </div>
                 </div>
-                    
+
                 <div className='professores-direita'>
-                    <p className='professores-direita-title'>{professores[selectedProfessor]?.nome || 'Detalhes do professor'}</p>   
+                    <p className='professores-direita-title'>
+                        {professores[selectedProfessor]?.nome || 'Detalhes do professor'}
+                    </p>
 
                     <div>
-                        {selectedProfessor !== null ? (
+                        {selectedProfessor !== null && professores[selectedProfessor] ? (
                             <div className='professor-detalhes'>
                                 <p><strong>Email:</strong> {professores[selectedProfessor].email}</p>
-                                <p><strong>Turmas:</strong> {professores[selectedProfessor].turmas.join(', ')}</p>
-                                <p><strong>Média de Atenção:</strong> {professores[selectedProfessor].mediaAtencao}%</p>
+                                <p><strong>Turmas:</strong> {professores[selectedProfessor].turmas.join(', ') || 'Nenhuma'}</p>
+                                <p><strong>Disciplinas:</strong> {professores[selectedProfessor].disciplinas.join(', ') || 'Nenhuma'}</p>
+                                <p><strong>Média de Atenção:</strong> {professores[selectedProfessor].mediaAtencao || 0}%</p>
                             </div>
                         ) : (
                             <p className='professor-selecione'>Selecione um professor para ver os detalhes</p>
-                        )}      
-                    </div> 
-
-                    <div className='professores-historico-aulas-content'>
-                    
+                        )}
                     </div>
 
-                    <button className='professores-remover'>
-                        <p className='professores-remover-text'>Remover professor</p>
-                    </button>
+                    <div className='professores-historico-aulas-content'>
+
+                    </div>
+
+                    {/* Exibe o botão de remover apenas se houver um professor selecionado */}
+                    {selectedProfessor !== null && (
+                        <button className='professores-remover' onClick={handleRemoveProfessor}>
+                            <p className='professores-remover-text'>Remover professor</p>
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
-    )
+    );
 }

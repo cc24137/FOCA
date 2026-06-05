@@ -1,16 +1,31 @@
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Header from '../../components/header';
-import User from "../../assets/user.svg?react"
-import Book from "../../assets/book.svg?react"
-import Pen from "../../assets/pen.svg?react"
-import Bookmark from "../../assets/bookmark.svg?react"
+import User from "../../assets/user.svg?react";
+import Book from "../../assets/book.svg?react";
+import Pen from "../../assets/pen.svg?react";
+import Bookmark from "../../assets/bookmark.svg?react";
 
-import "./inicial-instituicao.css"
+import "./inicial-instituicao.css";
 
 
 export default function InicialInstituicao(){
 
     const navigate = useNavigate();
+
+    // Estado para guardar o nome da instituição
+    const [nomeInstituicao, setNomeInstituicao] = useState("");
+
+    useEffect(() => {
+        // Busca o item no localStorage
+        const userStorage = localStorage.getItem('@FOCA:user');
+
+        if (userStorage) {
+            const userData = JSON.parse(userStorage);
+
+            setNomeInstituicao(userData.nome || "Instituição");
+        }
+    }, []);
 
     function goTo(route){
         navigate(route);
@@ -19,7 +34,6 @@ export default function InicialInstituicao(){
     return (
         <div className='inicial-instituicao-container'>
             <Header
-
                 routes = {[
                     {textButton: "Início", routeButton: "/inicial"},
                     {textButton: "Sobre o Projeto", routeButton: "/inicial"},
@@ -28,9 +42,9 @@ export default function InicialInstituicao(){
             />
             <div className='inicial-instituicao-body'>
                 <div className='inicial-instituicao-title'>
-                    <h1>Olá, [nome da instituição]</h1>
+                    <h1>Olá, {nomeInstituicao}</h1>
                 </div>
-                
+
 
                 <div className='inicial-instituicao-cards-container'>
                     <div className='inicial-instituicao-card' onClick={() => goTo("/professores")}>
@@ -71,6 +85,6 @@ export default function InicialInstituicao(){
                 </div>
             </div>
         </div>
-        
+
     )
 }

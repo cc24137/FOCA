@@ -15,7 +15,6 @@
 .professores-esquerda{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: 20px;
     width: 35%;
     height: 100%;
@@ -75,14 +74,17 @@
     color: var(--black);
 }
 
-
-
 .professores-list-container {
     display: flex;
     flex-direction: column;
-    max-height: 300px;
+    justify-content: flex-start;
+    max-height: 600px;
     overflow-y: auto;
     width: 50%;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    width: 100%;
 }
 
 .professores-list-container::-webkit-scrollbar {
@@ -116,4 +118,13 @@
 .professores-historico-aulas-content {
     background-color: rgb(114, 116, 118);
     height: 280px;
+}
+
+.professor-detalhes {
+    font-family: var(--font-inter);
+    font-size: 20px;
+}
+
+.professor-detalhes p {
+    padding: 8px 0;
 }

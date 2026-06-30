@@ -1,4 +1,4 @@
-.inicial-body{
+/* .inicial-body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -379,4 +379,517 @@
 .inicial-our-values-card-text{
     font-size: 22px;
     color: var(--black);
+} */
+
+/* ==========================================================================
+   1. ESTRUTURA E LAYOUT GERAL
+   ========================================================================== */
+.inicial-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: var(--font-inter);
+    overflow-x: hidden; /* Evita scroll horizontal indesejado */
+}
+
+.inicial-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Padding fluído: diminui em telas menores e expande até 64px em telas grandes */
+    padding: 20px clamp(16px, 5vw, 64px);
+    gap: clamp(30px, 5vw, 50px);
+    width: 100%;
+    max-width: 1200px; /* Limita o tamanho máximo para não espalhar demais em monitores Ultra-wide */
+    margin: 0 auto;
+}
+
+/* Atalho para todas as seções principais seguirem o mesmo padrão de largura fluída */
+.inicial-intro,
+.inicial-how-it-works,
+.inicial-goals,
+.inicial-security,
+.inicial-our-values {
+    width: 100%; /* Ocupa o espaço disponível respeitando o limite do pai */
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   2. SEÇÃO INTRODUÇÃO (HERO BANNER)
+   ========================================================================== */
+.inicial-intro {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+    align-items: center;
+    justify-content: space-between;
+    background: var(--intro-gradient);
+    padding: clamp(20px, 4vw, 40px) clamp(20px, 5vw, 50px);
+    border-radius: 24px;
+    gap: 30px;
+    
+    /* Animação suave de entrada */
+    animation: focaFadeInUp 0.6s ease-out forwards;
+}
+
+.inicial-intro-left {
+    flex: 1;
+    min-width: 280px; /* Impede que o acrônimo esmague */
+}
+
+.inicial-intro-title {
+    /* Fonte fluída entre 26px e 38px */
+    font-size: clamp(26px, 3.5vw, 38px);
+    font-weight: 500;
+    font-family: var(--font-scada);
+    line-height: 1.2;
+    margin: 4px 0;
+}
+
+.inicial-intro-title-span {
+    color: var(--deep-blue-accent);
+}
+
+.inicial-intro-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+    min-width: 280px;
+}
+
+.inicial-intro-top-title {
+    font-size: clamp(22px, 2.8vw, 30px);
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.inicial-intro-top-title-span {
+    color: var(--deep-blue-accent);
+    font-weight: 600;
+}
+
+.inicial-intro-text {
+    font-size: clamp(16px, 1.8vw, 20px);
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* ==========================================================================
+   3. SEÇÃO OFERTA DE TESTE / BOAS-VINDAS
+   ========================================================================== */
+.inicial-test-offer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    padding: 10px;
+}
+
+.inicial-test-offer-title {
+    font-size: clamp(28px, 3.8vw, 40px);
+    font-weight: 400;
+    color: var(--deep-blue-accent);
+    font-family: var(--font-scada);
+}
+
+.inicial-test-offer-title-span {
+    font-weight: 600;
+}
+
+.inicial-test-offer-text {
+    font-size: clamp(18px, 2.2vw, 26px);
+    max-width: 800px;
+}
+
+.inicial-test-offer-button {
+    margin-top: 15px;
+    background: var(--button-dark-blue);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    max-width: 280px;
+    min-height: 60px;
+    
+    /* Polimento de interações (Animação micro-interativa) */
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                background-color 0.2s ease, 
+                box-shadow 0.2s ease;
+}
+
+.inicial-test-offer-button:hover {
+    background-color: var(--deep-blue-accent); /* Altere se tiver uma variável de hover */
+    transform: scale(1.04);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.inicial-test-offer-button:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   4. SEÇÃO "COMO FUNCIONA" (GRID AUTOMÁTICO)
+   ========================================================================== */
+.inicial-how-it-works {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.inicial-how-it-works-top-row,
+.inicial-goals-top-row,
+.inicial-security-top-row,
+.inicial-our-values-top-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    align-self: flex-start;
+}
+
+.inicial-how-it-works-icon,
+.inicial-goals-icon,
+.inicial-security-icon,
+.inicial-our-values-icon {
+    width: clamp(28px, 3.5vw, 36px);
+    height: clamp(28px, 3.5vw, 36px);
+    flex-shrink: 0;
+}
+
+.inicial-how-it-works-title,
+.inicial-goals-title,
+.inicial-security-title,
+.inicial-our-values-title {
+    font-size: clamp(28px, 3.8vw, 42px);
+    font-weight: 600;
+    font-family: var(--font-scada);
+}
+
+.inicial-how-it-works-title { font-weight: 400; color: var(--black); }
+.inicial-how-it-works-title-span { color: var(--deep-blue-accent); font-weight: 600; }
+.inicial-goals-title { color: var(--deep-blue-accent); }
+.inicial-security-title { color: var(--deep-blue-accent); }
+.inicial-our-values-title { color: var(--deep-blue-accent); }
+
+/* Transformado de rows rígidas para um Grid Fluído que se reorganiza sozinho */
+.inicial-how-it-works-cards-row {
+    display: grid;
+    /* Cria colunas automáticas de no mínimo 280px. Se couber 2, fica em par. Se não, vira lista */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+/* Removemos estilos redundantes de containers invisíveis */
+.inicial-how-it-works-cards-element {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.inicial-how-it-works-card-title {
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-weight: 500;
+    color: var(--black);
+}
+
+.inicial-how-it-works-card {
+    display: flex;
+    background-color: var(--transparent-dark-grayish-blue);
+    padding: 20px;
+    min-height: 90px; /* Mudado de height para min-height para aceitar textos longos sem quebrar */
+    text-align: center;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease;
+}
+
+.inicial-how-it-works-card:hover {
+    transform: translateY(-3px); /* Leve flutuação ao passar o mouse */
+}
+
+.inicial-how-it-works-card-text {
+    font-size: clamp(14px, 1.6vw, 18px);
+    color: var(--black);
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   5. SEÇÃO OBJETIVOS (GOALS)
+   ========================================================================== */
+.inicial-goals {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inicial-goals-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap-reverse; /* Em telas pequenas, a imagem (left) fica acima do texto */
+    gap: 30px;
+    width: 100%;
+    align-items: center;
+}
+
+.inicial-goals-right {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex: 1;
+    min-width: 300px;
+    background-color: var(--transparent-light-blue);
+    padding: clamp(25px, 4vw, 50px) clamp(20px, 3vw, 30px);
+    border-radius: 20px;
+}
+
+.inicial-goals-right-row {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.inicial-goals-right-row-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 3px;
+}
+
+.inicial-goals-right-row-text {
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-weight: 300;
+    color: var(--black);
+    line-height: 1.4;
+}
+
+.inicial-goals-left {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    justify-content: center;
+}
+
+.inicial-goals-left-icon {
+    width: 100%;
+    max-width: 300px; /* Impede a imagem de explodir de tamanho */
+    height: auto;
+}
+
+/* ==========================================================================
+   6. SEÇÃO SEGURANÇA
+   ========================================================================== */
+.inicial-security {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inicial-security-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    background-color: var(--transparent-grayish-blue);
+    padding: clamp(20px, 4vw, 40px);
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+.inicial-security-content-row {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.inicial-security-content-row-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.inicial-security-content-row-text {
+    font-size: clamp(16px, 1.9vw, 22px); /* Ajustado o tamanho máximo de 24px para 22px para melhor legibilidade */
+    font-weight: 600; /* Reduzido de 700 para 600 para melhor leitura em blocos de texto */
+    color: var(--black);
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   7. SEÇÃO NOSSOS VALORES
+   ========================================================================== */
+.inicial-our-values {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.inicial-our-values-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; /* Permite empilhar em telas menores */
+    gap: 30px;
+    width: 100%;
+    align-items: center;
+}
+
+.inicial-our-values-left {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+.inicial-our-values-left-icon {
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+}
+
+.inicial-our-values-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1.5;
+    min-width: 300px;
+}
+
+.inicial-our-values-card {
+    display: flex;
+    background-color: var(--transparent-dark-grayish-blue);
+    padding: 25px;
+    min-height: 90px;
+    text-align: center;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease;
+}
+
+.inicial-our-values-card:hover {
+    transform: translateX(5px); /* Efeito lateral sutil ao invés de subir */
+}
+
+.inicial-our-values-card-text {
+    font-size: clamp(16px, 1.8vw, 22px);
+    color: var(--black);
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   8. ANIMAÇÕES DE ALTA PERFORMANCE (Hardware Accelerated)
+   ========================================================================== */
+@keyframes focaFadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   9. ADAPTAÇÃO PARA TELAS PEQUENAS (SMARTPHONES E TABLETS NA VERTICAL)
+   ========================================================================== */
+@media (max-width: 768px) {
+    
+    /* Ajusta o espaçamento geral da página para telas pequenas */
+    .inicial-content {
+        padding: 20px 16px;
+        gap: 25px;
+    }
+
+    /* 1. Introdução: Transforma o Banner em lista vertical e centraliza o texto */
+    .inicial-intro {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+        gap: 20px;
+    }
+
+    .inicial-intro-right {
+        width: 100%; /* Ocupa a largura total no mobile */
+    }
+
+    /* 2. Oferta de Teste: Garante que o botão ocupe quase toda a largura para facilitar o toque */
+    .inicial-test-offer-button {
+        width: 100%;
+        max-width: 100%; /* Facilita o clique com o dedão */
+        height: 55px;
+    }
+
+    /* 3. Como Funciona: Força os cards a ficarem em uma única coluna vertical */
+    .inicial-how-it-works-cards-row {
+        grid-template-columns: 1fr; /* Uma única coluna perfeita */
+        gap: 15px;
+    }
+
+    .inicial-how-it-works-cards-element {
+        padding: 0; /* Remove paddings excessivos que esmagam o texto */
+    }
+
+    .inicial-how-it-works-card {
+        min-height: auto; /* Deixa o card crescer de acordo com o texto */
+        padding: 15px;
+    }
+
+    /* 4. Objetivos: Alinha o texto e joga a imagem (Selo) para baixo ou para cima */
+    .inicial-goals-content {
+        flex-direction: column-reverse; /* Texto primeiro, imagem depois */
+        gap: 20px;
+    }
+
+    .inicial-goals-right {
+        width: 100%;
+        padding: 25px 20px;
+    }
+
+    .inicial-goals-left-icon {
+        max-width: 180px; /* Reduz o selo no mobile para não roubar espaço */
+    }
+
+    /* 5. Segurança: Reduz o espaçamento interno do bloco de segurança */
+    .inicial-security-content {
+        padding: 25px 20px;
+        gap: 20px;
+    }
+
+    /* 6. Nossos Valores: Empilha a imagem e os cards de valores */
+    .inicial-our-values-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .inicial-our-values-left,
+    .inicial-our-values-right {
+        width: 100%;
+    }
+
+    .inicial-our-values-left-icon {
+        max-width: 150px;
+    }
+    
+    .inicial-our-values-card {
+        padding: 20px;
+    }
 }

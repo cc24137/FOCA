@@ -164,17 +164,17 @@ export default function Inicial() {
                         <div className='inicial-goals-right'>
                             <div className='inicial-goals-right-row'>
                                 <CheckIcon className='inicial-goals-right-row-icon' />
-                                <p className='inicial-goals-right-row-text'>Trazer uma nova forma de <br></br>avaliar as próprias aulas.</p>
+                                <p className='inicial-goals-right-row-text'>Trazer uma nova forma de avaliar as próprias aulas.</p>
                             </div>
 
                             <div className='inicial-goals-right-row'>
                                 <CheckIcon className='inicial-goals-right-row-icon' />
-                                <p className='inicial-goals-right-row-text'>Proporcionar novos parâmetros <br />de avaliação das turmas.</p>
+                                <p className='inicial-goals-right-row-text'>Proporcionar novos parâmetros de avaliação das turmas.</p>
                             </div>
 
                             <div className='inicial-goals-right-row'>
                                 <CheckIcon className='inicial-goals-right-row-icon' />
-                                <p className='inicial-goals-right-row-text'>Melhorar a forma em que os <br />professores compreendem <br />suas turmas e didátiacas.</p>
+                                <p className='inicial-goals-right-row-text'>Melhorar a forma em que os professores compreendem suas turmas e didátiacas.</p>
                             </div>
                         </div>
 
@@ -250,3 +250,4 @@ export default function Inicial() {
         </div>
     )
 }
+

@@ -1,10 +1,10 @@
 /* -----------------------------------------
    Layout and wrappers
 ----------------------------------------- */
-
 .header {
   width: 100%;
-  padding: 8px 64px 0 64px;
+  /* Padding lateral fluido: evita que esmague em telas médias */
+  padding: 8px clamp(16px, 5vw, 64px) 0 clamp(16px, 5vw, 64px);
   background-color: var(--background-off-white);
   box-sizing: border-box;
 }
@@ -12,14 +12,14 @@
 /* -----------------------------------------
    Containers and sections
 ----------------------------------------- */
-
 .header-elements {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--bar-light-blue);
-  padding: 5px 50px 10px 50px;
+  /* Padding interno flexível */
+  padding: 5px clamp(10px, 3vw, 50px) 10px clamp(10px, 3vw, 50px);
 }
 
 .header-left {
@@ -31,13 +31,13 @@
 .header-right {
   display: flex;
   align-items: center;
-  gap: 70px;
+  /* Reduzido de 70px fixos para um gap dinâmico que diminui em telas menores */
+  gap: clamp(15px, 4vw, 70px); 
 }
 
 /* -----------------------------------------
    UI elements
 ----------------------------------------- */
-
 .header-logo {
   width: 50px;
   height: 50px;
@@ -45,7 +45,7 @@
 }
 
 .header-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 3vw, 2.5rem); /* Título encolhe um pouco se a tela diminuir */
   font-family: var(--font-scada);
   font-weight: 500;
 }
@@ -53,8 +53,18 @@
 .header-link {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
   cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+/* Efeito de feedback visual profissional nos links normais */
+.header-link:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
 }
 
 .header-button {
@@ -64,22 +74,71 @@
   padding: 10px 20px;
   cursor: pointer;
   color: var(--black);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
-  transition: 0.2s;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Efeito de elevação idêntico ao botão da página inicial */
+.header-button:hover {
+  background-color: var(--transparent-dark-grayish-blue);
+  transform: scale(1.04);
+}
+
+.header-button:active {
+  transform: scale(0.98);
 }
 
 .content-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .user-icon, .home-icon, .info-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   fill: none;
   display: block;
   flex-shrink: 0;
+}
+
+/* ==========================================================================
+   📱 ADAPTAÇÃO DO HEADER PARA MOBILE
+   ========================================================================== */
+@media (max-width: 768px) {
+  .header-elements {
+    padding-bottom: 15px;
+  }
+
+  .header-title {
+    font-size: 1.6rem; /* Encolhe o texto FOCA */
+  }
+
+  .header-logo {
+    width: 40px; /* Reduz levemente o tamanho do logo */
+    height: 40px;
+  }
+
+  /* No mobile, os botões do header viram uma barra de ícones compacta e elegante */
+  .header-link, .header-button {
+    font-size: 0px; /* O truque: esconde o texto escondendo a fonte */
+    padding: 10px;
+    border-radius: 50%; /* Transforma o fundo em um círculo perfeito para o toque */
+    background: transparent;
+  }
+
+  .header-button {
+    background: var(--transparent-grayish-blue); /* Mantém um fundinho no botão de perfil */
+  }
+
+  .content-button {
+    gap: 0; /* Remove o espaçamento antigo do texto */
+  }
+
+  .user-icon, .home-icon, .info-icon {
+    width: 24px; /* Aumenta um pouquinho o ícone para facilitar o toque no celular */
+    height: 24px;
+  }
 }

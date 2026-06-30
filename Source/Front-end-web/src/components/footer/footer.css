@@ -1,61 +1,138 @@
-.footer-body{
+/* -----------------------------------------
+   Layout and wrappers
+----------------------------------------- */
+.footer-body {
     display: flex;
     flex-direction: row;
     width: 100%;
     margin-top: auto;
-    padding: 0px 64px 0px 64px;
+    /* Padding lateral fluído acompanhando o header e o conteúdo */
+    padding: 0 clamp(16px, 5vw, 64px);
     font-family: var(--font-inter);
+    box-sizing: border-box;
 }
 
-.footer-elements{
-    padding: 20px 0px 10px 0px;
+.footer-elements {
+    padding: 30px 0 20px 0;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap; /* Permite quebra de linha se faltar espaço */
     width: 100%;
     border-top: 1px solid var(--bar-light-blue);
+    gap: 20px;
 }
 
-.footer-about{
+/* -----------------------------------------
+   Seções Internas (Desktop)
+----------------------------------------- */
+.footer-about {
     width: 40%;
+    min-width: 280px;
 }
 
-.footer-contacts{
+.footer-contacts {
     width: 30%;
+    min-width: 250px;
     border-right: 1px solid var(--bar-light-blue);
     border-left: 1px solid var(--bar-light-blue);
-    padding-left: 20px;
-    
+    padding-left: clamp(10px, 2vw, 20px);
+    padding-right: 10px;
+    box-sizing: border-box;
 }
 
-.footer-contacts ul{
+.footer-contacts ul {
     list-style: none;
     padding-left: 10px;
 }
 
-.footer-more-about{
-    width: 30%;
-    padding-left: 20px;
+.footer-contacts li p {
+    word-break: break-all; /* Evita que e-mails longos estourem o container */
+    margin: 6px 0;
 }
 
-.footer-title{
+.footer-more-about {
+    width: 25%;
+    min-width: 200px;
+    padding-left: clamp(10px, 2vw, 20px);
+    box-sizing: border-box;
+}
+
+/* -----------------------------------------
+   Elementos de UI e Textos
+----------------------------------------- */
+.footer-title {
     font-family: var(--font-scada);
-    font-size: 28px;
+    font-size: clamp(22px, 2.5vw, 28px); /* Fonte diminui sutilmente em telas menores */
     padding-bottom: 8px;
+    color: var(--black);
+    font-weight: 500;
 }
 
-.more-about-row{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    padding-left: 10px;
-}
-
-.footer-text{
+.footer-text {
     padding-left: 10px;
     padding-right: 5px;
+    line-height: 1.5;
+    font-size: 15px;
 }
 
-.more-about-text{
-    padding-left: 8px;
-    font-size: 20px;
+.more-about-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding-left: 10px;
+    gap: 8px;
+}
+
+.github-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--black);
+}
+
+.more-about-text {
+    font-size: 18px;
+    color: var(--black);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.more-about-text:hover {
+    color: var(--deep-blue-accent);
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   📱 ADAPTAÇÃO DO FOOTER PARA MOBILE
+   ========================================================================== */
+@media (max-width: 1050px) {
+    .footer-elements {
+        flex-direction: column; /* Empilha as colunas verticalmente antes de quebrar */
+        gap: 25px;
+        padding-top: 20px;
+    }
+
+    /* Todas as seções passam a ocupar 100% da largura útil de forma organizada */
+    .footer-about, 
+    .footer-contacts, 
+    .footer-more-about {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    /* Remove as bordas verticais e cria divisores horizontais limpos */
+    .footer-contacts {
+        border-left: none;
+        border-right: none;
+        border-top: 1px dashed var(--bar-light-blue);
+        border-bottom: 1px dashed var(--bar-light-blue);
+        padding: 20px 0;
+    }
+    
+    /* Alinhamentos internos ajustados para o modo vertical */
+    .footer-contacts ul,
+    .more-about-row,
+    .footer-text {
+        padding-left: 4px;
+    }
 }

@@ -76,9 +76,14 @@ export default function Login() {
       <TituloLateral />
 
       <div className="login-right">
+        {/* O Top agora serve estritamente como a barra de navegação/header */}
         <div className="top">
-          {/* Título adicionado aqui */}
-          <h2 className="login-title-text">Login</h2>
+          <div className="header-brand-mobile">
+            {/* Se o TituloLateral já renderizar o logo no mobile, podemos apenas 
+                usar o CSS para posicioná-lo. Mas se você quiser garantir que o texto 
+                e logo apareçam aqui, você pode deixar essa div vazia e controlaremos 
+                o TituloLateral para se comportar como o Header! */}
+          </div>
 
           <button className="login-button" onClick={() => goTo("/")}>
             <div className="login-content-button">
@@ -89,6 +94,9 @@ export default function Login() {
         </div>
 
         <div className="login-center">
+          {/* O Título de Login agora fica aqui, logo acima dos campos */}
+          <h2 className="login-title-text">Login</h2>
+
           <div className="login-field-group">
             <label className="login-field-label" htmlFor="email">
               Email
@@ -102,11 +110,9 @@ export default function Login() {
               placeholder=""
             />
           </div>
-          {/*nome da instituição/professor*/}
 
           <div className="login-field-group">
             <label className="login-field-label">Senha</label>
-
             <div className="input-wrapper">
               <input
                 type={showPassword ? "text" : "password"}
@@ -114,7 +120,6 @@ export default function Login() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
               />
-
               <button
                 type="button"
                 className="eye-button"
@@ -139,8 +144,6 @@ export default function Login() {
           <button className="login-submit-button" onClick={() => formSubmit()}>
             Entrar
           </button>
-          {/*texto de redirecionamento para cadastro*/}
-
           <div className="text-to-cadastro">
             <p>
               Ainda não possui uma conta?{" "}

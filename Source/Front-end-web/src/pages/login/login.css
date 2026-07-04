@@ -1,14 +1,15 @@
-/* -----------------------------------------
-   Layout and wrappers
------------------------------------------ */
+/* ==========================================================================
+   1. LAYOUT BASE E DESKTOP (MONITORES GRANDES)
+   ========================================================================== */
 
 .login-body {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
   width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .login-right {
@@ -16,67 +17,63 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
   width: 70%;
   min-height: 100vh;
-  padding: 40px 40px 180px 40px;
+  padding: 40px clamp(24px, 5vw, 50px) 60px clamp(24px, 5vw, 50px);
+  box-sizing: border-box;
 }
 
 .top {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* No desktop, empurra o botão Início para a direita */
   align-items: center;
-  gap: 10px;
-
   width: 100%;
+  height: 50px;
 }
-
-/* -----------------------------------------
-   Containers and sections
------------------------------------------ */
 
 .login-center {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 26px;
-
-  width: 50%;
-  padding-top: 80px;
+  align-items: flex-start; /* Alinha o título "Login" e os campos à esquerda (padrão de mercado) */
+  gap: 24px;
+  width: 55%; 
+  max-width: 450px;
+  box-sizing: border-box;
 }
 
 .login-bottom {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-
-  width: 60%;
+  gap: 15px;
+  width: 100%;
+  max-width: 450px;
 }
 
 .login-field-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-
+  gap: 8px;
   width: 100%;
 }
 
-/* -----------------------------------------
-   UI elements
------------------------------------------ */
+/* ==========================================================================
+   2. UI ELEMENTS & INPUTS
+   ========================================================================== */
 
 .login-title-text {
   color: var(--black);
   font-family: var(--font-inter);
   font-size: 36px;
   font-weight: 700;
+  margin: 0 0 10px 0; /* Espaçamento abaixo do título */
+  align-self: flex-start;
 }
 
 .login-field-label {
   color: var(--black);
   font-family: var(--font-inter);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
 }
 
@@ -85,95 +82,374 @@
   height: 50px;
   padding: 0 14px;
   box-sizing: border-box;
-
   color: var(--black);
   font-family: var(--font-inter);
   font-size: 16px;
-
   background-color: var(--white);
-  border: 1px solid var(--black);
-  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   outline: none;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.login-text-field.with-icon {
+  padding-right: 45px;
+}
+
+.eye-button {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.eye-button svg {
+  width: 22px;
+  height: 22px;
 }
 
 .login-content-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-
-  min-height: 42px;
-  padding: 0px 22px;
-
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 16px;
   color: var(--black);
   font-family: var(--font-inter);
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 500;
-
-  cursor: pointer;
 }
 
 .login-button {
-  align-self: flex-end;
-
-  padding: 3px;
-
-  color: var(--black);
-  font-size: 18px;
-  font-weight: 500;
-
   background: var(--transparent-grayish-blue);
   border: none;
-  border-radius: 25px;
-
+  border-radius: 20px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s ease;
 }
 
 .login-submit-button {
-  width: 80%;
+  width: 100%;
   height: 50px;
-
   color: var(--white);
-  font-size: 26px;
-  font-weight: 500;
-
+  font-size: 20px;
+  font-weight: 600;
   background-color: var(--button-dark-blue);
   border: none;
   border-radius: 10px;
-
   cursor: pointer;
 }
 
 .text-to-cadastro {
   font-family: var(--font-inter);
-  font-size: 20px;
-
-  cursor: pointer;
+  font-size: 15px;
+  text-align: center;
 }
 
-.redirect-to-cadastro {
+.redirect-to-cadastro,
+.redirect-to-esqueceu-senha {
   color: var(--deep-blue-accent);
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .forgot-password {
   align-self: flex-end;
-
-  color: var(--deep-blue-accent);
   font-family: var(--font-inter);
-  font-size: 16px;
-  font-weight: 500;
-
-  cursor: pointer;
+  font-size: 14px;
 }
 
-/* -----------------------------------------
-   Icons and decorations
------------------------------------------ */
-
 .login-home-icon {
-  width: 25px;
-  height: 25px;
+  width: 18px;
+  height: 18px;
+}
 
-  scale: 1.1;
+/* ==========================================================================
+   💻 MEDIA QUERY 1: LAPTOPS PEQUENOS (Abaixo de 1024px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .login-body {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* 1. TRANSFORMA O COMPONENTE DA ESQUERDA NA BARRA DE NAVEGAÇÃO SUPERIOR FIXA */
+  .login-body > *:first-child {
+    width: 100% !important;
+    min-height: auto !important;
+    height: 60px !important; 
+    padding: 0 20px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important; /* Alinha o texto e o logo à esquerda */
+    background: var(--intro-gradient) !important; 
+    position: fixed !important; 
+    top: 0;
+    left: 0;
+    z-index: 10;
+    box-sizing: border-box !important;
+  }
+
+  /* Injeta o texto "FOCA" colado ao ícone */
+  .login-body > *:first-child::before {
+    content: "FOCA";
+    display: inline-block !important;
+    font-family: var(--font-scada), 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--black);
+    margin-right: 8px !important; /* Distância perfeita entre texto e o logo */
+  }
+
+  /* Garante que o Logo (Foca/imagem) fique encolhido e colado ao texto injetado */
+  .login-body > *:first-child svg,
+  .login-body > *:first-child img {
+    display: inline-block !important;
+    height: 32px !important;
+    width: auto !important;
+    margin: 0 !important; 
+    position: static !important;
+    transform: none !important;
+  }
+
+  /* Se o componente contiver alguma div wrapper interna indesejada, removemos o bloco */
+  .login-body > *:first-child div {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+  }
+
+  /* Esconde os textos longos originais do desktop no topo para limpar o visual */
+  .login-body > *:first-child h1,
+  .login-body > *:first-child p,
+  .login-body > *:first-child span {
+    display: none !important;
+  }
+
+  /* 2. REORGANIZAÇÃO COMPLETA DA ÁREA DO FORMULÁRIO */
+  .login-right {
+    width: 100%;
+    margin-top: 60px; /* Recuo exato para não ficar por baixo da barra fixa */
+    min-height: calc(100vh - 60px);
+    padding: 40px 24px 40px 24px;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    gap: 20px;
+  }
+
+  /* Alinha a div .top no mesmo eixo do cabeçalho fixo */
+  .top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: auto;
+    height: 60px;
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+    justify-content: flex-end;
+  }
+
+  /* Oculta o título de dentro da div .top */
+  .top .login-title-text {
+    display: none !important;
+  }
+
+  /* Botão início refinado para a barra superior */
+  .login-button {
+    background: rgba(255, 255, 255, 0.4) !important;
+    border-radius: 15px;
+    padding: 2px;
+  }
+
+  .login-content-button {
+    font-size: 14px !important;
+    min-height: 32px !important;
+    padding: 0 12px !important;
+    gap: 6px !important;
+  }
+
+  .login-home-icon {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  /* 3. FORMULÁRIO INTERNO NA ÁREA BRANCA */
+  .login-center {
+    width: 100%;
+    max-width: 450px; /* Impede que em tablets deitados os inputs fiquem gigantescos */
+    margin: 0 auto;  /* Centraliza horizontalmente o bloco de formulário */
+    padding-top: 20px;
+    gap: 22px;
+    align-items: flex-start;
+  }
+
+  /* Destaca o título "Login" isolado na área branca */
+  .login-center .login-title-text {
+    display: block !important;
+    font-size: 32px !important;
+    margin-bottom: 5px;
+    align-self: flex-start;
+  }
+
+  .login-bottom {
+    width: 100%;
+    max-width: 450px;
+    margin: 20px auto 0 auto;
+  }
+}
+
+/* ==========================================================================
+   📱 MEDIA QUERY 2: SMARTPHONES (Abaixo de 768px)
+   ========================================================================== */
+/* ==========================================================================
+   📱 MEDIA QUERY 2: SMARTPHONES (Abaixo de 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .login-body {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  /* 1. TRANSFORMA O COMPONENTE DA ESQUERDA NA BARRA DE NAVEGAÇÃO SUPERIOR */
+  .login-body > *:first-child {
+    width: 100% !important;
+    min-height: auto !important;
+    height: 60px !important; 
+    padding: 0 16px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    /* Alinha o conjunto do logo à esquerda e mantém o botão início na direita */
+    justify-content: flex-start !important; 
+    background: var(--intro-gradient) !important; 
+    position: fixed !important; 
+    top: 0;
+    left: 0;
+    z-index: 10;
+    box-sizing: border-box !important;
+  }
+
+  /* Injeta o texto "FOCA" colado ao item seguinte */
+  .login-body > *:first-child::before {
+    content: "FOCA";
+    display: inline-block !important;
+    font-family: var(--font-scada), 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--black);
+    margin-right: 6px !important; /* Distância perfeita e controlada até a foca */
+  }
+
+  /* Garante que o Logo (Foca) fique colado no texto, removendo margens automáticas */
+  .login-body > *:first-child svg,
+  .login-body > *:first-child img {
+    display: inline-block !important;
+    height: 32px !important;
+    width: auto !important;
+    /* Remove margens laterais automáticas que jogavam a foca para longe */
+    margin: 0 !important; 
+    position: static !important;
+    transform: none !important;
+  }
+
+  /* Se o componente interno tiver wrappers/divs vazias bloqueando o fluxo, 
+     forçamos que elas fiquem em linha também */
+  .login-body > *:first-child div {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+  }
+
+  /* Esconde os elementos textuais nativos do desktop */
+  .login-body > *:first-child h1,
+  .login-body > *:first-child p,
+  .login-body > *:first-child span {
+    display: none !important;
+  }
+
+  /* 2. REORGANIZA A ÁREA DA DIREITA (FORMULÁRIO) */
+  .login-right {
+    width: 100%;
+    margin-top: 60px; 
+    min-height: calc(100vh - 60px);
+    padding: 30px 24px 40px 24px;
+    box-sizing: border-box;
+    justify-content: flex-start;
+  }
+
+  /* Botão início no canto superior direito */
+  .top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: auto;
+    height: 60px;
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    padding-right: 16px;
+    justify-content: flex-end;
+  }
+
+  .top .login-title-text {
+    display: none;
+  }
+
+  .login-button {
+    background: rgba(255, 255, 255, 0.4) !important;
+    border-radius: 15px;
+  }
+
+  .login-content-button {
+    font-size: 14px !important;
+    min-height: 32px !important;
+    padding: 0 10px !important;
+    gap: 4px !important;
+  }
+
+  .login-home-icon {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  /* 3. FORMULÁRIO DE LOGIN INTERNO */
+  .login-center {
+    width: 100%;
+    padding-top: 20px;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .login-center .login-title-text {
+    display: block !important;
+    font-size: 32px !important;
+    margin-bottom: 5px;
+  }
+
+  .login-bottom {
+    width: 100%;
+    margin-top: 40px;
+  }
 }

@@ -184,64 +184,6 @@
     justify-content: flex-start;
   }
 
-  /* 1. TRANSFORMA O COMPONENTE DA ESQUERDA NA BARRA DE NAVEGAÇÃO SUPERIOR FIXA */
-  .login-body > *:first-child {
-    width: 100% !important;
-    min-height: auto !important;
-    height: 60px !important; 
-    padding: 0 20px !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: flex-start !important; /* Alinha o texto e o logo à esquerda */
-    background: var(--intro-gradient) !important; 
-    position: fixed !important; 
-    top: 0;
-    left: 0;
-    z-index: 10;
-    box-sizing: border-box !important;
-  }
-
-  /* Injeta o texto "FOCA" colado ao ícone */
-  .login-body > *:first-child::before {
-    content: "FOCA";
-    display: inline-block !important;
-    font-family: var(--font-scada), 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--black);
-    margin-right: 8px !important; /* Distância perfeita entre texto e o logo */
-  }
-
-  /* Garante que o Logo (Foca/imagem) fique encolhido e colado ao texto injetado */
-  .login-body > *:first-child svg,
-  .login-body > *:first-child img {
-    display: inline-block !important;
-    height: 32px !important;
-    width: auto !important;
-    margin: 0 !important; 
-    position: static !important;
-    transform: none !important;
-  }
-
-  /* Se o componente contiver alguma div wrapper interna indesejada, removemos o bloco */
-  .login-body > *:first-child div {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: auto !important;
-  }
-
-  /* Esconde os textos longos originais do desktop no topo para limpar o visual */
-  .login-body > *:first-child h1,
-  .login-body > *:first-child p,
-  .login-body > *:first-child span {
-    display: none !important;
-  }
-
   /* 2. REORGANIZAÇÃO COMPLETA DA ÁREA DO FORMULÁRIO */
   .login-right {
     width: 100%;
@@ -326,67 +268,6 @@
   .login-body {
     flex-direction: column;
     justify-content: flex-start;
-  }
-
-  /* 1. TRANSFORMA O COMPONENTE DA ESQUERDA NA BARRA DE NAVEGAÇÃO SUPERIOR */
-  .login-body > *:first-child {
-    width: 100% !important;
-    min-height: auto !important;
-    height: 60px !important; 
-    padding: 0 16px !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    /* Alinha o conjunto do logo à esquerda e mantém o botão início na direita */
-    justify-content: flex-start !important; 
-    background: var(--intro-gradient) !important; 
-    position: fixed !important; 
-    top: 0;
-    left: 0;
-    z-index: 10;
-    box-sizing: border-box !important;
-  }
-
-  /* Injeta o texto "FOCA" colado ao item seguinte */
-  .login-body > *:first-child::before {
-    content: "FOCA";
-    display: inline-block !important;
-    font-family: var(--font-scada), 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--black);
-    margin-right: 6px !important; /* Distância perfeita e controlada até a foca */
-  }
-
-  /* Garante que o Logo (Foca) fique colado no texto, removendo margens automáticas */
-  .login-body > *:first-child svg,
-  .login-body > *:first-child img {
-    display: inline-block !important;
-    height: 32px !important;
-    width: auto !important;
-    /* Remove margens laterais automáticas que jogavam a foca para longe */
-    margin: 0 !important; 
-    position: static !important;
-    transform: none !important;
-  }
-
-  /* Se o componente interno tiver wrappers/divs vazias bloqueando o fluxo, 
-     forçamos que elas fiquem em linha também */
-  .login-body > *:first-child div {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    width: auto !important;
-  }
-
-  /* Esconde os elementos textuais nativos do desktop */
-  .login-body > *:first-child h1,
-  .login-body > *:first-child p,
-  .login-body > *:first-child span {
-    display: none !important;
   }
 
   /* 2. REORGANIZA A ÁREA DA DIREITA (FORMULÁRIO) */

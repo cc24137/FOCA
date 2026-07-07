@@ -75,12 +75,14 @@ export default function AlterarSenha() {
       <TituloLateral />
 
       <div className="alterar-senha-right">
-        <button className="alterar-senha-button" onClick={() => goTo("/")}>
-          <div className="alterar-senha-content-button">
-            <HomeIcon className="home-icon" />
-            <span className="alterar-senha-button-text">Início</span>
-          </div>
-        </button>
+        <div className="alterar-senha-top">
+          <button className="alterar-senha-button" onClick={() => goTo("/")}>
+            <div className="alterar-senha-content-button">
+              <HomeIcon className="home-icon" />
+              <span className="alterar-senha-button-text">Início</span>
+            </div>
+          </button>
+        </div>
 
         <div className="alterar-senha-center">
           <div className="alterar-senha-box">
@@ -90,24 +92,26 @@ export default function AlterarSenha() {
             </p>
           </div>
 
+          {/* E-mail */}
           <div className="alterar-senha-field-group">
-            {/* E-mail */}
             <label className="alterar-senha-field-label">E-mail</label>
             <div className="input-wrapper">
               <input
-                type={"email"}
+                type="email"
                 className="text-field"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
               />
             </div>
+          </div>
 
-            {/* Senha */}
+          {/* Senha */}
+          <div className="alterar-senha-field-group">
             <div className="label-with-asterisk">
               <label className="alterar-senha-field-label">Senha</label>
               <Asterisk
                 className={`asterisk ${
-                  verifyPassword() != "" ? "visible" : "hidden"
+                  verifyPassword() !== "" ? "visible" : "hidden"
                 }`}
               />
               <p className="text-password">{verifyPassword()}</p>
@@ -133,20 +137,22 @@ export default function AlterarSenha() {
                 {showPassword ? <EyeOnIcon /> : <EyeOffIcon />}
               </button>
             </div>
+          </div>
 
-            {/* Confirmar Senha */}
+          {/* Confirmar Senha */}
+          <div className="alterar-senha-field-group">
             <div className="label-with-asterisk">
               <label className="alterar-senha-field-label">
                 Confirmar Senha
               </label>
               <Asterisk
                 className={`asterisk ${
-                  password != confirmPassword ? "visible" : "hidden"
+                  password !== confirmPassword ? "visible" : "hidden"
                 }`}
               />
               <p
                 className={`text-confirm-password ${
-                  password != confirmPassword ? "visible" : "hidden"
+                  password !== confirmPassword ? "visible" : "hidden"
                 }`}
               >
                 As senhas devem ser iguais.

@@ -1,166 +1,203 @@
-/* -----------------------------------------
-   Layout and wrappers
------------------------------------------ */
+/* ==========================================================================
+   1. LAYOUT BASE E DESKTOP (Monitores Grandes e Notebooks)
+   ========================================================================== */
 
 .alterar-senha-body {
-  /* Display & Layout */
   display: flex;
   flex-direction: row;
-
-  /* Box Model */
-  width: 100vw;
-  height: 100vh;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .alterar-senha-right {
-  /* Display & Layout */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-
-  /* Box Model */
-  width: 70%;
+  width: 65%;
+  flex-grow: 1;
   min-height: 100vh;
-  padding: 40px 40px 160px 40px;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  gap: 25px;
 }
 
-/* -----------------------------------------
-   Containers and sections
------------------------------------------ */
+/* Limitação de largura padrão para garantir simetria */
+.alterar-senha-top,
+.alterar-senha-center,
+.alterar-senha-bottom {
+  width: 100%;
+  max-width: 560px;
+  box-sizing: border-box;
+}
+
+.alterar-senha-top {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 
 .alterar-senha-box {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-
-  padding: 25px 110px;
-
-  /* Typography */
+  gap: 10px;
+  width: 100%;
+  padding: 20px 30px;
+  box-sizing: border-box;
   text-align: center;
   color: var(--black);
   font-family: var(--font-inter);
-  font-size: 18px;
-  font-weight: bold;
-
-  /* Visuals */
+  font-size: 16px;
+  font-weight: 700;
   background-color: var(--transparent-grayish-blue);
   border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.alterar-senha-box p {
+  margin: 0;
 }
 
 .alterar-senha-center {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 50px;
+  align-items: flex-start;
+  gap: 20px; /* Distância uniforme entre cada input */
+}
 
-  width: 50%;
+.alterar-senha-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Distância entre label e a caixa de texto */
+  width: 100%;
+}
 
-  color: var(--black);
-  font-family: var(--font-inter);
-  font-size: 18px;
-  font-weight: bold;
+.input-wrapper {
+  position: relative;
+  width: 100%;
 }
 
 .alterar-senha-bottom {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-
-  width: 50%;
+  margin-top: 10px;
 }
 
-.alterar-senha-field-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  width: 100%;
-}
-
-/* -----------------------------------------
-   UI elements (Inputs, Labels, Buttons)
------------------------------------------ */
+/* --- Elementos de Interface, Inputs e Componentes --- */
 
 .alterar-senha-field-label {
   color: var(--black);
   font-family: var(--font-inter);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
 }
 
-.alterar-senha-input-wrapper {
-  position: relative;
+/* Garante a estilização idêntica dos inputs à do Cadastro */
+.text-field {
+  width: 100%;
+  height: clamp(42px, 5.5vh, 52px);
+  padding: 0 16px;
+  box-sizing: border-box;
+  color: var(--black);
+  font-family: var(--font-inter);
+  font-size: 16px;
+  background-color: var(--white);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
 }
 
-.alterar-senha-text-field.with-icon {
-  padding-right: 45px; /* space for the icon */
+.text-field:focus {
+  border-color: var(--deep-blue-accent);
+}
+
+.text-field.with-icon {
+  padding-right: 45px;
 }
 
 .alterar-senha-content-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-
-  min-height: 42px;
-  padding: 0px 22px;
-
+  gap: 8px;
+  min-height: 38px;
+  padding: 0px 16px;
   color: var(--black);
   font-family: var(--font-inter);
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .alterar-senha-button {
-  align-self: flex-end;
-
-  padding: 3px;
-
-  color: var(--black);
-  font-size: 18px;
-  font-weight: 500;
-
   background: var(--transparent-grayish-blue);
   border: none;
-  border-radius: 25px;
-
-  /* Misc */
+  border-radius: 20px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.2s ease;
+}
+
+.alterar-senha-button:hover {
+  background: var(--transparent-dark-grayish-blue);
 }
 
 .alterar-senha-submit-button {
   width: 100%;
-  height: 50px;
-
+  height: clamp(44px, 6vh, 52px);
   color: var(--white);
-  font-size: 26px;
-  font-weight: 500;
-
+  font-size: clamp(18px, 3vh, 20px);
+  font-weight: 600;
   background-color: var(--button-dark-blue);
   border: none;
   border-radius: 10px;
-
   cursor: pointer;
 }
 
+.alterar-senha-submit-button:hover {
+  background-color: var(--deep-blue-accent);
+}
+
+/* Estilos para validação, consistentes com a tela de Cadastro */
 .label-with-asterisk {
   display: flex;
   align-items: baseline;
   gap: 4px;
-  max-height: 21px;
+  font-family: var(--font-inter);
+  width: 100%;
 }
 
+.home-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.eye-button {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.eye-button svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Asterisco de validação */
 .asterisk {
-  margin-left: 10px;
+  margin-left: 4px;
 }
 
 .asterisk.hidden {
-  width: 8px;
-  height: 12px;
-  fill: none;
+  display: none;
 }
 
 .asterisk.visible {
@@ -169,16 +206,105 @@
   fill: var(--red);
 }
 
-.text-password {
-  color: var(--red);
-  font-size: 18px;
-}
-
+/* Mensagens de erro de validação */
+.text-password, /* Classe para erro no campo de senha */
 .text-confirm-password.visible {
   color: var(--red);
-  font-size: 18px;
+  font-size: 14px;
+  margin-left: auto;
 }
 
 .text-confirm-password.hidden {
   display: none;
+}
+
+
+/* ==========================================================================
+   📱 MEDIA QUERY (Telemóveis e Tablets - ABAIXO DE 1024px)
+   ========================================================================= */
+@media (max-width: 1024px) {
+  .alterar-senha-body {
+    flex-direction: column;
+  }
+
+  .alterar-senha-top {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+    height: 60px !important;
+    padding: 0 16px !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    z-index: 1000 !important;
+  }
+
+  .alterar-senha-button {
+    background: rgba(255, 255, 255, 0.6) !important;
+    border-radius: 12px !important;
+    padding: 2px !important;
+  }
+
+  .alterar-senha-content-button {
+    font-size: 14px !important;
+    min-height: 32px !important;
+    padding: 0 10px !important;
+    gap: 6px !important;
+  }
+
+  .alterar-senha-right {
+    width: 100% !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 80px 20px 20px 20px !important; /* padding-top de 80px = 60px da barra + 20px de respiro */
+    flex-direction: column !important;
+    justify-content: space-between !important; 
+    align-items: center !important;
+    box-sizing: border-box !important;
+    gap: 16px !important;
+  }
+
+  .alterar-senha-center {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza os inputs dentro da área que cresceu */
+  }
+
+  .alterar-senha-box,
+  .alterar-senha-center,
+  .alterar-senha-bottom {
+    width: 100% !important;
+    max-width: 450px !important;
+    margin: 0 auto !important;
+  }
+
+  .alterar-senha-box {
+    padding: 15px !important;
+    font-size: 14px !important;
+  }
+
+  .alterar-senha-center {
+    gap: 20px !important;
+  }
+
+  .alterar-senha-field-group {
+    gap: 4px !important;
+  }
+  
+  .alterar-senha-field-label {
+    font-size: 14px !important;
+  }
+
+  .text-field {
+    height: 44px !important;
+    font-size: 14px !important;
+  }
+
+  .alterar-senha-submit-button {
+    height: 44px !important;
+    font-size: 17px !important;
+  }
 }

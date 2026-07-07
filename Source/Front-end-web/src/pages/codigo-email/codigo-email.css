@@ -18,7 +18,7 @@
 
     width: 70%;
     min-height: 100vh;
-    padding: 40px 40px 200px 40px;
+    padding: 40px clamp(24px, 5vw, 60px) 60px clamp(24px, 5vw, 60px);
 }
 
 /* -----------------------------------------
@@ -32,7 +32,8 @@
     align-items: center;
     gap: 50px;
 
-    width: 50%;
+    width: 100%;
+    max-width: 560px;
 }
 
 .codigo-email-bottom {
@@ -41,7 +42,8 @@
     align-items: center;
     gap: 10px;
 
-    width: 50%;
+    width: 100%;
+    max-width: 560px;
 }
 
 .codigo-email-box {
@@ -133,33 +135,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
-
-    min-height: 42px;
-    padding: 0px 22px;
-
+    gap: 8px;
+    min-height: 38px;
+    padding: 0px 16px;
     color: var(--black);
     font-family: var(--font-inter);
-    font-size: 24px;
+    font-size: 16px;
     font-weight: 500;
 }
 
 .codigo-email-button {
     align-self: flex-end;
-
-    padding: 3px;
-
-    color: var(--black);
-    font-family: var(--font-inter); /* Adicionado aqui */
-    font-size: 18px;
-    font-weight: 500;
-
     background: var(--transparent-grayish-blue);
     border: none;
-    border-radius: 25px;
-
+    border-radius: 20px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.2s ease;
+}
+
+.codigo-email-button:hover {
+    background: var(--transparent-dark-grayish-blue);
 }
 
 .codigo-email-submit-button {
@@ -185,4 +180,78 @@
 .codigo-email-otp-inputs:focus {
     border-color: var(--deep-blue-accent);
     box-shadow: 0 0 5px var(--grayish-blue);
+}
+
+/* ==========================================================================
+   📱 MEDIA QUERY (Telemóveis e Tablets - ABAIXO DE 1024px)
+   ========================================================================= */
+@media (max-width: 1024px) {
+    .codigo-email-body {
+        flex-direction: column;
+    }
+
+    .codigo-email-right {
+        width: 100%;
+        min-height: 100vh;
+        padding: 80px 20px 40px 20px; /* Espaço para a barra superior fixa */
+        justify-content: space-between; /* ✨ Distribui o conteúdo verticalmente */
+        gap: 20px;
+    }
+
+    .codigo-email-center {
+        flex-grow: 1; /* ✨ Faz a área central crescer para ocupar o espaço vazio */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centraliza o conteúdo dentro da área que cresceu */
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+        gap: 20px;
+    }
+
+    .codigo-email-bottom {
+        width: 100%;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+
+    .codigo-email-box {
+        padding: 20px;
+        font-size: 16px;
+    }
+
+    .codigo-email-title-code {
+        font-size: 20px;
+    }
+
+    .codigo-email-otp-container {
+        gap: 8px;
+    }
+
+    .codigo-email-otp-inputs {
+        height: 60px;
+        font-size: 1.3rem;
+    }
+
+    .codigo-email-button {
+        position: fixed;
+        top: 14px;
+        right: 16px;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.6) !important;
+        border-radius: 12px !important;
+        padding: 2px !important;
+    }
+
+    .codigo-email-content-button {
+        font-size: 14px !important;
+        min-height: 32px !important;
+        padding: 0 10px !important;
+        gap: 6px !important;
+    }
+
+    .home-icon {
+        width: 14px !important;
+        height: 14px !important;
+    }
 }

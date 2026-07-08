@@ -1,0 +1,13 @@
+# Para instalar -> pip install -r requirements.txt
+
+# Inteligência Artificial e Visão Computacional
+opencv-python>=4.8.0
+numpy>=1.24.3
+ultralytics>=8.0.0
+mediapipe>=0.10.0
+
+# API
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+python-multipart>=0.0.6

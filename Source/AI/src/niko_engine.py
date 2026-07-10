@@ -136,7 +136,8 @@ class NikoEngine:
 
         indices_gerais = []
         qtd_focados = 0
-        qtd_distraidos = 0
+        qtd_distraidos = 0        
+        detalhes_alunos = [] 
 
         mediana_yaw = np.median([a['yaw'] for a in alunos_alta_res]) if alunos_alta_res else 0
         mediana_pitch = np.median([a['pitch'] for a in alunos_alta_res]) if alunos_alta_res else 0
@@ -147,22 +148,37 @@ class NikoEngine:
 
         # Avaliação final combinada
         for a in alunos_alta_res:
-            ind, status, _ = self.avaliar_alta_resolucao(a['yaw'], a['pitch'], mediana_yaw, mediana_pitch)
+            ind, status, cor = self.avaliar_alta_resolucao(a['yaw'], a['pitch'], mediana_yaw, mediana_pitch)
             indices_gerais.append(ind)
+            
+            # Guarda os dados da Alta Resolução
+            detalhes_alunos.append({
+                'bbox': a['bbox'], 'tipo': 'ALTA', 'indice': ind, 'status': status, 'cor': cor,
+                'yaw': a['yaw'], 'pitch': a['pitch']
+            })
+            
             if status in ["FOCADO", "ANOTANDO"]: qtd_focados += 1
             elif status == "DISTRAIDO": qtd_distraidos += 1
 
         for a in alunos_baixa_res:
-            ind, status, _ = self.avaliar_baixa_resolucao(a['abertura'], a['direcao'])
+            ind, status, cor = self.avaliar_baixa_resolucao(a['abertura'], a['direcao'])
             indices_gerais.append(ind)
+            
+            # Guarda os dados da Baixa Resolução
+            detalhes_alunos.append({
+                'bbox': a['bbox'], 'tipo': 'BAIXA', 'indice': ind, 'status': status, 'cor': cor,
+                'abertura': a['abertura'], 'direcao': a['direcao']
+            })
+            
             if status == "FOCADO(LowRes)": qtd_focados += 1
             elif status == "DISTR(LowRes)": qtd_distraidos += 1
 
         media_turma = round(np.mean(indices_gerais), 2) if indices_gerais else 0.0
-
+        
         return {
-            "media_atencao": media_turma,
+            "media_atencao": media_turma, 
             "total_alunos": len(indices_gerais),
             "focados": qtd_focados,
-            "distraidos": qtd_distraidos
+            "distraidos": qtd_distraidos,
+            "detalhes_alunos": detalhes_alunos 
         }

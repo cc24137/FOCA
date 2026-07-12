@@ -63,9 +63,7 @@ export default function InicialProfessor() {
 
       <div className="inicial-professor-body">
         <div className="inicial-professor-middle-line">
-          <div className="inicial-professor-middle-line-title">
-            <h1 className="inicial-professor-middle-text">Turmas</h1>
-          </div>
+          <h1 className="inicial-professor-middle-text">Turmas</h1>
 
           <div className="search-container">
             <SearchIcon className="search-icon" />
@@ -82,11 +80,9 @@ export default function InicialProfessor() {
             className="inicial-professor-middle-button"
             onClick={goTo("/vinculos-professor")}
           >
-            <div>
-              <p className="inicial-professor-middle-button-text">
-                Gerenciar Instituições
-              </p>
-            </div>
+            <span className="inicial-professor-middle-button-text">
+              Gerenciar Instituições
+            </span>
           </button>
         </div>
 

@@ -1,21 +1,23 @@
+.inicial-professor-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
 .inicial-professor-body {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centraliza o conteúdo horizontalmente */
-  padding: 20px 64px;
-  background-color: #f8f9fa;
-  min-height: 100vh;
-}
-
-.inicial-professor-title {
-  width: 100%;
-  margin-bottom: 30px;
+  flex-grow: 1;
+  /* Padding lateral fluido */
+  padding: 2rem clamp(1rem, 5vw, 4rem);
+  gap: 2rem;
 }
 
 .search-container {
   position: relative;
-  width: 100%;
-  max-width: 800px;
+  flex-grow: 1; /* Permite que a busca cresça */
+  max-width: 500px; /* Limita a largura máxima */
 }
 
 .search-icon {
@@ -23,104 +25,142 @@
   left: 15px;
   top: 50%;
   transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   stroke: var(--black);
+  opacity: 0.6;
 }
 
 .search-input {
   width: 100%;
-  padding: 15px 15px 15px 45px;
+  padding: 12px 45px;
   font-size: 16px;
   border: 1px solid var(--light-blue);
   border-radius: 12px;
   outline: none;
+  box-sizing: border-box;
+  text-align: center;
 }
 
 .search-input :focus {
   border: 3px solid var(--bottom-gradient-blue);
 }
 
+/* Grid responsivo para os cards */
 .inicial-professor-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-
-  gap: 45px;
-  width: 80%;
+  display: grid;
+  /* Cria colunas automáticas com largura mínima de 280px e máxima de 1fr (fração do espaço) */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .inicial-professor-card {
   background: var(--card-gradient);
-  padding: 25px 25px 10px 25px;
+  padding: 1.5rem;
   border-radius: 18px;
   display: flex;
   flex-direction: column;
   transition: transform 0.2s;
-
-  width: 370px;
-  height: 250px;
   cursor: pointer;
+  color: var(--white);
 }
 
 .inicial-professor-card:hover {
   transform: translateY(-5px);
 }
 
-.card-subject {
-  color: var(--white);
-  font-size: 25px;
-  font-family: var(--font-inter);
-  margin-bottom: 25px;
-}
-
 .card-header {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 1rem;
 }
 
 .inicial-professor-card-title {
-  font-size: 35px;
+  font-size: 1.75rem; /* 28px */
   font-weight: 600;
-  color: var(--white);
   font-family: var(--font-scada);
+}
+
+.card-subject {
+  font-size: 1rem; /* 16px */
+  font-family: var(--font-inter);
+  margin: 0.25rem 0;
+  opacity: 0.9;
 }
 
 .inicial-professor-middle-line {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap; /* Permite que os itens quebrem a linha */
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 60px;
-  padding: 15px 0 0 0;
+  gap: 1.5rem;
 }
 
 .inicial-professor-middle-button {
   background: var(--button-dark-blue);
   color: var(--white);
-  padding: 10px 20px;
+  height: 48px; /* Altura fixa para consistência */
+  padding: 0 1.5rem; /* Apenas padding horizontal */
   border-radius: 12px;
-  font-size: 12px;
   font-weight: 600;
   font-family: var(--font-inter);
   border: none;
   cursor: pointer;
-  min-width: 16%;
+  transition: background-color 0.2s;
+  display: inline-flex; /* Permite alinhar o texto verticalmente */
+  align-items: center; /* Centraliza o texto verticalmente */
+  justify-content: center; /* Centraliza o texto horizontalmente */
+}
+
+.inicial-professor-middle-button:hover {
+  background-color: var(--deep-blue-accent);
 }
 
 .inicial-professor-middle-text {
-  font-size: 36px;
+  font-size: 2.25rem; /* 36px */
   color: var(--black);
   font-family: var(--font-inter);
+  margin: 0;
 }
 
 .inicial-professor-middle-button-text {
-  font-size: 22px;
+  font-size: 1rem; /* 16px */
 }
 
-.inicial-professor-middle-line-title {
-  min-width: 16%;
+/* ==========================================================================
+   📱 MEDIA QUERIES PARA RESPONSIVIDADE
+   ========================================================================== */
+
+/* Tablets e Laptops Pequenos */
+@media (max-width: 1024px) {
+  .inicial-professor-body {
+    padding: 1.5rem clamp(1rem, 5vw, 2rem);
+  }
+}
+
+/* Celulares */
+@media (max-width: 768px) {
+  .inicial-professor-middle-line {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .inicial-professor-middle-line > .search-container {
+    order: 3; /* Move a barra de busca para o final */
+    flex-basis: 100%; /* Faz a busca ocupar a largura inteira */
+  }
+
+  .inicial-professor-middle-text {
+    text-align: left;
+    font-size: 1.75rem; /* 28px */
+  }
+
+  .inicial-professor-middle-button {
+    padding: 0 1rem; /* Ajusta o padding horizontal para telas menores */
+    font-size: 0.9rem; /* Diminui a fonte do botão */
+    flex-shrink: 0; /* Impede que o botão encolha */
+  }
 }

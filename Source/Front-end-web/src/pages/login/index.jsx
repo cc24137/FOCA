@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 import "./login.css";
 import TituloLateral from "../../components/titulo-lateral";
 import HomeIcon from "../../assets/home.svg?react";
@@ -9,9 +10,10 @@ import api from "../../services/api";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("a");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   function goTo(path) {
     navigate(path);
@@ -24,16 +26,10 @@ export default function Login() {
     }
 
     try {
-      const response = await api.post("/users/login", { email, password });
+      const user = await login(email, password);
 
-      console.log("Resposta do servidor:", response.data);
-
-      if (response.status === 200) {
-        localStorage.setItem("@FOCA:token", response.data.token);
-
-        localStorage.setItem("@FOCA:user", JSON.stringify(response.data.user));
-
-        if (response.data.user.isProfessor) {
+      if (user) {
+        if (user.isProfessor) {
           goTo("/inicial-professor");
         } else {
           goTo("/inicial-instituicao");

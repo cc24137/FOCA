@@ -28,6 +28,20 @@ export function AuthProvider({ children }) {
         loadStorageData();
     }, []);
 
+    async function login(email, password) {
+        const response = await api.post('/users/login', { email, password });
+        const { user: responseUser, token } = response.data;
+
+        if (responseUser && token) {
+            setUser(responseUser);
+            api.defaults.headers.Authorization = `Bearer ${token}`;
+            localStorage.setItem('@FOCA:user', JSON.stringify(responseUser));
+            localStorage.setItem('@FOCA:token', token);
+            return responseUser; // Retorna o usuário para o redirecionamento
+        }
+        return null;
+    }
+
     const logout = () => {
         localStorage.removeItem('@FOCA:user');
         localStorage.removeItem('@FOCA:token');
@@ -35,7 +49,7 @@ export function AuthProvider({ children }) {
     };
 
     return (
-        <AuthContext.Provider value={{ signed: !!user, user, loading, logout }}>
+        <AuthContext.Provider value={{ signed: !!user, user, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

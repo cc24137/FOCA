@@ -1,3 +1,6 @@
+/* ==========================================================================
+   ESTRUTURA GLOBAL (Desktop)
+   ========================================================================== */
 .turmas-body {
     display: flex;
     flex-direction: column;
@@ -261,4 +264,68 @@
 .turmas-direita-title-input:focus {
     border-color: var(--light-blue);
     box-shadow: 0 0 0 3px rgba(107, 111, 168, 0.2);
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (Tablets e Celulares)
+   ========================================================================== */
+@media (max-width: 850px) {
+    .turmas-content {
+        flex-direction: column; /* Muda o layout para empilhado */
+        padding: 20px; 
+        height: auto; 
+        gap: 30px;
+    }
+
+    .turmas-esquerda {
+        width: 100%; 
+        height: auto;
+    }
+
+    .turmas-list-container {
+        max-height: 250px; /* Limita a altura da lista para usabilidade mobile */
+    }
+
+    .turmas-adicionar {
+        width: 100%; /* Botão em largura total */
+    }
+
+    .turmas-direita {
+        width: 100%; 
+        border-left: none; /* Remove a linha vertical */
+        padding-left: 0; 
+        padding-top: 30px; 
+        border-top: 2px solid var(--transparent-grayish-blue); /* Adiciona a linha horizontal de separação */
+    }
+
+    .turmas-row {
+        flex-direction: column; /* Empilha os botões Editar e Remover */
+        gap: 15px;
+    }
+
+    .turmas-editar,
+    .turmas-remover {
+        width: 100%; /* Expandem para 100% para facilitar o toque */
+        align-self: center;
+    }
+
+    .turmas-esquerda-title,
+    .turmas-direita-title {
+        font-size: 24px; /* Suaviza os títulos */
+    }
+
+    .turma-detalhes p {
+        font-size: 16px;
+    }
+
+    .turmas-direita-title-input {
+        max-width: 100%; 
+        font-size: 1.2rem;
+    }
+
+    /* Ajuste para a tabela rolar lateralmente caso os nomes sejam muito grandes */
+    .turma-professores-tabela-container {
+        overflow-x: auto;
+        width: 100%;
+    }
 }

@@ -1,3 +1,6 @@
+/* ==========================================================================
+   ESTRUTURA GLOBAL (Desktop)
+   ========================================================================== */
 .disciplinas-body {
     display: flex;
     flex-direction: column;
@@ -165,4 +168,62 @@
 .disciplinas-direita-title-input:focus {
     border-color: var(--light-blue);
     box-shadow: 0 0 0 3px rgba(107, 111, 168, 0.2);
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (Tablets e Celulares)
+   ========================================================================== */
+@media (max-width: 850px) {
+    .disciplinas-content {
+        flex-direction: column; /* Muda o layout para coluna empilhada */
+        padding: 20px; 
+        height: auto; 
+        gap: 30px;
+    }
+
+    .disciplinas-esquerda {
+        width: 100%; 
+        height: auto;
+    }
+
+    .disciplinas-list-container {
+        max-height: 250px; /* Limita a altura da lista para manter usabilidade no mobile */
+    }
+
+    .disciplinas-adicionar {
+        width: 100%; 
+    }
+
+    .disciplinas-direita {
+        width: 100%; 
+        border-left: none; /* Remove a linha divisória vertical */
+        padding-left: 0; 
+        padding-top: 30px; 
+        border-top: 2px solid var(--transparent-grayish-blue); /* Adiciona a linha divisória horizontal no topo */
+    }
+
+    .disciplinas-row {
+        flex-direction: column; /* Empilha os botões de Ação ("Editar" e "Remover") no mobile */
+        gap: 15px;
+    }
+
+    .disciplinas-editar,
+    .disciplinas-remover {
+        width: 100%; /* Botões ocupam 100% da largura, mais fáceis de tocar */
+        align-self: center;
+    }
+
+    .disciplinas-esquerda-title,
+    .disciplinas-direita-title {
+        font-size: 24px; 
+    }
+
+    .disciplina-detalhes {
+        font-size: 16px;
+    }
+
+    .disciplinas-direita-title-input {
+        max-width: 100%; /* Garante que o input de edição não vaze da tela */
+        font-size: 1.2rem;
+    }
 }

@@ -139,28 +139,34 @@
   .inicial-professor-body {
     padding: 1.5rem clamp(1rem, 5vw, 2rem);
   }
+  
+  /* ✨ Opcional: Se quiser que ela já cresça um pouco mais em notebooks menores */
+  .search-container {
+    max-width: 600px; 
+  }
 }
 
-/* Celulares */
+/* Celulares e Telas de transição (Onde ocorre a quebra da imagem) */
 @media (max-width: 768px) {
   .inicial-professor-middle-line {
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.2rem;
   }
 
   .inicial-professor-middle-line > .search-container {
-    order: 3; /* Move a barra de busca para o final */
-    flex-basis: 100%; /* Faz a busca ocupar a largura inteira */
+    order: 3;           
+    flex-basis: 100%;   
+    max-width: none;   
   }
 
   .inicial-professor-middle-text {
     text-align: left;
-    font-size: 1.75rem; /* 28px */
+    font-size: 1.75rem; 
   }
 
   .inicial-professor-middle-button {
-    padding: 0 1rem; /* Ajusta o padding horizontal para telas menores */
-    font-size: 0.9rem; /* Diminui a fonte do botão */
-    flex-shrink: 0; /* Impede que o botão encolha */
+    padding: 0 1.2rem; 
+    font-size: 0.95rem; 
+    flex-shrink: 0; 
   }
 }

@@ -1,3 +1,6 @@
+/* ==========================================================================
+   ESTRUTURA GLOBAL (Desktop)
+   ========================================================================== */
 .professores-body{
     display: flex;
     flex-direction: column;
@@ -127,4 +130,52 @@
 
 .professor-detalhes p {
     padding: 8px 0;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (Tablets e Celulares)
+   ========================================================================== */
+@media (max-width: 850px) {
+    .professores-content {
+        flex-direction: column; /* Muda o layout de lado a lado para topo e base */
+        padding: 20px; /* Reduz as margens para ganhar espaço de tela */
+        height: auto; 
+        gap: 30px;
+    }
+
+    .professores-esquerda {
+        width: 100%; /* Faz a coluna da esquerda ocupar toda a tela */
+        height: auto;
+    }
+
+    .professores-list-container {
+        max-height: 250px; /* Limita a altura da lista para o utilizador conseguir ver a parte de baixo sem rolar muito */
+    }
+
+    .professores-adicionar {
+        width: 100%; /* Botão mais largo para facilitar o clique no touch */
+    }
+
+    .professores-direita {
+        width: 100%; /* Faz a coluna da direita ocupar toda a tela */
+        border-left: none; /* Remove a linha divisória lateral */
+        padding-left: 0; 
+        padding-top: 30px; 
+        border-top: 2px solid var(--transparent-grayish-blue); /* Transforma a linha lateral numa linha horizontal separando o topo da base */
+    }
+
+    .professores-remover {
+        width: 100%; /* Botão mais largo para facilitar o clique no touch */
+        align-self: center;
+        margin-top: 20px;
+    }
+
+    .professores-esquerda-title,
+    .professores-direita-title {
+        font-size: 24px; /* Suaviza o tamanho da fonte para não quebrar linha à toa no celular */
+    }
+
+    .professor-detalhes {
+        font-size: 16px;
+    }
 }

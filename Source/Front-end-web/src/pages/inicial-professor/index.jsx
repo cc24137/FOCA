@@ -112,7 +112,7 @@ export default function InicialProfessor() {
 
               {filteredItems.length === 0 && !loading && (
                 <p className="no-results">
-                  Nenhum resultado encontrado para "{query}"
+                  Nenhum resultado encontado
                 </p>
               )}
             </>

@@ -1,8 +1,13 @@
-.editar-dados-body {
+/* ==========================================================================
+   1. ESTRUTURA GLOBAL E FLUXO DA TELA (Desktop & Notebooks)
+   ========================================================================== */
+
+.editar-dados-page {
   font-family: var(--font-inter);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
 .editar-dados-middle {
@@ -10,136 +15,238 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  height: 100%;
+  flex-grow: 1;
+  /* Reduz dinamicamente o recuo vertical em notebooks pequenos */
+  padding: clamp(20px, 4vh, 60px) 20px;
+  box-sizing: border-box;
 }
 
+/* ⬜ CARD CENTRALIZADO (Substituição do tamanho fixo por fluido) */
 .editar-dados-box {
   background-color: var(--transparent-grayish-blue);
-  padding: 80px 70px;
-  border-radius: 20px;
-  width: 800px;
-  height: 600px;
+  /* Altura e largura fluídas com limites seguros para notebooks baixos */
+  width: 100%;
+  max-width: 760px;
+  min-height: clamp(450px, 70vh, 580px);
+  
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  
+  padding: clamp(30px, 5vh, 60px) clamp(30px, 6vw, 70px);
+  border-radius: 20px;
+  box-sizing: border-box;
 }
 
+/* 🏷️ NOVO CONTAINER DO CABEÇALHO DO CARD */
+.editar-dados-header-zone {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 15px;
+}
+
+.editar-dados-title {
+  font-family: var(--font-scada);
+  font-size: clamp(28px, 4.5vh, 42px);
+  color: var(--black);
+  margin: 0;
+}
+
+/* 🚪 NOVO BOTÃO DE LOGOUT SUPERIOR */
+.btn-logout-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  color: #555;
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-logout-top:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.logout-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* BLCO DE INPUTS */
 .editar-dados-inputs {
   display: flex;
   flex-direction: column;
-  gap: 35px;
-  margin: 24px 0;
+  gap: clamp(16px, 3vh, 28px);
   width: 100%;
+  margin: 20px 0;
 }
 
 .input-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
 }
 
 .input-field label {
   font-family: var(--font-inter);
-  font-size: 13px;
-  font-weight: 500;
-  color: #555;
-}
-
-.input-field input {
-  font-family: var(--font-inter);
-  background: var(--white);
-  border: 1.5px solid transparent;
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-}
-
-.input-field input:focus {
-  background: var(--white);
-  border-color: var(--button-dark-blue);
-  box-shadow: 0 0 0 3px rgba(155, 143, 126, 0.13);
-}
-
-.editar-dados-title {
-  font-family: var(--font-scada);
-  font-size: 50px;
-}
-
-.editar-dados-buttons {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-}
-
-.btn-excluir {
-  background-color: var(--button-light-blue);
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  cursor: pointer;
-  width: 200px;
-}
-
-.btn-salvar {
-  background-color: var(--button-dark-blue);
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  cursor: pointer;
-  width: 200px;
-}
-
-.btn-excluir-text {
+  font-size: 14px;
+  font-weight: 700;
   color: var(--black);
-  font-family: var(--font-inter);
-  font-weight: 500;
 }
 
-.btn-salvar-text {
-  color: var(--white);
+/* Padronização com a classe text-field das outras telas */
+.text-field {
+  width: 100%;
+  height: clamp(42px, 5.5vh, 48px);
+  padding: 0 14px;
+  box-sizing: border-box;
   font-family: var(--font-inter);
-  font-weight: 500;
+  font-size: 15px;
+  background: var(--white);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.text-field:focus {
+  border-color: var(--button-dark-blue);
+  box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
 }
 
 .input-wrapper {
   position: relative;
-  display: flex;
   width: 100%;
 }
 
-.input-wrapper input {
-  width: 100%;
-}
-
-.input-field input.with-icon {
+.text-field.with-icon {
   padding-right: 45px;
 }
 
+/* 👁️ BOTÃO OLHO (SENHA) */
 .eye-button {
   position: absolute;
   top: 50%;
-  right: 12px;
+  right: 14px;
   transform: translateY(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: none;
   border: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .eye-button svg {
   width: 20px;
   height: 20px;
-  color: #555;
-  transition: color 0.2s;
+  color: #777;
 }
 
-.eye-button:hover svg {
-  color: var(--button-dark-blue);
+/* 👥 ÁREA DOS BOTÕES (Apenas os dois funcionais agora) */
+.editar-dados-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.btn-excluir, .btn-salvar {
+  flex-grow: 1;
+  max-width: 240px;
+  height: clamp(42px, 5.5vh, 48px);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.btn-excluir {
+  background-color: var(--button-light-blue);
+}
+
+.btn-excluir:hover {
+  background-color: #b0c2de;
+}
+
+.btn-salvar {
+  background-color: var(--button-dark-blue);
+}
+
+.btn-salvar:hover {
+  background-color: var(--deep-blue-accent);
+}
+
+.btn-excluir-text {
+  color: var(--black);
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.btn-salvar-text {
+  color: var(--white);
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* ==========================================================================
+   📱 MEDIA QUERY (Mobile e ecrãs abaixo de 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .editar-dados-middle {
+    padding: 20px 15px;
+  }
+
+  .editar-dados-box {
+    padding: 25px 20px;
+    border-radius: 14px;
+  }
+
+  .editar-dados-header-zone {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .editar-dados-title {
+    font-size: 24px;
+  }
+
+  .btn-logout-top span {
+    display: none; /* Deixa apenas o ícone no mobile para poupar espaço */
+  }
+  
+  .btn-logout-top {
+    padding: 8px;
+  }
+
+  .editar-dados-buttons {
+    flex-direction: column-reverse; /* Coloca o Salvar no topo no Mobile */
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-excluir, .btn-salvar {
+    max-width: 100%;
+    width: 100%;
+    height: 45px;
+  }
 }

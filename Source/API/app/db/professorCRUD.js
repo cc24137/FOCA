@@ -224,6 +224,19 @@ class ProfessorCRUD {
       }
     }
 
+    async delete(id) {
+      try {
+        const pool = await db.getConnection();
+        const result = await pool.request()
+          .input("id", sql.Int, id)
+          .query("DELETE FROM FOCA.PROFESSOR WHERE id = @id");
+        if (result.rowsAffected[0] === 0) {
+          const er = new Error(); er.name = "Not found"; throw er;
+        }
+      }
+      catch (error) { throw error; }
+    }
+
     async denyInvitation(idInstituicao, idProfesor) {
     try{
       const pool = await db.getConnection();

@@ -179,7 +179,7 @@ export default function Turmas(){
         }
 
         try {
-            await api.post("/turmaRelacao/cadastrar", {
+            await api.post("/turmaRelacao/relacionar", {
                 idDisciplina: disciplinaEncontrada.id,
                 idTurma: turmaAtual.id,
                 idProfessor: professorEncontrado.id
@@ -316,7 +316,7 @@ export default function Turmas(){
                                                         className='turma-prof-remover'
                                                         onClick={() => setTurma(prev => prev.map((t, ti) =>
                                                             ti === selectedTurma
-                                                                ? { ...t, profesores: t.professores.filter((_, pi) => pi !== i) }
+                                                                ? { ...t, professores: t.professores.filter((_, pi) => pi !== i) }
                                                                 : t
                                                         ))}
                                                     >✕</button>

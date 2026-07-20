@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "./cadastro.css";
 import HomeIcon from "../../assets/home.svg?react";
 import SeletorTipo from "../../components/selecionar-tipo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EyeOnIcon from "../../assets/eye-on.svg?react";
 import EyeOffIcon from "../../assets/eye-off.svg?react";
 import TituloLateral from "../../components/titulo-lateral";
@@ -24,6 +24,13 @@ export default function Cadastro() {
   });
 
   const [confirmarSenha, setConfirmarSenha] = useState("");
+
+  useEffect(() => {
+    setForm(prevForm => ({
+      ...prevForm,
+      isProfessor: selectedType === "professor"
+    }));
+  }, [selectedType]);
 
   function goTo(path, routeState = null) {
     navigate(path, { state: routeState });

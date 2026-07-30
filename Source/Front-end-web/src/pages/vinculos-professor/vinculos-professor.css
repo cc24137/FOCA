@@ -1,3 +1,6 @@
+/* ==========================================================================
+   ESTRUTURA GLOBAL (Desktop)
+   ========================================================================== */
 .vinculos-page {
   min-height: 100vh;
   background-color: #f8f9fa;
@@ -159,4 +162,50 @@
   font-family: var(--font-inter);
   margin-top: 20px;
   font-style: italic;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (Tablets e Celulares)
+   ========================================================================== */
+@media (max-width: 850px) {
+  .vinculos-body {
+    padding: 20px 16px; /* Reduz as margens laterais drásticas no mobile */
+  }
+
+  .vinculos-title-wrapper {
+    padding: 10px 24px; /* Suaviza o bloco do título */
+    margin-bottom: 25px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .vinculos-title {
+    font-size: 22px; /* Ajusta o tamanho do texto para telas pequenas */
+  }
+
+  .vinculos-grid {
+    grid-template-columns: 1fr; /* Força os cartões a ficarem numa única coluna vertical */
+    gap: 16px;
+  }
+
+  .vinculo-card {
+    padding: 18px; /* Reduz ligeiramente o recuo interno para ganhar espaço */
+  }
+
+  .vinculo-card-title {
+    font-size: 18px; /* Evita que nomes longos de instituições quebrem feio */
+  }
+
+
+  @media (max-width: 360px) {
+    .vinculo-card-actions {
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn-aceitar,
+    .btn-recusar {
+      width: 100%;
+      padding: 10px 0; /* Aumenta a área de toque */
+    }
+  }
 }

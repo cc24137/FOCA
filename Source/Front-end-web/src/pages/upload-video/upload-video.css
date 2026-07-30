@@ -239,22 +239,20 @@
 }
 
 /* ==========================================================================
-   RESPONSIVIDADE (Tablets e Celulares)
+   📱 RESPONSIVIDADE (Tablets e Celulares)
    ========================================================================== */
 @media (max-width: 850px) {
     .upload-video-content {
-        padding: 20px 16px; /* Ajusta as margens nas laterais */
+        padding: 20px 16px;
         gap: 35px;
     }
 
-    /* O topo agora empilha o card de dados e o calendário verticalmente */
     .upload-video-top {
         flex-direction: column;
         width: 100%;
         gap: 30px;
     }
 
-    /* Remove o tamanho travado de 480px para preencher a largura do ecrã */
     .upload-video-left {
         min-width: 0;
         width: 100%;
@@ -263,16 +261,14 @@
     }
 
     .upload-video-left-title {
-        font-size: 28px; /* Título mais suave no mobile */
+        font-size: 28px;
     }
 
-    /* Quebra informações de turma e disciplina em linhas separadas se necessário */
     .upload-video-left-turma-disciplina {
         flex-direction: column;
         gap: 8px;
     }
 
-    /* Alinha os blocos de campos na vertical (Label em cima, Input em baixo) */
     .upload-video-left-data,
     .upload-video-left-classificacao,
     .upload-video-left-conteudo {
@@ -282,28 +278,57 @@
         width: 100%;
     }
 
-    /* Faz com que os componentes personalizados e inputs ocupem a largura total disponível */
     .upload-video-left-conteudo input,
     .upload-video-left-classificacao select {
         width: 100%;
         max-width: 100%;
     }
 
-    /* Componentes de área de upload e histórico passam a ocupar 100% */
     .area-upload,
     .upload-video-historico-aulas {
         width: 100%;
     }
 
-    /* Permite rolagem lateral no componente da linha do tempo caso ela estique */
     .upload-video-historico-aulas-content {
         overflow-x: auto;
     }
 
-    /* Botões crescem para 100% de largura para facilitar cliques no mobile */
     .upload-video-processar,
     .upload-video-salvar {
         width: 100%;
         align-self: center;
     }
+}
+
+/* ==========================================================================
+   ⚡ ESTILIZAÇÃO COMPARTILHADA PARA DOWNLOAD DIRETO (MÁGICA DO REACTION)
+   ========================================================================== */
+.upload-video-content.pdf-mode {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 20px !important;
+    width: 100% !important;
+}
+
+/* Esconde o painel de upload, calendário e botões do relatório final baixado */
+.upload-video-content.pdf-mode .area-upload,
+.upload-video-content.pdf-mode .upload-video-processar,
+.upload-video-content.pdf-mode .upload-video-salvar,
+.upload-video-content.pdf-mode .upload-video-top > :not(.upload-video-left) {
+    display: none !important;
+}
+
+.upload-video-content.pdf-mode .upload-video-top,
+.upload-video-content.pdf-mode .upload-video-left,
+.upload-video-content.pdf-mode .upload-video-historico-aulas {
+    width: 100% !important;
+    min-width: 100% !important;
+    background: transparent !important;
+    padding: 10px 0 !important;
+    box-shadow: none !important;
+}
+
+.upload-video-content.pdf-mode .upload-video-historico-aulas-content {
+    background-color: #f2f2f2 !important;
+    border: 1px solid #cccccc;
 }

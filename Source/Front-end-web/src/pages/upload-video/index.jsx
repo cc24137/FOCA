@@ -7,6 +7,8 @@ import './upload-video.css';
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import IconTexto from '../../assets/file-text.svg?react';
+// Importação da biblioteca de download direto
+import html2pdf from 'html2pdf.js';
 
 export default function UploadVideo(){
     const navigate = useNavigate();
@@ -37,6 +39,27 @@ export default function UploadVideo(){
 
     const handleSelectDate = (date) => {
         setSelectedDate(date);
+    };
+
+    // Função responsável pelo Download Direto do PDF
+    const handleGerarPDF = () => {
+        const elemento = document.querySelector('.upload-video-content');
+        
+        // Aplica a classe que deixa o layout limpo (folha branca) antes do print
+        elemento.classList.add('pdf-mode');
+
+        const opcoes = {
+            margin:       12,
+            filename:     `relatorio-aula-${nomeTurma || 'turma'}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true, logging: false },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Captura o elemento, faz o download direto e remove a classe de estilização
+        html2pdf().set(opcoes).from(elemento).save().then(() => {
+            elemento.classList.remove('pdf-mode');
+        });
     };
 
     const dd = selectedDate ? String(selectedDate.getDate()).padStart(2, '0') : '';
@@ -94,12 +117,12 @@ export default function UploadVideo(){
                             <label>Classificação da aula</label>
                             <SelectCustomizado
                                 placeholder="Selecione uma classificação..."
-                                value={classificacao} // O ID selecionado
-                                onChange={(novoId) => setClassificacao(novoId)} // Atualiza o estado
+                                value={classificacao}
+                                onChange={(novoId) => setClassificacao(novoId)}
                                 options={classificacoes.map(item => ({
                                     value: item.idClassificacaoConteudo,
                                     label: item.nomeClassificacaoConteudo,
-                                    title: item.descricaoClassificacaoConteudo // Repassado para o tooltip do li
+                                    title: item.descricaoClassificacaoConteudo
                                 }))}
                             />
                         </div>
@@ -132,10 +155,10 @@ export default function UploadVideo(){
                 <div className='upload-video-historico-aulas'>
                     <p className='upload-video-historico-aulas-title'>Linha do tempo de atenção </p>
                     <div className='upload-video-historico-aulas-content'>
-
+                        {/* Conteúdo do gráfico/histórico */}
                     </div>
 
-                    <button className='upload-video-salvar'>
+                    <button className='upload-video-salvar' onClick={handleGerarPDF}>
                         <div className='upload-video-salvar-row'>
                             <IconTexto className='upload-video-salvar-row-icon' />
                             <p className='upload-video-salvar-row-text'>Gerar PDF</p>

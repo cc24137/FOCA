@@ -96,9 +96,12 @@
   gap: 8px;
 }
 
+/* FIX: Adicionado min-width e min-height para blindar os ícones no desktop contra esmagamentos */
 .user-icon, .home-icon, .info-icon {
   width: 20px;
   height: 20px;
+  min-width: 20px;
+  min-height: 20px;
   fill: none;
   display: block;
   flex-shrink: 0;
@@ -113,32 +116,49 @@
   }
 
   .header-title {
-    font-size: 1.6rem; /* Encolhe o texto FOCA */
+    font-size: 1.6rem; 
   }
 
   .header-logo {
-    width: 40px; /* Reduz levemente o tamanho do logo */
+    width: 40px; 
     height: 40px;
   }
 
-  /* No mobile, os botões do header viram uma barra de ícones compacta e elegante */
+  /* FIX: Substituído o padding por dimensões fixas de largura e altura. 
+     Isso neutraliza a diferença de tamanho gerada pelo comprimento dos textos ocultos */
   .header-link, .header-button {
-    font-size: 0px; /* O truque: esconde o texto escondendo a fonte */
-    padding: 10px;
-    border-radius: 50%; /* Transforma o fundo em um círculo perfeito para o toque */
+    font-size: 0px; 
+    width: 44px;
+    height: 44px;
+    padding: 0; 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; 
     background: transparent;
+    box-sizing: border-box;
+    flex-shrink: 0;
   }
 
   .header-button {
-    background: var(--transparent-grayish-blue); /* Mantém um fundinho no botão de perfil */
+    background: var(--transparent-grayish-blue); 
   }
 
   .content-button {
-    gap: 0; /* Remove o espaçamento antigo do texto */
+    gap: 0; 
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
+  /* FIX: Adicionado min-width e min-height também no escopo mobile para garantir o tamanho de 24px */
   .user-icon, .home-icon, .info-icon {
-    width: 24px; /* Aumenta um pouquinho o ícone para facilitar o toque no celular */
+    width: 24px; 
     height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    flex-shrink: 0;
   }
 }

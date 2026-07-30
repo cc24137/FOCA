@@ -1,3 +1,6 @@
+/* ==========================================================================
+   ESTRUTURA GLOBAL (Desktop)
+   ========================================================================== */
 .informacoes-turma-container {
     display: flex;
     flex-direction: column;
@@ -21,6 +24,7 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    order: 1; /* 1º no topo: Cabeçalho com dados da turma */
 }
 
 .informacoes-turma-box-row {
@@ -66,7 +70,6 @@
     flex-direction: row;
     justify-content: start;
     gap: 10px;
-
 }
 
 .informacoes-turma-box-container-row-title {
@@ -78,47 +81,13 @@
     white-space: nowrap;
 }
 
-.informacoes-turma-box-atencao-media {
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.informacoes-turma-box-atencao-media-title {
-    font-size: 25px;
-    font-weight: 600;
-    align-self: flex-start;
-}
-
-.informacoes-turma-box-atencao-media-content {
-    background-color: rgb(114, 116, 118);
-    height: 280px;
-}
-
-.informacoes-turma-box-historico-aulas {
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.informacoes-turma-box-historico-aulas-title {
-    font-size: 25px;
-    font-weight: 600;
-    align-self: flex-start;
-}
-
-.informacoes-turma-box-historico-aulas-content {
-    background-color: rgb(114, 116, 118);
-    height: 280px;
-}
-
+/* Seção de Comparação movida para cima via order */
 .informacoes-turma-box-comparacao-aulas {
     width: 80%;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    order: 2; /* 2º: Comparação detalhada de aulas */
 }
 
 .informacoes-turma-box-comparacao-aulas-title {
@@ -126,7 +95,6 @@
     font-weight: 600;
     align-self: flex-start;
     font-family: var(--font-scada);
-
 }
 
 .informacoes-turma-box-comparacao-aulas-subtitle-row {
@@ -208,6 +176,44 @@
     height: 280px;
 }
 
+.informacoes-turma-box-atencao-media {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    order: 3; /* 3º: Gráfico de Atenção Média */
+}
+
+.informacoes-turma-box-atencao-media-title {
+    font-size: 25px;
+    font-weight: 600;
+    align-self: flex-start;
+}
+
+.informacoes-turma-box-atencao-media-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
+}
+
+.informacoes-turma-box-historico-aulas {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    order: 4; /* 4º na base: Tabela de Histórico de aulas */
+}
+
+.informacoes-turma-box-historico-aulas-title {
+    font-size: 25px;
+    font-weight: 600;
+    align-self: flex-start;
+}
+
+.informacoes-turma-box-historico-aulas-content {
+    background-color: rgb(114, 116, 118);
+    height: 280px;
+}
+
 /* Estilos para a tabela de histórico de aulas */
 .tabela-aulas {
     width: 100%;
@@ -217,7 +223,7 @@
 }
 
 .tabela-aulas th {
-    background-color: var(--button-dark-blue); /* Ou qualquer cor neutra que esteja a usar */
+    background-color: var(--button-dark-blue); 
     color: var(--white);
     text-align: left;
     padding: 12px;
@@ -232,4 +238,94 @@
 
 .tabela-aulas tr:hover {
     background-color: #f9f9f9;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (Tablets e Celulares)
+   ========================================================================== */
+@media (max-width: 850px) {
+    .informacoes-turma-content {
+        padding: 20px 16px; 
+        gap: 30px;
+    }
+
+    .informacoes-turma-box, 
+    .informacoes-turma-box-atencao-media, 
+    .informacoes-turma-box-historico-aulas, 
+    .informacoes-turma-box-comparacao-aulas {
+        width: 100%;
+    }
+
+    .informacoes-turma-box {
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .informacoes-turma-box-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .informacoes-turma-box-title {
+        font-size: 28px; 
+    }
+
+    .informacoes-turma-box-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .informacoes-turma-box-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .informacoes-turma-box-container-column {
+        width: 100%; 
+        gap: 12px;
+    }
+
+    .informacoes-turma-box-container-row-text {
+        white-space: normal; 
+    }
+
+    .informacoes-turma-box-container-row-title,
+    .informacoes-turma-box-container-row-text {
+        font-size: 16px; 
+    }
+
+    .informacoes-turma-box-atencao-media-title,
+    .informacoes-turma-box-historico-aulas-title {
+        font-size: 20px;
+    }
+
+    .informacoes-turma-box-comparacao-aulas-title {
+        font-size: 26px;
+    }
+
+    .informacoes-turma-box-historico-aulas-content {
+        overflow-x: auto;
+    }
+
+    .informacoes-turma-box-comparacao-aulas-subtitle-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .informacoes-turma-box-comparacao-aulas-subtitle-row-right {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .informacoes-turma-comparacao-aulas-label {
+        width: 100%; 
+        font-size: 16px;
+    }
+
+    .informacoes-turma-box-comparacao-aulas-button {
+        width: 100%;
+        text-align: center;
+    }
 }

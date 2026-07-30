@@ -143,7 +143,12 @@ export default function Disciplinas() {
 
     return (
         <div className='disciplinas-body'>
-            <Header />
+            <Header
+                routes={[
+                    { textButton: "Início", routeButton: "/inicial-instituicao" },
+                    { textButton: "Sobre o Projeto", routeButton: "/" },
+                    { textButton: "Perfil", routeButton: "/editar-dados" }
+                ]} />
             <div className='disciplinas-content'>
                 <div className='disciplinas-esquerda'>
                     <p className='disciplinas-esquerda-title'>Lista de disciplinas</p>

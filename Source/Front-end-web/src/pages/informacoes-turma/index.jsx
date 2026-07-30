@@ -121,7 +121,7 @@ export default function InformacoesTurma() {
             <Header
                 routes={[
                     { textButton: "Início", routeButton: "/inicial-professor" },
-                    { textButton: "Sobre o Projeto", routeButton: "/" },
+                    { textButton: "Sobre o Projeto", routeButton: "/" }, // Já estava correto, mantido para consistência
                     { textButton: "Perfil", routeButton: "/editar-dados" }
                 ]}
             />

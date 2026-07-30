@@ -68,7 +68,12 @@ export default function Estatisticas(){
 
     return (
         <div className='estatisticas-body'>
-            <Header />
+            <Header
+                routes={[
+                    { textButton: "Início", routeButton: "/inicial-instituicao" },
+                    { textButton: "Sobre o Projeto", routeButton: "/" },
+                    { textButton: "Perfil", routeButton: "/editar-dados" }
+                ]} />
             <div className='estatisticas-content'>
                 <div className='estatisticas-selector-row'>
                     <p>Comparar</p>

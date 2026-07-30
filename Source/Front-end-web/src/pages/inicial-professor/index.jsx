@@ -55,8 +55,8 @@ export default function InicialProfessor() {
     <div className="inicial-professor-page">
       <Header
         routes={[
-          { textButton: "Início", routeButton: "/inicial" },
-          { textButton: "Sobre o Projeto", routeButton: "/inicial" },
+          { textButton: "Início", routeButton: "/inicial-professor" },
+          { textButton: "Sobre o Projeto", routeButton: "/" },
           { textButton: "Perfil", routeButton: "/editar-dados" }
         ]}
       />

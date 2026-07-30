@@ -120,7 +120,12 @@ export default function Professores() {
 
     return (
         <div className='professores-body'>
-            <Header />
+            <Header
+                routes={[
+                    { textButton: "Início", routeButton: "/inicial-instituicao" },
+                    { textButton: "Sobre o Projeto", routeButton: "/" },
+                    { textButton: "Perfil", routeButton: "/editar-dados" }
+                ]} />
             <div className='professores-content'>
                 <div className='professores-esquerda'>
                     <p className='professores-esquerda-title'>Lista de professores</p>

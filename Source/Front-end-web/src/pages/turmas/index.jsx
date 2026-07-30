@@ -197,7 +197,12 @@ export default function Turmas(){
 
     return (
         <div className='turmas-body'>
-            <Header />
+            <Header
+                routes={[
+                    { textButton: "Início", routeButton: "/inicial-instituicao" },
+                    { textButton: "Sobre o Projeto", routeButton: "/" },
+                    { textButton: "Perfil", routeButton: "/editar-dados" }
+                ]} />
             <div className='turmas-content'>
                 <div className='turmas-esquerda'>
                     <p className='turmas-esquerda-title'>Lista de turmas</p>

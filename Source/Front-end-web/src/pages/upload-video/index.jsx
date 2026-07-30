@@ -45,7 +45,12 @@ export default function UploadVideo(){
 
     return (
         <div className='upload-video-body'>
-            <Header />
+            <Header
+                routes={[
+                    { textButton: "Início", routeButton: "/inicial-professor" },
+                    { textButton: "Sobre o Projeto", routeButton: "/" },
+                    { textButton: "Perfil", routeButton: "/editar-dados" }
+                ]} />
 
             <div className='upload-video-content'>
                 <div className='upload-video-top'>

@@ -99,7 +99,7 @@ export default function VinculosProfessor() {
       <Header
         routes={[
           { textButton: "Início", routeButton: "/inicial-professor" },
-          { textButton: "Sobre o Projeto", routeButton: "/inicial-professor" },
+          { textButton: "Sobre o Projeto", routeButton: "/" },
           { textButton: "Perfil", routeButton: "/editar-dados" }
         ]}
       />

@@ -1,3 +1,6 @@
+/* ==========================================================================
+   ESTRUTURA GLOBAL (Desktop)
+   ========================================================================== */
 .upload-video-container{
     display: flex;
     flex-direction: column;
@@ -233,4 +236,74 @@
     font-size: 18px;
     margin-left: 15px;
     font-weight: 600;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE (Tablets e Celulares)
+   ========================================================================== */
+@media (max-width: 850px) {
+    .upload-video-content {
+        padding: 20px 16px; /* Ajusta as margens nas laterais */
+        gap: 35px;
+    }
+
+    /* O topo agora empilha o card de dados e o calendário verticalmente */
+    .upload-video-top {
+        flex-direction: column;
+        width: 100%;
+        gap: 30px;
+    }
+
+    /* Remove o tamanho travado de 480px para preencher a largura do ecrã */
+    .upload-video-left {
+        min-width: 0;
+        width: 100%;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .upload-video-left-title {
+        font-size: 28px; /* Título mais suave no mobile */
+    }
+
+    /* Quebra informações de turma e disciplina em linhas separadas se necessário */
+    .upload-video-left-turma-disciplina {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Alinha os blocos de campos na vertical (Label em cima, Input em baixo) */
+    .upload-video-left-data,
+    .upload-video-left-classificacao,
+    .upload-video-left-conteudo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    /* Faz com que os componentes personalizados e inputs ocupem a largura total disponível */
+    .upload-video-left-conteudo input,
+    .upload-video-left-classificacao select {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Componentes de área de upload e histórico passam a ocupar 100% */
+    .area-upload,
+    .upload-video-historico-aulas {
+        width: 100%;
+    }
+
+    /* Permite rolagem lateral no componente da linha do tempo caso ela estique */
+    .upload-video-historico-aulas-content {
+        overflow-x: auto;
+    }
+
+    /* Botões crescem para 100% de largura para facilitar cliques no mobile */
+    .upload-video-processar,
+    .upload-video-salvar {
+        width: 100%;
+        align-self: center;
+    }
 }

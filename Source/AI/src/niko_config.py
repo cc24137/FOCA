@@ -12,6 +12,7 @@ PROPORCAO_MIN_PERFIL = 0.60  # Abaixo disso = Rosto de perfil (conversando para 
 PROPORCAO_MAX_DEITADO = 1.15 # Acima disso = Rosto achatado (deitado na mesa)
 
 # Detecção de Boca Aberta (Bocejo ou Conversa)
+ALTURA_MINIMA_ANALISE_BOCA = 60
 LIMITE_BOCA_ABERTA = 0.65    # Acima disso = Área escura muito grande na região inferior do rosto
 
 # ==========================================
@@ -24,6 +25,10 @@ PESO_DIRECAO_OLHAR = 0.00
 # Limiares de Decisão (De 0.0 a 1.0) - Serão usados quando reativarmos o cálculo
 LIMIAR_FOCADO_BAIXA = 0.70
 LIMIAR_PARCIAL_BAIXA = 0.45
+
+# ZONAS EXTREMAS DE PERDA TOTAL DE FOCO
+EXTREMO_PERFIL = 0.35   # Cabeça totalmente virada para trás/ombro
+EXTREMO_DEITADO = 1.60  # Cabeça totalmente achatada na mesa
 
 # INTERRUPTORES DE MÉTRICAS (Feature Flags para Estudo de Ablação)
 USAR_METRICA_POSTURA = True  # Recomendado manter True, pois é a base

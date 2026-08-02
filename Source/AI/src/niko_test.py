@@ -23,7 +23,8 @@ def testar_imagem(caminho_imagem):
     img_indices = img.copy()
     img_dados = img.copy()
 
-    for aluno in resultado['detalhes_alunos']:
+    # Usando enumerate(..., start=1) para gerar o ID do aluno igual ao do relatório .txt
+    for i, aluno in enumerate(resultado['detalhes_alunos'], start=1):
         x1, y1, x2, y2 = aluno['bbox']
         cor = aluno['cor']
 
@@ -31,32 +32,47 @@ def testar_imagem(caminho_imagem):
         cv2.rectangle(img_indices, (x1, y1), (x2, y2), cor, 2)
         cv2.rectangle(img_dados, (x1, y1), (x2, y2), cor, 2)
 
-        # indices e status
-        texto_indice = f"{aluno['status']} {aluno['indice']:.2f}"
+        # Na imagem V1 (Índices), colocamos o Número do Aluno + Status
+        texto_indice = f"Aluno {i:02d} ({aluno['status']})"
         cv2.putText(img_indices, texto_indice, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, cor, 2)
 
-        # Dados extraidos
-        # Mostra a Abertura Ocular (Ab), Direção (D) e a Proporção da Bbox (PR)
-        texto_dados = f"Ab:{aluno['abertura']:.2f} D:{aluno['direcao']:.2f} PR:{aluno['proporcao']:.2f}"
-
-        cv2.putText(img_dados, texto_dados, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, cor, 2)
-
-    # Escreve a média global no canto de ambas as imagens
-    #texto_media = f"Media Turma: {resultado['media_atencao']:.2f}"
-    #cv2.rectangle(img_indices, (10, 10), (350, 50), (0, 0, 0), -1)
-    #cv2.putText(img_indices, texto_media, (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-
-    #cv2.rectangle(img_dados, (10, 10), (350, 50), (0, 0, 0), -1)
-    #cv2.putText(img_dados, texto_media, (20, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        # Na imagem V2 (Dados Brutos), colocamos APENAS o Número do Aluno para limpar a imagem
+        texto_dados = f"Aluno {i:02d}"
+        cv2.putText(img_dados, texto_dados, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, cor, 2)
 
     os.makedirs("results", exist_ok=True)
 
     nome_ficheiro = os.path.basename(caminho_imagem).split('.')[0]
     caminho_v1 = f"results/resultado_{nome_ficheiro}_V1_Indices.jpg"
     caminho_v2 = f"results/resultado_{nome_ficheiro}_V2_DadosBrutos.jpg"
+    caminho_txt = f"results/resultado_{nome_ficheiro}_Relatorio.txt"
 
     cv2.imwrite(caminho_v1, img_indices)
     cv2.imwrite(caminho_v2, img_dados)
+
+    # --- Geração do Relatório em .txt ---
+    with open(caminho_txt, "w", encoding="utf-8") as arquivo_txt:
+        arquivo_txt.write("=========================================\n")
+        arquivo_txt.write(f"RELATÓRIO DE ANÁLISE - NIKO ENGINE\n")
+        arquivo_txt.write("=========================================\n")
+        arquivo_txt.write(f"Imagem analisada: {caminho_imagem}\n")
+        arquivo_txt.write(f"Tempo de processamento: {fim - inicio:.2f} segundos\n\n")
+
+        arquivo_txt.write("[RESUMO DA TURMA]\n")
+        arquivo_txt.write(f"Média de Atenção: {resultado['media_atencao']}\n")
+        arquivo_txt.write(f"Total de Alunos:  {resultado['total_alunos']}\n")
+        arquivo_txt.write(f"Focados:          {resultado['focados']}\n")
+        arquivo_txt.write(f"Distraídos:       {resultado['distraidos']}\n\n")
+
+        arquivo_txt.write("[MÉTRICAS DETALHADAS POR ALUNO]\n")
+        for i, aluno in enumerate(resultado['detalhes_alunos'], start=1):
+            bbox = aluno['bbox']
+            arquivo_txt.write(
+                f"Aluno {i:02d} | BBox: ({bbox[0]:03d}, {bbox[1]:03d}, {bbox[2]:03d}, {bbox[3]:03d}) | "
+                f"PR (Postura): {aluno['proporcao']:.2f} | "
+                f"B (Boca): {aluno['boca']:.2f} | "
+                f"Status: {aluno['status']}\n"
+            )
 
     # Exibe os resultados no terminal
     print(f" Tempo de processamento: {fim - inicio:.2f} segundos")
@@ -65,6 +81,7 @@ def testar_imagem(caminho_imagem):
     print(f"   • Total de Alunos:  {resultado['total_alunos']} ({resultado['focados']} Focados / {resultado['distraidos']} Distraídos)")
     print(f"   -> {caminho_v1}")
     print(f"   -> {caminho_v2}")
+    print(f"   -> {caminho_txt}")
 
 def testar_apenas_yolo(caminho_imagem):
     img = cv2.imread(caminho_imagem)
@@ -90,11 +107,8 @@ def testar_apenas_yolo(caminho_imagem):
             cv2.putText(img_yolo, f"{confianca:.2f}", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
             total_rostos += 1
-
-    # Garante que a pasta results existe antes de salvar
     os.makedirs("results", exist_ok=True)
 
-    # Salva o arquivo no disco
     nome_ficheiro = os.path.basename(caminho_imagem).split('.')[0]
     caminho_v3 = f"results/resultado_{nome_ficheiro}_V3_ApenasYOLO.jpg"
     cv2.imwrite(caminho_v3, img_yolo)

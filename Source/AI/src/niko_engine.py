@@ -1,5 +1,4 @@
 import math
-
 import cv2
 import numpy as np
 from ultralytics import YOLO
@@ -15,37 +14,36 @@ class NikoEngine:
         self.clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(4, 4))
         print("[Niko Engine] Motor inicializado. (Modo: Coleta de Métricas)")
 
-    def extrair_abertura_ocular(self, imagem_clahe):
+    def extrair_estado_boca(self, imagem_clahe):
+        """
+        Analisa os 35% inferiores do rosto.
+        Retorna um valor de 0.0 a 1.0 representando a proporção de área escura.
+        Valores altos indicam boca aberta (bocejo/conversa).
+        """
         try:
             h = imagem_clahe.shape[0]
-            regiao_olhos = imagem_clahe[:int(h * 0.45), :]
-            _, thresh = cv2.threshold(regiao_olhos, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-            pixels_escuros = cv2.countNonZero(thresh)
-            total_pixels = regiao_olhos.shape[0] * regiao_olhos.shape[1]
-            razao = pixels_escuros / total_pixels if total_pixels > 0 else 0.5
-            return min(razao * 2, 1.0)
-        except:
-            return 0.5
+            # Recorta a região do queixo/boca
+            regiao_boca = imagem_clahe[int(h * 0.65):, :]
 
-    def extrair_direcao_olhar(self, imagem_clahe):
-        try:
-            regiao_olhos = imagem_clahe[:int(imagem_clahe.shape[0] * 0.45), :]
-            _, thresh = cv2.threshold(regiao_olhos, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-            contornos, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            if not contornos:
-                return 0.5
-            maior_contorno = max(contornos, key=cv2.contourArea)
-            M = cv2.moments(maior_contorno)
-            if M["m00"] == 0: return 0.5
-            cx = int(M["m10"] / M["m00"])
-            x_norm = cx / regiao_olhos.shape[1]
-            return max(0.0, 1.0 - abs(x_norm - 0.5) * 2.5)
-        except:
-            return 0.5
+            # Binariza a imagem
+            _, thresh = cv2.threshold(regiao_boca, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-    def calcular_indice_final(self, abertura, direcao):
-        # implementar depois
-        return NotImplementedError("Método calcular_indice_final ainda não implementado.")
+            # Conta a área escura gerada pela cavidade da boca aberta
+            pixels_claros = cv2.countNonZero(thresh)
+            total_pixels = regiao_boca.shape[0] * regiao_boca.shape[1]
+            pixels_escuros = total_pixels - pixels_claros
+
+            razao = pixels_escuros / total_pixels if total_pixels > 0 else 0.0
+            return min(razao * 2, 1.0) # Multiplica por 2 para normalizar a escala visualmente
+        except:
+            return 0.0
+
+    def calcular_indice_final(self, proporcao, boca):
+        """
+        Calcula o índice final de atenção com base nas métricas disponíveis.
+        """
+        
+        
 
     def processar_frame(self, img):
         if img is None: return None
@@ -64,11 +62,20 @@ class NikoEngine:
                 largura = x2 - x1
                 altura = y2 - y1
 
-                # Métrica 1: Proporção (Postura)
-                proporcao = largura / altura if altura > 0 else 1.0
-
                 # Recorte exato da Bounding Box
                 recorte = img[y1:y2, x1:x2]
+
+                if recorte.size == 0:
+                    continue
+
+                # Métrica 1: Proporção (Postura)
+                # Sempre calculada, pois só usa matemática básica das coordenadas
+                # Dicionario proporções:
+                    # validar depois com testes >_<
+                    # < 0.60 = Rosto de perfil (conversando para o lado)
+                    # 0.60 a 1.15 = Rosto normal (olhando para frente)
+                    # > 1.15 = Rosto achatado (deitado na mesa)
+                proporcao = largura / altura if altura > 0 else 1.0
 
                 if recorte.size == 0:
                     continue
@@ -76,12 +83,16 @@ class NikoEngine:
                 gray = cv2.cvtColor(recorte, cv2.COLOR_BGR2GRAY)
                 imagem_clahe = self.clahe.apply(gray)
 
-                # Métricas 2 e 3: Abertura e Direção (Olhos)
-                abertura = self.extrair_abertura_ocular(imagem_clahe)
-                direcao = self.extrair_direcao_olhar(imagem_clahe)
+                # Métrica 2: Estado da Boca
+                if cfg.USAR_METRICA_BOCA:
+                    boca = self.extrair_estado_boca(imagem_clahe)
+                else:
+                    boca = 0.0
+
+                # -----------------------------------
 
                 indice_final = 0.0  # Placeholder
-                #indice_final = self.calcular_indice_final(abertura, direcao)
+                #indice_final = self.calcular_indice_final(proporcao, boca)
 
                 # salva os detalhes para teste
                 detalhes_alunos.append({
@@ -90,8 +101,7 @@ class NikoEngine:
                     'indice': indice_final,
                     'status': 'ANALISE',
                     'cor': (255, 255, 0),     # Ciano para a caixa
-                    'abertura': abertura,
-                    'direcao': direcao,
+                    'boca': round(boca, 2),
                     'proporcao': round(proporcao, 2)
                 })
 

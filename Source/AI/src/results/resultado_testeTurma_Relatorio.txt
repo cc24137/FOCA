@@ -1,0 +1,28 @@
+=========================================
+RELATÓRIO DE ANÁLISE - NIKO ENGINE
+=========================================
+Imagem analisada: imagens_teste/testeTurma.jpg
+Tempo de processamento: 0.15 segundos
+
+[RESUMO DA TURMA]
+Média de Atenção: 0.0
+Total de Alunos:  15
+Focados:          0
+Distraídos:       0
+
+[MÉTRICAS DETALHADAS POR ALUNO]
+Aluno 01 | BBox: (222, 126, 307, 211) | PR (Postura): 1.00 | B (Boca): 1.00 | Ab (Olhos): 0.57 | D (Direção): 0.96 | Status: ANALISE
+Aluno 02 | BBox: (480, 027, 502, 054) | PR (Postura): 0.81 | B (Boca): 1.00 | Ab (Olhos): 0.92 | D (Direção): 0.89 | Status: ANALISE
+Aluno 03 | BBox: (458, 110, 525, 174) | PR (Postura): 1.05 | B (Boca): 1.00 | Ab (Olhos): 0.53 | D (Direção): 0.79 | Status: ANALISE
+Aluno 04 | BBox: (109, 031, 125, 050) | PR (Postura): 0.84 | B (Boca): 1.00 | Ab (Olhos): 1.00 | D (Direção): 0.84 | Status: ANALISE
+Aluno 05 | BBox: (543, 049, 586, 091) | PR (Postura): 1.02 | B (Boca): 1.00 | Ab (Olhos): 0.73 | D (Direção): 0.85 | Status: ANALISE
+Aluno 06 | BBox: (027, 024, 046, 046) | PR (Postura): 0.86 | B (Boca): 0.99 | Ab (Olhos): 1.00 | D (Direção): 0.80 | Status: ANALISE
+Aluno 07 | BBox: (157, 028, 175, 049) | PR (Postura): 0.86 | B (Boca): 1.00 | Ab (Olhos): 1.00 | D (Direção): 0.72 | Status: ANALISE
+Aluno 08 | BBox: (280, 025, 299, 056) | PR (Postura): 0.61 | B (Boca): 1.00 | Ab (Olhos): 1.00 | D (Direção): 0.80 | Status: ANALISE
+Aluno 09 | BBox: (416, 052, 441, 080) | PR (Postura): 0.89 | B (Boca): 1.00 | Ab (Olhos): 0.95 | D (Direção): 0.75 | Status: ANALISE
+Aluno 10 | BBox: (223, 040, 240, 059) | PR (Postura): 0.89 | B (Boca): 0.82 | Ab (Olhos): 1.00 | D (Direção): 0.78 | Status: ANALISE
+Aluno 11 | BBox: (165, 100, 211, 143) | PR (Postura): 1.07 | B (Boca): 1.00 | Ab (Olhos): 1.00 | D (Direção): 0.00 | Status: ANALISE
+Aluno 12 | BBox: (220, 020, 236, 038) | PR (Postura): 0.89 | B (Boca): 1.00 | Ab (Olhos): 0.84 | D (Direção): 0.84 | Status: ANALISE
+Aluno 13 | BBox: (606, 056, 645, 085) | PR (Postura): 1.34 | B (Boca): 1.00 | Ab (Olhos): 1.00 | D (Direção): 0.07 | Status: ANALISE
+Aluno 14 | BBox: (612, 058, 643, 081) | PR (Postura): 1.35 | B (Boca): 1.00 | Ab (Olhos): 1.00 | D (Direção): 0.72 | Status: ANALISE
+Aluno 15 | BBox: (651, 033, 672, 064) | PR (Postura): 0.68 | B (Boca): 1.00 | Ab (Olhos): 0.96 | D (Direção): 0.94 | Status: ANALISE

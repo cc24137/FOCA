@@ -53,6 +53,30 @@ class TurmaDisciplinaProfessorCRUD {
         }
     }
 
+    async getByTurma(idTurma) {
+        try {
+            const pool = await db.getConnection();
+            const result = await pool.request()
+                .input("idTurma", sql.Int, idTurma)
+                .query(`
+                    SELECT
+                        TDP.id AS id,
+                        D.nome AS nomeDisciplina,
+                        P.nome AS nomeProfessor,
+                        I.nome AS nomeInstituicao
+                    FROM foca.Turma_Disciplina_Professor TDP
+                    INNER JOIN foca.Disciplina D ON TDP.id_disciplina = D.id
+                    INNER JOIN foca.Professor P ON TDP.id_professor = P.id
+                    INNER JOIN foca.Turma T ON TDP.id_turma = T.id
+                    INNER JOIN foca.Instituicao I ON T.id_instituicao = I.id
+                    WHERE TDP.id_turma = @idTurma
+                `);
+            return result.recordset;
+        } catch (error) {
+            throw error;
+        }
+    }
+
   async create(idDisciplina, idTurma, idProfessor){
     try{
       const pool = await db.getConnection();

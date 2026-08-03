@@ -10,6 +10,9 @@ export default function Turmas(){
     const [isEditing, setIsEditing] = useState(false);
     const [selectedTurma, setSelectedTurma] = useState(null);
 
+    // Armazena as relações (Professor/Disciplina) da turma selecionada
+    const [relacoes, setRelacoes] = useState([]);
+
     // Estados para armazenar os dados reais vindos da API para as caixas de seleção
     const [allProfessores, setAllProfessores] = useState([]);
     const [allDisciplinas, setAllDisciplinas] = useState([]);
@@ -31,6 +34,15 @@ export default function Turmas(){
         loadData();
     }, []);
 
+    // Atualiza as relações sempre que a turma selecionada mudar
+    useEffect(() => {
+        if (selectedTurma !== null && turmas[selectedTurma]) {
+            loadRelacoes(turmas[selectedTurma].id);
+        } else {
+            setRelacoes([]);
+        }
+    }, [selectedTurma]);
+
     async function loadData() {
         try {
             const [turmasRes, disciplinasRes, professoresRes] = await Promise.all([
@@ -49,24 +61,12 @@ export default function Turmas(){
                         id: row.id,
                         nome: row.nome,
                         numeroAlunos: row.numero_alunos || 0,
-                        serie: row.serie || '',
-                        professores: []
+                        serie: row.serie || ''
                     };
                     deAgrupado.push(turma);
                 }
-
-                if (row.professor && row.disciplina) {
-                    const jaExiste = turma.professores.some(p => p.nome === row.professor && p.disciplina === row.disciplina);
-                    if (!jaExiste) {
-                        turma.professores.push({
-                            nome: row.professor,
-                            disciplina: row.disciplina
-                        });
-                    }
-                }
             });
             setTurma(deAgrupado);
-
             setAllDisciplinas(disciplinasRes.data);
 
             const profsUnicos = [];
@@ -80,6 +80,18 @@ export default function Turmas(){
         } catch (error) {
             console.error("Erro ao carregar dados do banco:", error);
             alert("Não foi possível carregar as informações da instituição.");
+        }
+    }
+
+    // Função que busca a tabela de relações da Turma específica (TDP)
+    async function loadRelacoes(idTurma) {
+        try {
+            const response = await api.get("/turmaRelacao/porTurma", {
+                params: { idTurma: idTurma }
+            });
+            setRelacoes(response.data);
+        } catch (error) {
+            console.error("Erro ao carregar relações da turma:", error);
         }
     }
 
@@ -141,6 +153,27 @@ export default function Turmas(){
         }
     }
 
+    // Agora recebe o ID dinâmico da relação clicada para efetuar o DELETE
+    async function handleRemoveRelacao(idRelacao) {
+        if (selectedTurma === null) return;
+
+        const confirmacao = window.confirm(`Tem certeza que deseja remover esta relação?`);
+
+        if (confirmacao) {
+            try {
+                await api.delete("/turmaRelacao/excluir", {
+                    data: { id: idRelacao }
+                });
+
+                // Recarrega as relações atualizadas dessa turma após a exclusão
+                loadRelacoes(turmas[selectedTurma].id);
+            } catch (error) {
+                console.error("Erro ao remover relação de professores:", error);
+                alert("Não foi possível remover a relação de professores desta turma.");
+            }
+        }
+    }
+
     async function handleRemoveTurma() {
         if (selectedTurma === null) return;
 
@@ -168,7 +201,6 @@ export default function Turmas(){
     async function confirmAddProf() {
         if (!newProf.nome || !newProf.disciplina) return;
 
-        // Procura os IDs corretos com base no nome selecionado nas caixas de texto
         const professorEncontrado = allProfessores.find(p => p.nome === newProf.nome);
         const disciplinaEncontrada = allDisciplinas.find(d => d.nome === newProf.disciplina);
         const turmaAtual = turmas[selectedTurma];
@@ -188,7 +220,9 @@ export default function Turmas(){
             alert("Vínculo criado com sucesso!");
             setNewProf({ nome: '', disciplina: '' });
             setAddingProf(false);
-            loadData(); // Atualiza a tabela com o novo registro vindo do banco
+
+            // Recarrega somente a tabela de vínculos após inserir
+            loadRelacoes(turmaAtual.id);
         } catch (error) {
             console.error("Erro ao criar vínculo de turma/professor/disciplina:", error);
             alert("Não foi possível criar a relação. Verifique as configurações do servidor.");
@@ -311,19 +345,17 @@ export default function Turmas(){
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {turmas[selectedTurma].professores.map((prof, i) => (
+                                        {/* Agora iterando pelo estado de relações baixado via GET */}
+                                        {relacoes.map((rel, i) => (
                                             <tr key={i}>
-                                                <td>{prof.nome}</td>
-                                                <td>{prof.disciplina}</td>
+                                                <td>{rel.nomeProfessor}</td>
+                                                <td>{rel.nomeDisciplina}</td>
                                                 <td>
-                                                    {/* Mantida a remoção visual enquanto você define uma rota de exclusão de relação se achar necessário */}
                                                     <button
                                                         className='turma-prof-remover'
-                                                        onClick={() => setTurma(prev => prev.map((t, ti) =>
-                                                            ti === selectedTurma
-                                                                ? { ...t, professores: t.professores.filter((_, pi) => pi !== i) }
-                                                                : t
-                                                        ))}
+                                                        // Passamos o ID respectivo da relação para a requisição
+                                                        onClick={() => handleRemoveRelacao(rel.id)}
+                                                        title="Remover relação"
                                                     >✕</button>
                                                 </td>
                                             </tr>

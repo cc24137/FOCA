@@ -15,6 +15,20 @@ class TurmaDisciplinaProfessorController{
       })
   }
 
+    getByTurma = async (req, res) => {
+    const turmaDisciplinaProfessorCRUD = new TurmaDisciplinaProfessorCRUD();
+    const { idTurma } = req.query;
+
+    await turmaDisciplinaProfessorCRUD.getByTurma(idTurma)
+      .then((recordset) => {
+        res.status(200).json(recordset);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      });
+  }
+
     getByLinkId = async (req, res) => {
     const turmaDisciplinaProfessorCRUD = new TurmaDisciplinaProfessorCRUD();
     const { linkId } = req.params;

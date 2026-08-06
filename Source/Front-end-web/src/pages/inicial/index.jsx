@@ -107,14 +107,14 @@ export default function Inicial() {
                         <div className='inicial-how-it-works-cards-element'>
                             <p className='inicial-how-it-works-card-title'>1. Acesse a plataforma</p>
                             <div className='inicial-how-it-works-card'>
-                                <p className='inicial-how-it-works-card-text'>Faça login ou cadastre-se como um professor ou instituição.</p>
+                                <p className='inicial-how-it-works-card-text'>Faça login ou cadastre-se como um professor ou como uma instituição.</p>
                             </div>
                         </div>
 
                         <div className='inicial-how-it-works-cards-element'>
                             <p className='inicial-how-it-works-card-title'>2. Selecione uma turma</p>
                             <div className='inicial-how-it-works-card'>
-                                <p className='inicial-how-it-works-card-text'>Após a instituição criar a turma e vinculá-la ao professor, ele pode então acessá-las pela sua tela inicial.</p>
+                                <p className='inicial-how-it-works-card-text'>Após a instituição criar uma turma e vinculá-la ao professor, ele pode então acessá-la pela sua tela inicial.</p>
                             </div>
                         </div>
                     </div>

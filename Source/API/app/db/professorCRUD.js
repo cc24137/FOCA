@@ -39,7 +39,10 @@ class ProfessorCRUD {
             	GROUP BY A.ID_TURMA_DISCIPLINA_PROFESSOR 
             ) sub
             ON TDP.ID = sub.ID_TDP
-            WHERE IP.ID_INSTITUICAO = @id
+            WHERE 
+            IP.ID_INSTITUICAO = @id AND
+            T.ID_INSTITUICAO = @id AND
+            D.ID_INSTITUICAO = @id
           `)
       return result.recordset;
     }

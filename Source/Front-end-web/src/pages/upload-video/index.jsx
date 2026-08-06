@@ -7,7 +7,6 @@ import './upload-video.css';
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import IconTexto from '../../assets/file-text.svg?react';
-// Importação da biblioteca de download direto
 import html2pdf from 'html2pdf.js';
 
 export default function UploadVideo(){
@@ -41,11 +40,10 @@ export default function UploadVideo(){
         setSelectedDate(date);
     };
 
-    // Função responsável pelo Download Direto do PDF
     const handleGerarPDF = () => {
         const elemento = document.querySelector('.upload-video-content');
         
-        // Aplica a classe que deixa o layout limpo (folha branca) antes do print
+        
         elemento.classList.add('pdf-mode');
 
         const opcoes = {

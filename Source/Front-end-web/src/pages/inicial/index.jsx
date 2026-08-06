@@ -174,7 +174,7 @@ export default function Inicial() {
 
                             <div className='inicial-goals-right-row'>
                                 <CheckIcon className='inicial-goals-right-row-icon' />
-                                <p className='inicial-goals-right-row-text'>Melhorar a forma em que os professores compreendem suas turmas e didátiacas.</p>
+                                <p className='inicial-goals-right-row-text'>Melhorar a forma em que os professores compreendem suas turmas e didáticas.</p>
                             </div>
                         </div>
 

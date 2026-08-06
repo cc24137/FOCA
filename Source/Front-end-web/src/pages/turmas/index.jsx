@@ -306,6 +306,7 @@ export default function Turmas(){
                                 <label style={{ fontFamily: 'var(--font-inter)', fontSize: '14px' }}><strong>Quantidade de Alunos:</strong></label>
                                 <input
                                     type="number"
+                                    min = "0"
                                     className='turmas-direita-title-input'
                                     value={alunosTurma}
                                     onChange={(e) => setAlunosTurma(e.target.value)}

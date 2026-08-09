@@ -1,9 +1,14 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 import shutil
 import os
 
+from niko_engine import NikoEngine, VideoRequest
+
 app = FastAPI()
+
+engine = NikoEngine()
 
 # Configuração do CORS para permitir requisições da página HTML/Website
 app.add_middleware(
@@ -20,7 +25,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.post("/process-video/")
 async def process_video(file: UploadFile = File(...)):
-    # 1. Validação básica da extensão do arquivo
+    
     if not file.content_type.startswith("video/"):
         raise HTTPException(status_code=400, detail="O arquivo enviado não é um vídeo válido.")
 
@@ -43,6 +48,27 @@ async def process_video(file: UploadFile = File(...)):
         # "predictions": resultado
     }
 
+
+
+@app.post("/processar-video/")
+async def processar_video(file: UploadFile = File(...)):
+
+    if not file.content_type.startswith("video/"):
+        raise HTTPException(status_code=400, detail="O arquivo enviado não é um vídeo válido.")
+
+    file_path = os.path.join(UPLOAD_DIR, file.filename)
+    try:
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+    finally:
+        file.file.close()
+
+    try:
+        req = VideoRequest(file_path)
+        return engine.processar_video(req)
+    except:
+        raise HTTPException(status_code=400, detail="O arquivo enviado não é um vídeo válido.")
+    
+
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)

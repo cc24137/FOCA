@@ -1,7 +1,7 @@
 # ==========================================
 # 1. MODELO YOLOv8 E DETECÇÃO
 # ==========================================
-YOLO_PATH = 'models/yolov8_nano_foca_v3_800_50e/weights/best.pt'
+YOLO_PATH = '../models/yolov8_nano_foca_v3_800_50/yolov8_nano_foca_v3_800_50e/weights/best.pt'
 YOLO_CONFIDENCE = 0.30 # Ajustado com base no pico do gráfico F1-Score!
 
 # ==========================================

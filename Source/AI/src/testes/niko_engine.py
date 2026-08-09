@@ -2,12 +2,16 @@ import math
 import cv2
 import numpy as np
 from ultralytics import YOLO
+import os
 
 import niko_config as cfg
 
 class VideoRequest():
     caminho_video: str
     intervalo_segundos: int = 5
+
+    def __init__(self, path):
+        self.caminho_video = path
 
 class NikoEngine:
     def __init__(self):
@@ -193,5 +197,55 @@ class NikoEngine:
             "detalhes_alunos": detalhes_alunos
         }
 
-    def processar_video(video: VideoRequest):
-
+    def processar_video(self, video: VideoRequest):
+        eh_url = video.caminho_video.startswith("http://") or video.caminho_video.startswith("https://")
+        
+        if not eh_url and not os.path.exists(video.caminho_video):
+            raise Exception(status_code=404, detail="Arquivo/URL de vídeo não encontrado.")
+    
+        cap = cv2.VideoCapture(video.caminho_video)
+        fps = cap.get(cv2.CAP_PROP_FPS)
+    
+        if fps <= 0: 
+            fps = 30
+    
+        frames_para_pular = int(fps * video.intervalo_segundos)
+    
+        medias_temporais = []
+        linha_do_tempo = []
+        contador_frames = 0
+    
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                break
+    
+            # Processa apenas o frame exato do intervalo
+            if contador_frames % frames_para_pular == 0:
+                resultado_frame = self.processar_frame(frame)
+    
+                if resultado_frame and resultado_frame["total_alunos"] > 0:
+                    medias_temporais.append(resultado_frame["media_atencao"])
+    
+                    # Monta a estrutura detalhada para os diferentes frames analisados -> usar pro gráfico da web dps
+                    segundo_atual = int(contador_frames / fps)
+                    linha_do_tempo.append({
+                        "segundo_video": segundo_atual,
+                        "media_momento": resultado_frame["media_atencao"],
+                        "total_focados": resultado_frame["focados"],
+                        "total_distraidos": resultado_frame["distraidos"]
+                    })
+    
+            contador_frames += 1
+    
+        cap.release()
+    
+        # Calcula a média geral do vídeo inteiro
+        media_final_video = round(sum(medias_temporais) / len(medias_temporais), 2) if medias_temporais else 0.0
+        
+        return {
+            "status": "sucesso",
+            "video_processado": video.caminho_video,
+            "media_global_aula": media_final_video,
+            "linha_do_tempo": linha_do_tempo
+        }

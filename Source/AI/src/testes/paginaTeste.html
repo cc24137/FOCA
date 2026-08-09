@@ -83,7 +83,7 @@
             status.innerText = "Enviando e processando vídeo...";
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/process-video/", {
+                const response = await fetch("http://127.0.0.1:8000/processar-video/", {
                     method: "POST",
                     body: formData
                 });

@@ -1,14 +1,42 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 import uvicorn
 import shutil
 import os
-
+from huggingface_hub import hf_hub_download
 from niko_engine import NikoEngine, VideoRequest
 
-app = FastAPI()
+REPO_ID = "rafafazion/foca-yolov8-nano"
+FILENAME = "best.pt"
 
-engine = NikoEngine()
+model = {}
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Baixando o modelo...")
+    try:
+        model_path = hf_hub_download(
+            repo_id=REPO_ID,
+            filename=FILENAME
+        )
+        print("Modelo encontrado.")
+        model["niko_engine"] = NikoEngine(model_path)
+        print("Modelo carregado na memória.")
+
+    except Exception as e:
+        print(f"ERRO: Falha crítica ao carregar o modelo: {e}")
+        raise e
+
+    yield
+
+    model.clear()
+    print("Modelo liberado")
+
+app = FastAPI(
+    title="API da IA FOCA",
+    lifespan=lifespan
+)
 
 # Configuração do CORS para permitir requisições da página HTML/Website
 app.add_middleware(
@@ -53,6 +81,9 @@ async def process_video(file: UploadFile = File(...)):
 @app.post("/processar-video/")
 async def processar_video(file: UploadFile = File(...)):
 
+    if "niko_engine" not in model:
+        raise HTTPException(status_code=503, detail="Modelo não inicializado.")
+
     if not file.content_type.startswith("video/"):
         raise HTTPException(status_code=400, detail="O arquivo enviado não é um vídeo válido.")
 
@@ -65,7 +96,7 @@ async def processar_video(file: UploadFile = File(...)):
 
     try:
         req = VideoRequest(file_path)
-        return engine.processar_video(req)
+        return model["niko_engine"].processar_video(req)
     except:
         raise HTTPException(status_code=400, detail="O arquivo enviado não é um vídeo válido.")
     

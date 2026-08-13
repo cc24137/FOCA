@@ -14,9 +14,9 @@ class VideoRequest():
         self.caminho_video = path
 
 class NikoEngine:
-    def __init__(self):
+    def __init__(self, yolo_path):
         print("[Niko Engine] A carregar modelo YOLOv8 ultraleve...")
-        self.yolo = YOLO(cfg.YOLO_PATH)
+        self.yolo = YOLO(yolo_path)
 
         # Filtro CLAHE configurado globalmente
         self.clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(4, 4))

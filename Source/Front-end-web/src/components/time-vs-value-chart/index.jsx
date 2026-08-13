@@ -7,24 +7,27 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
 } from 'recharts';
 import './time-vs-value.css';
 
 export default function GenericLineChart({
   data = [],
-  xKey = 'time',       
-  yKey = 'value',      
-  lineColor = 'var(--button-dark-blue)',
+  xKey = 'tempoFormatado',
+  yKey = 'temp',            
+  lineColor = '#4F46E5',     
+  lines,                     
   height = 400,
-  formatXAxis,         
+  formatXAxis,
+  isAnimationActive = true,
 }) {
   if (!data || data.length === 0) {
-    return (
-      <div className="chart-no-data" style={{ height }}>
-        No data available
-      </div>
-    );
+    return <div className="chart-no-data" style={{ height }}>Nenhum dado disponível</div>;
   }
+
+  const chartLines = lines || [
+    { key: yKey, color: lineColor, label: yKey }
+  ];
 
   return (
     <div className="chart-container" style={{ height }}>
@@ -34,14 +37,23 @@ export default function GenericLineChart({
           <XAxis dataKey={xKey} tickFormatter={formatXAxis} />
           <YAxis />
           <Tooltip />
-          <Line
-            type="monotone"
-            dataKey={yKey}
-            stroke={lineColor}
-            strokeWidth={3}
-            dot={{ r: 3 }}
-            activeDot={{ r: 6 }}
-          />
+          
+          {chartLines.length > 1 && <Legend />}
+
+          {chartLines.map((lineConfig) => (
+            <Line
+              key={lineConfig.key}
+              type="monotone"
+              dataKey={lineConfig.key}
+              name={lineConfig.label || lineConfig.key}
+              stroke={lineConfig.color || '#4F46E5'}
+              strokeWidth={3}
+              connectNulls={true} 
+              dot={{ r: 3 }}
+              activeDot={{ r: 6 }}
+              isAnimationActive={isAnimationActive}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </div>

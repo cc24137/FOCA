@@ -2,13 +2,45 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../components/header";
 import Combobox from "../../components/combobox";
+import GenericLineChart from "../../components/time-vs-value-chart";
+import { unificarLinhasDoTempo } from "../../utils/chartHelpers"; // Importado do utils
 import api from "../../services/api";
 import "./informacoes-turma.css";
 
-// Ícones para usar nas tags
+const PALETA_CORES = [
+  '#4F46E5', // Roxo / Indigo
+  '#10B981', // Verde
+  '#F59E0B', // Amarelo / Laranja
+  '#EF4444', // Vermelho
+  '#8B5CF6', // Roxo Claro
+  '#06B6D4', // Ciano
+  '#EC4899', // Rosa
+];
+
+// Helper temporário para MOCKAR medições de atenção dinâmicas com tempos variados
+function gerarLogsAtencaoMock(indexAula) {
+  const duracoesPossiveis = [30, 45, 60, 25]; // Durações em segundos diferentes
+  const duracao = duracoesPossiveis[indexAula % duracoesPossiveis.length];
+  const pontos = [];
+
+  for (let seg = 0; seg <= duracao; seg += 5) {
+    // Oscilação matemática para simular curvas de atenção reais
+    const atencaoBase = 50 + (indexAula * 8);
+    const oscilacao = Math.sin(seg + indexAula) * 20;
+    const valorAtencao = Math.min(100, Math.max(15, Math.round(atencaoBase + oscilacao)));
+
+    pontos.push({
+      segundos: seg,
+      temp: valorAtencao
+    });
+  }
+
+  return pontos;
+}
+
 function CheckIcon(props) {
   return (
-    <svg fill="currentcolor" width="10" height="10" viewBox="0 0 10 10" {...props}>
+    <svg fill="currentColor" width="10" height="10" viewBox="0 0 10 10" {...props}>
       <path d="M9.1603 1.12218C9.50684 1.34873 9.60427 1.81354 9.37792 2.16038L5.13603 8.66012C5.01614 8.8438 4.82192 8.96576 4.60451 8.99384C4.3871 9.02194 4.1683 8.95335 4.00574 8.80615L1.24664 6.30769C0.939709 6.02975 0.916013 5.55541 1.19372 5.24822C1.47142 4.94102 1.94536 4.91731 2.2523 5.19524L4.36085 7.10461L8.12299 1.33999C8.34934 0.993152 8.81376 0.895638 9.1603 1.12218Z" />
     </svg>
   );
@@ -31,9 +63,7 @@ export default function InformacoesTurma() {
         navigate(path, state ? { state } : undefined);
     }
 
-    // Estado para controlar a autorização da página
     const [isAuthorized, setIsAuthorized] = useState(true);
-
     const [aulasSelecionadas, setAulasSelecionadas] = useState([]);
     const [turma, setTurma] = useState({
         nome: '',
@@ -45,11 +75,15 @@ export default function InformacoesTurma() {
     const [aulas, setAulas] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Estados para o Gráfico de Comparação
+    const [dadosComparativos, setDadosComparativos] = useState([]);
+    const [configuracaoLinhas, setConfiguracaoLinhas] = useState([]);
+    const [jaComparou, setJaComparou] = useState(false);
+
     useEffect(() => {
         async function fetchDetalhes() {
             setLoading(true);
             try {
-                // Pega os dados do usuário logado no localStorage
                 const user = JSON.parse(localStorage.getItem('@FOCA:user'));
                 const loggedUserId = user?.id;
 
@@ -59,10 +93,10 @@ export default function InformacoesTurma() {
                 ]);
 
                 if (resTurma.data) {
-                    if (String(resTurma.data.idProfessor) !== String(loggedUserId) || user?.isProfessor != true) {
+                    if (String(resTurma.data.idProfessor) !== String(loggedUserId) || user?.isProfessor !== true) {
                         setIsAuthorized(false);
                         setLoading(false);
-                        return; // Interrompe a função, não carrega os dados no state
+                        return;
                     }
 
                     setTurma({
@@ -96,6 +130,46 @@ export default function InformacoesTurma() {
         setAulasSelecionadas(prev => prev.filter(a => a.value !== aulaParaRemover.value));
     };
 
+    // Botão de Comparar
+    const handleComparar = () => {
+        if (aulasSelecionadas.length === 0) {
+            setDadosComparativos([]);
+            setConfiguracaoLinhas([]);
+            setJaComparou(false);
+            return;
+        }
+
+        // 1. Filtra as aulas selecionadas
+        const aulasFiltradas = aulas.filter(aula =>
+            aulasSelecionadas.some(sel => sel.value === aula.id.toString())
+        );
+
+        // 2. Prepara e MOCKA os dados das aulas para exibição
+        const listaParaUnificar = aulasFiltradas.map((aula) => {
+            const indexOriginal = aulas.findIndex(a => a.id === aula.id);
+            
+            return {
+                id: `aula_${aula.id}`,
+                label: `Aula ${indexOriginal + 1} (${new Date(aula.data).toLocaleDateString('pt-PT')})`,
+                // MOCK: Caso aula.logs não exista na API, gera logs fictícios com curva única
+                data: aula.logs || aula.historico || gerarLogsAtencaoMock(indexOriginal)
+            };
+        });
+
+        // 3. Define linhas e cores do gráfico
+        const linhasConfig = listaParaUnificar.map((item, index) => ({
+            key: item.id,
+            label: item.label,
+            color: PALETA_CORES[index % PALETA_CORES.length]
+        }));
+
+        // 4. Executa a função do utils
+        const dadosUnificados = unificarLinhasDoTempo(listaParaUnificar);
+
+        setDadosComparativos(dadosUnificados);
+        setConfiguracaoLinhas(linhasConfig);
+        setJaComparou(true);
+    };
 
     if (!isAuthorized) {
         return (
@@ -115,13 +189,12 @@ export default function InformacoesTurma() {
         );
     }
 
-    // autorizado
     return (
         <div className='informacoes-turma-container'>
             <Header
                 routes={[
                     { textButton: "Início", routeButton: "/inicial-professor" },
-                    { textButton: "Sobre o Projeto", routeButton: "/" }, // Já estava correto, mantido para consistência
+                    { textButton: "Sobre o Projeto", routeButton: "/" },
                     { textButton: "Perfil", routeButton: "/editar-dados" }
                 ]}
             />
@@ -162,7 +235,7 @@ export default function InformacoesTurma() {
                     </div>
                 </div>
 
-                {/* Box de Atenção (vazia por enquanto) */}
+                {/* Box de Atenção Média */}
                 <div className='informacoes-turma-box-atencao-media'>
                     <p className='informacoes-turma-box-atencao-media-title'>Atenção média </p>
                     <div className='informacoes-turma-box-atencao-media-content'>
@@ -204,6 +277,7 @@ export default function InformacoesTurma() {
                 {/* Comparação de Aulas */}
                 <div className='informacoes-turma-box-comparacao-aulas'>
                     <p className='informacoes-turma-box-comparacao-aulas-title'>Comparação detalhada</p>
+                    
                     <div className='informacoes-turma-box-comparacao-aulas-subtitle-row'>
                         <div className='informacoes-turma-box-comparacao-aulas-subtitle-row-right'>
                             <p className='informacoes-turma-comparacao-aulas-label'>Selecionar aulas:</p>
@@ -214,12 +288,64 @@ export default function InformacoesTurma() {
                                 onSelectionChange={setAulasSelecionadas}
                             />
                         </div>
-                        <button className='informacoes-turma-box-comparacao-aulas-button'>
+
+                        <button 
+                            className='informacoes-turma-box-comparacao-aulas-button'
+                            onClick={handleComparar}
+                        >
                             <p className='informacoes-turma-box-comparacao-aulas-button-text'>Comparar</p>
                         </button>
                     </div>
-                    {/* Aqui estaria o mapeamento das tags */}
+
+                    {/* Exibição das Tags Selecionadas */}
+                    {aulasSelecionadas.length > 0 && (
+                        <div className="aulas-tags-container" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', margin: '15px 0' }}>
+                            {aulasSelecionadas.map((aula) => (
+                                <span 
+                                    key={aula.value} 
+                                    style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '6px',
+                                        backgroundColor: '#EEF2FF',
+                                        color: '#4F46E5',
+                                        padding: '4px 10px',
+                                        borderRadius: '16px',
+                                        fontSize: '0.85rem',
+                                        fontWeight: 500
+                                    }}
+                                >
+                                    <CheckIcon />
+                                    {aula.label}
+                                    <ClearIcon 
+                                        onClick={() => handleRemoverAula(aula)} 
+                                        style={{ cursor: 'pointer', width: '12px', height: '12px' }}
+                                    />
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Área do Gráfico de Comparação */}
+                    <div className="grafico-comparativo-container" style={{ marginTop: '20px' }}>
+                        {jaComparou && dadosComparativos.length > 0 ? (
+                            <GenericLineChart
+                                data={dadosComparativos}
+                                xKey="tempoFormatado"
+                                lines={configuracaoLinhas}
+                            />
+                        ) : jaComparou ? (
+                            <p style={{ textAlign: 'center', padding: '20px', color: '#6B7280' }}>
+                                Nenhuma medição/log disponível para as aulas selecionadas.
+                            </p>
+                        ) : (
+                            <p style={{ textAlign: 'center', padding: '30px', color: '#9CA3AF', fontSize: '0.9rem' }}>
+                                Selecione uma ou mais aulas acima e clique em <strong>Comparar</strong> para visualizar o gráfico sobreposto.
+                            </p>
+                        )}
+                    </div>
                 </div>
+
             </div>
         </div>
     );

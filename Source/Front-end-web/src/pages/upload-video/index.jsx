@@ -4,12 +4,12 @@ import DatePicker from '../../components/date-picker';
 import AreaUploadVideo from '../../components/area-upload-video';
 import SelectCustomizado from '../../components/select-customizado';
 import './upload-video.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react'; 
 import api from '../../services/api';
 import IconTexto from '../../assets/file-text.svg?react';
 import html2pdf from 'html2pdf.js';
 import GenericLineChart from '../../components/time-vs-value-chart';
-
+import ReportTemplate from '../../components/report-template'; 
 
 const tempLogs = [
     { timestamp: '2026-08-13T08:00:00Z', temp: 45 },
@@ -48,6 +48,10 @@ export default function UploadVideo(){
     const [classificacao, setClassificacao] = useState('');
     const [conteudo, setConteudo] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
+    const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
+    // 3. Referência para o container de relatório do PDF
+    const reportRef = useRef(null);
 
     useEffect(() => {
         async function loadClassificacoes() {
@@ -69,29 +73,38 @@ export default function UploadVideo(){
         setSelectedDate(date);
     };
 
-    const handleGerarPDF = () => {
-        const elemento = document.querySelector('.upload-video-content');
-        
-        
-        elemento.classList.add('pdf-mode');
+    // 4. Nova função para gerar PDF direto da Referência sem alterar CSS da tela
+    const handleGerarPDF = async () => {
+        if (!reportRef.current) return;
+
+        setIsGeneratingPdf(true);
 
         const opcoes = {
-            margin:       12,
+            margin:       0, // Margem zerada para aproveitar o padding do CSS do A4
             filename:     `relatorio-aula-${nomeTurma || 'turma'}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true, logging: false },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        // Captura o elemento, faz o download direto e remove a classe de estilização
-        html2pdf().set(opcoes).from(elemento).save().then(() => {
-            elemento.classList.remove('pdf-mode');
-        });
+        try {
+            await html2pdf().set(opcoes).from(reportRef.current).save();
+        } catch (error) {
+            console.error('Erro ao gerar PDF:', error);
+        } finally {
+            setIsGeneratingPdf(false);
+        }
     };
 
     const dd = selectedDate ? String(selectedDate.getDate()).padStart(2, '0') : '';
     const mm = selectedDate ? String(selectedDate.getMonth() + 1).padStart(2, '0') : '';
     const yyyy = selectedDate ? String(selectedDate.getFullYear()) : '';
+    const dataFormatada = selectedDate ? `${dd}/${mm}/${yyyy}` : 'Não informada';
+
+    // Obtém o nome legível da classificação selecionada para mandar ao relatório
+    const nomeClassificacaoSelecionada = classificacoes.find(
+        item => item.idClassificacaoConteudo === classificacao
+    )?.nomeClassificacaoConteudo || '';
 
     return (
         <div className='upload-video-body'>
@@ -188,14 +201,30 @@ export default function UploadVideo(){
                         formatXAxis={(val) => new Date(val).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     />
 
-                    <button className='upload-video-salvar' onClick={handleGerarPDF}>
+                    <button 
+                        className='upload-video-salvar' 
+                        onClick={handleGerarPDF}
+                        disabled={isGeneratingPdf}
+                    >
                         <div className='upload-video-salvar-row'>
                             <IconTexto className='upload-video-salvar-row-icon' />
-                            <p className='upload-video-salvar-row-text'>Gerar PDF</p>
+                            <p className='upload-video-salvar-row-text'>
+                                {isGeneratingPdf ? 'Gerando PDF...' : 'Gerar PDF'}
+                            </p>
                         </div>
                     </button>
                 </div>
             </div>
+
+            <ReportTemplate
+                refProp={reportRef}
+                nomeTurma={nomeTurma}
+                nomeDisciplina={nomeDisciplina}
+                dataAula={dataFormatada}
+                classificacao={nomeClassificacaoSelecionada}
+                conteudo={conteudo}
+                data={tempLogs}
+            />
         </div>
     );
 }

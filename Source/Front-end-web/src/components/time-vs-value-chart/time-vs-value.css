@@ -1,0 +1,14 @@
+
+.chart-container {
+  width: 100%;
+}
+
+.chart-no-data {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--grayish-blue);
+  font-size: 0.9rem;
+  border: 1px dashed var(--light-blue);
+  border-radius: 8px;
+}

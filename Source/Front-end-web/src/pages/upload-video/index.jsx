@@ -8,6 +8,35 @@ import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import IconTexto from '../../assets/file-text.svg?react';
 import html2pdf from 'html2pdf.js';
+import GenericLineChart from '../../components/time-vs-value-chart';
+
+
+const tempLogs = [
+    { timestamp: '2026-08-13T08:00:00Z', temp: 45 },
+    { timestamp: '2026-08-13T09:00:00Z', temp: 58 },
+    { timestamp: '2026-08-13T10:00:00Z', temp: 52 },
+    { timestamp: '2026-08-13T11:00:00Z', temp: 60 },
+    { timestamp: '2026-08-13T12:00:00Z', temp: 55 },
+    { timestamp: '2026-08-13T13:00:00Z', temp: 62 },
+    { timestamp: '2026-08-13T14:00:00Z', temp: 58 },
+    { timestamp: '2026-08-13T15:00:00Z', temp: 65 },
+    { timestamp: '2026-08-13T16:00:00Z', temp: 60 },
+    { timestamp: '2026-08-13T17:00:00Z', temp: 68 },
+    { timestamp: '2026-08-13T18:00:00Z', temp: 63 },
+    { timestamp: '2026-08-13T19:00:00Z', temp: 70 },
+    { timestamp: '2026-08-13T20:00:00Z', temp: 65 },
+    { timestamp: '2026-08-13T21:00:00Z', temp: 72 },
+    { timestamp: '2026-08-13T22:00:00Z', temp: 68 },
+    { timestamp: '2026-08-13T23:00:00Z', temp: 75 },
+    { timestamp: '2026-08-14T00:00:00Z', temp: 70 },
+    { timestamp: '2026-08-14T01:00:00Z', temp: 78 },
+    { timestamp: '2026-08-14T02:00:00Z', temp: 73 },
+    { timestamp: '2026-08-14T03:00:00Z', temp: 80 },
+    { timestamp: '2026-08-14T04:00:00Z', temp: 75 },
+    { timestamp: '2026-08-14T05:00:00Z', temp: 82 },
+    { timestamp: '2026-08-14T06:00:00Z', temp: 77 },
+    { timestamp: '2026-08-14T07:00:00Z', temp: 85 }
+];
 
 export default function UploadVideo(){
     const navigate = useNavigate();
@@ -152,9 +181,12 @@ export default function UploadVideo(){
 
                 <div className='upload-video-historico-aulas'>
                     <p className='upload-video-historico-aulas-title'>Linha do tempo de atenção </p>
-                    <div className='upload-video-historico-aulas-content'>
-                        {/* Conteúdo do gráfico/histórico */}
-                    </div>
+                    <GenericLineChart 
+                        data={tempLogs} 
+                        xKey="timestamp" 
+                        yKey="temp"  
+                        formatXAxis={(val) => new Date(val).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    />
 
                     <button className='upload-video-salvar' onClick={handleGerarPDF}>
                         <div className='upload-video-salvar-row'>

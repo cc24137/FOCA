@@ -5,7 +5,7 @@ import uvicorn
 import shutil
 import os
 from huggingface_hub import hf_hub_download
-from niko_engine import NikoEngine, VideoRequest
+from foca_engine import FocaEngine, VideoRequest
 
 REPO_ID = "rafafazion/foca-yolov8-nano"
 FILENAME = "best.pt"
@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
             filename=FILENAME
         )
         print("Modelo encontrado.")
-        model["niko_engine"] = NikoEngine(model_path)
+        model["foca_engine"] = FocaEngine(model_path)
         print("Modelo carregado na memória.")
 
     except Exception as e:
@@ -81,7 +81,7 @@ async def process_video(file: UploadFile = File(...)):
 @app.post("/processar-video/")
 async def processar_video(file: UploadFile = File(...)):
 
-    if "niko_engine" not in model:
+    if "foca_engine" not in model:
         raise HTTPException(status_code=503, detail="Modelo não inicializado.")
 
     if not file.content_type.startswith("video/"):
@@ -96,7 +96,7 @@ async def processar_video(file: UploadFile = File(...)):
 
     try:
         req = VideoRequest(file_path)
-        return model["niko_engine"].processar_video(req)
+        return model["foca_engine"].processar_video(req)
     except:
         raise HTTPException(status_code=400, detail="O arquivo enviado não é um vídeo válido.")
     

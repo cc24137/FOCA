@@ -4,12 +4,12 @@ import cv2
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-from niko_engine import NikoEngine
+from foca_engine import FocaEngine
 
 app = FastAPI(title="API FOCA")
 
 # Inicializa a IA
-engine = NikoEngine()
+engine = FocaEngine()
 
 class VideoRequest(BaseModel):
     caminho_video: str
@@ -26,7 +26,7 @@ async def processar_video(requisicao: VideoRequest):
     cap = cv2.VideoCapture(requisicao.caminho_video)
     fps = cap.get(cv2.CAP_PROP_FPS)
 
-    if fps <= 0: 
+    if fps <= 0:
         fps = 30
 
     frames_para_pular = int(fps * requisicao.intervalo_segundos)

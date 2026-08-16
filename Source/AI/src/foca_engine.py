@@ -3,16 +3,16 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-import niko_config as cfg
+import foca_config as cfg
 
-class NikoEngine:
+class FocaEngine:
     def __init__(self):
-        print("[Niko Engine] A carregar modelo YOLOv8 ultraleve...")
+        print("[Foca Engine] A carregar modelo YOLOv8 ultraleve...")
         self.yolo = YOLO(cfg.YOLO_PATH)
 
         # Filtro CLAHE configurado globalmente
         self.clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(4, 4))
-        print("[Niko Engine] Motor inicializado. (Modo: Coleta de Métricas)")
+        print("[Foca Engine] Motor inicializado. (Modo: Coleta de Métricas)")
 
     def extrair_estado_boca(self, imagem_clahe):
         """

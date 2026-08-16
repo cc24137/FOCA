@@ -1,9 +1,9 @@
 import cv2
 import time
 import os
-from niko_engine import NikoEngine
+from foca_engine import FocaEngine
 
-engine = NikoEngine()
+engine = FocaEngine()
 
 def testar_imagem(caminho_imagem):
 
@@ -53,7 +53,7 @@ def testar_imagem(caminho_imagem):
     # --- Geração do Relatório em .txt ---
     with open(caminho_txt, "w", encoding="utf-8") as arquivo_txt:
         arquivo_txt.write("=========================================\n")
-        arquivo_txt.write(f"RELATÓRIO DE ANÁLISE - NIKO ENGINE\n")
+        arquivo_txt.write(f"RELATÓRIO DE ANÁLISE - FOCA ENGINE\n")
         arquivo_txt.write("=========================================\n")
         arquivo_txt.write(f"Imagem analisada: {caminho_imagem}\n")
         arquivo_txt.write(f"Tempo de processamento: {fim - inicio:.2f} segundos\n\n")

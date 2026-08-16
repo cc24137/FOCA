@@ -12,89 +12,109 @@ class FocaEngine:
 
         # Filtro CLAHE configurado globalmente
         self.clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(4, 4))
-        print("[Foca Engine] Motor inicializado. (Modo: Coleta de Métricas)")
+        print("[Foca Engine] Motor inicializado.")
 
     def extrair_estado_boca(self, imagem_clahe):
         """
-        Analisa os 35% inferiores do rosto.
-        Retorna um valor de 0.0 a 1.0 representando a proporção de área escura.
-        Valores altos indicam boca aberta (bocejo/conversa).
+        Analisa estritamente a região dos lábios utilizando limiar absoluto de escuridão.
+        Evita falsos positivos de Otsu em bocas fechadas.
         """
         try:
-            h = imagem_clahe.shape[0]
-            # Recorta a região do queixo/boca
-            regiao_boca = imagem_clahe[int(h * 0.65):, :]
+            h, w = imagem_clahe.shape[:2]
 
-            # Binariza a imagem
-            _, thresh = cv2.threshold(regiao_boca, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            # recorte da boca
+            # Y: de 62% a 82% (remove queixo, pescoço e nariz)
+            # X: de 25% a 75% (remove sombras de bochechas e fundo)
+            y1, y2 = int(h * 0.62), int(h * 0.82)
+            x1, x2 = int(w * 0.25), int(w * 0.75)
+            regiao_boca = imagem_clahe[y1:y2, x1:x2]
 
-            # Conta a área escura gerada pela cavidade da boca aberta
-            pixels_claros = cv2.countNonZero(thresh)
-            total_pixels = regiao_boca.shape[0] * regiao_boca.shape[1]
-            pixels_escuros = total_pixels - pixels_claros
+            if regiao_boca.size == 0:
+                return 0.0
 
-            razao = pixels_escuros / total_pixels if total_pixels > 0 else 0.0
-            return min(razao * 2, 1.0) # Multiplica por 2 para normalizar a escala visualmente
+            # limiar de escuridao
+            # apenas a cavidade interna da boca aberta atinge valores de cinza < 50
+            _, thresh = cv2.threshold(regiao_boca, 50, 255, cv2.THRESH_BINARY_INV)
+
+            # contagem d epixels
+            pixels_cavidade = cv2.countNonZero(thresh)
+            total_pixels = regiao_boca.size
+
+            razao = pixels_cavidade / total_pixels if total_pixels > 0 else 0.0
+
+            #normalizacao -> multiplica por 3.5 para mapear a abertura real na escala 0.0 a 1.0
+            return min(razao * 3.5, 1.0)
         except:
             return 0.0
 
     def calcular_indice_final(self, proporcao, boca, modo_coletivo=False):
         """
-        Calcula o índice final de atenção com base nas métricas.
-        Utiliza Lógica Gradual (Soft Thresholding) para avaliar a postura de forma humana.
+        Calcula o índice final de atenção com dupla rampa gradual:
+        - Dentro da zona atenta [0.65, 0.80]: varia de 1.0 (centro) até 0.8 (bordas).
+        - Fora da zona atenta: varia de 0.8 (limiar) até 0.0 (extremo).
         """
-        indice = 1.0 # Inicia com 100% de foco
+        indice = 1.0
 
-        
+        # centro exato da faixa de foco ideal
+        p_centro = (cfg.PROPORCAO_MIN_PERFIL + cfg.PROPORCAO_MAX_DEITADO) / 2.0
 
-        # 1. ANÁLISE DE POSTURA (Lógica Gradual)
+        # análise gradual de postura (proporção)
         if not modo_coletivo:
-            # CENÁRIO NORMAL: O foco é para a frente (0.60 a 1.15)
-            if proporcao < cfg.PROPORCAO_MIN_PERFIL:
-                # O aluno está virando o rosto. A nota cai de 1.0 a 0.0 conforme chega no EXTREMO_PERFIL.
+            if cfg.PROPORCAO_MIN_PERFIL <= proporcao <= cfg.PROPORCAO_MAX_DEITADO:
+                # dentro do limiar -> Variação de 1.0 (no centro) até 0.8 (nas bordas)
+                if proporcao <= p_centro:
+                    intervalo = p_centro - cfg.PROPORCAO_MIN_PERFIL
+                    distancia = p_centro - proporcao
+                    indice = 1.0 - 0.2 * (distancia / intervalo) if intervalo > 0 else 1.0
+                else:
+                    intervalo = cfg.PROPORCAO_MAX_DEITADO - p_centro
+                    distancia = proporcao - p_centro
+                    indice = 1.0 - 0.2 * (distancia / intervalo) if intervalo > 0 else 1.0
+
+            elif proporcao < cfg.PROPORCAO_MIN_PERFIL:
+                # fora do limiar (perfil) -> de 0.8 a 0.0
                 intervalo = cfg.PROPORCAO_MIN_PERFIL - cfg.EXTREMO_PERFIL
-                distancia = cfg.PROPORCAO_MIN_PERFIL - proporcao
-                indice = 1.0 - (distancia / intervalo)
-                
-            elif proporcao > cfg.PROPORCAO_MAX_DEITADO:
-                # O aluno está abaixando a cabeça. A nota cai de 1.0 a 0.0 conforme chega no EXTREMO_DEITADO.
+                distancia = proporcao - cfg.EXTREMO_PERFIL
+                indice = 0.8 * (distancia / intervalo) if intervalo > 0 else 0.0
+
+            else:  # proporcao > cfg.PROPORCAO_MAX_DEITADO
+                # fora do limiar (deitado) ->  0.8 a 0.0
                 intervalo = cfg.EXTREMO_DEITADO - cfg.PROPORCAO_MAX_DEITADO
-                distancia = proporcao - cfg.PROPORCAO_MAX_DEITADO
-                indice = 1.0 - (distancia / intervalo)
+                distancia = cfg.EXTREMO_DEITADO - proporcao
+                indice = 0.8 * (distancia / intervalo) if intervalo > 0 else 0.0
+
         else:
-            # CENÁRIO COLETIVO: O foco da turma foi para o lado (< 0.60)
-            if proporcao > cfg.PROPORCAO_MAX_DEITADO:
-                # O aluno já virou para frente e abaixou a cabeça. Distração total!
-                indice = 0.0 
-                
-            elif proporcao >= cfg.PROPORCAO_MIN_PERFIL:
-                # O aluno está virando para a frente em vez de olhar pro lado com a turma.
-                # A nota cai gradualmente de 1.0 (no 0.60) até 0.0 (no 1.15).
+            # cenário coletivo -> Foco da turma está para o lado
+            if proporcao < cfg.PROPORCAO_MIN_PERFIL:
+                indice = 1.0
+            elif proporcao > cfg.PROPORCAO_MAX_DEITADO:
+                indice = 0.0
+            else:
                 intervalo = cfg.PROPORCAO_MAX_DEITADO - cfg.PROPORCAO_MIN_PERFIL
                 distancia = proporcao - cfg.PROPORCAO_MIN_PERFIL
-                indice = 1.0 - (distancia / intervalo)
+                indice = 0.8 * (1.0 - (distancia / intervalo)) if intervalo > 0 else 0.0
 
-        # Proteção matemática para garantir que o índice não passe de 1.0 nem fique negativo
         indice = max(0.0, min(indice, 1.0))
 
-        # 2. ANÁLISE DA BOCA (Filtro Secundário)
+        # ánálise gradual da boca (Filtro Secundário)
         if cfg.USAR_METRICA_BOCA and boca > cfg.LIMITE_BOCA_ABERTA:
-            indice -= 0.5 # Perde 50% do foco atual
+            fator_abertura = (boca - cfg.LIMITE_BOCA_ABERTA) / (1.0 - cfg.LIMITE_BOCA_ABERTA + 1e-6)
+            penalidade_boca = min(fator_abertura, 1.0) * 0.5
+            indice -= penalidade_boca
 
-        # Trava novamente após a penalidade da boca
         indice = max(0.0, min(indice, 1.0))
 
-        # 3. DEFINIÇÃO DO STATUS E COR
+        # status e cor
         if indice >= cfg.LIMIAR_FOCADO_BAIXA:
             status = 'FOCADO'
-            cor = (0, 255, 0) # Verde
+            cor = (0, 255, 0)
         elif indice >= cfg.LIMIAR_PARCIAL_BAIXA:
             status = 'PARCIAL'
-            cor = (0, 255, 255) # Amarelo 
+            cor = (0, 255, 255)
         else:
             status = 'DISTRAIDO'
-            cor = (0, 0, 255) # Vermelho
-            
+            cor = (0, 0, 255)
+
         return indice, status, cor
 
     def processar_frame(self, img):
@@ -103,9 +123,7 @@ class FocaEngine:
         resultados_yolo = self.yolo(img, conf=cfg.YOLO_CONFIDENCE, verbose=False)
         detalhes_alunos = []
 
-        # =========================
-        # ETAPA 1: COLETA DE DADOS
-        # =========================
+        # dados do yolo
         for resultado in resultados_yolo:
             for caixa in resultado.boxes:
                 x1, y1, x2, y2 = map(int, caixa.xyxy[0])
@@ -120,16 +138,8 @@ class FocaEngine:
                 if recorte.size == 0:
                     continue
 
-                # Métrica 1: Proporção (Postura)
-                # Sempre calculada, pois só usa matemática básica das coordenadas
-                # Dicionario proporções:
-                    # validar depois com testes >_<
-                    # < 0.60 = Rosto de perfil (conversando para o lado)
-                    # 0.60 a 1.15 = Rosto normal (olhando para frente)
-                    # > 1.15 = Rosto achatado (deitado na mesa)
                 proporcao = largura / altura if altura > 0 else 1.0
 
-                # Métrica 2: Boca (Apenas para rostos minimamente visíveis)
                 if altura < cfg.ALTURA_MINIMA_ANALISE_BOCA:
                     boca = 0.0
                 else:
@@ -142,33 +152,26 @@ class FocaEngine:
                     'tipo': 'UNIFICADO',
                     'boca': round(boca, 2),
                     'proporcao': round(proporcao, 2)
-                    # Status, cor e índice serão preenchidos na etapa 3
                 })
 
-        # ==========================================
-        # ETAPA 2: LEITURA DA LINHA DE BASE DA TURMA
-        # ==========================================
+        # le linha de base da turma
         total = len(detalhes_alunos)
         modo_coletivo = False
 
-        if total > 0:
-            # Conta quantos alunos estão virados pro lado (perfil)
+        # não utiliza o modo coletivo para imagens com pouqíssimas pessoas
+        if total >= 3:
             alunos_virados = sum(1 for a in detalhes_alunos if a['proporcao'] < cfg.PROPORCAO_MIN_PERFIL)
             porcentagem_virados = alunos_virados / total
 
-            # Se 60% ou mais da turma virou o rosto, ativa o evento coletivo
             if porcentagem_virados >= 0.60:
                 modo_coletivo = True
 
-        # ==========================================
-        # ETAPA 3: JULGAMENTO FINAL
-        # ==========================================
+        # avaliação final
         focados = 0
         distraidos = 0
         soma_indices = 0.0
 
         for aluno in detalhes_alunos:
-            # Envia as métricas e avisa a função se a sala está em evento coletivo ou não
             indice, status, cor = self.calcular_indice_final(aluno['proporcao'], aluno['boca'], modo_coletivo)
 
             aluno['indice'] = round(indice, 2)
@@ -177,6 +180,7 @@ class FocaEngine:
 
             soma_indices += indice
             if status == 'FOCADO': focados += 1
+            if status == 'PARCIAL': distraidos += 0.5
             if status == 'DISTRAIDO': distraidos += 1
 
         media_turma = round(soma_indices / total, 2) if total > 0 else 0.0

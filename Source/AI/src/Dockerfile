@@ -21,7 +21,7 @@ COPY requirements.txt .
 
 # Instala PyTorch CPU explicitamente primeiro para otimizar o cache de camadas do Docker
 RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r foca_api_ia/requirements.txt
 
 # Copia o código da aplicação
 COPY . .
@@ -39,4 +39,4 @@ COPY --chown=user . $HOME/app
 EXPOSE 7860
 
 # Inicialização com a variável PORT dinâmica
-CMD uvicorn testes.apiDeVideo:app --host 0.0.0.0 --port ${PORT:-7860}
+CMD uvicorn foca_api_ia.apiDeVideo:app --host 0.0.0.0 --port ${PORT:-7860}

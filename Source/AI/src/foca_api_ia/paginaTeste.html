@@ -83,7 +83,7 @@
             status.innerText = "Enviando e processando vídeo...";
 
             try {
-                const response = await fetch("http://127.0.0.1:8000/processar-video/", {
+                const response = await fetch("https://foca-ai-api.onrender.com/processar-video/", {
                     method: "POST",
                     body: formData
                 });

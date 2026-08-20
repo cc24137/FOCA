@@ -6,7 +6,7 @@ import os
 
 import foca_config as cfg
 
-class VideoRequest():
+class VideoRequest:
     caminho_video: str
     intervalo_segundos: int = 5
 

@@ -4,6 +4,7 @@ import LogoIcon from "../../assets/seal.svg?react";
 import UserIcon from "../../assets/user.svg?react";
 import HomeIcon from "../../assets/home.svg?react";
 import InfoIcon from "../../assets/info.svg?react";
+import FocaLogoImg from "../../assets/foca_logo.png";
 
 export default function Header({ routes }) {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ export default function Header({ routes }) {
         <header className="header">
             <div className="header-elements">
                 <div className="header-left">
-                    <LogoIcon className="header-logo" />
+                    <img src={FocaLogoImg} alt="Logo Foca" className="header-logo" /> 
                     <h1 className="header-title">FOCA</h1>
                 </div>
 

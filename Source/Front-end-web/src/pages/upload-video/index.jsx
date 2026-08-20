@@ -39,10 +39,9 @@ const tempLogs = [
 ];
 
 export default function UploadVideo(){
-    const navigate = useNavigate();
     const location = useLocation();
 
-    const { idRelacao, nomeTurma, nomeDisciplina } = location.state || {};
+    const { idRelacao, nomeTurma, nomeDisciplina, instituicao, quantidadeAlunos } = location.state || {};
 
     const [classificacoes, setClassificacoes] = useState([]);
     const [classificacao, setClassificacao] = useState('');
@@ -50,9 +49,13 @@ export default function UploadVideo(){
     const [selectedDate, setSelectedDate] = useState(null);
     const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
-    // 3. Referência para o container de relatório do PDF
-    const reportRef = useRef(null);
+    const dd = selectedDate ? String(selectedDate.getDate()).padStart(2, '0') : '';
+    const mm = selectedDate ? String(selectedDate.getMonth() + 1).padStart(2, '0') : '';
+    const yyyy = selectedDate ? String(selectedDate.getFullYear()) : '';
+    const dataFormatada = selectedDate ? `${dd}/${mm}/${yyyy}` : 'Não informada';
 
+    const reportRef = useRef(null);
+    const user = JSON.parse(localStorage.getItem('@FOCA:user'));
     useEffect(() => {
         async function loadClassificacoes() {
             try {
@@ -73,15 +76,16 @@ export default function UploadVideo(){
         setSelectedDate(date);
     };
 
-    // 4. Nova função para gerar PDF direto da Referência sem alterar CSS da tela
     const handleGerarPDF = async () => {
         if (!reportRef.current) return;
 
         setIsGeneratingPdf(true);
+        const formattedDate = (dd && mm && yyyy) ? `-${dd}-${mm}-${yyyy}` : '';
+        const turmaSanitizada = (nomeTurma || 'turma').trim().toLowerCase().replace(/\s+/g, '-');
 
         const opcoes = {
-            margin:       0, // Margem zerada para aproveitar o padding do CSS do A4
-            filename:     `relatorio-aula-${nomeTurma || 'turma'}.pdf`,
+            margin:       0, 
+            filename:     `relatorio-${turmaSanitizada}${formattedDate}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true, logging: false },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -96,12 +100,6 @@ export default function UploadVideo(){
         }
     };
 
-    const dd = selectedDate ? String(selectedDate.getDate()).padStart(2, '0') : '';
-    const mm = selectedDate ? String(selectedDate.getMonth() + 1).padStart(2, '0') : '';
-    const yyyy = selectedDate ? String(selectedDate.getFullYear()) : '';
-    const dataFormatada = selectedDate ? `${dd}/${mm}/${yyyy}` : 'Não informada';
-
-    // Obtém o nome legível da classificação selecionada para mandar ao relatório
     const nomeClassificacaoSelecionada = classificacoes.find(
         item => item.idClassificacaoConteudo === classificacao
     )?.nomeClassificacaoConteudo || '';
@@ -224,6 +222,9 @@ export default function UploadVideo(){
                 classificacao={nomeClassificacaoSelecionada}
                 conteudo={conteudo}
                 data={tempLogs}
+                nomeInstituicao={instituicao}
+                quantidadeAlunos={quantidadeAlunos}
+                nomeProfessor={user?.nome || 'Não informado'}
             />
         </div>
     );

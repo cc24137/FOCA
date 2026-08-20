@@ -206,7 +206,7 @@ export default function InformacoesTurma() {
                         <p className='informacoes-turma-box-title'>
                             {loading && !turma.nome ? "A carregar..." : turma.nome}
                         </p>
-                        <button className='informacoes-turma-box-button' onClick={() => goTo('/upload-video', { idRelacao: id, nomeTurma: turma.nome, nomeDisciplina: turma.disciplina })}>
+                        <button className='informacoes-turma-box-button' onClick={() => goTo('/upload-video', { idRelacao: id, nomeTurma: turma.nome, nomeDisciplina: turma.disciplina, instituicao: turma.instituicao, quantidadeAlunos: turma.alunos})}>
                             <p className='informacoes-turma-box-button-text'>nova aula</p>
                         </button>
                     </div>

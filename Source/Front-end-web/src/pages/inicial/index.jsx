@@ -9,6 +9,7 @@ import BookmarkIcon from '../../assets/bookmark.svg?react';
 import CheckIcon from '../../assets/check.svg?react';
 import SealIcon from '../../assets/seal.svg?react';
 import LockIcon from '../../assets/lock.svg?react';
+import StudySeal from "../../assets/foca_estudos.png";
 
 export default function Inicial() {
     const navigate = useNavigate();
@@ -179,7 +180,7 @@ export default function Inicial() {
                         </div>
 
                         <div className='inicial-goals-left'>
-                            <SealIcon className='inicial-goals-left-icon' />
+                            <img src={StudySeal} alt="Estudo Foca" className='inicial-goals-left-icon'/>
                         </div>
                     </div>
                 </div>

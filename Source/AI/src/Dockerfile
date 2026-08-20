@@ -24,9 +24,14 @@ WORKDIR $HOME/app
 # Copiar o requirements.txt da pasta foca_api_ia antes do código para aproveitar o cache
 COPY --chown=user foca_api_ia/requirements.txt ./requirements.txt
 
-# Instala PyTorch CPU primeiro e depois o restante dos pacotes do requirements.txt
-RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --no-cache-dir -r requirements.txt
+# 1. Atualiza o pip, setuptools e wheel para garantir suporte a pacotes pré-compilados
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# 2. Usa --extra-index-url para buscar o PyTorch leve CPU mantendo o PyPI ativo para dependências
+RUN pip install --no-cache-dir torch torchvision --extra-index-url https://download.pytorch.org/whl/cpu
+
+# 3. Instala os demais pacotes do seu requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar todo o restante do código da aplicação com a permissão do usuário
 COPY --chown=user . .

@@ -4,6 +4,9 @@ FROM python:3.10-slim
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
+# Garante que o Python encontre os módulos tanto na raiz quanto dentro da pasta foca_api_ia
+ENV PYTHONPATH="${PYTHONPATH}:/home/user/app:/home/user/app/foca_api_ia"
+
 # Instala dependências do sistema necessárias para o OpenCV
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 \

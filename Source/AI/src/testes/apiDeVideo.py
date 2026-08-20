@@ -5,7 +5,7 @@ import uvicorn
 import shutil
 import os
 from huggingface_hub import hf_hub_download
-from foca_engine import FocaEngine, VideoRequest
+from niko_engine import NikoEngine, VideoRequest
 
 REPO_ID = "rafafazion/foca-yolov8-nano"
 FILENAME = "best.pt"
@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
             filename=FILENAME
         )
         print("Modelo encontrado.")
-        model["foca_engine"] = FocaEngine(model_path)
+        model["foca_engine"] = NikoEngine(model_path)
         print("Modelo carregado na memória.")
 
     except Exception as e:
@@ -51,31 +51,6 @@ app.add_middleware(
 UPLOAD_DIR = "uploaded_videos"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-@app.post("/process-video/")
-async def process_video(file: UploadFile = File(...)):
-    
-    if not file.content_type.startswith("video/"):
-        raise HTTPException(status_code=400, detail="O arquivo enviado não é um vídeo válido.")
-
-    file_path = os.path.join(UPLOAD_DIR, file.filename)
-
-    # 2. Salva o arquivo no disco local em pedaços (streaming)
-    try:
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-    finally:
-        file.file.close()  # Garante o fechamento do arquivo original
-
-    # 3. AQUI entra a integração com seu modelo de Visao Computacional!
-    # Exemplo: resultado = meu_modelo_ia.predict(file_path)
-    
-    return {
-        "filename": file.filename,
-        "status": "Vídeo recebido com sucesso",
-        "saved_path": file_path,
-        # "predictions": resultado
-    }
-
 
 
 @app.post("/processar-video/")
@@ -85,6 +60,7 @@ async def processar_video(file: UploadFile = File(...)):
         raise HTTPException(status_code=503, detail="Modelo não inicializado.")
 
     if not file.content_type.startswith("video/"):
+        print("2")
         raise HTTPException(status_code=400, detail="O arquivo enviado não é um vídeo válido.")
 
     file_path = os.path.join(UPLOAD_DIR, file.filename)

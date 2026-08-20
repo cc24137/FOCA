@@ -5,7 +5,7 @@ import uvicorn
 import shutil
 import os
 from huggingface_hub import hf_hub_download
-from niko_engine import NikoEngine, VideoRequest
+from foca_engine import FocaEngine, VideoRequest
 
 REPO_ID = "rafafazion/foca-yolov8-nano"
 FILENAME = "best.pt"
@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
             filename=FILENAME
         )
         print("Modelo encontrado.")
-        model["foca_engine"] = NikoEngine(model_path)
+        model["foca_engine"] = FocaEngine(model_path)
         print("Modelo carregado na memória.")
 
     except Exception as e:

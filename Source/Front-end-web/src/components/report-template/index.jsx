@@ -1,7 +1,7 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import './report-template.css';
-import IconFoca from '../../assets/seal.svg?react';
+import SealIconImg from "../../assets/foca_logo.png";
 
 function SparklesIcon(props) {
   return (
@@ -40,7 +40,7 @@ export default function ReportTemplate({
         {/* Cabeçalho */}
         <header className="report-header-top">
           <div className="report-logo">
-            <IconFoca className="report-icon" />
+            <img src={SealIconImg} alt="FOCA" className="report-icon"/>
             <strong>FOCA</strong>
           </div>
           <div className="report-institution">

@@ -20,6 +20,7 @@ export default function Estatisticas() {
     const [itemsParaComparar, setItemsParaComparar] = useState([]);
     
     const [matriz, setMatriz] = useState([]);
+    const [rawVinculos, setRawVinculos] = useState([]); // Guardar retorno bruto para depuração
     const [loadingDados, setLoadingDados] = useState(true);
 
     const [dadosComparativos, setDadosComparativos] = useState([]);
@@ -36,45 +37,57 @@ export default function Estatisticas() {
     const cfg = config[option];
 
     useEffect(() => {
-    async function carregarEstatisticas() {
-        setLoadingDados(true);
-        try {
-            // 1. Obtém vínculos gerais da instituição
-            const resVinculos = await api.get('/turma/infosPorInstituicao');
-            const vinculos = resVinculos.data || [];
+        async function carregarEstatisticas() {
+            setLoadingDados(true);
+            try {
+                const resVinculos = await api.get('/turmas/infosPorInstituicao');
+                const vinculos = Array.isArray(resVinculos.data) ? resVinculos.data : (resVinculos.data ? [resVinculos.data] : []);
+                setRawVinculos(vinculos);
 
-            // 2. Busca as aulas para cada vínculo de professor, turma e disciplina
-            const promessasAulas = vinculos.map(async (vinculo) => {
-                try {
-                    const linkId = vinculo.idLink || vinculo.id;
-                    const resAulas = await api.get(`/aula/${linkId}`);
-                    const aulas = Array.isArray(resAulas.data) ? resAulas.data : [resAulas.data];
-
-                    return aulas.map(aula => ({
-                        id: aula.id,
-                        professor: vinculo.nomeProfessor || "Professor não informado",
-                        turma: vinculo.nomeTurma || "Turma não informada",
-                        disciplina: vinculo.nomeDisciplina || "Disciplina não informada",
-                        aulaId: aula.id
-                    }));
-                } catch {
-                    return [];
+                if (vinculos.length === 0) {
+                    setMatriz([]);
+                    return;
                 }
-            });
 
-            const resultadosAulas = await Promise.all(promessasAulas);
-            setMatriz(resultadosAulas.flat());
-        } catch (error) {
-            console.error("Erro ao carregar matriz de estatísticas:", error);
-        } finally {
-            setLoadingDados(false);
+                const promessasAulas = vinculos.map(async (vinculo) => {
+                    try {
+                        const linkId = vinculo.idLink || vinculo.id_turma_disciplina_professor || vinculo.id_relacao || vinculo.id;
+
+                        if (!linkId) return [];
+
+                        const resAulas = await api.get(`/aula/${linkId}`);
+                        const aulas = Array.isArray(resAulas.data) ? resAulas.data : (resAulas.data ? [resAulas.data] : []);
+
+                        return aulas.map(aula => ({
+                            id: aula.id,
+                            professor: vinculo.professor || "Sem Nome",
+                            turma: vinculo.nome || "Sem Turma",
+                            disciplina:vinculo.disciplina || "Sem Disciplina",
+                            aulaId: aula.id,
+                            linkIdOriginal: linkId
+                        }));
+                    } catch (err) {
+                        return [];
+                    }
+                });
+
+                const resultadosAulas = await Promise.all(promessasAulas);
+                setMatriz(resultadosAulas.flat());
+
+            } catch (error) {
+                console.error("Erro ao carregar matriz de estatísticas:", error);
+            } finally {
+                setLoadingDados(false);
+            }
         }
-    }
 
-    carregarEstatisticas();
-}, []);
+        carregarEstatisticas();
+    }, []);
 
-    const getUniqueByField = (field) => [...new Set(matriz.map(r => r[field]))];
+    const getUniqueByField = (field) => {
+        if (!matriz || matriz.length === 0) return [];
+        return [...new Set(matriz.map(r => r[field]))].filter(Boolean);
+    };
 
     const handleOptionChange = (v) => {
         setOption(v);
@@ -113,7 +126,7 @@ export default function Estatisticas() {
             rows = rows.filter(r => selectedB.includes(r[cfg.filterBField]));
         }
 
-        return [...new Set(rows.map(r => r[cfg.mainField]))];
+        return [...new Set(rows.map(r => r[cfg.mainField]))].filter(Boolean);
     };
 
     const listagem = getListagem();
@@ -135,8 +148,8 @@ export default function Estatisticas() {
                     
                     const promessasLogs = aulasDoItem.map(item => 
                         api.get(`/leituraAtencao/${item.aulaId}`)
-                        .then(res => res.data)
-                        .catch(() => [])
+                           .then(res => res.data)
+                           .catch(() => [])
                     );
 
                     const resultados = await Promise.all(promessasLogs);
@@ -172,7 +185,6 @@ export default function Estatisticas() {
         }
     };
 
-    // Geração de PDF via html2pdf.js
     const handleExportarPDF = () => {
         if (!reportRef.current) return;
         setIsExporting(true);
@@ -330,6 +342,7 @@ export default function Estatisticas() {
                         )}
                     </div>
                 </div>
+
             </div>
         </div>
     );

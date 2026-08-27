@@ -3,10 +3,10 @@ const LeituraAtencaoCRUD = require('../db/leituraAtencaoCRUD');
 class LeituraAtencaoController {
 
   create = async (req, res) => {
-    const LeituraAtencaoCRUD = new LeituraAtencaoCRUD();
+    const leituraAtencaoCRUD = new LeituraAtencaoCRUD();
     const { classId, totalAttentionAverage, processingDate } = req.body;
 
-    await LeituraAtencaoCRUD.create(classId, totalAttentionAverage, processingDate)
+    await leituraAtencaoCRUD.create(classId, totalAttentionAverage, processingDate)
       .then((id) => {
         res.status(201).json({ id });
       })
@@ -17,10 +17,10 @@ class LeituraAtencaoController {
   }
 
   getByIdAula = async (req, res) => {
-    const LeituraAtencaoCRUD = new LeituraAtencaoCRUD();
+    const leituraAtencaoCRUD = new LeituraAtencaoCRUD();
     const { aulaId } = req.params;
 
-    await LeituraAtencaoCRUD.getByIdAula(aulaId)
+    await leituraAtencaoCRUD.getByIdAula(aulaId)
       .then((leituraAtencao) => {
         res.status(200).json(leituraAtencao);
       })
@@ -31,10 +31,10 @@ class LeituraAtencaoController {
   }
 
     getByIdAulaESegundoVideo = async (req, res) => {
-        const LeituraAtencaoCRUD = new LeituraAtencaoCRUD();
+        const leituraAtencaoCRUD = new LeituraAtencaoCRUD();
         const { aulaId, segundoVideo } = req.params;
 
-        await LeituraAtencaoCRUD.getByIdAulaESegundoVideo(aulaId, segundoVideo)
+        await leituraAtencaoCRUD.getByIdAulaESegundoVideo(aulaId, segundoVideo)
             .then((leituraAtencao) => {
                 res.status(200).json(leituraAtencao);
             })

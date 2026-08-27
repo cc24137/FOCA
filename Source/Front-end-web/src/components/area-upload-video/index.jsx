@@ -99,7 +99,7 @@ export default function AreaUploadVideo({ selectedFiles = [], setSelectedFiles }
             <input
                 type="file"
                 accept="video/*,.mp4,.mov,.avi,.mkv"
-                multiple={true}
+                multiple={false}
                 ref={inputRef}
                 onChange={handleChange}
                 style={{ display: "none" }}

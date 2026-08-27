@@ -8,35 +8,14 @@ import api from "../../services/api";
 import "./informacoes-turma.css";
 
 const PALETA_CORES = [
-  '#4F46E5', // Roxo / Indigo
-  '#10B981', // Verde
-  '#F59E0B', // Amarelo / Laranja
-  '#EF4444', // Vermelho
-  '#8B5CF6', // Roxo Claro
-  '#06B6D4', // Ciano
-  '#EC4899', // Rosa
+  '#4F46E5', 
+  '#10B981', 
+  '#F59E0B', 
+  '#EF4444', 
+  '#8B5CF6', 
+  '#06B6D4', 
+  '#EC4899', 
 ];
-
-// Helper temporário para MOCKAR medições de atenção dinâmicas com tempos variados
-function gerarLogsAtencaoMock(indexAula) {
-  const duracoesPossiveis = [30, 45, 60, 25]; // Durações em segundos diferentes
-  const duracao = duracoesPossiveis[indexAula % duracoesPossiveis.length];
-  const pontos = [];
-
-  for (let seg = 0; seg <= duracao; seg += 5) {
-    // Oscilação matemática para simular curvas de atenção reais
-    const atencaoBase = 50 + (indexAula * 8);
-    const oscilacao = Math.sin(seg + indexAula) * 20;
-    const valorAtencao = Math.min(100, Math.max(15, Math.round(atencaoBase + oscilacao)));
-
-    pontos.push({
-      segundos: seg,
-      temp: valorAtencao
-    });
-  }
-
-  return pontos;
-}
 
 function CheckIcon(props) {
   return (
@@ -130,8 +109,7 @@ export default function InformacoesTurma() {
         setAulasSelecionadas(prev => prev.filter(a => a.value !== aulaParaRemover.value));
     };
 
-    // Botão de Comparar
-    const handleComparar = () => {
+    const handleComparar = async () => {
         if (aulasSelecionadas.length === 0) {
             setDadosComparativos([]);
             setConfiguracaoLinhas([]);
@@ -139,36 +117,57 @@ export default function InformacoesTurma() {
             return;
         }
 
-        // 1. Filtra as aulas selecionadas
-        const aulasFiltradas = aulas.filter(aula =>
-            aulasSelecionadas.some(sel => sel.value === aula.id.toString())
-        );
+        try {
+            setLoading(true);
 
-        // 2. Prepara e MOCKA os dados das aulas para exibição
-        const listaParaUnificar = aulasFiltradas.map((aula) => {
-            const indexOriginal = aulas.findIndex(a => a.id === aula.id);
-            
-            return {
-                id: `aula_${aula.id}`,
-                label: `Aula ${indexOriginal + 1} (${new Date(aula.data).toLocaleDateString('pt-PT')})`,
-                // MOCK: Caso aula.logs não exista na API, gera logs fictícios com curva única
-                data: aula.logs || aula.historico || gerarLogsAtencaoMock(indexOriginal)
-            };
-        });
+            // 1. Filtra as aulas que o usuário escolheu no combobox
+            const aulasFiltradas = aulas.filter(aula =>
+                aulasSelecionadas.some(sel => sel.value === aula.id.toString())
+            );
 
-        // 3. Define linhas e cores do gráfico
-        const linhasConfig = listaParaUnificar.map((item, index) => ({
-            key: item.id,
-            label: item.label,
-            color: PALETA_CORES[index % PALETA_CORES.length]
-        }));
+            // 2. Busca os dados de atenção no backend para todas as aulas em paralelo
+            const listaParaUnificar = await Promise.all(
+                aulasFiltradas.map(async (aula) => {
+                    const indexOriginal = aulas.findIndex(a => a.id === aula.id);
+                    alert(`ID da aula: ${aula.id}`);
+                    // Chama a rota do backend (ajuste a URL '/leituraAtencao' se o nome no seu controller for diferente)
+                    const res = await api.get(`/leituraAtencao/${aula.id}`);
+                    const logsDoBanco = res.data;
 
-        // 4. Executa a função do utils
-        const dadosUnificados = unificarLinhasDoTempo(listaParaUnificar);
+                    // Mapeia o retorno do banco para o formato { segundos, temp } esperado pelo helper
+                    const dataFormatada = logsDoBanco.map(log => ({
+                        segundos: log.segundoVideo,
+                        // Caso o índice no banco seja de 0.0 a 1.0 e você queira porcentagem (0 a 100), multiplique por 100:
+                        temp: log.indiceAtencao <= 1 ? log.indiceAtencao * 100 : log.indiceAtencao 
+                    }));
 
-        setDadosComparativos(dadosUnificados);
-        setConfiguracaoLinhas(linhasConfig);
-        setJaComparou(true);
+                    return {
+                        id: `aula_${aula.id}`,
+                        label: `Aula ${indexOriginal + 1} (${new Date(aula.data).toLocaleDateString('pt-PT')})`,
+                        data: dataFormatada
+                    };
+                })
+            );
+
+            // 3. Define a configuração de cores e rótulos
+            const linhasConfig = listaParaUnificar.map((item, index) => ({
+                key: item.id,
+                label: item.label,
+                color: PALETA_CORES[index % PALETA_CORES.length]
+            }));
+
+            // 4. Executa a unificação das linhas do tempo
+            const dadosUnificados = unificarLinhasDoTempo(listaParaUnificar);
+
+            setDadosComparativos(dadosUnificados);
+            setConfiguracaoLinhas(linhasConfig);
+            setJaComparou(true);
+
+        } catch (error) {
+            console.error("Erro ao buscar dados de atenção das aulas:", error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     if (!isAuthorized) {

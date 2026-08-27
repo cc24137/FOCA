@@ -1,5 +1,6 @@
 import './footer.css'
 import GithubIcon from "../../assets/github.svg?react";
+import InstagramIcon from "../../assets/instagram.svg?react";
 
 export default function Footer(){
     return(
@@ -25,11 +26,16 @@ export default function Footer(){
 
                 <div className='footer-more-about'>
                     <p className='footer-title'>Mais do projeto</p>
+
                     <div className='more-about-row'>
                         <GithubIcon className='github-icon'/>
-                        <a className='more-about-text' href="https://github.com/cc24137/FOCA">Github</a>
+                        <a className='more-about-text' href="https://github.com/cc24137/FOCA" target="_blank" rel="noreferrer">Github</a>
                     </div>
-                    
+
+                    <div className='more-about-row'>
+                        <InstagramIcon className='github-icon'/>
+                        <a className='more-about-text' href="https://instagram.com/projetofocactc" target="_blank" rel="noreferrer">Instagram</a>
+                    </div>
                 </div>
             </div>
 

@@ -87,7 +87,6 @@
 .github-icon {
     width: 24px;
     height: 24px;
-    fill: var(--black);
 }
 
 .more-about-text {
@@ -95,6 +94,16 @@
     color: var(--black);
     text-decoration: none;
     transition: color 0.2s ease;
+}
+
+.footer-more-about {
+    width: 25%;
+    min-width: 200px;
+    padding-left: clamp(10px, 2vw, 20px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .more-about-text:hover {

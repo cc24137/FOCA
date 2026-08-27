@@ -23,7 +23,7 @@ class LeituraAtencaoCRUD {
           const pool = await db.getConnection();
           const result = await pool.request()
             .input("idAula", sql.Int, idAula)
-              .query(`SELECT l.id_aula AS idAulal.segundo_video AS segundoVideo, l.indice_atencao AS indiceAtencao 
+              .query(`SELECT l.id_aula AS idAula, l.segundo_video AS segundoVideo, l.indice_atencao AS indiceAtencao 
                   FROM FOCA.Leitura_Atencao l
                   WHERE id_aula = @idAula`);
           return result.recordset;
@@ -36,7 +36,7 @@ class LeituraAtencaoCRUD {
           const result = await pool.request()
               .input("idAula", sql.Int, idAula)
               .input("segundoVideo", sql.Int, segundoVideo)
-              .query(`SELECT l.id_aula AS idAulal.segundo_video AS segundoVideo, l.indice_atencao AS indiceAtencao 
+              .query(`SELECT l.id_aula AS idAula, l.segundo_video AS segundoVideo, l.indice_atencao AS indiceAtencao 
                   FROM FOCA.Leitura_Atencao l
                   WHERE id_aula = @idAula AND segundo_video = @segundoVideo`);
           return result.recordset;

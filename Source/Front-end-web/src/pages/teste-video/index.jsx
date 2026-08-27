@@ -35,7 +35,8 @@ import './teste-video.css';
 import { useState } from 'react';
 import IconTexto from '../../assets/file-text.svg?react';
 
-export default function TesteVideo(){
+export default function TesteVideo() {
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     return (
         <div className='teste-video-body'>
@@ -44,7 +45,12 @@ export default function TesteVideo(){
             <div className='teste-video-content'>
                 <div className='area-upload'>
                     <p className='teste-video-upload-aulas-title'>Faça o upload da gravação da aula</p>
-                    <AreaUploadVideo />
+                    
+                    {/* Props enviadas para o componente funcionar corretamente */}
+                    <AreaUploadVideo 
+                        selectedFiles={selectedFiles} 
+                        setSelectedFiles={setSelectedFiles} 
+                    />
 
                     <button className='teste-video-processar'> 
                         <div className='teste-video-processar-row'>
@@ -68,5 +74,5 @@ export default function TesteVideo(){
                 </div>
             </div>
         </div>
-    )
+    );
 }

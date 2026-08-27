@@ -49,6 +49,9 @@ export default function UploadVideo(){
     const [selectedDate, setSelectedDate] = useState(null);
     const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
+    // Estado para armazenar os arquivos de vídeo selecionados
+    const [selectedFiles, setSelectedFiles] = useState([]);
+
     const dd = selectedDate ? String(selectedDate.getDate()).padStart(2, '0') : '';
     const mm = selectedDate ? String(selectedDate.getMonth() + 1).padStart(2, '0') : '';
     const yyyy = selectedDate ? String(selectedDate.getFullYear()) : '';
@@ -56,6 +59,7 @@ export default function UploadVideo(){
 
     const reportRef = useRef(null);
     const user = JSON.parse(localStorage.getItem('@FOCA:user'));
+
     useEffect(() => {
         async function loadClassificacoes() {
             try {
@@ -181,7 +185,11 @@ export default function UploadVideo(){
                 </div>
                 <div className='area-upload'>
                     <p className='upload-video-upload-aulas-title'>Faça o upload da gravação da aula</p>
-                    <AreaUploadVideo />
+                    
+                    <AreaUploadVideo 
+                        selectedFiles={selectedFiles} 
+                        setSelectedFiles={setSelectedFiles} 
+                    />
 
                     <button className='upload-video-processar'>
                         <div className='upload-video-processar-row'>

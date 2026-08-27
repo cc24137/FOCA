@@ -2,86 +2,103 @@ import "./area-upload-video.css";
 import { useRef, useState } from "react";
 
 export default function AreaUploadVideo({ selectedFiles = [], setSelectedFiles }) {
-
     const inputRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
 
     function handleFiles(files) {
-        const validVideos = Array.from(files).filter(file =>
-            file.type.startsWith("video/")
-        );
+        if (!files || files.length === 0) return;
+
+        // Filtra vídeos verificando a propriedade file.type OU a extensão no nome do arquivo
+        const validVideos = Array.from(files).filter(file => {
+            const isVideoType = file.type && file.type.startsWith("video/");
+            const isVideoExtension = /\.(mp4|mov|avi|mkv|webm|m4v)$/i.test(file.name);
+            return isVideoType || isVideoExtension;
+        });
 
         if (validVideos.length === 0) {
-            alert("Only video files are allowed.");
+            alert("Apenas arquivos de vídeo são permitidos.");
             return;
         }
 
-        setSelectedFiles(prevFiles => [...prevFiles, ...validVideos]);
+        if (typeof setSelectedFiles === "function") {
+            setSelectedFiles(prevFiles => [...prevFiles, ...validVideos]);
+        } else {
+            console.error("A propriedade 'setSelectedFiles' não foi enviada para o AreaUploadVideo.");
+        }
     }
 
     function handleDrop(e) {
         e.preventDefault();
+        e.stopPropagation();
         setIsDragging(false);
 
-        const files = e.dataTransfer.files;
-        handleFiles(files);
+        if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            handleFiles(e.dataTransfer.files);
+        }
     }
 
     function handleDragOver(e) {
         e.preventDefault();
+        e.stopPropagation();
         setIsDragging(true);
     }
 
-    function removeFile(indexToRemove) {
-        setSelectedFiles(prevFiles =>
-            prevFiles.filter((_, index) => index !== indexToRemove)
-        );
-    }
-
     function handleDragLeave(e) {
-       e.preventDefault();
+        e.preventDefault();
+        e.stopPropagation();
         setIsDragging(false);
     }
 
     function handleChange(e) {
-        handleFiles(e.target.files);
-        e.target.value = ""; // Reset the input to allow selecting the same file again if needed
+        if (e.target.files) {
+            handleFiles(e.target.files);
+            e.target.value = ""; // Limpa para permitir selecionar o mesmo arquivo novamente
+        }
     }
 
-    return(
+    function removeFile(indexToRemove) {
+        if (typeof setSelectedFiles === "function") {
+            setSelectedFiles(prevFiles =>
+                prevFiles.filter((_, index) => index !== indexToRemove)
+            );
+        }
+    }
+
+    return (
         <div>
             <div
-                onClick={() => inputRef.current.click()}
+                onClick={() => inputRef.current?.click()}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 className={`dropzone ${isDragging ? "dragging" : ""}`}
             >
                 {selectedFiles.length > 0 ? (
-                <ul>
-                    {selectedFiles.map((file, index) => (
-                    <li key={index}>
-                        <span>{file.name}</span>
-                        <button
-                            className="remove-btn"
-                            onClick={(e) => {
-                                e.stopPropagation(); // evita abrir o input
-                                removeFile(index);
-                            }}
-                        >
-                            ×
-                        </button>
-                    </li>
-                    ))}
-                </ul>
+                    <ul onClick={(e) => e.stopPropagation()}>
+                        {selectedFiles.map((file, index) => (
+                            <li key={index} className="file-item">
+                                <span>{file.name}</span>
+                                <button
+                                    type="button"
+                                    className="remove-btn"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeFile(index);
+                                    }}
+                                >
+                                    ×
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
                 ) : (
-                <p>Arraste um vídeo aqui ou clique para selecionar</p>
+                    <p>Arraste um vídeo aqui ou clique para selecionar</p>
                 )}
-            </div> 
+            </div>
 
             <input
                 type="file"
-                accept="video/*"
+                accept="video/*,.mp4,.mov,.avi,.mkv"
                 multiple={true}
                 ref={inputRef}
                 onChange={handleChange}

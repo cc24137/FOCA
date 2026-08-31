@@ -51,7 +51,27 @@ class ProfessorCRUD {
     }
   }
 
-  async findProfessorByEmail(email){
+    async getAttentionAverageByProfessor(id_professor) {
+        try {
+            const pool = await db.getConnection();
+            const result = await pool.request()
+                .input("id", sql.Int, id_professor)
+                .query(`
+                    SELECT AVG(A.MEDIA_ATENCAO_TOTAL) AS average
+                    FROM FOCA.AULA A
+                    WHERE A.id_turma_disciplina_professor IN (
+                        SELECT TDP.id
+                        FROM FOCA.TURMA_DISCIPLINA_PROFESSOR TDP
+                        WHERE TDP.id_professor = @id
+                    )
+                `);
+            return result.recordset[0].average;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async findProfessorByEmail(email) {
     try{
       const pool = await db.getConnection();
       const result = await pool.request()

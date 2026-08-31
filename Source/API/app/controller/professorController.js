@@ -51,7 +51,21 @@ class ProfessorController{
       });
   }
 
-  update = async (req, res) => {
+    getAttentionAverageByProfessor = async (req, res) => {
+    const professorCRUD = new ProfessorCRUD();
+    const { id } = req.user;
+
+    await professorCRUD.getAttentionAverageByProfessor(id)
+      .then((average) => {
+        res.status(200).json({ average });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
+      });
+  }
+
+    update = async (req, res) => {
     const professorCRUD = new ProfessorCRUD();
     const { name, password } = req.body;
     const id = req.user.id;

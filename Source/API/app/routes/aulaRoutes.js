@@ -6,6 +6,7 @@ const verifyToken = require('../middleware/authMiddleware');
 
 router.get("/classificacao-conteudo", verifyToken, aulaController.getAllClassificacaoConteudo);
 router.get("/:linkId", verifyToken, aulaController.getByLinkId);
+router.get("/porInstituicao", verifyToken, aulaController.getByInstituicao);
 
 router.post("/criar", verifyToken, aulaController.create);
 

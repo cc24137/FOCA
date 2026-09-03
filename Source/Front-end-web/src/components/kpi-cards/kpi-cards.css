@@ -1,0 +1,58 @@
+.kpi-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.kpi-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.kpi-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.kpi-value-row {
+    margin: 12px 0 6px 0;
+}
+
+.kpi-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.1;
+}
+
+.kpi-value.highlight {
+    color: #10B981;
+    font-size: 1.4rem;
+}
+
+.kpi-subtitle {
+    font-size: 0.8rem;
+    color: #9CA3AF;
+}
+
+/* Borda de destaque para o card positivo */
+.kpi-card.positive {
+    border-left: 4px solid #10B981;
+}

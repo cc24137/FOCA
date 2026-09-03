@@ -63,6 +63,28 @@ class AulaCRUD {
         }
         catch (error) { throw error; }
     }
+
+    async getByInstituicao(instituicaoId) {
+        try {
+            const pool = await db.getConnection();
+            const result = await pool.request()
+                .input("instituicaoId", sql.Int, instituicaoId)
+                .query(`SELECT 
+                    a.*, 
+                    c.nome AS nome_classificacao 
+                    FROM FOCA.AULA a
+                    LEFT JOIN FOCA.Classificacao_Conteudo c 
+                        ON a.id_classificacao_conteudo = c.id
+                    WHERE a.id_turma_disciplina_professor IN (
+                        SELECT tdp.id 
+                        FROM FOCA.Turma_Disciplina_Professor tdp
+                        INNER JOIN FOCA.Turma t ON tdp.id_turma = t.id
+                        WHERE t.id_instituicao = @instituicaoId
+                    )`);
+            return result.recordset;
+        }
+        catch (error) { throw error; }
+    }
 }
 
 module.exports = AulaCRUD;

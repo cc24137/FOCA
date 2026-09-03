@@ -20,7 +20,6 @@ export default function Estatisticas() {
     const [itemsParaComparar, setItemsParaComparar] = useState([]);
     
     const [matriz, setMatriz] = useState([]);
-    const [rawVinculos, setRawVinculos] = useState([]); // Guardar retorno bruto para depuração
     const [loadingDados, setLoadingDados] = useState(true);
 
     const [dadosComparativos, setDadosComparativos] = useState([]);
@@ -37,56 +36,66 @@ export default function Estatisticas() {
     const cfg = config[option];
 
     useEffect(() => {
+        let isMounted = true;
+
         async function carregarEstatisticas() {
             setLoadingDados(true);
+            setMatriz([]);
+
             try {
                 const resVinculos = await api.get('/turmas/infosPorInstituicao');
-                const vinculos = Array.isArray(resVinculos.data) ? resVinculos.data : (resVinculos.data ? [resVinculos.data] : []);
-                setRawVinculos(vinculos);
+                const vinculos = Array.isArray(resVinculos.data) ? resVinculos.data : [];
 
                 if (vinculos.length === 0) {
-                    setMatriz([]);
+                    if (isMounted) setMatriz([]);
                     return;
                 }
 
                 const promessasAulas = vinculos.map(async (vinculo) => {
+                    const linkId = vinculo.id;
+
                     try {
-                        const linkId = vinculo.idLink || vinculo.id_turma_disciplina_professor || vinculo.id_relacao || vinculo.id;
-
-                        if (!linkId) return [];
-
                         const resAulas = await api.get(`/aula/${linkId}`);
-                        const aulas = Array.isArray(resAulas.data) ? resAulas.data : (resAulas.data ? [resAulas.data] : []);
+                        const aulas = Array.isArray(resAulas.data) ? resAulas.data : [];
+
+                        // Formata os nomes de professor/disciplina caso venham como objeto ou string
+                        const profNome = typeof vinculo.professor === 'object' ? vinculo.professor?.nome : vinculo.professor;
+                        const discNome = typeof vinculo.disciplina === 'object' ? vinculo.disciplina?.nome : vinculo.disciplina;
 
                         return aulas.map(aula => ({
-                            id: aula.id,
-                            professor: vinculo.professor || "Sem Nome",
+                            id: aula.id || aula.id_aula,
+                            professor: profNome || "Sem Nome",
                             turma: vinculo.nome || "Sem Turma",
-                            disciplina:vinculo.disciplina || "Sem Disciplina",
-                            aulaId: aula.id,
+                            disciplina: discNome || "Sem Disciplina",
+                            aulaId: aula.id || aula.id_aula,
                             linkIdOriginal: linkId
-                        }));
+                        })).filter(a => a.id);
                     } catch (err) {
+                        console.error(`Erro ao buscar aulas da turma ${linkId}:`, err.message);
                         return [];
                     }
                 });
 
                 const resultadosAulas = await Promise.all(promessasAulas);
-                setMatriz(resultadosAulas.flat());
+                const matrizFinal = resultadosAulas.flat();
+                
+                if (isMounted) setMatriz(matrizFinal);
 
             } catch (error) {
-                console.error("Erro ao carregar matriz de estatísticas:", error);
+                console.error("Erro ao carregar estatísticas:", error);
+                if (isMounted) setMatriz([]);
             } finally {
-                setLoadingDados(false);
+                if (isMounted) setLoadingDados(false);
             }
         }
 
         carregarEstatisticas();
+        return () => { isMounted = false; };
     }, []);
 
     const getUniqueByField = (field) => {
         if (!matriz || matriz.length === 0) return [];
-        return [...new Set(matriz.map(r => r[field]))].filter(Boolean);
+        return [...new Set(matriz.map(r => r[field]).filter(Boolean))];
     };
 
     const handleOptionChange = (v) => {
@@ -95,6 +104,7 @@ export default function Estatisticas() {
         setSelectedB([]);
         setItemsParaComparar([]);
         setDadosComparativos([]);
+        setConfiguracaoLinhas([]);
     };
 
     const handleSelectFilter = (v, selected, setSelected) => {
@@ -102,7 +112,10 @@ export default function Estatisticas() {
         if (v === "Todas") {
             setSelected(["Todas"]);
         } else {
-            setSelected(prev => [...prev.filter(i => i !== "Todas"), v]);
+            setSelected(prev => {
+                if (prev.includes(v)) return prev;
+                return [...prev.filter(i => i !== "Todas"), v];
+            });
         }
     };
 
@@ -112,17 +125,21 @@ export default function Estatisticas() {
 
     const getAvailableOptions = (field, selected) => {
         const all = getUniqueByField(field);
-        return ["Todas", ...all.filter(i => !selected.includes(i))];
+        const baseOptions = all.filter(i => !selected.includes(i));
+        return selected.includes("Todas") ? baseOptions : ["Todas", ...baseOptions];
     };
 
     const getListagem = () => {
         if (!option || matriz.length === 0) return [];
         let rows = matriz;
 
-        if (selectedA.length > 0 && !selectedA.includes("Todas")) {
+        const filterAAtivo = selectedA.length > 0 && !selectedA.includes("Todas");
+        const filterBAtivo = selectedB.length > 0 && !selectedB.includes("Todas");
+
+        if (filterAAtivo) {
             rows = rows.filter(r => selectedA.includes(r[cfg.filterAField]));
         }
-        if (selectedB.length > 0 && !selectedB.includes("Todas")) {
+        if (filterBAtivo) {
             rows = rows.filter(r => selectedB.includes(r[cfg.filterBField]));
         }
 
@@ -146,6 +163,10 @@ export default function Estatisticas() {
                 itemsParaComparar.map(async (itemNome) => {
                     const aulasDoItem = matriz.filter(m => m[cfg.mainField] === itemNome);
                     
+                    if (aulasDoItem.length === 0) {
+                        return { id: `item_${itemNome}`, label: itemNome, data: [] };
+                    }
+
                     const promessasLogs = aulasDoItem.map(item => 
                         api.get(`/leituraAtencao/${item.aulaId}`)
                            .then(res => res.data)
@@ -168,18 +189,28 @@ export default function Estatisticas() {
                 })
             );
 
-            const linhasConfig = listaParaUnificar.map((item, index) => ({
+            const itensValidos = listaParaUnificar.filter(item => item.data.length > 0);
+
+            if (itensValidos.length === 0) {
+                alert("Nenhum dado de atenção encontrado para os itens selecionados.");
+                setDadosComparativos([]);
+                setConfiguracaoLinhas([]);
+                return;
+            }
+
+            const linhasConfig = itensValidos.map((item, index) => ({
                 key: item.id,
                 label: item.label,
                 color: PALETA_CORES[index % PALETA_CORES.length]
             }));
 
-            const dadosUnificados = unificarLinhasDoTempo(listaParaUnificar);
+            const dadosUnificados = unificarLinhasDoTempo(itensValidos);
 
             setDadosComparativos(dadosUnificados);
             setConfiguracaoLinhas(linhasConfig);
         } catch (error) {
-            console.error("Erro ao gerar gráfico comparativo:", error);
+            console.error("Erro ao gerar gráfico:", error);
+            alert("Erro ao processar gráfico.");
         } finally {
             setLoadingGrafico(false);
         }
@@ -194,7 +225,7 @@ export default function Estatisticas() {
             margin: 10,
             filename: `relatorio-estatisticas-${option.toLowerCase()}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
@@ -205,6 +236,7 @@ export default function Estatisticas() {
             .then(() => setIsExporting(false))
             .catch((err) => {
                 console.error("Erro ao gerar PDF:", err);
+                alert("Falha ao gerar PDF.");
                 setIsExporting(false);
             });
     };
@@ -290,7 +322,10 @@ export default function Estatisticas() {
                 )}
 
                 {loadingDados ? (
-                    <p style={{ padding: "20px 0" }}>Buscando dados da instituição...</p>
+                    <div className="loading-container">
+                        <div className="spinner" />
+                        <p>Buscando dados da instituição...</p>
+                    </div>
                 ) : listagem.length > 0 ? (
                     <div className="estatisticas-selection-section">
                         <p className="section-title">Selecione os itens para comparar no gráfico:</p>
@@ -323,7 +358,7 @@ export default function Estatisticas() {
                         </button>
                     </div>
                 ) : (
-                    option && <p style={{ color: "#6B7280" }}>Nenhum item encontrado com os filtros selecionados.</p>
+                    option && <p className="empty-message">Nenhum item encontrado com os filtros selecionados.</p>
                 )}
 
                 <div className="estatisticas-average-attention">

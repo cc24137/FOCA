@@ -3,9 +3,46 @@ import html2pdf from "html2pdf.js";
 import Header from "../../components/header";
 import Combobox from "../../components/combobox-turmas";
 import GenericLineChart from "../../components/time-vs-value-chart";
+import GenericBarChart from "../../components/bar-chart";
+import KpiCards from "../../components/kpi-cards";
 import { unificarLinhasDoTempo } from "../../utils/chartHelpers";
 import api from "../../services/api";
 import "./estatisticas.css";
+
+// ---------------------------------------------------------------------------
+// CONFIGURAÇÃO DE MOCK (Defina como false quando quiser usar a API real)
+// ---------------------------------------------------------------------------
+const USE_MOCK = true;
+
+const MOCK_MATRIZ = [
+  { id: 101, aulaId: 101, labelAula: "Aula #101 - Álgebra Linear", professor: "Prof. Carlos", turma: "2ºA", disciplina: "Matemática" },
+  { id: 102, aulaId: 102, labelAula: "Aula #102 - Geometria Espacial", professor: "Prof. Carlos", turma: "2ºA", disciplina: "Matemática" },
+  { id: 103, aulaId: 103, labelAula: "Aula #103 - Trigonometria", professor: "Prof. Carlos", turma: "2ºB", disciplina: "Matemática" },
+  { id: 201, aulaId: 201, labelAula: "Aula #201 - Leis de Newton", professor: "Profª. Ana", turma: "2ºA", disciplina: "Física" },
+  { id: 202, aulaId: 202, labelAula: "Aula #202 - Termodinâmica", professor: "Profª. Ana", turma: "2ºA", disciplina: "Física" },
+  { id: 301, aulaId: 301, labelAula: "Aula #301 - Tabela Periódica", professor: "Prof. Roberto", turma: "2ºB", disciplina: "Química" },
+  { id: 302, aulaId: 302, labelAula: "Aula #302 - Estequiometria", professor: "Prof. Roberto", turma: "3ºA", disciplina: "Química" },
+  { id: 401, aulaId: 401, labelAula: "Aula #401 - Citologia", professor: "Profª. Juliana", turma: "2ºA", disciplina: "Biologia" },
+  { id: 402, aulaId: 402, labelAula: "Aula #402 - Genética e DNA", professor: "Profª. Juliana", turma: "2ºB", disciplina: "Biologia" },
+];
+
+const gerarMockLogs = (aulaId) => {
+  const logs = [];
+  const duracaoSegundos = 300; 
+  const fatorBase = (aulaId % 3 === 0) ? 0.85 : (aulaId % 2 === 0) ? 0.70 : 0.55;
+
+  for (let s = 0; s <= duracaoSegundos; s += 15) {
+    const variacao = Math.sin(s / 30) * 0.12 + (Math.random() * 0.08 - 0.04);
+    const atencao = Math.min(100, Math.max(30, (fatorBase + variacao) * 100));
+    
+    logs.push({
+      segundoVideo: s,
+      indiceAtencao: Number(atencao.toFixed(1))
+    });
+  }
+  return logs;
+};
+// ---------------------------------------------------------------------------
 
 const PALETA_CORES = [
   '#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#EC4899'
@@ -22,15 +59,24 @@ export default function Estatisticas() {
     const [matriz, setMatriz] = useState([]);
     const [loadingDados, setLoadingDados] = useState(true);
 
-    const [dadosComparativos, setDadosComparativos] = useState([]);
+    const [dadosComparativosLine, setDadosComparativosLine] = useState([]);
     const [configuracaoLinhas, setConfiguracaoLinhas] = useState([]);
-    const [loadingGrafico, setLoadingGrafico] = useState(false);
+    const [dadosBarChart, setDadosBarChart] = useState([]);
+    
+    const [loadingGraficos, setLoadingGraficos] = useState(false);
     const [isExporting, setIsExporting] = useState(false);
 
+    const [kpis, setKpis] = useState({
+        mediaGeral: 0,
+        totalAulas: 0,
+        melhorDesempenho: "N/A"
+    });
+
     const config = {
-        Professores: { mainField: "professor", filterAField: "turma", filterALabel: "Turmas", filterBField: "disciplina", filterBLabel: "Disciplinas" },
-        Turmas:      { mainField: "turma", filterAField: "professor", filterALabel: "Professores", filterBField: "disciplina", filterBLabel: "Disciplinas" },
+        Professores: { mainField: "professor",  filterAField: "turma", filterALabel: "Turmas", filterBField: "disciplina", filterBLabel: "Disciplinas" },
+        Turmas:      { mainField: "turma",      filterAField: "professor", filterALabel: "Professores", filterBField: "disciplina", filterBLabel: "Disciplinas" },
         Disciplinas: { mainField: "disciplina", filterAField: "professor", filterALabel: "Professores", filterBField: "turma", filterBLabel: "Turmas" },
+        Aulas:       { mainField: "labelAula",  filterAField: "professor", filterALabel: "Professores", filterBField: "turma", filterBLabel: "Turmas" },
     };
 
     const cfg = config[option];
@@ -40,7 +86,17 @@ export default function Estatisticas() {
 
         async function carregarEstatisticas() {
             setLoadingDados(true);
-            setMatriz([]);
+
+            if (USE_MOCK) {
+                setTimeout(() => {
+                    if (isMounted) {
+                        setMatriz(MOCK_MATRIZ);
+                        setKpis(prev => ({ ...prev, totalAulas: MOCK_MATRIZ.length }));
+                        setLoadingDados(false);
+                    }
+                }, 400);
+                return;
+            }
 
             try {
                 const resVinculos = await api.get('/turmas/infosPorInstituicao');
@@ -58,20 +114,24 @@ export default function Estatisticas() {
                         const resAulas = await api.get(`/aula/${linkId}`);
                         const aulas = Array.isArray(resAulas.data) ? resAulas.data : [];
 
-                        // Formata os nomes de professor/disciplina caso venham como objeto ou string
                         const profNome = typeof vinculo.professor === 'object' ? vinculo.professor?.nome : vinculo.professor;
                         const discNome = typeof vinculo.disciplina === 'object' ? vinculo.disciplina?.nome : vinculo.disciplina;
 
-                        return aulas.map(aula => ({
-                            id: aula.id || aula.id_aula,
-                            professor: profNome || "Sem Nome",
-                            turma: vinculo.nome || "Sem Turma",
-                            disciplina: discNome || "Sem Disciplina",
-                            aulaId: aula.id || aula.id_aula,
-                            linkIdOriginal: linkId
-                        })).filter(a => a.id);
+                        return aulas.map(aula => {
+                            const aulaId = aula.id || aula.id_aula;
+                            const tituloAula = aula.titulo || aula.nome || aula.nomeAula || aula.descricao || `Aula #${aulaId}`;
+                            
+                            return {
+                                id: aulaId,
+                                professor: profNome || "Sem Nome",
+                                turma: vinculo.nome || "Sem Turma",
+                                disciplina: discNome || "Sem Disciplina",
+                                labelAula: tituloAula,
+                                aulaId: aulaId,
+                                linkIdOriginal: linkId
+                            };
+                        }).filter(a => a.id);
                     } catch (err) {
-                        console.error(`Erro ao buscar aulas da turma ${linkId}:`, err.message);
                         return [];
                     }
                 });
@@ -79,7 +139,10 @@ export default function Estatisticas() {
                 const resultadosAulas = await Promise.all(promessasAulas);
                 const matrizFinal = resultadosAulas.flat();
                 
-                if (isMounted) setMatriz(matrizFinal);
+                if (isMounted) {
+                    setMatriz(matrizFinal);
+                    setKpis(prev => ({ ...prev, totalAulas: matrizFinal.length }));
+                }
 
             } catch (error) {
                 console.error("Erro ao carregar estatísticas:", error);
@@ -103,7 +166,8 @@ export default function Estatisticas() {
         setSelectedA([]);
         setSelectedB([]);
         setItemsParaComparar([]);
-        setDadosComparativos([]);
+        setDadosComparativosLine([]);
+        setDadosBarChart([]);
         setConfiguracaoLinhas([]);
     };
 
@@ -154,65 +218,96 @@ export default function Estatisticas() {
         );
     };
 
-    const handleGerarGrafico = async () => {
+    const handleGerarGraficos = async () => {
         if (itemsParaComparar.length === 0) return;
 
-        setLoadingGrafico(true);
+        setLoadingGraficos(true);
         try {
-            const listaParaUnificar = await Promise.all(
-                itemsParaComparar.map(async (itemNome) => {
-                    const aulasDoItem = matriz.filter(m => m[cfg.mainField] === itemNome);
-                    
-                    if (aulasDoItem.length === 0) {
-                        return { id: `item_${itemNome}`, label: itemNome, data: [] };
-                    }
+            const listaParaUnificar = [];
+            const listaBarData = [];
 
+            let somaMedias = 0;
+            let maiorMedia = -1;
+            let melhorNome = "N/A";
+
+            for (const itemNome of itemsParaComparar) {
+                const aulasDoItem = matriz.filter(m => m[cfg.mainField] === itemNome);
+                
+                if (aulasDoItem.length === 0) continue;
+
+                let todosLogs = [];
+
+                if (USE_MOCK) {
+                    todosLogs = aulasDoItem.flatMap(item => gerarMockLogs(item.aulaId));
+                } else {
                     const promessasLogs = aulasDoItem.map(item => 
                         api.get(`/leituraAtencao/${item.aulaId}`)
                            .then(res => res.data)
                            .catch(() => [])
                     );
-
                     const resultados = await Promise.all(promessasLogs);
-                    const todosLogs = resultados.flat();
+                    todosLogs = resultados.flat();
+                }
 
+                if (todosLogs.length > 0) {
                     const dataFormatada = todosLogs.map(log => ({
                         segundos: log.segundoVideo,
                         temp: log.indiceAtencao <= 1 ? log.indiceAtencao * 100 : log.indiceAtencao
                     }));
 
-                    return {
+                    const mediaItem = dataFormatada.reduce((acc, curr) => acc + curr.temp, 0) / dataFormatada.length;
+                    
+                    listaBarData.push({
+                        label: itemNome,
+                        media: Number(mediaItem.toFixed(1))
+                    });
+
+                    somaMedias += mediaItem;
+
+                    if (mediaItem > maiorMedia) {
+                        maiorMedia = mediaItem;
+                        melhorNome = itemNome;
+                    }
+
+                    listaParaUnificar.push({
                         id: `item_${itemNome}`,
                         label: itemNome,
                         data: dataFormatada
-                    };
-                })
-            );
+                    });
+                }
+            }
 
-            const itensValidos = listaParaUnificar.filter(item => item.data.length > 0);
-
-            if (itensValidos.length === 0) {
+            if (listaParaUnificar.length === 0) {
                 alert("Nenhum dado de atenção encontrado para os itens selecionados.");
-                setDadosComparativos([]);
+                setDadosComparativosLine([]);
+                setDadosBarChart([]);
                 setConfiguracaoLinhas([]);
                 return;
             }
 
-            const linhasConfig = itensValidos.map((item, index) => ({
+            const linhasConfig = listaParaUnificar.map((item, index) => ({
                 key: item.id,
                 label: item.label,
                 color: PALETA_CORES[index % PALETA_CORES.length]
             }));
 
-            const dadosUnificados = unificarLinhasDoTempo(itensValidos);
+            const dadosUnificados = unificarLinhasDoTempo(listaParaUnificar);
 
-            setDadosComparativos(dadosUnificados);
+            setDadosComparativosLine(dadosUnificados);
+            setDadosBarChart(listaBarData);
             setConfiguracaoLinhas(linhasConfig);
+
+            setKpis(prev => ({
+                ...prev,
+                mediaGeral: somaMedias / listaBarData.length,
+                melhorDesempenho: melhorNome
+            }));
+
         } catch (error) {
-            console.error("Erro ao gerar gráfico:", error);
-            alert("Erro ao processar gráfico.");
+            console.error("Erro ao gerar gráficos:", error);
+            alert("Erro ao processar dados dos gráficos.");
         } finally {
-            setLoadingGrafico(false);
+            setLoadingGraficos(false);
         }
     };
 
@@ -234,11 +329,7 @@ export default function Estatisticas() {
             .from(element)
             .save()
             .then(() => setIsExporting(false))
-            .catch((err) => {
-                console.error("Erro ao gerar PDF:", err);
-                alert("Falha ao gerar PDF.");
-                setIsExporting(false);
-            });
+            .catch(() => setIsExporting(false));
     };
 
     return (
@@ -253,8 +344,8 @@ export default function Estatisticas() {
             
             <div className="estatisticas-content" ref={reportRef}>
                 <div className="estatisticas-header-row">
-                    <h2>Estatísticas da Instituição</h2>
-                    {dadosComparativos.length > 0 && (
+                    <h2>Estatísticas da Instituição {USE_MOCK && <span style={{ fontSize: '0.8rem', color: '#EF4444' }}>(Modo Mock Ativo)</span>}</h2>
+                    {dadosBarChart.length > 0 && (
                         <button 
                             className="estatisticas-btn-pdf" 
                             onClick={handleExportarPDF} 
@@ -265,10 +356,16 @@ export default function Estatisticas() {
                     )}
                 </div>
 
+                <KpiCards 
+                    mediaGeral={kpis.mediaGeral}
+                    totalAulas={kpis.totalAulas}
+                    melhorDesempenho={kpis.melhorDesempenho}
+                />
+
                 <div className="estatisticas-selector-row">
                     <p>Comparar por:</p>
                     <Combobox
-                        options={["Professores", "Turmas", "Disciplinas"]}
+                        options={["Professores", "Turmas", "Disciplinas", "Aulas"]}
                         value={option}
                         onChange={handleOptionChange}
                         placeholder="Selecione uma opção"
@@ -328,7 +425,7 @@ export default function Estatisticas() {
                     </div>
                 ) : listagem.length > 0 ? (
                     <div className="estatisticas-selection-section">
-                        <p className="section-title">Selecione os itens para comparar no gráfico:</p>
+                        <p className="section-title">Selecione os itens para comparar nos gráficos:</p>
                         <div className="estatisticas-listagem">
                             {listagem.map((item, i) => {
                                 const active = itemsParaComparar.includes(item);
@@ -351,28 +448,46 @@ export default function Estatisticas() {
 
                         <button 
                             className="estatisticas-btn-comparar" 
-                            onClick={handleGerarGrafico}
-                            disabled={itemsParaComparar.length === 0 || loadingGrafico}
+                            onClick={handleGerarGraficos}
+                            disabled={itemsParaComparar.length === 0 || loadingGraficos}
                         >
-                            {loadingGrafico ? "Processando..." : "Gerar Gráfico Comparativo"}
+                            {loadingGraficos ? "Processando..." : "Gerar Gráficos Comparativos"}
                         </button>
                     </div>
                 ) : (
                     option && <p className="empty-message">Nenhum item encontrado com os filtros selecionados.</p>
                 )}
 
-                <div className="estatisticas-average-attention">
-                    <p className="estatisticas-average-attention-text">Comparativo de Atenção ao Longo do Tempo</p>
+                <div className="estatisticas-average-attention" style={{ marginBottom: "32px" }}>
+                    <p className="estatisticas-average-attention-text">Comparativo de Média de Atenção (%)</p>
                     <div className="estatisticas-average-attention-graph">
-                        {dadosComparativos.length > 0 ? (
+                        {dadosBarChart.length > 0 ? (
+                            <GenericBarChart
+                                data={dadosBarChart}
+                                xKey="label"
+                                yKey="media"
+                                colors={PALETA_CORES}
+                            />
+                        ) : (
+                            <p className="graph-placeholder">
+                                Selecione um ou mais itens acima e clique em <strong>"Gerar Gráficos Comparativos"</strong>.
+                            </p>
+                        )}
+                    </div>
+                </div>
+
+                <div className="estatisticas-average-attention">
+                    <p className="estatisticas-average-attention-text">Evolução da Atenção ao Longo do Tempo</p>
+                    <div className="estatisticas-average-attention-graph">
+                        {dadosComparativosLine.length > 0 ? (
                             <GenericLineChart
-                                data={dadosComparativos}
+                                data={dadosComparativosLine}
                                 xKey="tempoFormatado"
                                 lines={configuracaoLinhas}
                             />
                         ) : (
                             <p className="graph-placeholder">
-                                Selecione um ou mais itens acima e clique em <strong>"Gerar Gráfico Comparativo"</strong>.
+                                Selecione um ou mais itens acima e clique em <strong>"Gerar Gráficos Comparativos"</strong>.
                             </p>
                         )}
                     </div>

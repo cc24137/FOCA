@@ -37,6 +37,30 @@ import IconTexto from '../../assets/file-text.svg?react';
 
 export default function TesteVideo() {
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [loading, setLoading] = useState(false)
+
+    const handleProcessVideo = async () => {
+        if (!selectedFiles || selectedFiles.length === 0) {
+            //alert("Selecione um arquivo de vídeo primeiro.");
+            console.log("Selecione um arquivo primeiro")
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', selectedFiles[0]); 
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/processar-video', {
+                method: 'POST',
+                body: formData, 
+            });
+
+            const result = await response.json();
+            console.log('Resultado do modelo de visão computacional:', result);
+        } catch (error) {
+            console.error('Erro ao enviar para a API:', error);
+        }
+    };
 
     return (
         <div className='teste-video-body'>
@@ -52,7 +76,7 @@ export default function TesteVideo() {
                         setSelectedFiles={setSelectedFiles} 
                     />
 
-                    <button className='teste-video-processar'> 
+                    <button className='teste-video-processar' disabled={loading} onClick={handleProcessVideo}> 
                         <div className='teste-video-processar-row'>
                             <p className='teste-video-processar-row-text'>Processar Video</p>
                         </div>

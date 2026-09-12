@@ -9,10 +9,8 @@ import { unificarLinhasDoTempo } from "../../utils/chartHelpers";
 import api from "../../services/api";
 import "./estatisticas.css";
 
-// ---------------------------------------------------------------------------
-// CONFIGURAÇÃO DE MOCK (Defina como false quando quiser usar a API real)
-// ---------------------------------------------------------------------------
 const USE_MOCK = true;
+const MAX_SELECAO_COMPARACAO = 5;
 
 const MOCK_MATRIZ = [
   { id: 101, aulaId: 101, labelAula: "Aula #101 - Álgebra Linear", professor: "Prof. Carlos", turma: "2ºA", disciplina: "Matemática" },
@@ -28,7 +26,8 @@ const MOCK_MATRIZ = [
 
 const gerarMockLogs = (aulaId) => {
   const logs = [];
-  const duracaoSegundos = 300; 
+  const duracoesPossiveis = [180, 240, 300, 420, 540, 600];
+  const duracaoSegundos = duracoesPossiveis[aulaId % duracoesPossiveis.length];
   const fatorBase = (aulaId % 3 === 0) ? 0.85 : (aulaId % 2 === 0) ? 0.70 : 0.55;
 
   for (let s = 0; s <= duracaoSegundos; s += 15) {
@@ -42,7 +41,6 @@ const gerarMockLogs = (aulaId) => {
   }
   return logs;
 };
-// ---------------------------------------------------------------------------
 
 const PALETA_CORES = [
   '#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4', '#EC4899'
@@ -81,6 +79,7 @@ export default function Estatisticas() {
 
     const cfg = config[option];
 
+    // Carregamento de dados inicial
     useEffect(() => {
         let isMounted = true;
 
@@ -156,19 +155,32 @@ export default function Estatisticas() {
         return () => { isMounted = false; };
     }, []);
 
-    const getUniqueByField = (field) => {
+    // Reset de seleção e gráficos ao alterar qualquer filtro
+    useEffect(() => {
+        setItemsParaComparar([]);
+        setDadosComparativosLine([]);
+        setDadosBarChart([]);
+        setConfiguracaoLinhas([]);
+    }, [selectedA, selectedB, option]);
+
+    // Filtros em cascata: ajusta as opções baseando-se no outro filtro selecionado
+    const getAvailableOptions = (targetField, currentSelected, otherField, otherSelected) => {
         if (!matriz || matriz.length === 0) return [];
-        return [...new Set(matriz.map(r => r[field]).filter(Boolean))];
+        
+        let rows = matriz;
+        if (otherSelected.length > 0 && !otherSelected.includes("Todas")) {
+            rows = rows.filter(r => otherSelected.includes(r[otherField]));
+        }
+
+        const all = [...new Set(rows.map(r => r[targetField]).filter(Boolean))];
+        const baseOptions = all.filter(i => !currentSelected.includes(i));
+        return currentSelected.includes("Todas") ? baseOptions : ["Todas", ...baseOptions];
     };
 
     const handleOptionChange = (v) => {
         setOption(v);
         setSelectedA([]);
         setSelectedB([]);
-        setItemsParaComparar([]);
-        setDadosComparativosLine([]);
-        setDadosBarChart([]);
-        setConfiguracaoLinhas([]);
     };
 
     const handleSelectFilter = (v, selected, setSelected) => {
@@ -185,12 +197,6 @@ export default function Estatisticas() {
 
     const removeChip = (item, selected, setSelected) => {
         setSelected(prev => prev.filter(i => i !== item));
-    };
-
-    const getAvailableOptions = (field, selected) => {
-        const all = getUniqueByField(field);
-        const baseOptions = all.filter(i => !selected.includes(i));
-        return selected.includes("Todas") ? baseOptions : ["Todas", ...baseOptions];
     };
 
     const getListagem = () => {
@@ -213,9 +219,16 @@ export default function Estatisticas() {
     const listagem = getListagem();
 
     const handleToggleItemComparacao = (item) => {
-        setItemsParaComparar(prev => 
-            prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
-        );
+        setItemsParaComparar(prev => {
+            if (prev.includes(item)) {
+                return prev.filter(i => i !== item);
+            }
+            if (prev.length >= MAX_SELECAO_COMPARACAO) {
+                alert(`Você pode comparar no máximo ${MAX_SELECAO_COMPARACAO} itens por vez para garantir a clareza do gráfico.`);
+                return prev;
+            }
+            return [...prev, item];
+        });
     };
 
     const handleGerarGraficos = async () => {
@@ -250,10 +263,27 @@ export default function Estatisticas() {
                 }
 
                 if (todosLogs.length > 0) {
-                    const dataFormatada = todosLogs.map(log => ({
-                        segundos: log.segundoVideo,
-                        temp: log.indiceAtencao <= 1 ? log.indiceAtencao * 100 : log.indiceAtencao
-                    }));
+                    // Agrupamento temporal por instante/segundo para médias corretas de múltiplas aulas
+                    const mapaPorSegundo = {};
+
+                    todosLogs.forEach(log => {
+                        const seg = log.segundoVideo;
+                        const valorAtencao = log.indiceAtencao <= 1 ? log.indiceAtencao * 100 : log.indiceAtencao;
+
+                        if (!mapaPorSegundo[seg]) {
+                            mapaPorSegundo[seg] = { soma: 0, quantidade: 0 };
+                        }
+
+                        mapaPorSegundo[seg].soma += valorAtencao;
+                        mapaPorSegundo[seg].quantidade += 1;
+                    });
+
+                    const dataFormatada = Object.keys(mapaPorSegundo)
+                        .map(seg => ({
+                            segundos: Number(seg),
+                            temp: Number((mapaPorSegundo[seg].soma / mapaPorSegundo[seg].quantidade).toFixed(1))
+                        }))
+                        .sort((a, b) => a.segundos - b.segundos);
 
                     const mediaItem = dataFormatada.reduce((acc, curr) => acc + curr.temp, 0) / dataFormatada.length;
                     
@@ -377,7 +407,7 @@ export default function Estatisticas() {
                         <div className="estatisticas-filter-row">
                             <p>{cfg.filterALabel}:</p>
                             <Combobox
-                                options={getAvailableOptions(cfg.filterAField, selectedA)}
+                                options={getAvailableOptions(cfg.filterAField, selectedA, cfg.filterBField, selectedB)}
                                 value=""
                                 onChange={v => handleSelectFilter(v, selectedA, setSelectedA)}
                                 placeholder={`Filtrar por ${cfg.filterALabel.toLowerCase()}`}
@@ -398,7 +428,7 @@ export default function Estatisticas() {
                         <div className="estatisticas-filter-row">
                             <p>{cfg.filterBLabel}:</p>
                             <Combobox
-                                options={getAvailableOptions(cfg.filterBField, selectedB)}
+                                options={getAvailableOptions(cfg.filterBField, selectedB, cfg.filterAField, selectedA)}
                                 value=""
                                 onChange={v => handleSelectFilter(v, selectedB, setSelectedB)}
                                 placeholder={`Filtrar por ${cfg.filterBLabel.toLowerCase()}`}
@@ -425,13 +455,15 @@ export default function Estatisticas() {
                     </div>
                 ) : listagem.length > 0 ? (
                     <div className="estatisticas-selection-section">
-                        <p className="section-title">Selecione os itens para comparar nos gráficos:</p>
+                        <p className="section-title">
+                            Selecione até {MAX_SELECAO_COMPARACAO} itens para comparar nos gráficos ({itemsParaComparar.length}/{MAX_SELECAO_COMPARACAO}):
+                        </p>
                         <div className="estatisticas-listagem">
-                            {listagem.map((item, i) => {
+                            {listagem.map((item) => {
                                 const active = itemsParaComparar.includes(item);
                                 return (
                                     <div 
-                                        key={i} 
+                                        key={item} 
                                         className={`estatisticas-listagem-item ${active ? 'active' : ''}`}
                                         onClick={() => handleToggleItemComparacao(item)}
                                     >

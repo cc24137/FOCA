@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  Cell,
 } from 'recharts';
 import './bar-chart.css';
 
@@ -42,10 +43,24 @@ export default function GenericBarChart({
   return (
     <div className="chart-container" style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={processedData} margin={{ top: 20, right: 20, left: 0, bottom: 20 }}>
+        <BarChart 
+          data={processedData} 
+          margin={{ top: 20, right: 20, left: 0, bottom: 65 }}
+        >
           <CartesianGrid strokeDasharray="3 3" opacity={0.3} vertical={false} />
-          <XAxis dataKey={xKey} tickFormatter={formatXAxis} />
+          
+          <XAxis 
+            dataKey={xKey} 
+            tickFormatter={formatXAxis} 
+            interval={0}
+            angle={-25}
+            textAnchor="end"
+            height={60}
+            tick={{ fontSize: 12, fill: '#374151' }}
+          />
+          
           <YAxis tickFormatter={formatYAxis} domain={[0, 100]} />
+          
           <Tooltip 
             formatter={(value) => [`${value}%`, 'Média de Atenção']}
           />
@@ -60,7 +75,11 @@ export default function GenericBarChart({
               fill={barConfig.color || barColor}
               radius={barRadius}
               isAnimationActive={isAnimationActive}
-            />
+            >
+              {colors.length > 0 && processedData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.fill} />
+              ))}
+            </Bar>
           ))}
         </BarChart>
       </ResponsiveContainer>

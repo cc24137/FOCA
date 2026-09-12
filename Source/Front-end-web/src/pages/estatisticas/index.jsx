@@ -386,145 +386,155 @@ export default function Estatisticas() {
                     )}
                 </div>
 
-                <KpiCards 
-                    mediaGeral={kpis.mediaGeral}
-                    totalAulas={kpis.totalAulas}
-                    melhorDesempenho={kpis.melhorDesempenho}
-                />
-
-                <div className="estatisticas-selector-row">
-                    <p>Comparar por:</p>
-                    <Combobox
-                        options={["Professores", "Turmas", "Disciplinas", "Aulas"]}
-                        value={option}
-                        onChange={handleOptionChange}
-                        placeholder="Selecione uma opção"
-                    />
-                </div>
-
-                {option && (
-                    <div className="estatisticas-filters">
-                        <div className="estatisticas-filter-row">
-                            <p>{cfg.filterALabel}:</p>
+                {/* GRID DO DASHBOARD */}
+                <div className="estatisticas-dashboard-grid">
+                    
+                    {/* COLUNA DA ESQUERDA: Filtros e Seleção */}
+                    <aside className="estatisticas-sidebar">
+                        <div className="estatisticas-selector-box">
+                            <p className="sidebar-subtitle">Comparar por:</p>
                             <Combobox
-                                options={getAvailableOptions(cfg.filterAField, selectedA, cfg.filterBField, selectedB)}
-                                value=""
-                                onChange={v => handleSelectFilter(v, selectedA, setSelectedA)}
-                                placeholder={`Filtrar por ${cfg.filterALabel.toLowerCase()}`}
+                                options={["Professores", "Turmas", "Disciplinas", "Aulas"]}
+                                value={option}
+                                onChange={handleOptionChange}
+                                placeholder="Selecione uma opção"
                             />
                         </div>
 
-                        {selectedA.length > 0 && (
-                            <div className="estatisticas-chips">
-                                {selectedA.map(item => (
-                                    <div key={`a-${item}`} className="estatisticas-chip">
-                                        <span>{item}</span>
-                                        <button onClick={() => removeChip(item, selectedA, setSelectedA)}>✕</button>
+                        {option && (
+                            <div className="estatisticas-filters">
+                                <div className="estatisticas-filter-row">
+                                    <p>{cfg.filterALabel}:</p>
+                                    <Combobox
+                                        options={getAvailableOptions(cfg.filterAField, selectedA, cfg.filterBField, selectedB)}
+                                        value=""
+                                        onChange={v => handleSelectFilter(v, selectedA, setSelectedA)}
+                                        placeholder={`Filtrar por ${cfg.filterALabel.toLowerCase()}`}
+                                    />
+                                </div>
+
+                                {selectedA.length > 0 && (
+                                    <div className="estatisticas-chips">
+                                        {selectedA.map(item => (
+                                            <div key={`a-${item}`} className="estatisticas-chip">
+                                                <span>{item}</span>
+                                                <button onClick={() => removeChip(item, selectedA, setSelectedA)}>✕</button>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
+                                )}
+
+                                <div className="estatisticas-filter-row">
+                                    <p>{cfg.filterBLabel}:</p>
+                                    <Combobox
+                                        options={getAvailableOptions(cfg.filterBField, selectedB, cfg.filterAField, selectedA)}
+                                        value=""
+                                        onChange={v => handleSelectFilter(v, selectedB, setSelectedB)}
+                                        placeholder={`Filtrar por ${cfg.filterBLabel.toLowerCase()}`}
+                                    />
+                                </div>
+
+                                {selectedB.length > 0 && (
+                                    <div className="estatisticas-chips">
+                                        {selectedB.map(item => (
+                                            <div key={`b-${item}`} className="estatisticas-chip">
+                                                <span>{item}</span>
+                                                <button onClick={() => removeChip(item, selectedB, setSelectedB)}>✕</button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         )}
 
-                        <div className="estatisticas-filter-row">
-                            <p>{cfg.filterBLabel}:</p>
-                            <Combobox
-                                options={getAvailableOptions(cfg.filterBField, selectedB, cfg.filterAField, selectedA)}
-                                value=""
-                                onChange={v => handleSelectFilter(v, selectedB, setSelectedB)}
-                                placeholder={`Filtrar por ${cfg.filterBLabel.toLowerCase()}`}
-                            />
-                        </div>
-
-                        {selectedB.length > 0 && (
-                            <div className="estatisticas-chips">
-                                {selectedB.map(item => (
-                                    <div key={`b-${item}`} className="estatisticas-chip">
-                                        <span>{item}</span>
-                                        <button onClick={() => removeChip(item, selectedB, setSelectedB)}>✕</button>
-                                    </div>
-                                ))}
+                        {loadingDados ? (
+                            <div className="loading-container">
+                                <div className="spinner" />
+                                <p>Buscando dados...</p>
                             </div>
-                        )}
-                    </div>
-                )}
+                        ) : listagem.length > 0 ? (
+                            <div className="estatisticas-selection-section">
+                                <p className="section-title">
+                                    Selecione ({itemsParaComparar.length}/{MAX_SELECAO_COMPARACAO}):
+                                </p>
+                                <div className="estatisticas-listagem">
+                                    {listagem.map((item) => {
+                                        const active = itemsParaComparar.includes(item);
+                                        return (
+                                            <div 
+                                                key={item} 
+                                                className={`estatisticas-listagem-item ${active ? 'active' : ''}`}
+                                                onClick={() => handleToggleItemComparacao(item)}
+                                            >
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={active} 
+                                                    readOnly
+                                                />
+                                                <p>{item}</p>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
 
-                {loadingDados ? (
-                    <div className="loading-container">
-                        <div className="spinner" />
-                        <p>Buscando dados da instituição...</p>
-                    </div>
-                ) : listagem.length > 0 ? (
-                    <div className="estatisticas-selection-section">
-                        <p className="section-title">
-                            Selecione até {MAX_SELECAO_COMPARACAO} itens para comparar nos gráficos ({itemsParaComparar.length}/{MAX_SELECAO_COMPARACAO}):
-                        </p>
-                        <div className="estatisticas-listagem">
-                            {listagem.map((item) => {
-                                const active = itemsParaComparar.includes(item);
-                                return (
-                                    <div 
-                                        key={item} 
-                                        className={`estatisticas-listagem-item ${active ? 'active' : ''}`}
-                                        onClick={() => handleToggleItemComparacao(item)}
-                                    >
-                                        <input 
-                                            type="checkbox" 
-                                            checked={active} 
-                                            readOnly
-                                        />
-                                        <p>{item}</p>
-                                    </div>
-                                );
-                            })}
+                                <button 
+                                    className="estatisticas-btn-comparar" 
+                                    onClick={handleGerarGraficos}
+                                    disabled={itemsParaComparar.length === 0 || loadingGraficos}
+                                >
+                                    {loadingGraficos ? "Processando..." : "Gerar Gráficos Comparativos"}
+                                </button>
+                            </div>
+                        ) : (
+                            option && <p className="empty-message">Nenhum item encontrado.</p>
+                        )}
+                    </aside>
+
+                    {/* COLUNA DA DIREITA: KPIs e Gráficos */}
+                    <main className="estatisticas-main">
+                        <KpiCards 
+                            mediaGeral={kpis.mediaGeral}
+                            totalAulas={kpis.totalAulas}
+                            melhorDesempenho={kpis.melhorDesempenho}
+                        />
+
+                        <div className="estatisticas-average-attention">
+                            <p className="estatisticas-average-attention-text">Comparativo de Média de Atenção (%)</p>
+                            <div className="estatisticas-average-attention-graph">
+                                {dadosBarChart.length > 0 ? (
+                                    <GenericBarChart
+                                        data={dadosBarChart}
+                                        xKey="label"
+                                        yKey="media"
+                                        colors={PALETA_CORES}
+                                    />
+                                ) : (
+                                    <p className="graph-placeholder">
+                                        Selecione os itens no painel à esquerda e clique em <strong>"Gerar Gráficos Comparativos"</strong>.
+                                    </p>
+                                )}
+                            </div>
                         </div>
 
-                        <button 
-                            className="estatisticas-btn-comparar" 
-                            onClick={handleGerarGraficos}
-                            disabled={itemsParaComparar.length === 0 || loadingGraficos}
-                        >
-                            {loadingGraficos ? "Processando..." : "Gerar Gráficos Comparativos"}
-                        </button>
-                    </div>
-                ) : (
-                    option && <p className="empty-message">Nenhum item encontrado com os filtros selecionados.</p>
-                )}
+                        <div className="estatisticas-average-attention">
+                            <p className="estatisticas-average-attention-text">Evolução da Atenção ao Longo do Tempo</p>
+                            <div className="estatisticas-average-attention-graph">
+                                {dadosComparativosLine.length > 0 ? (
+                                    <GenericLineChart
+                                        data={dadosComparativosLine}
+                                        xKey="tempoFormatado"
+                                        lines={configuracaoLinhas}
+                                    />
+                                ) : (
+                                    <p className="graph-placeholder">
+                                        Selecione os itens no painel à esquerda e clique em <strong>"Gerar Gráficos Comparativos"</strong>.
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    </main>
 
-                <div className="estatisticas-average-attention" style={{ marginBottom: "32px" }}>
-                    <p className="estatisticas-average-attention-text">Comparativo de Média de Atenção (%)</p>
-                    <div className="estatisticas-average-attention-graph">
-                        {dadosBarChart.length > 0 ? (
-                            <GenericBarChart
-                                data={dadosBarChart}
-                                xKey="label"
-                                yKey="media"
-                                colors={PALETA_CORES}
-                            />
-                        ) : (
-                            <p className="graph-placeholder">
-                                Selecione um ou mais itens acima e clique em <strong>"Gerar Gráficos Comparativos"</strong>.
-                            </p>
-                        )}
-                    </div>
                 </div>
-
-                <div className="estatisticas-average-attention">
-                    <p className="estatisticas-average-attention-text">Evolução da Atenção ao Longo do Tempo</p>
-                    <div className="estatisticas-average-attention-graph">
-                        {dadosComparativosLine.length > 0 ? (
-                            <GenericLineChart
-                                data={dadosComparativosLine}
-                                xKey="tempoFormatado"
-                                lines={configuracaoLinhas}
-                            />
-                        ) : (
-                            <p className="graph-placeholder">
-                                Selecione um ou mais itens acima e clique em <strong>"Gerar Gráficos Comparativos"</strong>.
-                            </p>
-                        )}
-                    </div>
-                </div>
-
             </div>
         </div>
     );

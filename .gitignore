@@ -3,3 +3,5 @@ node_modules/
 venv/
 Source/AI/src/models/yolov8_nano_foca_v3_800_50e/
 uploaded_videos
+Source/AI/src/notebooks/dataset_foca_v4/
+Source/AI/src/notebooks/models

@@ -22,17 +22,89 @@ class AulaController {
 
     create = async (req, res) => {
         const aulaCRUD = new AulaCRUD();
-        const { date, content, classSubjectTeacherId } = req.body;
-
-        await aulaCRUD
-            .create(date, content, classSubjectTeacherId)
-            .then((id) => {
-                res.status(201).json({ id });
-            })
-            .catch((error) => {
-                console.log(error);
-                res.status(500).json({ error: "Internal server error" });
+    
+        const {
+            date,
+            content,
+            classSubjectTeacherId
+        } = req.body;
+    
+        if (!date || !classSubjectTeacherId) {
+            return res.status(400).json({
+                error: "date e classSubjectTeacherId são obrigatórios"
             });
+        }
+    
+        try {
+            const id = await aulaCRUD.create(
+                date,
+                content,
+                classSubjectTeacherId
+            );
+    
+            return res.status(201).json({ id });
+        }
+        catch (error) {
+            console.log(error);
+    
+            return res.status(500).json({
+                error: "Internal server error"
+            });
+        }
+    };
+
+    updateAnalysisData = async (req, res) => {
+        const aulaCRUD = new AulaCRUD();
+
+        const { id } = req.params;
+
+        const {
+            idClassificacaoConteudo,
+            arquivoVideo,
+            mediaAtencaoTotal
+        } = req.body;
+
+        if (
+            idClassificacaoConteudo === undefined ||
+            mediaAtencaoTotal === undefined
+        ) {
+            return res.status(400).json({
+                error:
+                    "idClassificacaoConteudo e atencaoMediaTotal são obrigatórios"
+            });
+        }
+
+        const parsedAverage = Number(totalAttentionAverage);
+
+        if (Number.isNaN(parsedAverage)) {
+            return res.status(400).json({
+                error: "totalAttentionAverage deve ser um número"
+            });
+        }
+
+        try {
+            const aula = await aulaCRUD.updateAnalysisData(
+                id,
+                idClassificacaoConteudo,
+                arquivoVideo ?? null,
+                parsedAverage
+            );
+
+            return res.status(200).json(aula);
+        }
+        catch (error) {
+            if (error.name === "Not found") {
+                return res.status(404).json({
+                    error: "Aula não encontrada"
+                });
+            }
+
+            console.log(error);
+
+            return res.status(500).json({
+                error: "Internal server error"
+            });
+        }
     };
 
     delete = async (req, res) => {
@@ -90,7 +162,7 @@ class AulaController {
                 }
             });
     };
-    
+
 }
 
 module.exports = AulaController;

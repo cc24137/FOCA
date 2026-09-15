@@ -7,5 +7,6 @@ const verifyToken = require('../middleware/authMiddleware');
 router.get("/:aulaId", verifyToken, leituraAtencaoController.getByIdAula);
 router.get("/:aulaId/:segundoVideo", verifyToken, leituraAtencaoController.getByIdAulaESegundoVideo);
 router.post("/criar", verifyToken, leituraAtencaoController.create);
+router.post("/criar-lote", verifyToken, leituraAtencaoController.createMany);
 
 module.exports = router;

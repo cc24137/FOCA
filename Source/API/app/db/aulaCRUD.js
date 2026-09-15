@@ -22,20 +22,96 @@ class AulaCRUD {
         catch (error) { throw error; }
     }
     
-  async create(data, conteudo, idTurmaDisciplinaProfessor, id_classificacao_conteudo, arquivo_video, media_atencao_total, data_processamento) {
-    try {
-      const pool = await db.getConnection();
-      const result = await pool.request()
-        .input("data", sql.Date, data)
-        .input("conteudo", sql.VarChar, conteudo)
-        .input("idTurmaDisciplinaProfessor", sql.Int, idTurmaDisciplinaProfessor)
-        .query(`INSERT INTO FOCA.AULA (data, conteudo, id_turma_disciplina_professor, id_classificacao_conteudo, arquivo_video, media_atencao_total, data_processamento)
-                OUTPUT INSERTED.id
-                VALUES (@data, @conteudo, @idTurmaDisciplinaProfessor)`);
-      return result.recordset[0].id;
+    async create(data, conteudo, idTurmaDisciplinaProfessor) {
+        try {
+            const pool = await db.getConnection();
+    
+            const result = await pool.request()
+                .input("data", sql.Date, data)
+                .input("conteudo", sql.VarChar(350), conteudo)
+                .input(
+                    "idTurmaDisciplinaProfessor",
+                    sql.Int,
+                    idTurmaDisciplinaProfessor
+                )
+                .query(`
+                    INSERT INTO FOCA.AULA (
+                        data,
+                        conteudo,
+                        id_turma_disciplina_professor
+                    )
+                    OUTPUT INSERTED.id
+                    VALUES (
+                        @data,
+                        @conteudo,
+                        @idTurmaDisciplinaProfessor
+                    )
+                `);
+    
+            return result.recordset[0].id;
+        }
+        catch (error) {
+            throw error;
+        }
     }
-    catch (error) { throw error; }
-  }
+
+    async updateAnalysisData(
+        id,
+        idClassificacaoConteudo,
+        arquivoVideo,
+        mediaAtencaoTotal
+    ) {
+        try {
+            const pool = await db.getConnection();
+    
+            const result = await pool.request()
+                .input("id", sql.Int, id)
+                .input(
+                    "idClassificacaoConteudo",
+                    sql.Int,
+                    idClassificacaoConteudo
+                )
+                .input(
+                    "arquivoVideo",
+                    sql.VarChar(255),
+                    arquivoVideo
+                )
+                .input(
+                    "mediaAtencaoTotal",
+                    sql.Decimal(5, 2),
+                    mediaAtencaoTotal
+                )
+                .query(`
+                    UPDATE FOCA.Aula
+                    SET
+                        id_classificacao_conteudo = @idClassificacaoConteudo,
+                        arquivo_video = @arquivoVideo,
+                        media_atencao_total = @mediaAtencaoTotal,
+                        data_processamento = CAST(GETDATE() AS DATE)
+                    OUTPUT
+                        INSERTED.id AS id,
+                        INSERTED.data AS date,
+                        INSERTED.conteudo AS content,
+                        INSERTED.id_turma_disciplina_professor AS classSubjectTeacherId,
+                        INSERTED.id_classificacao_conteudo AS contentClassificationId,
+                        INSERTED.arquivo_video AS videoFile,
+                        INSERTED.media_atencao_total AS totalAttentionAverage,
+                        INSERTED.data_processamento AS processingDate
+                    WHERE id = @id
+                `);
+    
+            if (result.recordset.length === 0) {
+                const error = new Error("Aula not found");
+                error.name = "Not found";
+                throw error;
+            }
+    
+            return result.recordset[0];
+        }
+        catch (error) {
+            throw error;
+        }
+    }
 
   async delete(id) {
     try {

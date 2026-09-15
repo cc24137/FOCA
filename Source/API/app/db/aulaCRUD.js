@@ -21,6 +21,88 @@ class AulaCRUD {
         }
         catch (error) { throw error; }
     }
+
+    async getById(id) {
+        try {
+            const pool = await db.getConnection();
+    
+            const result = await pool.request()
+                .input("id", sql.Int, id)
+                .query(`
+                    SELECT
+                        a.id AS id,
+                        a.data AS date,
+                        a.conteudo AS content,
+                        a.id_turma_disciplina_professor AS classSubjectTeacherId,
+                        a.id_classificacao_conteudo AS contentClassificationId,
+                        a.arquivo_video AS videoFile,
+                        a.media_atencao_total AS totalAttentionAverage,
+                        a.data_processamento AS processingDate,
+                        c.nome AS contentClassificationName
+                    FROM FOCA.Aula a
+                    LEFT JOIN FOCA.Classificacao_Conteudo c
+                        ON a.id_classificacao_conteudo = c.id
+                    WHERE a.id = @id
+                `);
+    
+            return result.recordset[0] ?? null;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
+    async getPreviousProcessedLessonsByAulaId(
+        aulaId,
+        limit = 5
+    ) {
+        try {
+            const pool = await db.getConnection();
+    
+            const result = await pool.request()
+                .input("aulaId", sql.Int, aulaId)
+                .input("limit", sql.Int, limit)
+                .query(`
+                    WITH AulaAtual AS (
+                        SELECT
+                            id,
+                            data,
+                            id_turma_disciplina_professor
+                        FROM FOCA.Aula
+                        WHERE id = @aulaId
+                    )
+    
+                    SELECT TOP (@limit)
+                        a.id AS id,
+                        a.data AS date,
+                        a.media_atencao_total AS totalAttentionAverage,
+                        a.id_classificacao_conteudo AS contentClassificationId,
+                        a.data_processamento AS processingDate
+                    FROM FOCA.Aula a
+                    INNER JOIN AulaAtual atual
+                        ON a.id_turma_disciplina_professor =
+                           atual.id_turma_disciplina_professor
+                    WHERE
+                        a.id <> atual.id
+                        AND a.media_atencao_total IS NOT NULL
+                        AND (
+                            a.data < atual.data
+                            OR (
+                                a.data = atual.data
+                                AND a.id < atual.id
+                            )
+                        )
+                    ORDER BY
+                        a.data DESC,
+                        a.id DESC
+                `);
+    
+            return result.recordset;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     
     async create(data, conteudo, idTurmaDisciplinaProfessor) {
         try {

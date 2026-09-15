@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  methods: 'GET,POST,PUT,DELETE', 
+  methods: 'GET,POST,PUT,PATCH,DELETE', 
   allowedHeaders: ['Content-Type', 'Authorization'], 
   optionsSuccessStatus: 200 
 };
@@ -19,6 +19,7 @@ const turmaRoutes = require('../app/routes/turmaRoutes');
 const turma_disciplina_professorRoutes = require('../app/routes/turma_disciplina_professorRoutes');
 const aulaRoutes = require('../app/routes/aulaRoutes');
 const leituraAtencaoRoutes = require('../app/routes/leituraAtencaoRoutes');
+const feedbackRoutes = require('../app/routes/feedbackRoutes');
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -31,5 +32,6 @@ app.use('/turmas', turmaRoutes);
 app.use('/turmaRelacao', turma_disciplina_professorRoutes);
 app.use('/aula', aulaRoutes);
 app.use('/leituraAtencao', leituraAtencaoRoutes);
+app.use('/feedback', feedbackRoutes);
 
 module.exports = app;

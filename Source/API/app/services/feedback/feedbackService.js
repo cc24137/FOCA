@@ -16,6 +16,15 @@ const {
     runHistoryRules
 } = require("./rules/historyRules");
 
+const {
+    runLessonRecommendations
+} = require("./recommendations/lessonRecommendations");
+
+const {
+    runHistoryRecommendations
+} = require("./recommendations/historyRecommendations");
+
+
 class FeedbackService {
 
     generateLessonFeedback(readings) {
@@ -30,7 +39,9 @@ class FeedbackService {
                         "Não há leituras de atenção disponíveis para esta aula."
                 },
 
-                items: []
+                items: [],
+
+                recommendations: []
             };
         }
 
@@ -48,6 +59,23 @@ class FeedbackService {
                     feedbackConfig.output.maxFeedbackItems
                 );
 
+        const recommendationItems =
+            runLessonRecommendations(
+                metrics,
+                selectedItems
+            );
+
+        const selectedRecommendations =
+            recommendationItems
+                .sort(
+                    (a, b) =>
+                        b.priority - a.priority
+                )
+                .slice(
+                    0,
+                    feedbackConfig.output.maxRecommendationItems
+                );
+
         return {
             summary: {
                 title: "Pontos para tomar nota",
@@ -56,7 +84,10 @@ class FeedbackService {
                     "Identificamos alguns comportamentos relevantes na atenção da turma durante esta aula."
             },
 
-            items: selectedItems
+            items: selectedItems,
+
+            recommendations:
+                selectedRecommendations
         };
     }
 
@@ -86,7 +117,9 @@ class FeedbackService {
                         `comparações históricas mais confiáveis.`
                 },
 
-                items: []
+                items: [],
+
+                recommendations: []
             };
         }
 
@@ -104,6 +137,23 @@ class FeedbackService {
                     feedbackConfig.output.maxFeedbackItems
                 );
 
+        const recommendationItems =
+            runHistoryRecommendations(
+                metrics,
+                selectedItems
+            );
+
+        const selectedRecommendations =
+            recommendationItems
+                .sort(
+                    (a, b) =>
+                        b.priority - a.priority
+                )
+                .slice(
+                    0,
+                    feedbackConfig.output.maxRecommendationItems
+                );
+
         return {
             summary: {
                 title: "Como a turma vem evoluindo",
@@ -112,7 +162,10 @@ class FeedbackService {
                     "Comparamos esta aula com o histórico recente da turma."
             },
 
-            items: selectedItems
+            items: selectedItems,
+
+            recommendations:
+                selectedRecommendations
         };
     }
 

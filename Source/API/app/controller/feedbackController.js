@@ -32,10 +32,11 @@ function historyUnavailableFeedback() {
                 "Esta aula ainda não possui uma média de atenção processada."
         },
 
-        items: []
+        items: [],
+
+        recommendations: []
     };
 }
-
 
 class FeedbackController {
 

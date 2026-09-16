@@ -32,7 +32,8 @@ const feedbackConfig = {
     },
 
     output: {
-        maxFeedbackItems: 4
+        maxFeedbackItems: 4,
+        maxRecommendationItems: 3
     }
 };
 

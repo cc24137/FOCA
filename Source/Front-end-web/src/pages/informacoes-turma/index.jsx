@@ -3,7 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../components/header";
 import Combobox from "../../components/combobox";
 import GenericLineChart from "../../components/time-vs-value-chart";
-import { unificarLinhasDoTempo } from "../../utils/chartHelpers"; // Importado do utils
+import GenericBarChart from "../../components/bar-chart";
+import { unificarLinhasDoTempo } from "../../utils/chartHelpers"; 
 import api from "../../services/api";
 import "./informacoes-turma.css";
 
@@ -54,7 +55,6 @@ export default function InformacoesTurma() {
     const [aulas, setAulas] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Estados para o Gráfico de Comparação
     const [dadosComparativos, setDadosComparativos] = useState([]);
     const [configuracaoLinhas, setConfiguracaoLinhas] = useState([]);
     const [jaComparou, setJaComparou] = useState(false);
@@ -88,7 +88,11 @@ export default function InformacoesTurma() {
                 }
 
                 if (resAulas.data) {
-                    setAulas(Array.isArray(resAulas.data) ? resAulas.data : [resAulas.data]);
+                    const dadosAulas = Array.isArray(resAulas.data) ? resAulas.data : [resAulas.data];
+                    
+                    console.table(dadosAulas); 
+
+                    setAulas(dadosAulas);
                 }
             } catch (error) {
                 console.error("Erro ao procurar as informações:", error);
@@ -104,6 +108,7 @@ export default function InformacoesTurma() {
         label: `Aula ${index + 1} - ${new Date(aula.data).toLocaleDateString('pt-PT')}`,
         value: aula.id.toString()
     }));
+    
 
     const handleRemoverAula = (aulaParaRemover) => {
         setAulasSelecionadas(prev => prev.filter(a => a.value !== aulaParaRemover.value));
@@ -120,25 +125,25 @@ export default function InformacoesTurma() {
         try {
             setLoading(true);
 
-            // 1. Filtra as aulas que o usuário escolheu no combobox
+            
             const aulasFiltradas = aulas.filter(aula =>
                 aulasSelecionadas.some(sel => sel.value === aula.id.toString())
             );
 
-            // 2. Busca os dados de atenção no backend para todas as aulas em paralelo
+            
             const listaParaUnificar = await Promise.all(
                 aulasFiltradas.map(async (aula) => {
                     const indexOriginal = aulas.findIndex(a => a.id === aula.id);
-                    alert(`ID da aula: ${aula.id}`);
-                    // Chama a rota do backend (ajuste a URL '/leituraAtencao' se o nome no seu controller for diferente)
+                    
+                    
                     const res = await api.get(`/leituraAtencao/${aula.id}`);
                     const logsDoBanco = res.data;
 
-                    // Mapeia o retorno do banco para o formato { segundos, temp } esperado pelo helper
+                    
                     const dataFormatada = logsDoBanco.map(log => ({
                         segundos: log.segundoVideo,
-                        // Caso o índice no banco seja de 0.0 a 1.0 e você queira porcentagem (0 a 100), multiplique por 100:
-                        temp: log.indiceAtencao <= 1 ? log.indiceAtencao * 100 : log.indiceAtencao 
+                        
+                        temp: log.indiceAtencao 
                     }));
 
                     return {
@@ -149,14 +154,12 @@ export default function InformacoesTurma() {
                 })
             );
 
-            // 3. Define a configuração de cores e rótulos
             const linhasConfig = listaParaUnificar.map((item, index) => ({
                 key: item.id,
                 label: item.label,
                 color: PALETA_CORES[index % PALETA_CORES.length]
             }));
 
-            // 4. Executa a unificação das linhas do tempo
             const dadosUnificados = unificarLinhasDoTempo(listaParaUnificar);
 
             setDadosComparativos(dadosUnificados);
@@ -237,8 +240,22 @@ export default function InformacoesTurma() {
                 {/* Box de Atenção Média */}
                 <div className='informacoes-turma-box-atencao-media'>
                     <p className='informacoes-turma-box-atencao-media-title'>Atenção média </p>
-                    <div className='informacoes-turma-box-atencao-media-content'>
+                    <div>
                         {loading && <p style={{padding: '10px'}}>Calculando dados...</p>}
+                        {!loading && aulas.length > 0 && (
+                            <GenericBarChart
+                                data={aulas.map((aula, index) => ({
+                                    label: `Aula ${index + 1} (${new Date(aula.data).toLocaleDateString('pt-PT')})`,
+                                    value: aula.media_atencao_total || 0
+                                }))}
+                                xKey="label"
+                                yKey="value"
+                                barColor="#4F46E5"
+                            />
+                        )}
+                        {!loading && aulas.length === 0 && (
+                            <p style={{padding: '10px'}}>Nenhuma aula encontrada.</p>
+                        )}
                     </div>
                 </div>
 

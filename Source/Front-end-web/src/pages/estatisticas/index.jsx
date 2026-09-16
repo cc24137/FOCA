@@ -374,7 +374,7 @@ export default function Estatisticas() {
             
             <div className="estatisticas-content" ref={reportRef}>
                 <div className="estatisticas-header-row">
-                    <h2>Estatísticas da Instituição {USE_MOCK && <span style={{ fontSize: '0.8rem', color: '#EF4444' }}>(Modo Mock Ativo)</span>}</h2>
+                    <h2>Estatísticas da Instituição </h2>
                     {dadosBarChart.length > 0 && (
                         <button 
                             className="estatisticas-btn-pdf" 

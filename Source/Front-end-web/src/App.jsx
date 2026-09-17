@@ -4,6 +4,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 import AlterarSenha       from "./pages/alterar-senha";
 import Cadastro           from "./pages/cadastro";
+import CadastroAula       from "./pages/cadastro-aula";
 import CodigoEmail        from "./pages/codigo-email";
 import Disciplinas        from "./pages/disciplinas";
 import EditarDados        from "./pages/editar-dados";
@@ -16,7 +17,7 @@ import Login              from "./pages/login";
 import Professores        from "./pages/professores";
 import TesteVideo         from "./pages/teste-video";
 import Turmas             from "./pages/turmas";
-import UploadVideo        from "./pages/upload-video";
+import UploadVideo        from "./pages/upload-video/index.jsx";
 import VinculosProfessor  from "./pages/vinculos-professor"
 import BackgroundCameraViewer from "./pages/teste/teste.jsx";
 import CameraApp from "./pages/teste/teste.jsx";
@@ -30,7 +31,6 @@ function App() {
                     <Route path="/inicial"               element={<Inicial />} />
                     <Route path="/alterar-senha"         element={<AlterarSenha />} />
                     <Route path="/cadastro"              element={<Cadastro />} />
-                    <Route path="/cadastro-aula"         element={<CadastroAula />} />
                     <Route path="/login"                 element={<Login />} />
                     <Route path="/codigo-email"          element={<CodigoEmail />} />
                     <Route path="/teste"                 element={<CameraApp />} />
@@ -38,6 +38,7 @@ function App() {
                     <Route path="*"                      element={<Inicial />} /> {/*Fallback leva para a tela inicial*/}
     
                     <Route element={<ProtectedRoute />}>
+                        <Route path="/cadastro-aula"         element={<CadastroAula />} />
                         <Route path="/disciplinas"           element={<Disciplinas />} />
                         <Route path="/editar-dados"          element={<EditarDados />} />
                         <Route path="/estatisticas"          element={<Estatisticas />} />

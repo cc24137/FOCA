@@ -116,7 +116,7 @@ class AulaCRUD {
                     sql.Int,
                     idTurmaDisciplinaProfessor
                 )
-                .input("idContentClassification", sql.Int, idContentClassification)
+                .input("id_classificacao_conteudo", sql.Int, idContentClassification)
                 .query(`
                     INSERT INTO FOCA.AULA (
                         data,

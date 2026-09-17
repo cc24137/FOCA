@@ -26,7 +26,8 @@ class AulaController {
         const {
             date,
             content,
-            classSubjectTeacherId
+            classSubjectTeacherId,
+            idContentClassification
         } = req.body;
     
         if (!date || !classSubjectTeacherId) {
@@ -39,7 +40,8 @@ class AulaController {
             const id = await aulaCRUD.create(
                 date,
                 content,
-                classSubjectTeacherId
+                classSubjectTeacherId,
+                idContentClassification
             );
     
             return res.status(201).json({ id });

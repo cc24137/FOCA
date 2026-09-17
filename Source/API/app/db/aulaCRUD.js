@@ -104,7 +104,7 @@ class AulaCRUD {
         }
     }
     
-    async create(data, conteudo, idTurmaDisciplinaProfessor) {
+    async create(data, conteudo, idTurmaDisciplinaProfessor, idContentClassification) {
         try {
             const pool = await db.getConnection();
     
@@ -116,17 +116,20 @@ class AulaCRUD {
                     sql.Int,
                     idTurmaDisciplinaProfessor
                 )
+                .input("idContentClassification", sql.Int, idContentClassification)
                 .query(`
                     INSERT INTO FOCA.AULA (
                         data,
                         conteudo,
-                        id_turma_disciplina_professor
+                        id_turma_disciplina_professor,
+                        id_classificacao_conteudo
                     )
                     OUTPUT INSERTED.id
                     VALUES (
                         @data,
                         @conteudo,
-                        @idTurmaDisciplinaProfessor
+                        @idTurmaDisciplinaProfessor,
+                        @id_classificacao_conteudo
                     )
                 `);
     

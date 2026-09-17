@@ -142,9 +142,7 @@ class AulaCRUD {
 
     async updateAnalysisData(
         id,
-        idClassificacaoConteudo,
-        arquivoVideo,
-        mediaAtencaoTotal
+        arquivoVideo
     ) {
         try {
             const pool = await db.getConnection();
@@ -152,26 +150,14 @@ class AulaCRUD {
             const result = await pool.request()
                 .input("id", sql.Int, id)
                 .input(
-                    "idClassificacaoConteudo",
-                    sql.Int,
-                    idClassificacaoConteudo
-                )
-                .input(
                     "arquivoVideo",
                     sql.VarChar(255),
                     arquivoVideo
                 )
-                .input(
-                    "mediaAtencaoTotal",
-                    sql.Decimal(5, 2),
-                    mediaAtencaoTotal
-                )
                 .query(`
                     UPDATE FOCA.Aula
                     SET
-                        id_classificacao_conteudo = @idClassificacaoConteudo,
                         arquivo_video = @arquivoVideo,
-                        media_atencao_total = @mediaAtencaoTotal,
                         data_processamento = CAST(GETDATE() AS DATE)
                     OUTPUT
                         INSERTED.id AS id,

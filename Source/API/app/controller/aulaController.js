@@ -61,35 +61,23 @@ class AulaController {
         const { id } = req.params;
 
         const {
-            idClassificacaoConteudo,
-            arquivoVideo,
-            mediaAtencaoTotal
+            arquivoVideo
         } = req.body;
 
         if (
-            idClassificacaoConteudo === undefined ||
-            mediaAtencaoTotal === undefined
+            arquivoVideo === undefined
         ) {
             return res.status(400).json({
                 error:
-                    "idClassificacaoConteudo e atencaoMediaTotal são obrigatórios"
+                    "É preciso adicionar o nome do arquivo do vídeo."
             });
         }
 
-        const parsedAverage = Number(totalAttentionAverage);
-
-        if (Number.isNaN(parsedAverage)) {
-            return res.status(400).json({
-                error: "totalAttentionAverage deve ser um número"
-            });
-        }
 
         try {
             const aula = await aulaCRUD.updateAnalysisData(
                 id,
-                idClassificacaoConteudo,
-                arquivoVideo ?? null,
-                parsedAverage
+                arquivoVideo
             );
 
             return res.status(200).json(aula);

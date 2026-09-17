@@ -1,10 +1,26 @@
-import './upload-video.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function UploadVideo() {
-    return (
-        <div className="upload-video-container">
-            <h1>Upload de Vídeo</h1>
-            <p>Esta é a página de upload de vídeo.</p>
-        </div>
-    );
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Desestrutura o idAula recebido do state da navegação
+  const { idAula } = location.state || {};
+
+  // Opcional: Redireciona de volta se a tela for acessada diretamente sem o ID
+  /*
+  useEffect(() => {
+    if (!idAula) {
+      alert('Aula não informada. Voltando para o cadastro...');
+      navigate('/cadastro-aula');
+    }
+  }, [idAula, navigate]);
+  */
+
+  return (
+    <div>
+      <h2>Upload do Vídeo da Aula</h2>
+      <p>ID da Aula Atual: <strong>{idAula}</strong></p>
+    </div>
+  );
 }

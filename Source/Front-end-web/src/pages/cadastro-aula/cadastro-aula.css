@@ -1,14 +1,14 @@
 /* ==========================================================================
    ESTRUTURA GLOBAL & CONTAINER
    ========================================================================== */
-.upload-video-body {
+.cadastro-aula-body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #f4f6f9;
 }
 
-.upload-video-content {
+.cadastro-aula-content {
   flex: 1;
   display: flex;
   justify-content: center;

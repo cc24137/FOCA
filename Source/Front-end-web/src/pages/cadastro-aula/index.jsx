@@ -10,7 +10,7 @@ export default function CadastroAula() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { idRelacao, nomeTurma, nomeDisciplina, instituicao, quantidadeAlunos } = location.state || {};
+  const { idRelacao, nomeTurma, nomeDisciplina } = location.state || {};
 
   const [classificacoes, setClassificacoes] = useState([]);
   const [classificacao, setClassificacao] = useState('');
@@ -48,61 +48,55 @@ export default function CadastroAula() {
     if (e) e.preventDefault();
 
     if (!selectedDate) {
-        alert('Por favor, selecione a data da aula.');
-        return;
+      alert('Por favor, selecione a data da aula.');
+      return;
     }
 
     if (!conteudo.trim()) {
-        alert('Por favor, descreva o conteúdo da aula.');
-        return;
+      alert('Por favor, descreva o conteúdo da aula.');
+      return;
     }
 
     setLoading(true);
 
     try {
-        // Formata a data para o padrão YYYY-MM-DD aceito pela API
-        const year = selectedDate.getFullYear();
-        const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-        const day = String(selectedDate.getDate()).padStart(2, '0');
-        const dateFormatted = `${year}-${month}-${day}`;
+      const year = selectedDate.getFullYear();
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDate.getDate()).padStart(2, '0');
+      const dateFormatted = `${year}-${month}-${day}`;
 
-        const payload = {
-            classSubjectTeacherId: idRelacao,
-            date: dateFormatted,
-            idContentClassification: classificacao,
-            content: conteudo
-        };
+      const payload = {
+        classSubjectTeacherId: idRelacao,
+        date: dateFormatted,
+        idContentClassification: classificacao,
+        content: conteudo
+      };
 
-        const response = await api.post('/aula/criar', payload);
+      const response = await api.post('/aula/criar', payload);
 
-        if (response.status === 201 || response.status === 200) {
-        navigate('/analise/upload', {
-            state: {
-            aulaCadastrada: response.data,
-            idRelacao,
-            nomeTurma,
-            nomeDisciplina,
-            instituicao,
-            quantidadeAlunos,
-            data: selectedDate,
-            classificacao,
-            conteudo
-            }
+      if (response.status === 201) {
+
+        const idAula = response.data.id;
+
+        navigate('/upload-video', {
+          state: {
+            idAula
+          }
         });
-        } else {
+      } else {
         alert('Erro ao cadastrar a aula.');
-        }
+      }
     } catch (error) {
-        console.error('Erro no cadastro da aula:', error?.response?.data || error);
-        const mensagem = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao cadastrar aula.';
-        alert(Array.isArray(mensagem) ? mensagem.join('\n') : mensagem);
+      console.error('Erro no cadastro da aula:', error?.response?.data || error);
+      const mensagem = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao cadastrar aula.';
+      alert(Array.isArray(mensagem) ? mensagem.join('\n') : mensagem);
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-    }
+  }
 
   return (
-    <div className='upload-video-body'>
+    <div className='cadastro-aula-body'>
       <Header
         routes={[
           { textButton: 'Início', routeButton: '/inicial-professor' },
@@ -111,7 +105,7 @@ export default function CadastroAula() {
         ]}
       />
 
-      <main className='upload-video-content'>
+      <main className='cadastro-aula-content'>
         <div className='cadastro-aula-card'>
           <div className='cadastro-aula-header'>
             <h2>Cadastro de Nova Aula</h2>

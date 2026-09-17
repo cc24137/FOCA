@@ -24,7 +24,7 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    order: 1; /* 1º no topo: Cabeçalho com dados da turma */
+    order: 1;
 }
 
 .informacoes-turma-box-row {
@@ -58,7 +58,8 @@
     gap: 30px;
     font-size: 21px;
 }
-.informacoes-turma-box-container-column{
+
+.informacoes-turma-box-container-column {
     display: flex;
     flex-direction: column;
     width: 15%;
@@ -81,13 +82,12 @@
     white-space: nowrap;
 }
 
-/* Seção de Comparação movida para cima via order */
 .informacoes-turma-box-comparacao-aulas {
     width: 80%;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    order: 2; /* 2º: Comparação detalhada de aulas */
+    order: 2;
 }
 
 .informacoes-turma-box-comparacao-aulas-title {
@@ -111,7 +111,7 @@
     gap: 30px;
 }
 
-.informacoes-turma-comparacao-aulas-label{
+.informacoes-turma-comparacao-aulas-label {
     font-size: 20px;
     width: 300px;
     font-weight: 500;
@@ -176,49 +176,59 @@
     height: 280px;
 }
 
-.informacoes-turma-box-atencao-media {
+/* ==========================================================================
+   GRUPO LADO A LADO NO DESKTOP (Atenção Média + Histórico de Aulas)
+   ========================================================================== */
+.informacoes-turma-row-group {
     width: 80%;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: stretch;
+    order: 3;
+}
+
+.informacoes-turma-row-group .informacoes-turma-box-atencao-media,
+.informacoes-turma-row-group .informacoes-turma-box-historico-aulas {
+    flex: 1;
+    width: 50%;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    order: 3; /* 3º: Gráfico de Atenção Média */
 }
 
-.informacoes-turma-box-atencao-media-title {
-    font-size: 25px;
-    font-weight: 600;
-    align-self: flex-start;
-}
-
-.informacoes-turma-box-atencao-media-content {
-    background-color: rgb(114, 116, 118);
-    height: 280px;
-}
-
-.informacoes-turma-box-historico-aulas {
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    order: 4; /* 4º na base: Tabela de Histórico de aulas */
-}
-
+.informacoes-turma-box-atencao-media-title,
 .informacoes-turma-box-historico-aulas-title {
     font-size: 25px;
     font-weight: 600;
     align-self: flex-start;
 }
 
+.informacoes-turma-box-atencao-media-content {
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 15px;
+    min-height: 280px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Fundo neutro (branco) para o histórico de aulas */
 .informacoes-turma-box-historico-aulas-content {
-    background-color: rgb(114, 116, 118);
-    height: 280px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 15px;
+    min-height: 280px;
+    max-height: 380px;
+    overflow-y: auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* Estilos para a tabela de histórico de aulas */
 .tabela-aulas {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
     font-family: var(--font-inter), sans-serif;
 }
 
@@ -228,16 +238,17 @@
     text-align: left;
     padding: 12px;
     font-weight: 500;
+    border-radius: 6px 6px 0 0;
 }
 
 .tabela-aulas td {
     padding: 12px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #e5e7eb;
     color: #333;
 }
 
 .tabela-aulas tr:hover {
-    background-color: #f9f9f9;
+    background-color: #f9fafb;
 }
 
 /* ==========================================================================
@@ -250,9 +261,18 @@
     }
 
     .informacoes-turma-box, 
-    .informacoes-turma-box-atencao-media, 
-    .informacoes-turma-box-historico-aulas, 
-    .informacoes-turma-box-comparacao-aulas {
+    .informacoes-turma-box-comparacao-aulas,
+    .informacoes-turma-row-group {
+        width: 100%;
+    }
+
+    .informacoes-turma-row-group {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .informacoes-turma-row-group .informacoes-turma-box-atencao-media,
+    .informacoes-turma-row-group .informacoes-turma-box-historico-aulas {
         width: 100%;
     }
 

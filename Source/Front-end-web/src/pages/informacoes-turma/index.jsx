@@ -89,9 +89,7 @@ export default function InformacoesTurma() {
 
                 if (resAulas.data) {
                     const dadosAulas = Array.isArray(resAulas.data) ? resAulas.data : [resAulas.data];
-                    
                     console.table(dadosAulas); 
-
                     setAulas(dadosAulas);
                 }
             } catch (error) {
@@ -108,7 +106,6 @@ export default function InformacoesTurma() {
         label: `Aula ${index + 1} - ${new Date(aula.data).toLocaleDateString('pt-PT')}`,
         value: aula.id.toString()
     }));
-    
 
     const handleRemoverAula = (aulaParaRemover) => {
         setAulasSelecionadas(prev => prev.filter(a => a.value !== aulaParaRemover.value));
@@ -125,24 +122,18 @@ export default function InformacoesTurma() {
         try {
             setLoading(true);
 
-            
             const aulasFiltradas = aulas.filter(aula =>
                 aulasSelecionadas.some(sel => sel.value === aula.id.toString())
             );
 
-            
             const listaParaUnificar = await Promise.all(
                 aulasFiltradas.map(async (aula) => {
                     const indexOriginal = aulas.findIndex(a => a.id === aula.id);
-                    
-                    
                     const res = await api.get(`/leituraAtencao/${aula.id}`);
                     const logsDoBanco = res.data;
 
-                    
                     const dataFormatada = logsDoBanco.map(log => ({
                         segundos: log.segundoVideo,
-                        
                         temp: log.indiceAtencao 
                     }));
 
@@ -237,59 +228,6 @@ export default function InformacoesTurma() {
                     </div>
                 </div>
 
-                {/* Box de Atenção Média */}
-                <div className='informacoes-turma-box-atencao-media'>
-                    <p className='informacoes-turma-box-atencao-media-title'>Atenção média </p>
-                    <div>
-                        {loading && <p style={{padding: '10px'}}>Calculando dados...</p>}
-                        {!loading && aulas.length > 0 && (
-                            <GenericBarChart
-                                data={aulas.map((aula, index) => ({
-                                    label: `Aula ${index + 1} (${new Date(aula.data).toLocaleDateString('pt-PT')})`,
-                                    value: aula.media_atencao_total || 0
-                                }))}
-                                xKey="label"
-                                yKey="value"
-                                barColor="#4F46E5"
-                            />
-                        )}
-                        {!loading && aulas.length === 0 && (
-                            <p style={{padding: '10px'}}>Nenhuma aula encontrada.</p>
-                        )}
-                    </div>
-                </div>
-
-                {/* Histórico de Aulas */}
-                <div className='informacoes-turma-box-historico-aulas'>
-                    <p className='informacoes-turma-box-historico-aulas-title'>Histórico de aulas </p>
-                    <div className='informacoes-turma-box-historico-aulas-content'>
-                        {loading && aulas.length === 0 ? (
-                            <p style={{ padding: '20px' }}>Buscando histórico...</p>
-                        ) : aulas.length > 0 ? (
-                            <table className="tabela-aulas">
-                                <thead>
-                                    <tr>
-                                        <th>Data</th>
-                                        <th>Conteúdo</th>
-                                        <th>Classificação</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {aulas.map((aula) => (
-                                        <tr key={aula.id}>
-                                            <td>{new Date(aula.data).toLocaleDateString('pt-PT')}</td>
-                                            <td>{aula.conteudo}</td>
-                                            <td>{aula.nome_classificacao || 'Sem classificação'}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        ) : (
-                            <p style={{ padding: '20px' }}>Nenhuma aula encontrada.</p>
-                        )}
-                    </div>
-                </div>
-
                 {/* Comparação de Aulas */}
                 <div className='informacoes-turma-box-comparacao-aulas'>
                     <p className='informacoes-turma-box-comparacao-aulas-title'>Comparação detalhada</p>
@@ -359,6 +297,62 @@ export default function InformacoesTurma() {
                                 Selecione uma ou mais aulas acima e clique em <strong>Comparar</strong> para visualizar o gráfico sobreposto.
                             </p>
                         )}
+                    </div>
+                </div>
+
+                {/* Seção Lado a Lado no Desktop: Atenção Média + Histórico de Aulas */}
+                <div className='informacoes-turma-row-group'>
+                    {/* Box de Atenção Média */}
+                    <div className='informacoes-turma-box-atencao-media'>
+                        <p className='informacoes-turma-box-atencao-media-title'>Atenção média</p>
+                        <div className='informacoes-turma-box-atencao-media-content'>
+                            {loading && <p style={{padding: '10px'}}>Calculando dados...</p>}
+                            {!loading && aulas.length > 0 && (
+                                <GenericBarChart
+                                    data={aulas.map((aula, index) => ({
+                                        label: `Aula ${index + 1} (${new Date(aula.data).toLocaleDateString('pt-PT')})`,
+                                        value: aula.media_atencao_total || 0
+                                    }))}
+                                    xKey="label"
+                                    yKey="value"
+                                    barColor="#4F46E5"
+                                />
+                            )}
+                            {!loading && aulas.length === 0 && (
+                                <p style={{padding: '10px'}}>Nenhuma aula encontrada.</p>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Histórico de Aulas */}
+                    <div className='informacoes-turma-box-historico-aulas'>
+                        <p className='informacoes-turma-box-historico-aulas-title'>Histórico de aulas</p>
+                        <div className='informacoes-turma-box-historico-aulas-content'>
+                            {loading && aulas.length === 0 ? (
+                                <p style={{ padding: '20px' }}>Buscando histórico...</p>
+                            ) : aulas.length > 0 ? (
+                                <table className="tabela-aulas">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Conteúdo</th>
+                                            <th>Classificação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {aulas.map((aula) => (
+                                            <tr key={aula.id}>
+                                                <td>{new Date(aula.data).toLocaleDateString('pt-PT')}</td>
+                                                <td>{aula.conteudo}</td>
+                                                <td>{aula.nome_classificacao || 'Sem classificação'}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <p style={{ padding: '20px' }}>Nenhuma aula encontrada.</p>
+                            )}
+                        </div>
                     </div>
                 </div>
 

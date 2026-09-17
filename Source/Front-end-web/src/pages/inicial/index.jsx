@@ -146,7 +146,7 @@ export default function Inicial() {
                         </div>
 
                         <div className='inicial-how-it-works-cards-element'>
-                            <p className='inicial-how-it-works-card-title'>6.Compare diferentes aulas</p>
+                            <p className='inicial-how-it-works-card-title'>6. Compare diferentes aulas</p>
                             <div className='inicial-how-it-works-card'>
                                 <p className='inicial-how-it-works-card-text'>Gráficos da atenção da aula individual e comparações com outras aulas. Relatório em formato PDF também!</p>
                             </div>

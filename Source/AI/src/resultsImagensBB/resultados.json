@@ -1,8 +1,8 @@
 [
   {
     "imagem": "testeFOCA1.jpg",
-    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA1_resultado.jpg",
-    "media_atencao": 0.8,
+    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA1_resultado.jpg",
+    "media_atencao": 0.85,
     "total_alunos": 7,
     "focados": 5,
     "parciais": 2,
@@ -12,35 +12,16 @@
     "detalhes_alunos": [
       {
         "bbox": [
-          602,
-          292,
-          709,
-          407
+          1125,
+          193,
+          1223,
+          318
         ],
-        "confianca_yolo": 0.8689,
+        "confianca_yolo": 0.865,
         "boca": 0.0,
-        "proporcao": 0.93,
+        "proporcao": 0.78,
         "aluno": 1,
-        "indice": 0.54,
-        "status": "PARCIAL",
-        "cor_bgr": [
-          0,
-          255,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          880,
-          232,
-          953,
-          332
-        ],
-        "confianca_yolo": 0.8561,
-        "boca": 0.0,
-        "proporcao": 0.73,
-        "aluno": 2,
-        "indice": 0.99,
+        "indice": 0.94,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -53,32 +34,51 @@
           952,
           321,
           1079,
-          481
+          483
         ],
-        "confianca_yolo": 0.8487,
+        "confianca_yolo": 0.8514,
         "boca": 0.0,
-        "proporcao": 0.79,
-        "aluno": 3,
-        "indice": 0.83,
+        "proporcao": 0.78,
+        "aluno": 2,
+        "indice": 0.94,
         "status": "FOCADO",
         "cor_bgr": [
           0,
           255,
           0
+        ]
+      },
+      {
+        "bbox": [
+          602,
+          293,
+          707,
+          407
+        ],
+        "confianca_yolo": 0.8282,
+        "boca": 0.0,
+        "proporcao": 0.92,
+        "aluno": 3,
+        "indice": 0.64,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
         ]
       },
       {
         "bbox": [
           316,
           306,
-          431,
-          446
+          429,
+          448
         ],
-        "confianca_yolo": 0.8409,
+        "confianca_yolo": 0.8169,
         "boca": 0.0,
-        "proporcao": 0.82,
+        "proporcao": 0.8,
         "aluno": 4,
-        "indice": 0.76,
+        "indice": 0.9,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -88,16 +88,16 @@
       },
       {
         "bbox": [
-          1128,
-          195,
-          1220,
-          320
+          883,
+          234,
+          953,
+          333
         ],
-        "confianca_yolo": 0.8244,
+        "confianca_yolo": 0.8003,
         "boca": 0.0,
-        "proporcao": 0.74,
+        "proporcao": 0.71,
         "aluno": 5,
-        "indice": 0.96,
+        "indice": 0.92,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -108,15 +108,15 @@
       {
         "bbox": [
           1371,
-          326,
-          1451,
-          434
+          323,
+          1448,
+          426
         ],
-        "confianca_yolo": 0.8041,
+        "confianca_yolo": 0.7888,
         "boca": 0.0,
-        "proporcao": 0.74,
+        "proporcao": 0.75,
         "aluno": 6,
-        "indice": 0.96,
+        "indice": 1.0,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -127,15 +127,15 @@
       {
         "bbox": [
           294,
-          246,
+          245,
           381,
           340
         ],
-        "confianca_yolo": 0.7363,
+        "confianca_yolo": 0.7265,
         "boca": 0.0,
-        "proporcao": 0.93,
+        "proporcao": 0.92,
         "aluno": 7,
-        "indice": 0.54,
+        "indice": 0.64,
         "status": "PARCIAL",
         "cor_bgr": [
           0,
@@ -147,25 +147,25 @@
   },
   {
     "imagem": "testeFOCA2.jpg",
-    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA2_resultado.jpg",
-    "media_atencao": 0.78,
+    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA2_resultado.jpg",
+    "media_atencao": 0.8,
     "total_alunos": 12,
-    "focados": 10,
-    "parciais": 2,
+    "focados": 9,
+    "parciais": 3,
     "distraidos": 0,
-    "distraidos_equivalentes": 1.0,
+    "distraidos_equivalentes": 1.5,
     "modo_coletivo": false,
     "detalhes_alunos": [
       {
         "bbox": [
-          619,
-          157,
-          660,
-          204
+          618,
+          156,
+          661,
+          203
         ],
-        "confianca_yolo": 0.8694,
+        "confianca_yolo": 0.8486,
         "boca": 0.0,
-        "proporcao": 0.87,
+        "proporcao": 0.91,
         "aluno": 1,
         "indice": 0.66,
         "status": "PARCIAL",
@@ -180,13 +180,13 @@
           79,
           264,
           129,
-          325
+          324
         ],
-        "confianca_yolo": 0.848,
+        "confianca_yolo": 0.8028,
         "boca": 0.0,
-        "proporcao": 0.82,
+        "proporcao": 0.83,
         "aluno": 2,
-        "indice": 0.76,
+        "indice": 0.84,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -201,11 +201,11 @@
           111,
           224
         ],
-        "confianca_yolo": 0.826,
+        "confianca_yolo": 0.8021,
         "boca": 0.0,
         "proporcao": 0.8,
         "aluno": 3,
-        "indice": 0.8,
+        "indice": 0.9,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -215,16 +215,16 @@
       },
       {
         "bbox": [
-          308,
+          309,
           198,
           329,
-          225
+          226
         ],
-        "confianca_yolo": 0.7964,
+        "confianca_yolo": 0.7983,
         "boca": 0.0,
-        "proporcao": 0.78,
+        "proporcao": 0.71,
         "aluno": 4,
-        "indice": 0.85,
+        "indice": 0.92,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -236,14 +236,14 @@
         "bbox": [
           526,
           184,
-          549,
+          548,
           211
         ],
-        "confianca_yolo": 0.7833,
+        "confianca_yolo": 0.7869,
         "boca": 0.0,
-        "proporcao": 0.85,
+        "proporcao": 0.81,
         "aluno": 5,
-        "indice": 0.7,
+        "indice": 0.88,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -254,15 +254,15 @@
       {
         "bbox": [
           241,
-          176,
-          257,
-          197
+          177,
+          258,
+          198
         ],
-        "confianca_yolo": 0.7596,
+        "confianca_yolo": 0.7808,
         "boca": 0.0,
-        "proporcao": 0.76,
+        "proporcao": 0.81,
         "aluno": 6,
-        "indice": 0.91,
+        "indice": 0.88,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -272,35 +272,16 @@
       },
       {
         "bbox": [
-          402,
+          403,
           174,
-          420,
+          421,
           197
         ],
-        "confianca_yolo": 0.7571,
+        "confianca_yolo": 0.769,
         "boca": 0.0,
         "proporcao": 0.78,
         "aluno": 7,
-        "indice": 0.85,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          205,
-          200,
-          227,
-          227
-        ],
-        "confianca_yolo": 0.7542,
-        "boca": 0.0,
-        "proporcao": 0.81,
-        "aluno": 8,
-        "indice": 0.78,
+        "indice": 0.94,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -313,13 +294,32 @@
           178,
           162,
           193,
-          181
+          180
         ],
-        "confianca_yolo": 0.7469,
+        "confianca_yolo": 0.7669,
         "boca": 0.0,
-        "proporcao": 0.79,
+        "proporcao": 0.83,
+        "aluno": 8,
+        "indice": 0.84,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          204,
+          200,
+          230,
+          230
+        ],
+        "confianca_yolo": 0.7593,
+        "boca": 0.0,
+        "proporcao": 0.87,
         "aluno": 9,
-        "indice": 0.83,
+        "indice": 0.75,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -330,161 +330,85 @@
       {
         "bbox": [
           40,
-          176,
+          177,
           61,
-          201
+          199
         ],
-        "confianca_yolo": 0.7278,
+        "confianca_yolo": 0.7556,
         "boca": 0.0,
-        "proporcao": 0.84,
+        "proporcao": 0.95,
         "aluno": 10,
-        "indice": 0.72,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          12,
-          152,
-          26,
-          170
-        ],
-        "confianca_yolo": 0.7211,
-        "boca": 0.0,
-        "proporcao": 0.78,
-        "aluno": 11,
-        "indice": 0.85,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          91,
-          159,
-          105,
-          175
-        ],
-        "confianca_yolo": 0.6876,
-        "boca": 0.0,
-        "proporcao": 0.88,
-        "aluno": 12,
-        "indice": 0.64,
+        "indice": 0.57,
         "status": "PARCIAL",
         "cor_bgr": [
           0,
           255,
           255
+        ]
+      },
+      {
+        "bbox": [
+          13,
+          152,
+          28,
+          168
+        ],
+        "confianca_yolo": 0.7103,
+        "boca": 0.0,
+        "proporcao": 0.94,
+        "aluno": 11,
+        "indice": 0.59,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          90,
+          159,
+          104,
+          176
+        ],
+        "confianca_yolo": 0.71,
+        "boca": 0.0,
+        "proporcao": 0.82,
+        "aluno": 12,
+        "indice": 0.86,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
         ]
       }
     ]
   },
   {
     "imagem": "testeFOCA3.jpg",
-    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA3_resultado.jpg",
-    "media_atencao": 0.53,
-    "total_alunos": 21,
-    "focados": 12,
-    "parciais": 3,
-    "distraidos": 6,
-    "distraidos_equivalentes": 7.5,
+    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA3_resultado.jpg",
+    "media_atencao": 0.63,
+    "total_alunos": 20,
+    "focados": 13,
+    "parciais": 2,
+    "distraidos": 5,
+    "distraidos_equivalentes": 6.0,
     "modo_coletivo": false,
     "detalhes_alunos": [
       {
         "bbox": [
-          1210,
-          230,
-          1291,
-          332
-        ],
-        "confianca_yolo": 0.8899,
-        "boca": 0.0,
-        "proporcao": 0.79,
-        "aluno": 1,
-        "indice": 0.83,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          556,
-          273,
-          655,
-          395
-        ],
-        "confianca_yolo": 0.8714,
-        "boca": 0.0,
-        "proporcao": 0.81,
-        "aluno": 2,
-        "indice": 0.78,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          176,
-          237,
-          269,
-          351
-        ],
-        "confianca_yolo": 0.8701,
-        "boca": 0.0,
-        "proporcao": 0.82,
-        "aluno": 3,
-        "indice": 0.76,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          379,
-          519,
-          523,
-          702
-        ],
-        "confianca_yolo": 0.8699,
-        "boca": 0.0,
-        "proporcao": 0.79,
-        "aluno": 4,
-        "indice": 0.83,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          1083,
+          1079,
           779,
-          1258,
-          978
+          1259,
+          979
         ],
-        "confianca_yolo": 0.8691,
+        "confianca_yolo": 0.87,
         "boca": 0.0,
-        "proporcao": 0.88,
-        "aluno": 5,
-        "indice": 0.64,
+        "proporcao": 0.9,
+        "aluno": 1,
+        "indice": 0.69,
         "status": "PARCIAL",
         "cor_bgr": [
           0,
@@ -494,16 +418,73 @@
       },
       {
         "bbox": [
-          686,
-          361,
-          780,
-          472
+          382,
+          520,
+          522,
+          701
         ],
-        "confianca_yolo": 0.8442,
+        "confianca_yolo": 0.8551,
         "boca": 0.0,
-        "proporcao": 0.85,
-        "aluno": 6,
-        "indice": 0.7,
+        "proporcao": 0.77,
+        "aluno": 2,
+        "indice": 0.96,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          175,
+          237,
+          269,
+          349
+        ],
+        "confianca_yolo": 0.847,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 3,
+        "indice": 0.82,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          555,
+          271,
+          654,
+          397
+        ],
+        "confianca_yolo": 0.8469,
+        "boca": 0.0,
+        "proporcao": 0.79,
+        "aluno": 4,
+        "indice": 0.92,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          922,
+          265,
+          1004,
+          363
+        ],
+        "confianca_yolo": 0.8392,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 5,
+        "indice": 0.82,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -515,14 +496,52 @@
         "bbox": [
           739,
           182,
-          809,
-          264
+          811,
+          266
         ],
-        "confianca_yolo": 0.8414,
+        "confianca_yolo": 0.8317,
         "boca": 0.0,
-        "proporcao": 0.85,
+        "proporcao": 0.86,
+        "aluno": 6,
+        "indice": 0.78,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          1210,
+          231,
+          1291,
+          331
+        ],
+        "confianca_yolo": 0.825,
+        "boca": 0.0,
+        "proporcao": 0.81,
         "aluno": 7,
-        "indice": 0.7,
+        "indice": 0.88,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          422,
+          178,
+          503,
+          275
+        ],
+        "confianca_yolo": 0.8145,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 8,
+        "indice": 0.82,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -534,33 +553,14 @@
         "bbox": [
           637,
           150,
-          702,
-          229
+          703,
+          228
         ],
-        "confianca_yolo": 0.8395,
-        "boca": 0.0,
-        "proporcao": 0.82,
-        "aluno": 8,
-        "indice": 0.76,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          921,
-          266,
-          1005,
-          365
-        ],
-        "confianca_yolo": 0.8363,
+        "confianca_yolo": 0.8141,
         "boca": 0.0,
         "proporcao": 0.85,
         "aluno": 9,
-        "indice": 0.7,
+        "indice": 0.8,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -570,16 +570,35 @@
       },
       {
         "bbox": [
-          421,
-          181,
-          503,
-          277
+          687,
+          359,
+          781,
+          467
         ],
-        "confianca_yolo": 0.827,
+        "confianca_yolo": 0.814,
         "boca": 0.0,
-        "proporcao": 0.85,
+        "proporcao": 0.87,
         "aluno": 10,
-        "indice": 0.7,
+        "indice": 0.75,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          242,
+          117,
+          296,
+          181
+        ],
+        "confianca_yolo": 0.8072,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 11,
+        "indice": 0.82,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -590,15 +609,15 @@
       {
         "bbox": [
           1302,
-          334,
+          335,
           1393,
-          434
+          435
         ],
-        "confianca_yolo": 0.8057,
+        "confianca_yolo": 0.7906,
         "boca": 0.0,
         "proporcao": 0.91,
-        "aluno": 11,
-        "indice": 0.58,
+        "aluno": 12,
+        "indice": 0.66,
         "status": "PARCIAL",
         "cor_bgr": [
           0,
@@ -608,33 +627,14 @@
       },
       {
         "bbox": [
-          242,
-          117,
-          296,
-          181
+          136,
+          149,
+          216,
+          242
         ],
-        "confianca_yolo": 0.7993,
+        "confianca_yolo": 0.7787,
         "boca": 0.0,
-        "proporcao": 0.84,
-        "aluno": 12,
-        "indice": 0.72,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          1477,
-          39,
-          1524,
-          97
-        ],
-        "confianca_yolo": 0.7922,
-        "boca": 0.0,
-        "proporcao": 0.81,
+        "proporcao": 0.86,
         "aluno": 13,
         "indice": 0.78,
         "status": "FOCADO",
@@ -646,16 +646,16 @@
       },
       {
         "bbox": [
-          136,
-          152,
-          215,
-          246
+          1477,
+          37,
+          1523,
+          97
         ],
-        "confianca_yolo": 0.7763,
+        "confianca_yolo": 0.7747,
         "boca": 0.0,
-        "proporcao": 0.84,
+        "proporcao": 0.77,
         "aluno": 14,
-        "indice": 0.72,
+        "indice": 0.96,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -665,35 +665,54 @@
       },
       {
         "bbox": [
-          1380,
-          66,
+          1379,
+          65,
           1431,
-          122
+          124
         ],
-        "confianca_yolo": 0.7486,
+        "confianca_yolo": 0.7716,
         "boca": 0.0,
-        "proporcao": 0.91,
+        "proporcao": 0.88,
         "aluno": 15,
-        "indice": 0.58,
-        "status": "PARCIAL",
+        "indice": 0.73,
+        "status": "FOCADO",
         "cor_bgr": [
           0,
           255,
-          255
+          0
         ]
       },
       {
         "bbox": [
           1277,
-          536,
-          1376,
-          635
+          533,
+          1374,
+          628
         ],
-        "confianca_yolo": 0.6744,
+        "confianca_yolo": 0.7359,
         "boca": 0.0,
-        "proporcao": 1.0,
+        "proporcao": 1.02,
         "aluno": 16,
-        "indice": 0.4,
+        "indice": 0.41,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          1572,
+          85,
+          1600,
+          135
+        ],
+        "confianca_yolo": 0.7301,
+        "boca": 0.0,
+        "proporcao": 0.56,
+        "aluno": 17,
+        "indice": 0.08,
         "status": "DISTRAIDO",
         "cor_bgr": [
           0,
@@ -705,31 +724,12 @@
         "bbox": [
           0,
           93,
-          10,
-          169
+          12,
+          179
         ],
-        "confianca_yolo": 0.6352,
+        "confianca_yolo": 0.498,
         "boca": 0.0,
-        "proporcao": 0.13,
-        "aluno": 17,
-        "indice": 0.0,
-        "status": "DISTRAIDO",
-        "cor_bgr": [
-          0,
-          0,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          1553,
-          527,
-          1600,
-          625
-        ],
-        "confianca_yolo": 0.5474,
-        "boca": 0.0,
-        "proporcao": 0.48,
+        "proporcao": 0.14,
         "aluno": 18,
         "indice": 0.0,
         "status": "DISTRAIDO",
@@ -741,14 +741,14 @@
       },
       {
         "bbox": [
-          0,
-          92,
-          13,
-          173
+          1555,
+          649,
+          1600,
+          791
         ],
-        "confianca_yolo": 0.5377,
+        "confianca_yolo": 0.3402,
         "boca": 0.0,
-        "proporcao": 0.16,
+        "proporcao": 0.32,
         "aluno": 19,
         "indice": 0.0,
         "status": "DISTRAIDO",
@@ -760,34 +760,15 @@
       },
       {
         "bbox": [
-          1573,
-          84,
-          1600,
-          137
+          1561,
+          525,
+          1599,
+          605
         ],
-        "confianca_yolo": 0.4857,
+        "confianca_yolo": 0.3206,
         "boca": 0.0,
-        "proporcao": 0.51,
+        "proporcao": 0.47,
         "aluno": 20,
-        "indice": 0.0,
-        "status": "DISTRAIDO",
-        "cor_bgr": [
-          0,
-          0,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          1551,
-          646,
-          1600,
-          810
-        ],
-        "confianca_yolo": 0.4402,
-        "boca": 0.0,
-        "proporcao": 0.3,
-        "aluno": 21,
         "indice": 0.0,
         "status": "DISTRAIDO",
         "cor_bgr": [
@@ -800,27 +781,27 @@
   },
   {
     "imagem": "testeFOCA4.jpg",
-    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA4_resultado.jpg",
-    "media_atencao": 0.6,
+    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA4_resultado.jpg",
+    "media_atencao": 0.67,
     "total_alunos": 9,
-    "focados": 4,
+    "focados": 5,
     "parciais": 2,
-    "distraidos": 3,
-    "distraidos_equivalentes": 4.0,
+    "distraidos": 2,
+    "distraidos_equivalentes": 3.0,
     "modo_coletivo": false,
     "detalhes_alunos": [
       {
         "bbox": [
-          1398,
-          278,
-          1528,
+          1397,
+          280,
+          1530,
           447
         ],
-        "confianca_yolo": 0.8579,
+        "confianca_yolo": 0.8591,
         "boca": 0.0,
-        "proporcao": 0.77,
+        "proporcao": 0.8,
         "aluno": 1,
-        "indice": 0.88,
+        "indice": 0.9,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -831,15 +812,15 @@
       {
         "bbox": [
           0,
-          396,
-          92,
-          530
+          401,
+          91,
+          531
         ],
-        "confianca_yolo": 0.848,
+        "confianca_yolo": 0.8403,
         "boca": 0.0,
-        "proporcao": 0.69,
+        "proporcao": 0.7,
         "aluno": 2,
-        "indice": 0.91,
+        "indice": 0.9,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -849,16 +830,16 @@
       },
       {
         "bbox": [
-          107,
-          234,
-          180,
-          310
+          106,
+          236,
+          181,
+          313
         ],
-        "confianca_yolo": 0.8326,
+        "confianca_yolo": 0.811,
         "boca": 0.0,
-        "proporcao": 0.96,
+        "proporcao": 0.97,
         "aluno": 3,
-        "indice": 0.48,
+        "indice": 0.53,
         "status": "PARCIAL",
         "cor_bgr": [
           0,
@@ -868,16 +849,16 @@
       },
       {
         "bbox": [
-          1381,
-          166,
-          1456,
-          242
+          1380,
+          168,
+          1454,
+          241
         ],
-        "confianca_yolo": 0.8073,
+        "confianca_yolo": 0.791,
         "boca": 0.0,
-        "proporcao": 0.99,
+        "proporcao": 1.01,
         "aluno": 4,
-        "indice": 0.42,
+        "indice": 0.43,
         "status": "DISTRAIDO",
         "cor_bgr": [
           0,
@@ -887,16 +868,16 @@
       },
       {
         "bbox": [
-          1071,
-          191,
-          1158,
-          294
+          1070,
+          192,
+          1159,
+          293
         ],
-        "confianca_yolo": 0.7811,
+        "confianca_yolo": 0.7818,
         "boca": 0.0,
-        "proporcao": 0.84,
+        "proporcao": 0.88,
         "aluno": 5,
-        "indice": 0.72,
+        "indice": 0.73,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -906,86 +887,86 @@
       },
       {
         "bbox": [
-          891,
+          889,
           284,
-          1008,
-          424
+          1012,
+          421
         ],
-        "confianca_yolo": 0.7326,
-        "boca": 0.0,
-        "proporcao": 0.84,
-        "aluno": 6,
-        "indice": 0.72,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          612,
-          274,
-          707,
-          380
-        ],
-        "confianca_yolo": 0.6824,
+        "confianca_yolo": 0.7802,
         "boca": 0.0,
         "proporcao": 0.9,
-        "aluno": 7,
-        "indice": 0.6,
+        "aluno": 6,
+        "indice": 0.69,
         "status": "PARCIAL",
         "cor_bgr": [
           0,
           255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          618,
+          274,
+          704,
+          379
+        ],
+        "confianca_yolo": 0.7311,
+        "boca": 0.0,
+        "proporcao": 0.82,
+        "aluno": 7,
+        "indice": 0.86,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          455,
+          252,
+          530,
+          309
+        ],
+        "confianca_yolo": 0.7135,
+        "boca": 0.0,
+        "proporcao": 1.32,
+        "aluno": 8,
+        "indice": 0.0,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
           255
         ]
       },
       {
         "bbox": [
           828,
-          183,
-          891,
-          289
+          184,
+          890,
+          266
         ],
-        "confianca_yolo": 0.5051,
+        "confianca_yolo": 0.667,
         "boca": 0.0,
-        "proporcao": 0.59,
-        "aluno": 8,
-        "indice": 0.32,
-        "status": "DISTRAIDO",
-        "cor_bgr": [
-          0,
-          0,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          458,
-          248,
-          528,
-          315
-        ],
-        "confianca_yolo": 0.4379,
-        "boca": 0.0,
-        "proporcao": 1.04,
+        "proporcao": 0.76,
         "aluno": 9,
-        "indice": 0.32,
-        "status": "DISTRAIDO",
+        "indice": 0.98,
+        "status": "FOCADO",
         "cor_bgr": [
           0,
-          0,
-          255
+          255,
+          0
         ]
       }
     ]
   },
   {
     "imagem": "testeFOCA5.webp",
-    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA5_resultado.jpg",
-    "media_atencao": 0.73,
+    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA5_resultado.jpg",
+    "media_atencao": 0.78,
     "total_alunos": 5,
     "focados": 4,
     "parciais": 1,
@@ -995,16 +976,16 @@
     "detalhes_alunos": [
       {
         "bbox": [
-          324,
-          63,
-          371,
-          122
+          99,
+          46,
+          156,
+          114
         ],
-        "confianca_yolo": 0.8739,
+        "confianca_yolo": 0.8573,
         "boca": 0.0,
-        "proporcao": 0.8,
+        "proporcao": 0.84,
         "aluno": 1,
-        "indice": 0.8,
+        "indice": 0.82,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -1014,16 +995,16 @@
       },
       {
         "bbox": [
-          99,
-          46,
-          156,
-          114
+          323,
+          65,
+          371,
+          122
         ],
-        "confianca_yolo": 0.8513,
+        "confianca_yolo": 0.8384,
         "boca": 0.0,
         "proporcao": 0.84,
         "aluno": 2,
-        "indice": 0.72,
+        "indice": 0.82,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -1034,34 +1015,15 @@
       {
         "bbox": [
           261,
-          84,
+          85,
           285,
           114
         ],
-        "confianca_yolo": 0.8439,
+        "confianca_yolo": 0.8271,
         "boca": 0.0,
-        "proporcao": 0.8,
+        "proporcao": 0.83,
         "aluno": 3,
-        "indice": 0.8,
-        "status": "FOCADO",
-        "cor_bgr": [
-          0,
-          255,
-          0
-        ]
-      },
-      {
-        "bbox": [
-          223,
-          79,
-          243,
-          105
-        ],
-        "confianca_yolo": 0.793,
-        "boca": 0.0,
-        "proporcao": 0.77,
-        "aluno": 4,
-        "indice": 0.88,
+        "indice": 0.84,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -1076,24 +1038,43 @@
           200,
           116
         ],
-        "confianca_yolo": 0.7812,
+        "confianca_yolo": 0.7953,
         "boca": 0.0,
         "proporcao": 0.97,
-        "aluno": 5,
-        "indice": 0.46,
+        "aluno": 4,
+        "indice": 0.53,
         "status": "PARCIAL",
         "cor_bgr": [
           0,
           255,
           255
         ]
+      },
+      {
+        "bbox": [
+          223,
+          79,
+          243,
+          104
+        ],
+        "confianca_yolo": 0.7741,
+        "boca": 0.0,
+        "proporcao": 0.8,
+        "aluno": 5,
+        "indice": 0.9,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
       }
     ]
   },
   {
     "imagem": "testeRostoLula.jpg",
-    "imagem_anotada": "results2\\imagens_anotadas\\testeRostoLula_resultado.jpg",
-    "media_atencao": 0.99,
+    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeRostoLula_resultado.jpg",
+    "media_atencao": 1.0,
     "total_alunos": 1,
     "focados": 1,
     "parciais": 0,
@@ -1103,16 +1084,16 @@
     "detalhes_alunos": [
       {
         "bbox": [
-          199,
-          235,
-          706,
-          938
+          203,
+          238,
+          719,
+          925
         ],
-        "confianca_yolo": 0.8312,
+        "confianca_yolo": 0.8693,
         "boca": 0.0,
-        "proporcao": 0.72,
+        "proporcao": 0.75,
         "aluno": 1,
-        "indice": 0.99,
+        "indice": 1.0,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -1124,8 +1105,8 @@
   },
   {
     "imagem": "testeRostoVirado.jpg",
-    "imagem_anotada": "results2\\imagens_anotadas\\testeRostoVirado_resultado.jpg",
-    "media_atencao": 0.93,
+    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeRostoVirado_resultado.jpg",
+    "media_atencao": 0.9,
     "total_alunos": 1,
     "focados": 1,
     "parciais": 0,
@@ -1135,16 +1116,16 @@
     "detalhes_alunos": [
       {
         "bbox": [
-          283,
-          43,
-          425,
+          284,
+          42,
+          427,
           245
         ],
-        "confianca_yolo": 0.9128,
+        "confianca_yolo": 0.8845,
         "boca": 0.0,
         "proporcao": 0.7,
         "aluno": 1,
-        "indice": 0.93,
+        "indice": 0.9,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -1156,27 +1137,65 @@
   },
   {
     "imagem": "testeTurma.jpg",
-    "imagem_anotada": "results2\\imagens_anotadas\\testeTurma_resultado.jpg",
-    "media_atencao": 0.49,
-    "total_alunos": 15,
-    "focados": 3,
-    "parciais": 6,
-    "distraidos": 6,
-    "distraidos_equivalentes": 9.0,
+    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeTurma_resultado.jpg",
+    "media_atencao": 0.63,
+    "total_alunos": 13,
+    "focados": 8,
+    "parciais": 2,
+    "distraidos": 3,
+    "distraidos_equivalentes": 4.0,
     "modo_coletivo": false,
     "detalhes_alunos": [
       {
         "bbox": [
-          222,
+          221,
           126,
-          307,
-          211
+          308,
+          213
         ],
-        "confianca_yolo": 0.8387,
+        "confianca_yolo": 0.8351,
         "boca": 0.0,
         "proporcao": 1.0,
         "aluno": 1,
-        "indice": 0.4,
+        "indice": 0.46,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          28,
+          24,
+          46,
+          45
+        ],
+        "confianca_yolo": 0.8178,
+        "boca": 0.0,
+        "proporcao": 0.86,
+        "aluno": 2,
+        "indice": 0.78,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          544,
+          48,
+          587,
+          90
+        ],
+        "confianca_yolo": 0.7996,
+        "boca": 0.0,
+        "proporcao": 1.02,
+        "aluno": 3,
+        "indice": 0.41,
         "status": "DISTRAIDO",
         "cor_bgr": [
           0,
@@ -1191,11 +1210,30 @@
           502,
           54
         ],
-        "confianca_yolo": 0.8139,
+        "confianca_yolo": 0.7958,
         "boca": 0.0,
         "proporcao": 0.81,
-        "aluno": 2,
-        "indice": 0.78,
+        "aluno": 4,
+        "indice": 0.88,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          223,
+          40,
+          240,
+          59
+        ],
+        "confianca_yolo": 0.7949,
+        "boca": 0.0,
+        "proporcao": 0.89,
+        "aluno": 5,
+        "indice": 0.71,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -1206,15 +1244,15 @@
       {
         "bbox": [
           458,
-          110,
-          525,
+          109,
+          526,
           174
         ],
-        "confianca_yolo": 0.8102,
+        "confianca_yolo": 0.7935,
         "boca": 0.0,
         "proporcao": 1.05,
-        "aluno": 3,
-        "indice": 0.3,
+        "aluno": 6,
+        "indice": 0.34,
         "status": "DISTRAIDO",
         "cor_bgr": [
           0,
@@ -1224,16 +1262,16 @@
       },
       {
         "bbox": [
-          109,
-          31,
-          125,
-          50
+          416,
+          52,
+          440,
+          80
         ],
-        "confianca_yolo": 0.8087,
+        "confianca_yolo": 0.7865,
         "boca": 0.0,
-        "proporcao": 0.84,
-        "aluno": 4,
-        "indice": 0.72,
+        "proporcao": 0.86,
+        "aluno": 7,
+        "indice": 0.78,
         "status": "FOCADO",
         "cor_bgr": [
           0,
@@ -1243,54 +1281,16 @@
       },
       {
         "bbox": [
-          543,
-          49,
-          586,
-          91
-        ],
-        "confianca_yolo": 0.8038,
-        "boca": 0.0,
-        "proporcao": 1.02,
-        "aluno": 5,
-        "indice": 0.36,
-        "status": "DISTRAIDO",
-        "cor_bgr": [
-          0,
-          0,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          27,
-          24,
-          46,
-          46
-        ],
-        "confianca_yolo": 0.8038,
-        "boca": 0.0,
-        "proporcao": 0.86,
-        "aluno": 6,
-        "indice": 0.68,
-        "status": "PARCIAL",
-        "cor_bgr": [
-          0,
-          255,
-          255
-        ]
-      },
-      {
-        "bbox": [
           157,
           28,
-          175,
+          176,
           49
         ],
-        "confianca_yolo": 0.7955,
+        "confianca_yolo": 0.7854,
         "boca": 0.0,
-        "proporcao": 0.86,
-        "aluno": 7,
-        "indice": 0.68,
+        "proporcao": 0.9,
+        "aluno": 8,
+        "indice": 0.69,
         "status": "PARCIAL",
         "cor_bgr": [
           0,
@@ -1300,149 +1300,92 @@
       },
       {
         "bbox": [
-          280,
+          109,
+          32,
+          125,
+          51
+        ],
+        "confianca_yolo": 0.7803,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 9,
+        "indice": 0.82,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          279,
           25,
           299,
           56
         ],
-        "confianca_yolo": 0.7838,
+        "confianca_yolo": 0.7776,
         "boca": 0.0,
-        "proporcao": 0.61,
-        "aluno": 8,
-        "indice": 0.48,
-        "status": "PARCIAL",
-        "cor_bgr": [
-          0,
-          255,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          416,
-          52,
-          441,
-          80
-        ],
-        "confianca_yolo": 0.7742,
-        "boca": 0.0,
-        "proporcao": 0.89,
-        "aluno": 9,
-        "indice": 0.62,
-        "status": "PARCIAL",
-        "cor_bgr": [
-          0,
-          255,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          223,
-          40,
-          240,
-          59
-        ],
-        "confianca_yolo": 0.7572,
-        "boca": 0.0,
-        "proporcao": 0.89,
+        "proporcao": 0.65,
         "aluno": 10,
-        "indice": 0.62,
-        "status": "PARCIAL",
+        "indice": 0.8,
+        "status": "FOCADO",
         "cor_bgr": [
           0,
           255,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          165,
-          100,
-          211,
-          143
-        ],
-        "confianca_yolo": 0.6323,
-        "boca": 0.0,
-        "proporcao": 1.07,
-        "aluno": 11,
-        "indice": 0.26,
-        "status": "DISTRAIDO",
-        "cor_bgr": [
-          0,
-          0,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          220,
-          20,
-          236,
-          38
-        ],
-        "confianca_yolo": 0.4925,
-        "boca": 0.0,
-        "proporcao": 0.89,
-        "aluno": 12,
-        "indice": 0.62,
-        "status": "PARCIAL",
-        "cor_bgr": [
-          0,
-          255,
-          255
+          0
         ]
       },
       {
         "bbox": [
           606,
-          56,
-          645,
+          53,
+          644,
           85
         ],
-        "confianca_yolo": 0.4771,
+        "confianca_yolo": 0.6934,
         "boca": 0.0,
-        "proporcao": 1.34,
+        "proporcao": 1.19,
+        "aluno": 11,
+        "indice": 0.02,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          74,
+          101,
+          98,
+          129
+        ],
+        "confianca_yolo": 0.3486,
+        "boca": 0.0,
+        "proporcao": 0.86,
+        "aluno": 12,
+        "indice": 0.78,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          218,
+          24,
+          232,
+          40
+        ],
+        "confianca_yolo": 0.3402,
+        "boca": 0.0,
+        "proporcao": 0.88,
         "aluno": 13,
-        "indice": 0.0,
-        "status": "DISTRAIDO",
-        "cor_bgr": [
-          0,
-          0,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          612,
-          58,
-          643,
-          81
-        ],
-        "confianca_yolo": 0.4754,
-        "boca": 0.0,
-        "proporcao": 1.35,
-        "aluno": 14,
-        "indice": 0.0,
-        "status": "DISTRAIDO",
-        "cor_bgr": [
-          0,
-          0,
-          255
-        ]
-      },
-      {
-        "bbox": [
-          651,
-          33,
-          672,
-          64
-        ],
-        "confianca_yolo": 0.4573,
-        "boca": 0.0,
-        "proporcao": 0.68,
-        "aluno": 15,
-        "indice": 0.88,
+        "indice": 0.73,
         "status": "FOCADO",
         "cor_bgr": [
           0,

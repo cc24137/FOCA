@@ -9,7 +9,7 @@ YOLO_CONFIDENCE = 0.30 # Ajustado com base no pico do gráfico F1-Score
 # ==========================================
 # Proporção da Bounding Box (Largura / Altura)
 PROPORCAO_MIN_PERFIL = 0.65  # Abaixo disso = Rosto de perfil (conversando para o lado)
-PROPORCAO_MAX_DEITADO = 0.80 # Acima disso = Rosto achatado (deitado na mesa)
+PROPORCAO_MAX_DEITADO = 0.85 # Acima disso = Rosto achatado (deitado na mesa)
 
 # Detecção de Boca Aberta (Bocejo ou Conversa)
 ALTURA_MINIMA_ANALISE_BOCA = 60

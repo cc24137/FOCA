@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import uvicorn
@@ -6,6 +6,9 @@ import shutil
 import os
 from huggingface_hub import hf_hub_download
 from foca_engine import FocaEngine, VideoRequest
+from typing import List
+import numpy as np
+import cv2
 
 REPO_ID = "rafafazion/foca-yolov8-nano"
 FILENAME = "best.pt"
@@ -50,6 +53,47 @@ app.add_middleware(
 # Diretório para salvar os vídeos temporariamente antes de passar pra IA
 UPLOAD_DIR = "uploaded_videos"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+@app.post("/processar-frames/")
+async def processar_frames(intervalo_segundos: int = Form(...), frames: List[UploadFile] = File(...)):
+    if "foca_engine" not in model:
+        raise HTTPException(status_code=503, detail="Modelo não inicializado.")
+    if not frames:
+        raise HTTPException(status_code=400, detail="Frames não recebidos.")
+
+    medias_temporais = []
+    linha_do_tempo = []
+    qts_frames_passados = 0
+
+    for index, file in enumerate(frames):
+        qts_frames_passados += 1
+        contents = await file.read()
+
+        nparr = np.frombuffer(contents, np.uint8)
+        img_opencv = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+        resultado_frame = model["foca_engine"].processar_frame(img_opencv)
+
+        if resultado_frame and resultado_frame["total_alunos"] > 0:
+
+            medias_temporais.append(resultado_frame["media_atencao"])
+            linha_do_tempo.append({
+                "segundo_video": intervalo_segundos * (qts_frames_passados - 1),
+                "media_momento": resultado_frame["media_atencao"],
+                "total_focados": resultado_frame["focados"],
+                "total_distraidos": resultado_frame["distraidos"]
+            })
+
+    media_final_video = round(sum(medias_temporais) / len(medias_temporais), 2) if medias_temporais else 0.0
+
+    return {
+        "status": "sucesso",
+        "media_global_aula": media_final_video,
+        "linha_do_tempo": linha_do_tempo
+    } 
+    
+
+
 
 
 

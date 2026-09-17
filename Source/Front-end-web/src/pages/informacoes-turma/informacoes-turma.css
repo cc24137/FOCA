@@ -238,7 +238,6 @@
     text-align: left;
     padding: 12px;
     font-weight: 500;
-    border-radius: 6px 6px 0 0;
 }
 
 .tabela-aulas td {
@@ -247,8 +246,55 @@
     color: #333;
 }
 
+.tabela-aulas th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.tabela-aulas th:last-child {
+    border-top-right-radius: 8px;
+}
+
 .tabela-aulas tr:hover {
     background-color: #f9fafb;
+}
+
+/* ==========================================================================
+   STATUS E BOTÃO DE VÍDEO NA TABELA DE HISTÓRICO
+   ========================================================================== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-badge.cadastrado {
+    background-color: #E6F4EA;
+    color: #137333;
+    border: 1px solid #CEEAD6;
+}
+
+.btn-enviar-video {
+    background-color: var(--button-dark-blue);
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-enviar-video:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-enviar-video:active {
+    transform: translateY(0);
 }
 
 /* ==========================================================================

@@ -337,6 +337,7 @@ export default function InformacoesTurma() {
                                             <th>Data</th>
                                             <th>Conteúdo</th>
                                             <th>Classificação</th>
+                                            <th>Vídeo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -345,6 +346,20 @@ export default function InformacoesTurma() {
                                                 <td>{new Date(aula.data).toLocaleDateString('pt-PT')}</td>
                                                 <td>{aula.conteudo}</td>
                                                 <td>{aula.nome_classificacao || 'Sem classificação'}</td>
+                                                <td>
+                                                    {aula.arquivo_video ? (
+                                                        <span className="status-badge cadastrado">
+                                                            Cadastrado
+                                                        </span>
+                                                    ) : (
+                                                        <button
+                                                            className="btn-enviar-video"
+                                                            onClick={() => goTo('/upload-video', { idAula: aula.id })}
+                                                        >
+                                                            Enviar vídeo
+                                                        </button>
+                                                    )}
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>

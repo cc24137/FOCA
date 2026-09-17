@@ -30,6 +30,7 @@ function App() {
                     <Route path="/inicial"               element={<Inicial />} />
                     <Route path="/alterar-senha"         element={<AlterarSenha />} />
                     <Route path="/cadastro"              element={<Cadastro />} />
+                    <Route path="/cadastro-aula"         element={<CadastroAula />} />
                     <Route path="/login"                 element={<Login />} />
                     <Route path="/codigo-email"          element={<CodigoEmail />} />
                     <Route path="/teste"                 element={<CameraApp />} />

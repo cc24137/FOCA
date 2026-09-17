@@ -1,334 +1,268 @@
 /* ==========================================================================
-   ESTRUTURA GLOBAL (Desktop)
+   ESTRUTURA GLOBAL & CONTAINER
    ========================================================================== */
-.upload-video-container{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    font-family: var(--font-inter);
+.upload-video-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f6f9;
 }
 
-.upload-video-content{
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
-    padding: 20px 64px;
-    align-items: center;
+.upload-video-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: var(--font-inter);
 }
 
-.upload-video-top{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
+/* ==========================================================================
+   CARD DE CADASTRO
+   ========================================================================== */
+.cadastro-aula-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 40px;
+  max-width: 760px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
-.upload-video-left{
-    display: flex;
-    flex-direction: column;
-    gap: 27px;
-    background-color: var(--transparent-grayish-blue);
-    padding: 28px 48px;
-    border-radius: 20px;
-    min-width: 480px;
-    font-family: var(--font-inter);
+/* ==========================================================================
+   CABEÇALHO DO CARD
+   ========================================================================== */
+.cadastro-aula-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 20px;
 }
 
-.upload-video-left-turma-disciplina{
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    font-family: var(--font-inter);
+.cadastro-aula-header h2 {
+  font-size: 28px;
+  font-family: var(--font-scada);
+  color: var(--black);
+  margin: 0;
 }
 
-.upload-video-left-title{
-    font-size: 40px;
-    font-family: var(--font-scada);
-    color: var(--black);
+.cadastro-aula-header .subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
 }
 
-.upload-video-left-turma{
-    font-size: 16px;
-    color: var(--black);
-    font-family: var(--font-inter);
+.info-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
 }
 
-.upload-video-left-disciplina{
-    font-size: 16px;
-    color: var(--black);
-    font-family: var(--font-inter);
+.badge {
+  background-color: var(--transparent-grayish-blue, #eef2f6);
+  color: var(--black);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.upload-video-data-label{
-    font-size: 16px;
-    color: var(--black);
+/* ==========================================================================
+   FORMULÁRIO E CAMPOS
+   ========================================================================== */
+.cadastro-aula-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.upload-video-left-data{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--font-inter);
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333333;
+}
+
+/* Trigger da Data */
+.date-inputs-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.date-inputs-wrapper:hover {
+  border-color: var(--button-dark-blue);
+  box-shadow: 0 0 0 3px rgba(0, 80, 150, 0.1);
 }
 
 .date-inputs {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    font-family: var(--font-inter);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #555;
 }
 
 .date-inputs input {
-    border: 1px solid var(--transparent-grayish-blue);
-    border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 14px;
-    text-align: center;
-    background-color: var(--white);
-    color: var(--black);
-    font-family: var(--font-inter);
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--black);
+  outline: none;
+  cursor: pointer;
 }
 
-.date-inputs .dd  { width: 48px; }
-.date-inputs .mm  { width: 48px; }
-.date-inputs .yyyy { width: 70px; }
-
-.upload-video-left-classificacao {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--font-inter);
+.date-inputs .dd,
+.date-inputs .mm {
+  width: 28px;
 }
 
-.upload-video-left-classificacao label {
-    font-size: 16px;
-    color: var(--black);
-    white-space: nowrap;
-    font-family: var(--font-inter);
+.date-inputs .yyyy {
+  width: 44px;
 }
 
-.upload-video-left-classificacao select {
-    border: 1px solid var(--transparent-grayish-blue);
-    border-radius: 6px;
-    padding: 4px 12px 4px 8px;
-    font-size: 14px;
-    background-color: var(--white);
-    color: var(--black);
-    cursor: pointer;
-    min-width: 140px;
-    appearance: auto;
-    -webkit-appearance: auto;
-    font-family: var(--font-inter);
+.calendar-icon {
+  font-size: 16px;
+  opacity: 0.7;
 }
 
-.upload-video-left-conteudo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
+/* Textarea do Conteúdo */
+.textarea-conteudo {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-family: var(--font-inter);
+  color: var(--black);
+  background-color: #ffffff;
+  resize: vertical;
+  min-height: 120px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 
-.upload-video-left-conteudo label {
-    font-size: 16px;
-    color: var(--black);
-    white-space: nowrap;
-}
-
-.upload-video-left-conteudo input {
-    border: 1px solid var(--transparent-grayish-blue);
-    border-radius: 6px;
-    background-color: var(--white);
-    font-size: 14px;
-    color: var(--black);
-    width: 280px;
-    outline: none;
-    padding: 4px 8px;
-    font-family: var(--font-inter);
-}
-
-.upload-video-historico-aulas{
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 80%;
-}
-
-.upload-video-historico-aulas-title{
-    font-size: 20px;
-    font-family: var(--font-scada);
-    color: var(--black);
-}
-
-.upload-video-upload-aulas-title{
-    font-size: 20px;
-    font-family: var(--font-scada);
-    color: var(--black);
-}
-
-.upload-video-historico-aulas-content {
-    background-color: rgb(114, 116, 118);
-    height: 280px;
-}
-
-.area-upload{
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 80%;
-}
-
-.upload-video-processar{
-    background-color: var(--button-dark-blue);
-    color: var(--white);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    width: 200px;
-    height: 50px;
-    align-self: flex-end;
-    font-family: var(--font-inter);
-}
-
-.upload-video-processar-row-text{
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.upload-video-salvar-row-icon{
-    width: 30px;
-    height: 30px;
-    color: var(--white);
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.upload-video-salvar{
-    background-color: var(--button-dark-blue);
-    color: var(--white);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    width: 200px;
-    height: 50px;
-    align-self: flex-end;
-    position: relative;
-    font-family: var(--font-inter);
-}
-
-.upload-video-salvar-row{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.upload-video-salvar-row-text{
-    font-size: 18px;
-    margin-left: 15px;
-    font-weight: 600;
+.textarea-conteudo:focus {
+  border-color: var(--button-dark-blue);
+  box-shadow: 0 0 0 3px rgba(0, 80, 150, 0.1);
 }
 
 /* ==========================================================================
-   📱 RESPONSIVIDADE (Tablets e Celulares)
+   BOTÃO DE CADASTRO
    ========================================================================== */
-@media (max-width: 850px) {
-    .upload-video-content {
-        padding: 20px 16px;
-        gap: 35px;
-    }
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
 
-    .upload-video-top {
-        flex-direction: column;
-        width: 100%;
-        gap: 30px;
-    }
+.btn-submit-aula {
+  background-color: var(--button-dark-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-    .upload-video-left {
-        min-width: 0;
-        width: 100%;
-        padding: 20px;
-        gap: 20px;
-    }
+.btn-submit-aula:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
 
-    .upload-video-left-title {
-        font-size: 28px;
-    }
+.btn-submit-aula:active {
+  transform: translateY(0);
+}
 
-    .upload-video-left-turma-disciplina {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .upload-video-left-data,
-    .upload-video-left-classificacao,
-    .upload-video-left-conteudo {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .upload-video-left-conteudo input,
-    .upload-video-left-classificacao select {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .area-upload,
-    .upload-video-historico-aulas {
-        width: 100%;
-    }
-
-    .upload-video-historico-aulas-content {
-        overflow-x: auto;
-    }
-
-    .upload-video-processar,
-    .upload-video-salvar {
-        width: 100%;
-        align-self: center;
-    }
+.btn-submit-aula:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* ==========================================================================
-   ⚡ ESTILIZAÇÃO COMPARTILHADA PARA DOWNLOAD DIRETO (MÁGICA DO REACTION)
+   POPOVER DO DATEPICKER
    ========================================================================== */
-.upload-video-content.pdf-mode {
-    background: #ffffff !important;
-    color: #000000 !important;
-    padding: 20px !important;
-    width: 100% !important;
+.datepicker-popover-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-/* Esconde o painel de upload, calendário e botões do relatório final baixado */
-.upload-video-content.pdf-mode .area-upload,
-.upload-video-content.pdf-mode .upload-video-processar,
-.upload-video-content.pdf-mode .upload-video-salvar,
-.upload-video-content.pdf-mode .upload-video-top > :not(.upload-video-left) {
-    display: none !important;
+.datepicker-popover-content {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.2s ease-out;
 }
 
-.upload-video-content.pdf-mode .upload-video-top,
-.upload-video-content.pdf-mode .upload-video-left,
-.upload-video-content.pdf-mode .upload-video-historico-aulas {
-    width: 100% !important;
-    min-width: 100% !important;
-    background: transparent !important;
-    padding: 10px 0 !important;
-    box-shadow: none !important;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.upload-video-content.pdf-mode .upload-video-historico-aulas-content {
-    background-color: #f2f2f2 !important;
-    border: 1px solid #cccccc;
+/* ==========================================================================
+   📱 RESPONSIVIDADE
+   ========================================================================== */
+@media (max-width: 768px) {
+  .cadastro-aula-card {
+    padding: 24px 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-submit-aula {
+    width: 100%;
+  }
 }

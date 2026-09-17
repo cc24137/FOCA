@@ -1,239 +1,214 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../../components/header';
 import DatePicker from '../../components/date-picker';
-import AreaUploadVideo from '../../components/area-upload-video';
 import SelectCustomizado from '../../components/select-customizado';
 import './upload-video.css';
-import { useState, useEffect, useRef } from 'react'; 
+import { useState, useEffect } from 'react'; 
 import api from '../../services/api';
-import IconTexto from '../../assets/file-text.svg?react';
-import html2pdf from 'html2pdf.js';
-import GenericLineChart from '../../components/time-vs-value-chart';
-import ReportTemplate from '../../components/report-template'; 
 
-const tempLogs = [
-    { timestamp: '2026-08-13T08:00:00Z', temp: 45 },
-    { timestamp: '2026-08-13T09:00:00Z', temp: 58 },
-    { timestamp: '2026-08-13T10:00:00Z', temp: 52 },
-    { timestamp: '2026-08-13T11:00:00Z', temp: 60 },
-    { timestamp: '2026-08-13T12:00:00Z', temp: 55 },
-    { timestamp: '2026-08-13T13:00:00Z', temp: 62 },
-    { timestamp: '2026-08-13T14:00:00Z', temp: 58 },
-    { timestamp: '2026-08-13T15:00:00Z', temp: 65 },
-    { timestamp: '2026-08-13T16:00:00Z', temp: 60 },
-    { timestamp: '2026-08-13T17:00:00Z', temp: 68 },
-    { timestamp: '2026-08-13T18:00:00Z', temp: 63 },
-    { timestamp: '2026-08-13T19:00:00Z', temp: 70 },
-    { timestamp: '2026-08-13T20:00:00Z', temp: 65 },
-    { timestamp: '2026-08-13T21:00:00Z', temp: 72 },
-    { timestamp: '2026-08-13T22:00:00Z', temp: 68 },
-    { timestamp: '2026-08-13T23:00:00Z', temp: 75 },
-    { timestamp: '2026-08-14T00:00:00Z', temp: 70 },
-    { timestamp: '2026-08-14T01:00:00Z', temp: 78 },
-    { timestamp: '2026-08-14T02:00:00Z', temp: 73 },
-    { timestamp: '2026-08-14T03:00:00Z', temp: 80 },
-    { timestamp: '2026-08-14T04:00:00Z', temp: 75 },
-    { timestamp: '2026-08-14T05:00:00Z', temp: 82 },
-    { timestamp: '2026-08-14T06:00:00Z', temp: 77 },
-    { timestamp: '2026-08-14T07:00:00Z', temp: 85 }
-];
+export default function CadastroAula() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-export default function UploadVideo(){
-    const location = useLocation();
+  const { idRelacao, nomeTurma, nomeDisciplina, instituicao, quantidadeAlunos } = location.state || {};
 
-    const { idRelacao, nomeTurma, nomeDisciplina, instituicao, quantidadeAlunos } = location.state || {};
+  const [classificacoes, setClassificacoes] = useState([]);
+  const [classificacao, setClassificacao] = useState('');
+  const [conteudo, setConteudo] = useState('');
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    const [classificacoes, setClassificacoes] = useState([]);
-    const [classificacao, setClassificacao] = useState('');
-    const [conteudo, setConteudo] = useState('');
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const dd = selectedDate ? String(selectedDate.getDate()).padStart(2, '0') : '';
+  const mm = selectedDate ? String(selectedDate.getMonth() + 1).padStart(2, '0') : '';
+  const yyyy = selectedDate ? String(selectedDate.getFullYear()) : '';
 
-    // Estado para armazenar os arquivos de vídeo selecionados
-    const [selectedFiles, setSelectedFiles] = useState([]);
-
-    const dd = selectedDate ? String(selectedDate.getDate()).padStart(2, '0') : '';
-    const mm = selectedDate ? String(selectedDate.getMonth() + 1).padStart(2, '0') : '';
-    const yyyy = selectedDate ? String(selectedDate.getFullYear()) : '';
-    const dataFormatada = selectedDate ? `${dd}/${mm}/${yyyy}` : 'Não informada';
-
-    const reportRef = useRef(null);
-    const user = JSON.parse(localStorage.getItem('@FOCA:user'));
-
-    useEffect(() => {
-        async function loadClassificacoes() {
-            try {
-                const response = await api.get('aula/classificacao-conteudo');
-                console.log(response);
-                setClassificacoes(response.data);
-                if (response.data.length > 0) {
-                    setClassificacao(response.data[0].idClassificacaoConteudo);
-                }
-            } catch (error) {
-                console.error(error);
-            }
+  useEffect(() => {
+    async function loadClassificacoes() {
+      try {
+        const response = await api.get('/aula/classificacao-conteudo');
+        if (response.data && response.data.length > 0) {
+          setClassificacoes(response.data);
+          setClassificacao(response.data[0].idClassificacaoConteudo);
         }
-        loadClassificacoes();
-    }, []);
+      } catch (error) {
+        console.error('Erro ao carregar classificações:', error);
+      }
+    }
 
-    const handleSelectDate = (date) => {
-        setSelectedDate(date);
-    };
+    loadClassificacoes();
+  }, []);
 
-    const handleGerarPDF = async () => {
-        if (!reportRef.current) return;
+  const handleSelectDate = (date) => {
+    setSelectedDate(date);
+    setShowDatePicker(false);
+  };
 
-        setIsGeneratingPdf(true);
-        const formattedDate = (dd && mm && yyyy) ? `-${dd}-${mm}-${yyyy}` : '';
-        const turmaSanitizada = (nomeTurma || 'turma').trim().toLowerCase().replace(/\s+/g, '-');
+  async function formSubmit(e) {
+    if (e) e.preventDefault();
 
-        const opcoes = {
-            margin:       0, 
-            filename:     `relatorio-${turmaSanitizada}${formattedDate}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, logging: false },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    if (!selectedDate) {
+        alert('Por favor, selecione a data da aula.');
+        return;
+    }
+
+    if (!conteudo.trim()) {
+        alert('Por favor, descreva o conteúdo da aula.');
+        return;
+    }
+
+    setLoading(true);
+
+    try {
+        // Formata a data para o padrão YYYY-MM-DD aceito pela API
+        const year = selectedDate.getFullYear();
+        const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(selectedDate.getDate()).padStart(2, '0');
+        const dateFormatted = `${year}-${month}-${day}`;
+
+        const payload = {
+            classSubjectTeacherId: idRelacao,
+            date: dateFormatted,
+            idContentClassification: classificacao,
+            content: conteudo
         };
 
-        try {
-            await html2pdf().set(opcoes).from(reportRef.current).save();
-        } catch (error) {
-            console.error('Erro ao gerar PDF:', error);
-        } finally {
-            setIsGeneratingPdf(false);
+        const response = await api.post('/aula/criar', payload);
+
+        if (response.status === 201 || response.status === 200) {
+        navigate('/analise/upload', {
+            state: {
+            aulaCadastrada: response.data,
+            idRelacao,
+            nomeTurma,
+            nomeDisciplina,
+            instituicao,
+            quantidadeAlunos,
+            data: selectedDate,
+            classificacao,
+            conteudo
+            }
+        });
+        } else {
+        alert('Erro ao cadastrar a aula.');
         }
-    };
+    } catch (error) {
+        console.error('Erro no cadastro da aula:', error?.response?.data || error);
+        const mensagem = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao cadastrar aula.';
+        alert(Array.isArray(mensagem) ? mensagem.join('\n') : mensagem);
+    } finally {
+        setLoading(false);
+    }
+    }
 
-    const nomeClassificacaoSelecionada = classificacoes.find(
-        item => item.idClassificacaoConteudo === classificacao
-    )?.nomeClassificacaoConteudo || '';
+  return (
+    <div className='upload-video-body'>
+      <Header
+        routes={[
+          { textButton: 'Início', routeButton: '/inicial-professor' },
+          { textButton: 'Sobre o Projeto', routeButton: '/' },
+          { textButton: 'Perfil', routeButton: '/editar-dados' }
+        ]}
+      />
 
-    return (
-        <div className='upload-video-body'>
-            <Header
-                routes={[
-                    { textButton: "Início", routeButton: "/inicial-professor" },
-                    { textButton: "Sobre o Projeto", routeButton: "/" },
-                    { textButton: "Perfil", routeButton: "/editar-dados" }
-                ]} />
+      <main className='upload-video-content'>
+        <div className='cadastro-aula-card'>
+          <div className='cadastro-aula-header'>
+            <h2>Cadastro de Nova Aula</h2>
 
-            <div className='upload-video-content'>
-                <div className='upload-video-top'>
-                    <div className='upload-video-left'>
-                        <div>
-                            <p className='upload-video-left-title'>Nova Aula</p>
-                        </div>
-                        <div className='upload-video-left-turma-disciplina'>
-                            <p className='upload-video-left-turma'>Turma: {nomeTurma || "Não informada"}</p>
-                            <p className='upload-video-left-disciplina'>Disciplina: {nomeDisciplina || "Não informada"}</p>
-                        </div>
+            <div className='info-badges'>
+              <span className='badge'>
+                <strong>Turma:</strong> {nomeTurma || 'Não informada'}
+              </span>
+              <span className='badge'>
+                <strong>Disciplina:</strong> {nomeDisciplina || 'Não informada'}
+              </span>
+            </div>
+          </div>
 
-                        <div className="upload-video-left-data">
-                            <label className='upload-video-data-label'>Data da aula: </label>
-                            <div className="date-inputs">
-                                <input
-                                    type="text"
-                                    className={`dd ${dd ? 'active' : ''}`}
-                                    placeholder="DD"
-                                    value={dd}
-                                    readOnly
-                                />
-                                <input
-                                    type="text"
-                                    className={`mm ${mm ? 'active' : ''}`}
-                                    placeholder="MM"
-                                    value={mm}
-                                    readOnly
-                                />
-                                <input
-                                    type="text"
-                                    className={`yyyy ${yyyy ? 'active' : ''}`}
-                                    placeholder="AAAA"
-                                    value={yyyy}
-                                    readOnly
-                                />
-                            </div>
-                        </div>
-
-                        <div className="upload-video-left-classificacao">
-                            <label>Classificação da aula</label>
-                            <SelectCustomizado
-                                placeholder="Selecione uma classificação..."
-                                value={classificacao}
-                                onChange={(novoId) => setClassificacao(novoId)}
-                                options={classificacoes.map(item => ({
-                                    value: item.idClassificacaoConteudo,
-                                    label: item.nomeClassificacaoConteudo,
-                                    title: item.descricaoClassificacaoConteudo
-                                }))}
-                            />
-                        </div>
-
-                        <div className="upload-video-left-conteudo">
-                            <label>Conteúdo</label>
-                            <input
-                                type="text"
-                                value={conteudo}
-                                onChange={e => setConteudo(e.target.value)}
-                            />
-                        </div>
-
-                    </div>
-
-                    <DatePicker selectedDate={selectedDate} onSelectDate={handleSelectDate} />
-
-                </div>
-                <div className='area-upload'>
-                    <p className='upload-video-upload-aulas-title'>Faça o upload da gravação da aula</p>
-                    
-                    <AreaUploadVideo 
-                        selectedFiles={selectedFiles} 
-                        setSelectedFiles={setSelectedFiles} 
+          <form className='cadastro-aula-form' onSubmit={formSubmit}>
+            <div className='form-grid'>
+              {/* Seletor de Data */}
+              <div className='form-group'>
+                <label className='form-label'>Data da aula</label>
+                <div
+                  className='date-inputs-wrapper'
+                  onClick={() => setShowDatePicker((prev) => !prev)}
+                  title='Clique para selecionar a data no calendário'
+                >
+                  <div className='date-inputs'>
+                    <input
+                      type='text'
+                      className={`dd ${dd ? 'active' : ''}`}
+                      placeholder='DD'
+                      value={dd}
+                      readOnly
                     />
-
-                    <button className='upload-video-processar'>
-                        <div className='upload-video-processar-row'>
-                            <p className='upload-video-processar-row-text'>Processar Video</p>
-                        </div>
-                    </button>
-                </div>
-
-                <div className='upload-video-historico-aulas'>
-                    <p className='upload-video-historico-aulas-title'>Linha do tempo de atenção </p>
-                    <GenericLineChart 
-                        data={tempLogs} 
-                        xKey="timestamp" 
-                        yKey="temp"  
-                        formatXAxis={(val) => new Date(val).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    <span>/</span>
+                    <input
+                      type='text'
+                      className={`mm ${mm ? 'active' : ''}`}
+                      placeholder='MM'
+                      value={mm}
+                      readOnly
                     />
-
-                    <button 
-                        className='upload-video-salvar' 
-                        onClick={handleGerarPDF}
-                        disabled={isGeneratingPdf}
-                    >
-                        <div className='upload-video-salvar-row'>
-                            <IconTexto className='upload-video-salvar-row-icon' />
-                            <p className='upload-video-salvar-row-text'>
-                                {isGeneratingPdf ? 'Gerando PDF...' : 'Gerar PDF'}
-                            </p>
-                        </div>
-                    </button>
+                    <span>/</span>
+                    <input
+                      type='text'
+                      className={`yyyy ${yyyy ? 'active' : ''}`}
+                      placeholder='AAAA'
+                      value={yyyy}
+                      readOnly
+                    />
+                  </div>
                 </div>
+              </div>
+
+              {/* Classificação */}
+              <div className='form-group'>
+                <label className='form-label'>Classificação da aula</label>
+                <SelectCustomizado
+                  placeholder='Selecione uma classificação...'
+                  value={classificacao}
+                  onChange={(novoId) => setClassificacao(novoId)}
+                  options={classificacoes.map((item) => ({
+                    value: item.idClassificacaoConteudo,
+                    label: item.nomeClassificacaoConteudo,
+                    title: item.descricaoClassificacaoConteudo
+                  }))}
+                />
+              </div>
             </div>
 
-            <ReportTemplate
-                refProp={reportRef}
-                nomeTurma={nomeTurma}
-                nomeDisciplina={nomeDisciplina}
-                dataAula={dataFormatada}
-                classificacao={nomeClassificacaoSelecionada}
-                conteudo={conteudo}
-                data={tempLogs}
-                nomeInstituicao={instituicao}
-                quantidadeAlunos={quantidadeAlunos}
-                nomeProfessor={user?.nome || 'Não informado'}
-            />
+            {/* Conteúdo Expandido (Textarea) */}
+            <div className='form-group full-width'>
+              <label className='form-label'>Conteúdo da aula</label>
+              <textarea
+                className='textarea-conteudo'
+                rows='5'
+                value={conteudo}
+                onChange={(e) => setConteudo(e.target.value)}
+                placeholder='Descreva os tópicos, assuntos ministrados e observações relevantes sobre esta aula...'
+              />
+            </div>
+
+            <div className='form-actions'>
+              <button type='submit' className='btn-submit-aula' disabled={loading}>
+                {loading ? 'Cadastrando...' : 'Cadastrar e Continuar'}
+              </button>
+            </div>
+          </form>
         </div>
-    );
+
+        {/* Popover do DatePicker */}
+        {showDatePicker && (
+          <div className='datepicker-popover-backdrop' onClick={() => setShowDatePicker(false)}>
+            <div className='datepicker-popover-content' onClick={(e) => e.stopPropagation()}>
+              <DatePicker selectedDate={selectedDate} onSelectDate={handleSelectDate} />
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
 }

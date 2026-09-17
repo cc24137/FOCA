@@ -2,7 +2,7 @@
 # 1. MODELO YOLOv8 E DETECÇÃO
 # ==========================================
 YOLO_PATH = '../models/yolov8_nano_foca_v3_800_50e/weights/best.pt'
-YOLO_CONFIDENCE = 0.30 # Ajustado com base no pico do gráfico F1-Score!
+YOLO_CONFIDENCE = 0.30 # Ajustado com base no pico do gráfico F1-Score
 
 # ==========================================
 # 2. LIMITES GEOMÉTRICOS E FACIAIS (AS NOVAS MÉTRICAS MACRO)
@@ -31,4 +31,4 @@ EXTREMO_DEITADO = 1.20  # Cabeça totalmente achatada na mesa
 
 # INTERRUPTORES DE MÉTRICAS
 USAR_METRICA_POSTURA = True
-USAR_METRICA_BOCA = True
+USAR_METRICA_BOCA = False

@@ -1,0 +1,1455 @@
+[
+  {
+    "imagem": "testeFOCA1.jpg",
+    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA1_resultado.jpg",
+    "media_atencao": 0.8,
+    "total_alunos": 7,
+    "focados": 5,
+    "parciais": 2,
+    "distraidos": 0,
+    "distraidos_equivalentes": 1.0,
+    "modo_coletivo": false,
+    "detalhes_alunos": [
+      {
+        "bbox": [
+          602,
+          292,
+          709,
+          407
+        ],
+        "confianca_yolo": 0.8689,
+        "boca": 0.0,
+        "proporcao": 0.93,
+        "aluno": 1,
+        "indice": 0.54,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          880,
+          232,
+          953,
+          332
+        ],
+        "confianca_yolo": 0.8561,
+        "boca": 0.0,
+        "proporcao": 0.73,
+        "aluno": 2,
+        "indice": 0.99,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          952,
+          321,
+          1079,
+          481
+        ],
+        "confianca_yolo": 0.8487,
+        "boca": 0.0,
+        "proporcao": 0.79,
+        "aluno": 3,
+        "indice": 0.83,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          316,
+          306,
+          431,
+          446
+        ],
+        "confianca_yolo": 0.8409,
+        "boca": 0.0,
+        "proporcao": 0.82,
+        "aluno": 4,
+        "indice": 0.76,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          1128,
+          195,
+          1220,
+          320
+        ],
+        "confianca_yolo": 0.8244,
+        "boca": 0.0,
+        "proporcao": 0.74,
+        "aluno": 5,
+        "indice": 0.96,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          1371,
+          326,
+          1451,
+          434
+        ],
+        "confianca_yolo": 0.8041,
+        "boca": 0.0,
+        "proporcao": 0.74,
+        "aluno": 6,
+        "indice": 0.96,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          294,
+          246,
+          381,
+          340
+        ],
+        "confianca_yolo": 0.7363,
+        "boca": 0.0,
+        "proporcao": 0.93,
+        "aluno": 7,
+        "indice": 0.54,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      }
+    ]
+  },
+  {
+    "imagem": "testeFOCA2.jpg",
+    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA2_resultado.jpg",
+    "media_atencao": 0.78,
+    "total_alunos": 12,
+    "focados": 10,
+    "parciais": 2,
+    "distraidos": 0,
+    "distraidos_equivalentes": 1.0,
+    "modo_coletivo": false,
+    "detalhes_alunos": [
+      {
+        "bbox": [
+          619,
+          157,
+          660,
+          204
+        ],
+        "confianca_yolo": 0.8694,
+        "boca": 0.0,
+        "proporcao": 0.87,
+        "aluno": 1,
+        "indice": 0.66,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          79,
+          264,
+          129,
+          325
+        ],
+        "confianca_yolo": 0.848,
+        "boca": 0.0,
+        "proporcao": 0.82,
+        "aluno": 2,
+        "indice": 0.76,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          87,
+          194,
+          111,
+          224
+        ],
+        "confianca_yolo": 0.826,
+        "boca": 0.0,
+        "proporcao": 0.8,
+        "aluno": 3,
+        "indice": 0.8,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          308,
+          198,
+          329,
+          225
+        ],
+        "confianca_yolo": 0.7964,
+        "boca": 0.0,
+        "proporcao": 0.78,
+        "aluno": 4,
+        "indice": 0.85,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          526,
+          184,
+          549,
+          211
+        ],
+        "confianca_yolo": 0.7833,
+        "boca": 0.0,
+        "proporcao": 0.85,
+        "aluno": 5,
+        "indice": 0.7,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          241,
+          176,
+          257,
+          197
+        ],
+        "confianca_yolo": 0.7596,
+        "boca": 0.0,
+        "proporcao": 0.76,
+        "aluno": 6,
+        "indice": 0.91,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          402,
+          174,
+          420,
+          197
+        ],
+        "confianca_yolo": 0.7571,
+        "boca": 0.0,
+        "proporcao": 0.78,
+        "aluno": 7,
+        "indice": 0.85,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          205,
+          200,
+          227,
+          227
+        ],
+        "confianca_yolo": 0.7542,
+        "boca": 0.0,
+        "proporcao": 0.81,
+        "aluno": 8,
+        "indice": 0.78,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          178,
+          162,
+          193,
+          181
+        ],
+        "confianca_yolo": 0.7469,
+        "boca": 0.0,
+        "proporcao": 0.79,
+        "aluno": 9,
+        "indice": 0.83,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          40,
+          176,
+          61,
+          201
+        ],
+        "confianca_yolo": 0.7278,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 10,
+        "indice": 0.72,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          12,
+          152,
+          26,
+          170
+        ],
+        "confianca_yolo": 0.7211,
+        "boca": 0.0,
+        "proporcao": 0.78,
+        "aluno": 11,
+        "indice": 0.85,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          91,
+          159,
+          105,
+          175
+        ],
+        "confianca_yolo": 0.6876,
+        "boca": 0.0,
+        "proporcao": 0.88,
+        "aluno": 12,
+        "indice": 0.64,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      }
+    ]
+  },
+  {
+    "imagem": "testeFOCA3.jpg",
+    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA3_resultado.jpg",
+    "media_atencao": 0.53,
+    "total_alunos": 21,
+    "focados": 12,
+    "parciais": 3,
+    "distraidos": 6,
+    "distraidos_equivalentes": 7.5,
+    "modo_coletivo": false,
+    "detalhes_alunos": [
+      {
+        "bbox": [
+          1210,
+          230,
+          1291,
+          332
+        ],
+        "confianca_yolo": 0.8899,
+        "boca": 0.0,
+        "proporcao": 0.79,
+        "aluno": 1,
+        "indice": 0.83,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          556,
+          273,
+          655,
+          395
+        ],
+        "confianca_yolo": 0.8714,
+        "boca": 0.0,
+        "proporcao": 0.81,
+        "aluno": 2,
+        "indice": 0.78,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          176,
+          237,
+          269,
+          351
+        ],
+        "confianca_yolo": 0.8701,
+        "boca": 0.0,
+        "proporcao": 0.82,
+        "aluno": 3,
+        "indice": 0.76,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          379,
+          519,
+          523,
+          702
+        ],
+        "confianca_yolo": 0.8699,
+        "boca": 0.0,
+        "proporcao": 0.79,
+        "aluno": 4,
+        "indice": 0.83,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          1083,
+          779,
+          1258,
+          978
+        ],
+        "confianca_yolo": 0.8691,
+        "boca": 0.0,
+        "proporcao": 0.88,
+        "aluno": 5,
+        "indice": 0.64,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          686,
+          361,
+          780,
+          472
+        ],
+        "confianca_yolo": 0.8442,
+        "boca": 0.0,
+        "proporcao": 0.85,
+        "aluno": 6,
+        "indice": 0.7,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          739,
+          182,
+          809,
+          264
+        ],
+        "confianca_yolo": 0.8414,
+        "boca": 0.0,
+        "proporcao": 0.85,
+        "aluno": 7,
+        "indice": 0.7,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          637,
+          150,
+          702,
+          229
+        ],
+        "confianca_yolo": 0.8395,
+        "boca": 0.0,
+        "proporcao": 0.82,
+        "aluno": 8,
+        "indice": 0.76,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          921,
+          266,
+          1005,
+          365
+        ],
+        "confianca_yolo": 0.8363,
+        "boca": 0.0,
+        "proporcao": 0.85,
+        "aluno": 9,
+        "indice": 0.7,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          421,
+          181,
+          503,
+          277
+        ],
+        "confianca_yolo": 0.827,
+        "boca": 0.0,
+        "proporcao": 0.85,
+        "aluno": 10,
+        "indice": 0.7,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          1302,
+          334,
+          1393,
+          434
+        ],
+        "confianca_yolo": 0.8057,
+        "boca": 0.0,
+        "proporcao": 0.91,
+        "aluno": 11,
+        "indice": 0.58,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          242,
+          117,
+          296,
+          181
+        ],
+        "confianca_yolo": 0.7993,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 12,
+        "indice": 0.72,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          1477,
+          39,
+          1524,
+          97
+        ],
+        "confianca_yolo": 0.7922,
+        "boca": 0.0,
+        "proporcao": 0.81,
+        "aluno": 13,
+        "indice": 0.78,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          136,
+          152,
+          215,
+          246
+        ],
+        "confianca_yolo": 0.7763,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 14,
+        "indice": 0.72,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          1380,
+          66,
+          1431,
+          122
+        ],
+        "confianca_yolo": 0.7486,
+        "boca": 0.0,
+        "proporcao": 0.91,
+        "aluno": 15,
+        "indice": 0.58,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          1277,
+          536,
+          1376,
+          635
+        ],
+        "confianca_yolo": 0.6744,
+        "boca": 0.0,
+        "proporcao": 1.0,
+        "aluno": 16,
+        "indice": 0.4,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          0,
+          93,
+          10,
+          169
+        ],
+        "confianca_yolo": 0.6352,
+        "boca": 0.0,
+        "proporcao": 0.13,
+        "aluno": 17,
+        "indice": 0.0,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          1553,
+          527,
+          1600,
+          625
+        ],
+        "confianca_yolo": 0.5474,
+        "boca": 0.0,
+        "proporcao": 0.48,
+        "aluno": 18,
+        "indice": 0.0,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          0,
+          92,
+          13,
+          173
+        ],
+        "confianca_yolo": 0.5377,
+        "boca": 0.0,
+        "proporcao": 0.16,
+        "aluno": 19,
+        "indice": 0.0,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          1573,
+          84,
+          1600,
+          137
+        ],
+        "confianca_yolo": 0.4857,
+        "boca": 0.0,
+        "proporcao": 0.51,
+        "aluno": 20,
+        "indice": 0.0,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          1551,
+          646,
+          1600,
+          810
+        ],
+        "confianca_yolo": 0.4402,
+        "boca": 0.0,
+        "proporcao": 0.3,
+        "aluno": 21,
+        "indice": 0.0,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      }
+    ]
+  },
+  {
+    "imagem": "testeFOCA4.jpg",
+    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA4_resultado.jpg",
+    "media_atencao": 0.6,
+    "total_alunos": 9,
+    "focados": 4,
+    "parciais": 2,
+    "distraidos": 3,
+    "distraidos_equivalentes": 4.0,
+    "modo_coletivo": false,
+    "detalhes_alunos": [
+      {
+        "bbox": [
+          1398,
+          278,
+          1528,
+          447
+        ],
+        "confianca_yolo": 0.8579,
+        "boca": 0.0,
+        "proporcao": 0.77,
+        "aluno": 1,
+        "indice": 0.88,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          0,
+          396,
+          92,
+          530
+        ],
+        "confianca_yolo": 0.848,
+        "boca": 0.0,
+        "proporcao": 0.69,
+        "aluno": 2,
+        "indice": 0.91,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          107,
+          234,
+          180,
+          310
+        ],
+        "confianca_yolo": 0.8326,
+        "boca": 0.0,
+        "proporcao": 0.96,
+        "aluno": 3,
+        "indice": 0.48,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          1381,
+          166,
+          1456,
+          242
+        ],
+        "confianca_yolo": 0.8073,
+        "boca": 0.0,
+        "proporcao": 0.99,
+        "aluno": 4,
+        "indice": 0.42,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          1071,
+          191,
+          1158,
+          294
+        ],
+        "confianca_yolo": 0.7811,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 5,
+        "indice": 0.72,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          891,
+          284,
+          1008,
+          424
+        ],
+        "confianca_yolo": 0.7326,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 6,
+        "indice": 0.72,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          612,
+          274,
+          707,
+          380
+        ],
+        "confianca_yolo": 0.6824,
+        "boca": 0.0,
+        "proporcao": 0.9,
+        "aluno": 7,
+        "indice": 0.6,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          828,
+          183,
+          891,
+          289
+        ],
+        "confianca_yolo": 0.5051,
+        "boca": 0.0,
+        "proporcao": 0.59,
+        "aluno": 8,
+        "indice": 0.32,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          458,
+          248,
+          528,
+          315
+        ],
+        "confianca_yolo": 0.4379,
+        "boca": 0.0,
+        "proporcao": 1.04,
+        "aluno": 9,
+        "indice": 0.32,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      }
+    ]
+  },
+  {
+    "imagem": "testeFOCA5.webp",
+    "imagem_anotada": "results2\\imagens_anotadas\\testeFOCA5_resultado.jpg",
+    "media_atencao": 0.73,
+    "total_alunos": 5,
+    "focados": 4,
+    "parciais": 1,
+    "distraidos": 0,
+    "distraidos_equivalentes": 0.5,
+    "modo_coletivo": false,
+    "detalhes_alunos": [
+      {
+        "bbox": [
+          324,
+          63,
+          371,
+          122
+        ],
+        "confianca_yolo": 0.8739,
+        "boca": 0.0,
+        "proporcao": 0.8,
+        "aluno": 1,
+        "indice": 0.8,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          99,
+          46,
+          156,
+          114
+        ],
+        "confianca_yolo": 0.8513,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 2,
+        "indice": 0.72,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          261,
+          84,
+          285,
+          114
+        ],
+        "confianca_yolo": 0.8439,
+        "boca": 0.0,
+        "proporcao": 0.8,
+        "aluno": 3,
+        "indice": 0.8,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          223,
+          79,
+          243,
+          105
+        ],
+        "confianca_yolo": 0.793,
+        "boca": 0.0,
+        "proporcao": 0.77,
+        "aluno": 4,
+        "indice": 0.88,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          172,
+          87,
+          200,
+          116
+        ],
+        "confianca_yolo": 0.7812,
+        "boca": 0.0,
+        "proporcao": 0.97,
+        "aluno": 5,
+        "indice": 0.46,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      }
+    ]
+  },
+  {
+    "imagem": "testeRostoLula.jpg",
+    "imagem_anotada": "results2\\imagens_anotadas\\testeRostoLula_resultado.jpg",
+    "media_atencao": 0.99,
+    "total_alunos": 1,
+    "focados": 1,
+    "parciais": 0,
+    "distraidos": 0,
+    "distraidos_equivalentes": 0.0,
+    "modo_coletivo": false,
+    "detalhes_alunos": [
+      {
+        "bbox": [
+          199,
+          235,
+          706,
+          938
+        ],
+        "confianca_yolo": 0.8312,
+        "boca": 0.0,
+        "proporcao": 0.72,
+        "aluno": 1,
+        "indice": 0.99,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "imagem": "testeRostoVirado.jpg",
+    "imagem_anotada": "results2\\imagens_anotadas\\testeRostoVirado_resultado.jpg",
+    "media_atencao": 0.93,
+    "total_alunos": 1,
+    "focados": 1,
+    "parciais": 0,
+    "distraidos": 0,
+    "distraidos_equivalentes": 0.0,
+    "modo_coletivo": false,
+    "detalhes_alunos": [
+      {
+        "bbox": [
+          283,
+          43,
+          425,
+          245
+        ],
+        "confianca_yolo": 0.9128,
+        "boca": 0.0,
+        "proporcao": 0.7,
+        "aluno": 1,
+        "indice": 0.93,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "imagem": "testeTurma.jpg",
+    "imagem_anotada": "results2\\imagens_anotadas\\testeTurma_resultado.jpg",
+    "media_atencao": 0.49,
+    "total_alunos": 15,
+    "focados": 3,
+    "parciais": 6,
+    "distraidos": 6,
+    "distraidos_equivalentes": 9.0,
+    "modo_coletivo": false,
+    "detalhes_alunos": [
+      {
+        "bbox": [
+          222,
+          126,
+          307,
+          211
+        ],
+        "confianca_yolo": 0.8387,
+        "boca": 0.0,
+        "proporcao": 1.0,
+        "aluno": 1,
+        "indice": 0.4,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          480,
+          27,
+          502,
+          54
+        ],
+        "confianca_yolo": 0.8139,
+        "boca": 0.0,
+        "proporcao": 0.81,
+        "aluno": 2,
+        "indice": 0.78,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          458,
+          110,
+          525,
+          174
+        ],
+        "confianca_yolo": 0.8102,
+        "boca": 0.0,
+        "proporcao": 1.05,
+        "aluno": 3,
+        "indice": 0.3,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          109,
+          31,
+          125,
+          50
+        ],
+        "confianca_yolo": 0.8087,
+        "boca": 0.0,
+        "proporcao": 0.84,
+        "aluno": 4,
+        "indice": 0.72,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      },
+      {
+        "bbox": [
+          543,
+          49,
+          586,
+          91
+        ],
+        "confianca_yolo": 0.8038,
+        "boca": 0.0,
+        "proporcao": 1.02,
+        "aluno": 5,
+        "indice": 0.36,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          27,
+          24,
+          46,
+          46
+        ],
+        "confianca_yolo": 0.8038,
+        "boca": 0.0,
+        "proporcao": 0.86,
+        "aluno": 6,
+        "indice": 0.68,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          157,
+          28,
+          175,
+          49
+        ],
+        "confianca_yolo": 0.7955,
+        "boca": 0.0,
+        "proporcao": 0.86,
+        "aluno": 7,
+        "indice": 0.68,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          280,
+          25,
+          299,
+          56
+        ],
+        "confianca_yolo": 0.7838,
+        "boca": 0.0,
+        "proporcao": 0.61,
+        "aluno": 8,
+        "indice": 0.48,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          416,
+          52,
+          441,
+          80
+        ],
+        "confianca_yolo": 0.7742,
+        "boca": 0.0,
+        "proporcao": 0.89,
+        "aluno": 9,
+        "indice": 0.62,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          223,
+          40,
+          240,
+          59
+        ],
+        "confianca_yolo": 0.7572,
+        "boca": 0.0,
+        "proporcao": 0.89,
+        "aluno": 10,
+        "indice": 0.62,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          165,
+          100,
+          211,
+          143
+        ],
+        "confianca_yolo": 0.6323,
+        "boca": 0.0,
+        "proporcao": 1.07,
+        "aluno": 11,
+        "indice": 0.26,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          220,
+          20,
+          236,
+          38
+        ],
+        "confianca_yolo": 0.4925,
+        "boca": 0.0,
+        "proporcao": 0.89,
+        "aluno": 12,
+        "indice": 0.62,
+        "status": "PARCIAL",
+        "cor_bgr": [
+          0,
+          255,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          606,
+          56,
+          645,
+          85
+        ],
+        "confianca_yolo": 0.4771,
+        "boca": 0.0,
+        "proporcao": 1.34,
+        "aluno": 13,
+        "indice": 0.0,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          612,
+          58,
+          643,
+          81
+        ],
+        "confianca_yolo": 0.4754,
+        "boca": 0.0,
+        "proporcao": 1.35,
+        "aluno": 14,
+        "indice": 0.0,
+        "status": "DISTRAIDO",
+        "cor_bgr": [
+          0,
+          0,
+          255
+        ]
+      },
+      {
+        "bbox": [
+          651,
+          33,
+          672,
+          64
+        ],
+        "confianca_yolo": 0.4573,
+        "boca": 0.0,
+        "proporcao": 0.68,
+        "aluno": 15,
+        "indice": 0.88,
+        "status": "FOCADO",
+        "cor_bgr": [
+          0,
+          255,
+          0
+        ]
+      }
+    ]
+  }
+]

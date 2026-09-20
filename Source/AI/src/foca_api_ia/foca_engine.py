@@ -191,7 +191,7 @@ class FocaEngine:
             if status == 'PARCIAL': distraidos += 0.5
             if status == 'DISTRAIDO': distraidos += 1
 
-        media_turma = round(soma_indices / total, 2) if total > 0 else 0.0
+        media_turma = round((soma_indices / total) * 100, 2) if total > 0 else 0.0
 
         return {
             "media_atencao": media_turma,

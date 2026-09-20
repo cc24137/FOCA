@@ -79,7 +79,10 @@ class LeituraAtencaoCRUD {
     
           const request = new sql.Request(transaction);
     
-          await request.bulk(table);
+          await request.bulk(table, {
+                fireTriggers: true,
+                checkConstraints: true
+            });
     
           await transaction.commit();
     

@@ -81,8 +81,7 @@ BEGIN
     INNER JOIN deleted d ON disc.id = d.id;
 END;
 
-
-CREATE OR ALTER TRIGGER trg_InsteadOfDelete_Professor
+CREATE TRIGGER trg_InsteadOfDelete_Professor
 ON foca.Professor
 INSTEAD OF DELETE
 AS
@@ -100,10 +99,9 @@ BEGIN
     INNER JOIN deleted d ON tdp.id_professor = d.id;
 
     DELETE p
-    FROM Professor p
+    FROM foca.Professor p
     INNER JOIN deleted d ON p.id = d.id;
 END;
-
 
 
 CREATE OR ALTER TRIGGER trg_InsteadOfDelete_Instituicao
@@ -180,3 +178,29 @@ BEGIN
     SELECT email, nome, senha_hash, emailVerificado
     FROM inserted;
 END
+
+
+CREATE OR ALTER TRIGGER foca.trg_atualiza_media_atencao
+ON foca.leitura_atencao
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Identifica as aulas que tiveram leituras inseridas, alteradas ou removidas
+    WITH AulasAfetadas AS (
+        SELECT id_aula FROM inserted WHERE id_aula IS NOT NULL
+        UNION
+        SELECT id_aula FROM deleted WHERE id_aula IS NOT NULL
+    )
+
+    -- Atualiza a média de atenção apenas das aulas que sofreram alterações
+    UPDATE a
+    SET a.media_atencao_total = (
+        SELECT AVG(CAST(la.indice_atencao AS FLOAT))
+        FROM foca.leitura_atencao la
+        WHERE la.id_aula = a.id
+    )
+    FROM foca.aula a
+    INNER JOIN AulasAfetadas af ON a.id = af.id_aula;
+END;

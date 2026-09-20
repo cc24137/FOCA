@@ -55,13 +55,14 @@ class AulaController {
         }
     };
 
-    updateAnalysisData = async (req, res) => {
+updateAnalysisData = async (req, res) => {
         const aulaCRUD = new AulaCRUD();
 
         const { id } = req.params;
 
         const {
-            arquivoVideo
+            arquivoVideo,
+            analise
         } = req.body;
 
         if (
@@ -73,11 +74,13 @@ class AulaController {
             });
         }
 
+        const mediaAtencao = analise?.media_global_aula ?? null;
 
         try {
             const aula = await aulaCRUD.updateAnalysisData(
                 id,
-                arquivoVideo
+                arquivoVideo,
+                mediaAtencao
             );
 
             return res.status(200).json(aula);

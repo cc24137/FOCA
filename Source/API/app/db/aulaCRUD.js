@@ -142,11 +142,12 @@ class AulaCRUD {
 
     async updateAnalysisData(
         id,
-        arquivoVideo
+        arquivoVideo,
+        mediaAtencao
     ) {
         try {
             const pool = await db.getConnection();
-    
+
             const result = await pool.request()
                 .input("id", sql.Int, id)
                 .input(
@@ -154,10 +155,16 @@ class AulaCRUD {
                     sql.VarChar(255),
                     arquivoVideo
                 )
+                .input(
+                    "mediaAtencao",
+                    sql.Decimal(5, 2),
+                    mediaAtencao
+                )
                 .query(`
                     UPDATE FOCA.Aula
                     SET
                         arquivo_video = @arquivoVideo,
+                        media_atencao_total = @mediaAtencao,
                         data_processamento = CAST(GETDATE() AS DATE)
                     OUTPUT
                         INSERTED.id AS id,
@@ -170,13 +177,13 @@ class AulaCRUD {
                         INSERTED.data_processamento AS processingDate
                     WHERE id = @id
                 `);
-    
+
             if (result.recordset.length === 0) {
                 const error = new Error("Aula not found");
                 error.name = "Not found";
                 throw error;
             }
-    
+
             return result.recordset[0];
         }
         catch (error) {

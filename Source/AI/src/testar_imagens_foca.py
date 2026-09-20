@@ -300,7 +300,6 @@ class TestadorFoca:
                 f"A{aluno['aluno']} {aluno['status']} "
                 f"idx={aluno['indice']:.2f} "
                 f"p={aluno['proporcao']:.2f} "
-                f"b={aluno['boca']:.2f}"
             )
             self._desenhar_rotulo(saida, texto, x1, y1, cor)
 
@@ -309,7 +308,6 @@ class TestadorFoca:
             f"Rostos={resultado['total_alunos']} | "
             f"F={resultado['focados']} P={resultado['parciais']} "
             f"D={resultado['distraidos']} | "
-            f"Coletivo={'SIM' if resultado['modo_coletivo'] else 'NAO'}"
         )
 
         cv2.rectangle(saida, (0, 0), (min(saida.shape[1], 760), 34), (255, 255, 255), -1)

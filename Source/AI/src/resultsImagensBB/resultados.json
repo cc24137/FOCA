@@ -1,7 +1,7 @@
 [
   {
     "imagem": "testeFOCA1.jpg",
-    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA1_resultado.jpg",
+    "imagem_anotada": "resultsImagensBB\\imagens_anotadas\\testeFOCA1_resultado.jpg",
     "media_atencao": 0.85,
     "total_alunos": 7,
     "focados": 5,
@@ -147,7 +147,7 @@
   },
   {
     "imagem": "testeFOCA2.jpg",
-    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA2_resultado.jpg",
+    "imagem_anotada": "resultsImagensBB\\imagens_anotadas\\testeFOCA2_resultado.jpg",
     "media_atencao": 0.8,
     "total_alunos": 12,
     "focados": 9,
@@ -388,7 +388,7 @@
   },
   {
     "imagem": "testeFOCA3.jpg",
-    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA3_resultado.jpg",
+    "imagem_anotada": "resultsImagensBB\\imagens_anotadas\\testeFOCA3_resultado.jpg",
     "media_atencao": 0.63,
     "total_alunos": 20,
     "focados": 13,
@@ -781,7 +781,7 @@
   },
   {
     "imagem": "testeFOCA4.jpg",
-    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA4_resultado.jpg",
+    "imagem_anotada": "resultsImagensBB\\imagens_anotadas\\testeFOCA4_resultado.jpg",
     "media_atencao": 0.67,
     "total_alunos": 9,
     "focados": 5,
@@ -965,7 +965,7 @@
   },
   {
     "imagem": "testeFOCA5.webp",
-    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeFOCA5_resultado.jpg",
+    "imagem_anotada": "resultsImagensBB\\imagens_anotadas\\testeFOCA5_resultado.jpg",
     "media_atencao": 0.78,
     "total_alunos": 5,
     "focados": 4,
@@ -1073,7 +1073,7 @@
   },
   {
     "imagem": "testeRostoLula.jpg",
-    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeRostoLula_resultado.jpg",
+    "imagem_anotada": "resultsImagensBB\\imagens_anotadas\\testeRostoLula_resultado.jpg",
     "media_atencao": 1.0,
     "total_alunos": 1,
     "focados": 1,
@@ -1105,7 +1105,7 @@
   },
   {
     "imagem": "testeRostoVirado.jpg",
-    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeRostoVirado_resultado.jpg",
+    "imagem_anotada": "resultsImagensBB\\imagens_anotadas\\testeRostoVirado_resultado.jpg",
     "media_atencao": 0.9,
     "total_alunos": 1,
     "focados": 1,
@@ -1137,7 +1137,7 @@
   },
   {
     "imagem": "testeTurma.jpg",
-    "imagem_anotada": "resultsImagensNew\\imagens_anotadas\\testeTurma_resultado.jpg",
+    "imagem_anotada": "resultsImagensBB\\imagens_anotadas\\testeTurma_resultado.jpg",
     "media_atencao": 0.63,
     "total_alunos": 13,
     "focados": 8,

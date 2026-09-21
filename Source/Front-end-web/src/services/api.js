@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://juju.roney.stein.nom.br:3000"
+  baseURL: "https://juju.roney.stein.nom.br"
 });
 
 // interceptor -> runs before every request is sent

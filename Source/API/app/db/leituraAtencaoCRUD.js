@@ -47,6 +47,21 @@ class LeituraAtencaoCRUD {
         try {
             await transaction.begin();
     
+            // Remove as leituras antigas da aula
+            const deleteRequest = new sql.Request(transaction);
+    
+            deleteRequest.input(
+                "idAula",
+                sql.Int,
+                idAula
+            );
+    
+            await deleteRequest.query(`
+                DELETE FROM FOCA.Leitura_Atencao
+                WHERE id_aula = @idAula
+            `);
+    
+            // Cria o bulk insert
             const table = new sql.Table("FOCA.Leitura_Atencao");
     
             table.create = false;

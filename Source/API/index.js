@@ -3,5 +3,5 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`API rodando em http://juju.roney.stein.nom.br:${PORT}`);
+  console.log(`API rodando em https://juju.roney.stein.nom.br`);
 });

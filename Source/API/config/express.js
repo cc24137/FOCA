@@ -2,11 +2,24 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 
+console.log("FRONTEND_URL carregada:", process.env.FRONTEND_URL);
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-  methods: 'GET,POST,PUT,PATCH,DELETE', 
-  allowedHeaders: ['Content-Type', 'Authorization'], 
-  optionsSuccessStatus: 200 
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origem não permitida pelo CORS'));
+    }
+  },
+  methods: 'GET,POST,PUT,PATCH,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));

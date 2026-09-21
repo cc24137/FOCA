@@ -9,34 +9,49 @@ import {
   Tooltip,
   Legend,
 } from 'recharts';
-import './time-vs-value.css';
 
 export default function GenericLineChart({
   data = [],
-  xKey = 'tempoFormatado',
-  yKey = 'temp',            
+  xKey = 'segundo_video',
+  yKey = 'media_momento',            
   lineColor = '#4F46E5',     
   lines,                     
-  height = 400,
+  height = 300,
   formatXAxis,
   isAnimationActive = true,
+  onClick,
 }) {
   if (!data || data.length === 0) {
-    return <div className="chart-no-data" style={{ height }}>Nenhum dado disponível</div>;
+    return (
+      <div style={{ height, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6B7280' }}>
+        Nenhum dado disponível
+      </div>
+    );
   }
 
   const chartLines = lines || [
     { key: yKey, color: lineColor, label: yKey }
   ];
 
+  const handleClick = (e) => {
+    if (onClick) {
+      onClick(e);
+    }
+  };
+
   return (
-    <div className="chart-container" style={{ height }}>
+    <div style={{ width: '100%', height, cursor: onClick ? 'pointer' : 'default' }}>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+        <LineChart 
+          data={data} 
+          margin={{ top: 20, right: 20, left: 0, bottom: 0 }}
+          onClick={handleClick}
+        >
           <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
           <XAxis dataKey={xKey} tickFormatter={formatXAxis} />
           <YAxis />
-          <Tooltip />
+          
+          <Tooltip wrapperStyle={{ pointerEvents: 'none' }} />
           
           {chartLines.length > 1 && <Legend />}
 
@@ -49,8 +64,13 @@ export default function GenericLineChart({
               stroke={lineConfig.color || '#4F46E5'}
               strokeWidth={3}
               connectNulls={true} 
-              dot={{ r: 3 }}
-              activeDot={{ r: 6 }}
+              dot={{ r: 4, cursor: onClick ? 'pointer' : 'default' }}
+              activeDot={{ 
+                r: 7, 
+                cursor: onClick ? 'pointer' : 'default',
+                onClick: handleClick 
+              }}
+              onClick={handleClick}
               isAnimationActive={isAnimationActive}
             />
           ))}

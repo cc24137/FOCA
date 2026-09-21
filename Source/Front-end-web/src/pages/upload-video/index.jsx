@@ -147,7 +147,6 @@ export default function UploadVideo() {
 
       setStatusMessage('3/4 Guardando dados da análise...');
       await api.patch(`/aula/${idAula}/analise`, { 
-        totalAttentionAverage: visionResult.media_global_aula,
         analise: visionResult,
         arquivoVideo: selectedFiles[0]?.name
       });

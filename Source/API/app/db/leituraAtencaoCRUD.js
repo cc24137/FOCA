@@ -45,55 +45,55 @@ class LeituraAtencaoCRUD {
         const transaction = new sql.Transaction(pool);
     
         try {
-          await transaction.begin();
+            await transaction.begin();
     
-          const table = new sql.Table("FOCA.Leitura_Atencao");
+            const table = new sql.Table("FOCA.Leitura_Atencao");
     
-          table.create = false;
+            table.create = false;
     
-          table.columns.add(
-            "id_aula",
-            sql.Int,
-            { nullable: false }
-          );
-    
-          table.columns.add(
-            "segundo_video",
-            sql.Int,
-            { nullable: false }
-          );
-    
-          table.columns.add(
-            "indice_atencao",
-            sql.Decimal(5, 2),
-            { nullable: false }
-          );
-    
-          for (const leitura of leituras) {
-            table.rows.add(
-              idAula,
-              leitura.segundoVideo,
-              leitura.indiceAtencao
+            table.columns.add(
+                "id_aula",
+                sql.Int,
+                { nullable: false }
             );
-          }
     
-          const request = new sql.Request(transaction);
+            table.columns.add(
+                "segundo_video",
+                sql.Int,
+                { nullable: false }
+            );
     
-          await request.bulk(table, {
+            table.columns.add(
+                "indice_atencao",
+                sql.Decimal(5, 2),
+                { nullable: false }
+            );
+    
+            for (const leitura of leituras) {
+                table.rows.add(
+                    idAula,
+                    Number(leitura.segundo_video),
+                    Number(leitura.media_momento)
+                );
+            }
+    
+            const request = new sql.Request(transaction);
+    
+            await request.bulk(table, {
                 fireTriggers: true,
                 checkConstraints: true
             });
     
-          await transaction.commit();
+            await transaction.commit();
     
-          return {
-            idAula,
-            quantidadeInserida: leituras.length
-          };
+            return {
+                idAula,
+                quantidadeInserida: leituras.length
+            };
         }
         catch (error) {
-          await transaction.rollback();
-          throw error;
+            await transaction.rollback();
+            throw error;
         }
     }
     

@@ -229,3 +229,61 @@
 .recommendation-item {
   margin-top: 6px;
 }
+
+/* Acesso Ã  anÃ¡lise em tempo real */
+.upload-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.upload-page-heading .page-title {
+  margin: 0;
+}
+
+.upload-page-wrapper .btn-live-analysis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  background-color: #4f46e5;
+  color: #ffffff;
+  border: 1px solid #4f46e5;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.upload-page-wrapper .btn-live-analysis:hover:not(:disabled) {
+  background-color: #4338ca;
+  border-color: #4338ca;
+}
+
+.upload-page-wrapper .btn-live-analysis:focus-visible {
+  outline: 3px solid #a5b4fc;
+  outline-offset: 3px;
+}
+
+.upload-page-wrapper .btn-live-analysis:disabled {
+  background-color: #94a3b8;
+  border-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .upload-page-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .upload-page-wrapper .btn-live-analysis {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

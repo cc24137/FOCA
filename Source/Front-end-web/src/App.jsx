@@ -3,6 +3,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 import AlterarSenha       from "./pages/alterar-senha";
+import AnaliseTempoReal   from "./pages/analise-tempo-real";
 import Cadastro           from "./pages/cadastro";
 import CadastroAula       from "./pages/cadastro-aula";
 import CodigoEmail        from "./pages/codigo-email";
@@ -38,6 +39,7 @@ function App() {
                     <Route path="*"                      element={<Inicial />} /> {/*Fallback leva para a tela inicial*/}
     
                     <Route element={<ProtectedRoute />}>
+                        <Route path="/analise-tempo-real"    element={<AnaliseTempoReal />} />
                         <Route path="/cadastro-aula"         element={<CadastroAula />} />
                         <Route path="/disciplinas"           element={<Disciplinas />} />
                         <Route path="/editar-dados"          element={<EditarDados />} />

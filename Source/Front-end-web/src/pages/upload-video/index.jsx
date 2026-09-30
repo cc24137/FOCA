@@ -176,7 +176,17 @@ export default function UploadVideo() {
       />
 
       <div className="upload-page-content">
-        <h1 className="page-title">Upload e Análise de Vídeo</h1>
+        <div className="upload-page-heading">
+          <h1 className="page-title">Upload e Análise de Vídeo</h1>
+          <button
+            type="button"
+            className="btn-live-analysis"
+            disabled={loading || !idAula}
+            onClick={() => navigate('/analise-tempo-real', { state: { idAula } })}
+          >
+            Analisar com câmera ao vivo
+          </button>
+        </div>
 
         <div className="upload-main-grid">
           
@@ -286,7 +296,7 @@ export default function UploadVideo() {
               </>
             ) : (
               <div className="placeholder-results-card">
-                <div className="placeholder-icon">📊</div>
+
                 <h3>Aguardando Processamento</h3>
                 <p>Assim que a análise for iniciada, o gráfico de atenção e os feedbacks detalhados aparecerão aqui.</p>
               </div>

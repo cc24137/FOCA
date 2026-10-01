@@ -1,5 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/header';
+import Footer from '../../components/footer';
+import Divider from '../../components/divider';
+import BookIcon from '../../assets/book.svg?react';
+import BookmarkIcon from '../../assets/bookmark.svg?react';
+import CheckIcon from '../../assets/check.svg?react';
+import LockIcon from '../../assets/lock.svg?react';
+import StudySeal from '../../assets/foca_estudos.png';
 import './sobre-projeto.css';
 
 const steps = [
@@ -18,15 +25,29 @@ const steps = [
 ];
 
 export default function SobreProjeto() {
+  const [session] = useState(() => {
+    try {
+      const isLoggedIn = !!localStorage.getItem('@FOCA:token');
+      const user = JSON.parse(localStorage.getItem('@FOCA:user') || 'null');
+      return { isLoggedIn, isProfessor: user?.isProfessor === true };
+    } catch {
+      return { isLoggedIn: false, isProfessor: false };
+    }
+  });
+  const homePath = session.isLoggedIn
+    ? session.isProfessor ? '/inicial-professor' : '/inicial-instituicao'
+    : '/';
+
   return (
     <div className="project-about-page">
-      <Header routes={[
-        { textButton: 'Início', routeButton: '/' },
-        { textButton: 'Entrar', routeButton: '/login' },
+      <Header titulo="FOCA" routes={[
+        { textButton: 'Início', routeButton: homePath },
+        { textButton: 'Sobre o Projeto', routeButton: '/sobre' },
+        { textButton: session.isLoggedIn ? 'Meu Perfil' : 'Login', routeButton: session.isLoggedIn ? '/editar-dados' : '/login' },
       ]} />
 
       <main className="project-about-content">
-        <h1 className="project-about-title">Sobre o Projeto</h1>
+        <h1 className="project-about-title">Sobre o <span>Projeto</span></h1>
 
         <section className="project-about-hero" aria-labelledby="foca-title">
           <div>
@@ -52,10 +73,12 @@ export default function SobreProjeto() {
           </aside>
         </section>
 
+        <Divider />
+
         <div className="project-about-two-columns">
           <section className="project-about-card" aria-labelledby="origin-title">
             <span className="project-about-eyebrow">Contexto acadêmico</span>
-            <h2 id="origin-title">Um projeto construído no COTUCA</h2>
+            <h2 id="origin-title"><BookmarkIcon className="project-about-heading-icon" aria-hidden="true" />Um projeto construído no COTUCA</h2>
             <p>
               O FOCA nasceu no contexto da formação técnica e de ensino médio do
               COTUCA, colégio vinculado à Unicamp. O trabalho reúne pesquisa,
@@ -85,9 +108,11 @@ export default function SobreProjeto() {
           </section>
         </div>
 
+        <Divider />
+
         <section className="project-about-section" aria-labelledby="how-title">
           <div className="project-about-section-heading">
-            <h2 id="how-title">Como o FOCA funciona</h2>
+            <h2 id="how-title"><BookIcon className="project-about-heading-icon" aria-hidden="true" />Como o FOCA funciona</h2>
             <p>Da análise das imagens à apresentação de informações para o docente.</p>
           </div>
           <ol className="project-about-steps">
@@ -101,6 +126,8 @@ export default function SobreProjeto() {
           </ol>
         </section>
 
+        <Divider />
+
         <section className="project-about-card project-about-features" aria-labelledby="features-title">
           <div>
             <span className="project-about-eyebrow">Informações para a prática docente</span>
@@ -110,14 +137,17 @@ export default function SobreProjeto() {
               de acordo com seus respectivos perfis de acesso. A plataforma reúne
               os registros de aulas, turmas e disciplinas para facilitar o acompanhamento.
             </p>
+            <img src={StudySeal} className="project-about-study-seal" alt="" loading="lazy" />
           </div>
           <ul className="project-about-feature-list">
-            <li><strong>Gráficos temporais</strong><span>A evolução dos indicadores durante a aula.</span></li>
-            <li><strong>Histórico e comparações</strong><span>Resultados organizados para acompanhar diferentes aulas e contextos.</span></li>
-            <li><strong>Feedbacks priorizados</strong><span>Variações e períodos relevantes destacados para análise.</span></li>
-            <li><strong>Recomendações</strong><span>Sugestões de investigação, intervenção, reforço ou monitoramento.</span></li>
+            <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Gráficos temporais</strong><span>A evolução dos indicadores durante a aula.</span></div></li>
+            <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Histórico e comparações</strong><span>Resultados organizados para acompanhar diferentes aulas e contextos.</span></div></li>
+            <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Feedbacks priorizados</strong><span>Variações e períodos relevantes destacados para análise.</span></div></li>
+            <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Recomendações</strong><span>Sugestões de investigação, intervenção, reforço ou monitoramento.</span></div></li>
           </ul>
         </section>
+
+        <Divider />
 
         <section className="project-about-card project-about-results" aria-labelledby="research-title">
           <div>
@@ -146,6 +176,8 @@ export default function SobreProjeto() {
           </div>
         </section>
 
+        <Divider />
+
         <div className="project-about-two-columns">
           <section className="project-about-card" aria-labelledby="limits-title">
             <span className="project-about-eyebrow">Interpretação dos indicadores</span>
@@ -164,7 +196,7 @@ export default function SobreProjeto() {
           </section>
           <section className="project-about-card" aria-labelledby="privacy-title">
             <span className="project-about-eyebrow">Responsabilidade e continuidade</span>
-            <h2 id="privacy-title">Cuidado com as imagens e com seu uso</h2>
+            <h2 id="privacy-title"><LockIcon className="project-about-heading-icon" aria-hidden="true" />Cuidado com as imagens e com seu uso</h2>
             <p>
               A proposta descrita no relatório prioriza o uso temporário das imagens
               durante o processamento e a manutenção dos resultados derivados para
@@ -178,6 +210,8 @@ export default function SobreProjeto() {
             </p>
           </section>
         </div>
+
+        <Divider />
 
         <section className="project-about-card project-about-credits" aria-labelledby="credits-title">
           <div>
@@ -200,11 +234,12 @@ export default function SobreProjeto() {
           </div>
         </section>
 
-        <footer className="project-about-footer">
+        <div className="project-about-academic-footer">
           <p>FOCA · Colégio Técnico de Campinas · Universidade Estadual de Campinas</p>
           <p>Projeto de Trabalho de Conclusão de Curso · 2026</p>
-        </footer>
+        </div>
       </main>
+      <Footer />
     </div>
   );
 }

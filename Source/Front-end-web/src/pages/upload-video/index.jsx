@@ -27,7 +27,7 @@ export default function UploadVideo() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [videoUrl, setVideoUrl] = useState(null);
   const [intervalInSeconds, setIntervalInSeconds] = useState(5);
-  const [selectedModel, setSelectedModel] = useState('MODELO_1');
+  const [selectedModel, setSelectedModel] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   const [feedbackData, setFeedbackData] = useState(null);
@@ -103,6 +103,9 @@ export default function UploadVideo() {
 
       setStatusMessage('2/4 Processando análise de visão computacional...');
       const formData = new FormData();
+
+      formData.append('usar_modelo_melhor', selectedModel);
+
       formData.append('intervalo_segundos', intervalInSeconds);
 
       frames.forEach((frameBlob, index) => {
@@ -190,8 +193,8 @@ export default function UploadVideo() {
                     disabled={loading || !!visionData}
                     className="select-model"
                   >
-                    <option value="MODELO_1">MODELO 1</option>
-                    <option value="MODELO_2">MODELO 2</option>
+                    <option value="false">MODELO 1</option>
+                    <option value="true">MODELO 2</option>
                   </select>
                 </label>
               </div>

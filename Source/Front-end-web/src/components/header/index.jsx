@@ -11,7 +11,7 @@ export default function Header({ routes }) {
 
     const rotasPadrao = [
         { textButton: "Início", routeButton: "/" },
-        { textButton: "Sobre o Projeto", routeButton: "/" },
+        { textButton: "Sobre o Projeto", routeButton: "/sobre-projeto" },
         { textButton: "Perfil", routeButton: "/perfil" }
     ];
     
@@ -49,7 +49,8 @@ export default function Header({ routes }) {
                         </button>
                     ))}
                 </div>
-            </div>
+              </div>
+            
         </header>
     );
 }

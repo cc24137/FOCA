@@ -16,9 +16,10 @@ import InformacoesTurma   from "./pages/informacoes-turma";
 import InicialProfessor   from "./pages/inicial-professor";
 import Login              from "./pages/login";
 import Professores        from "./pages/professores";
+import SobreProjeto       from "./pages/sobre-projeto";
 import TesteVideo         from "./pages/teste-video";
 import Turmas             from "./pages/turmas";
-import UploadVideo        from "./pages/upload-video/index.jsx";
+import UploadVideo        from "./pages/upload-video";
 import VinculosProfessor  from "./pages/vinculos-professor"
 import BackgroundCameraViewer from "./pages/teste/teste.jsx";
 import CameraApp from "./pages/teste/teste.jsx";
@@ -35,6 +36,7 @@ function App() {
                     <Route path="/login"                 element={<Login />} />
                     <Route path="/codigo-email"          element={<CodigoEmail />} />
                     <Route path="/teste"                 element={<CameraApp />} />
+                    <Route path="/sobre-projeto"         element={<SobreProjeto />} />
                     <Route path="/teste-video"           element={<TesteVideo />} />
                     <Route path="*"                      element={<Inicial />} /> {/*Fallback leva para a tela inicial*/}
     

@@ -1,0 +1,73 @@
+.project-about-page { display: flex; flex-direction: column; min-height: 100vh; width: 100%; background: #f8fafc; color: #334155; }
+.project-about-content { width: 100%; padding: 32px 65px; box-sizing: border-box; }
+.project-about-title { margin: 0 0 36px; color: #1e293b; font-size: 1.6rem; font-weight: 700; }
+.project-about-card, .project-about-hero { min-width: 0; padding: 28px; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; }
+.project-about-hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr); align-items: center; gap: 40px; padding: 32px; }
+.project-about-eyebrow { display: block; margin-bottom: 12px; color: #4f46e5; font-size: .85rem; font-weight: 600; line-height: 1.5; }
+.project-about-hero h2 { margin: 0 0 12px; color: #4f46e5; font-size: clamp(2.4rem, 4vw, 3.5rem); line-height: 1.1; letter-spacing: .025em; }
+.project-about-hero p, .project-about-card p { margin: 0; color: #475569; font-size: .95rem; line-height: 1.75; }
+.project-about-hero .project-about-fullname { margin-bottom: 16px; color: #0f172a; font-size: 1.15rem; font-weight: 600; line-height: 1.5; }
+.project-about-institution { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 28px; border: 1px solid #e0e7ff; border-radius: 8px; background: #eef2ff; }
+.project-about-label { color: #475569; font-size: .8rem; }
+.project-about-institution > strong { color: #4338ca; font-size: 1.9rem; line-height: 1.2; }
+.project-about-institution > span:not(.project-about-label) { font-size: .85rem; line-height: 1.6; }
+.project-about-university { display: flex; flex-direction: column; gap: 6px; width: 100%; padding-top: 16px; margin-top: 4px; border-top: 1px solid #c7d2fe; }
+.project-about-university strong { color: #0f172a; font-size: 1.2rem; }
+.project-about-university span { font-size: .85rem; line-height: 1.6; }
+.project-about-badge { margin-top: 8px; padding: 5px 10px; background: #fff; border: 1px solid #c7d2fe; border-radius: 6px; color: #4338ca; }
+.project-about-two-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+.project-about-card h2, .project-about-section-heading h2 { margin: 0 0 14px; color: #0f172a; font-size: 1.15rem; line-height: 1.45; }
+.project-about-card p + p { margin-top: 12px; }
+.project-about-section { margin-top: 36px; }
+.project-about-section-heading { margin-bottom: 20px; }
+.project-about-section-heading h2 { margin-bottom: 8px; }
+.project-about-section-heading p { margin: 0; color: #64748b; font-size: .9rem; line-height: 1.6; }
+.project-about-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; list-style: none; padding: 0; margin: 0; }
+.project-about-step-number { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; margin-bottom: 20px; border-radius: 8px; background: #eef2ff; color: #4f46e5; font-size: 1rem; font-weight: 700; }
+.project-about-card h3 { margin: 0 0 10px; color: #0f172a; font-size: 1rem; line-height: 1.5; }
+.project-about-features, .project-about-results { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-top: 24px; }
+.project-about-feature-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; list-style: none; padding: 0; margin: 0; }
+.project-about-feature-list li { padding: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; }
+.project-about-feature-list strong, .project-about-feature-list span { display: block; line-height: 1.6; }
+.project-about-feature-list strong { margin-bottom: 6px; color: #334155; font-size: .9rem; }
+.project-about-feature-list span { color: #64748b; font-size: .85rem; }
+.project-about-card .project-about-note { padding-left: 14px; border-left: 3px solid #c7d2fe; color: #64748b; font-size: .85rem; }
+.project-about-table-wrapper { min-width: 0; overflow-x: auto; }
+.project-about-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.project-about-table caption { text-align: left; margin-bottom: 12px; color: #475569; font-size: .85rem; }
+.project-about-table th, .project-about-table td { padding: 16px 12px; border-bottom: 1px solid #e2e8f0; text-align: left; line-height: 1.5; }
+.project-about-table thead th { background: #f8fafc; color: #475569; font-size: .85rem; }
+.project-about-table tbody th { font-weight: 500; }
+.project-about-table td { color: #4f46e5; font-size: 1.1rem; font-weight: 700; }
+.project-about-credits { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 32px; margin-top: 24px; }
+.project-about-credits > div { min-width: 0; }
+.project-about-credits ul { list-style: none; margin: 0; padding: 0; }
+.project-about-credits li { margin-bottom: 8px; font-size: .9rem; line-height: 1.6; }
+.project-about-credits p { font-size: .9rem; }
+.project-about-credits strong { color: #475569; font-size: .8rem; font-weight: 600; }
+.project-about-footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center; }
+.project-about-footer p { margin: 0 0 6px; color: #64748b; font-size: .8rem; line-height: 1.6; }
+@media (min-width: 1600px) { .project-about-content { max-width: 1560px; margin: 0 auto; } }
+@media (max-width: 1100px) {
+  .project-about-content { padding: 28px 32px; }
+  .project-about-hero { gap: 24px; }
+  .project-about-card { padding: 24px; }
+  .project-about-steps { gap: 16px; }
+  .project-about-features, .project-about-results { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .project-about-credits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-about-credits > div:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) {
+  .project-about-hero, .project-about-two-columns, .project-about-steps, .project-about-credits { grid-template-columns: minmax(0, 1fr); }
+  .project-about-hero { padding: 24px; }
+  .project-about-credits > div:first-child { grid-column: auto; }
+  .project-about-two-columns, .project-about-steps { gap: 16px; }
+  .project-about-credits { gap: 24px; }
+}
+@media (max-width: 480px) {
+  .project-about-content { padding: 24px 16px; }
+  .project-about-title { margin-bottom: 24px; }
+  .project-about-card, .project-about-hero, .project-about-institution { padding: 20px; }
+  .project-about-feature-list { grid-template-columns: minmax(0, 1fr); }
+  .project-about-table th, .project-about-table td { padding: 12px 8px; }
+}

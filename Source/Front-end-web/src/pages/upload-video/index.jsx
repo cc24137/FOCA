@@ -7,45 +7,8 @@ import FeedbackCards from '../../components/feedback-cards';
 import api from '../../services/api';
 import './upload-video.css';
 
-export const extractFrames = (videoFile, intervalInSeconds) => {
-  return new Promise((resolve, reject) => {
-    const video = document.createElement('video');
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const frames = [];
-
-    video.src = URL.createObjectURL(videoFile);
-    video.muted = true;
-
-    video.onerror = () => reject("Erro ao carregar o vídeo.");
-
-    video.onloadedmetadata = () => {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      let currentTime = 0;
-
-      const captureNextFrame = () => {
-        if (currentTime > video.duration) {
-          URL.revokeObjectURL(video.src);
-          resolve(frames);
-          return;
-        }
-        video.currentTime = currentTime;
-      };
-
-      video.onseeked = () => {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob((blob) => {
-          if (blob) frames.push(blob);
-          currentTime += intervalInSeconds;
-          captureNextFrame();
-        }, 'image/jpeg', 0.8);
-      };
-
-      captureNextFrame();
-    };
-  });
-};
+import { extractFrames } from './extract-frames';
+export { extractFrames } from './extract-frames';
 
 export default function UploadVideo() {
   const location = useLocation();
@@ -63,7 +26,7 @@ export default function UploadVideo() {
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [videoUrl, setVideoUrl] = useState(null);
-  const [intervalInSeconds, setIntervalInSeconds] = useState(2);
+  const [intervalInSeconds, setIntervalInSeconds] = useState(5);
   const [selectedModel, setSelectedModel] = useState('MODELO_1');
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
@@ -125,7 +88,18 @@ export default function UploadVideo() {
       setLoading(true);
 
       setStatusMessage('1/4 Extraindo frames do vídeo...');
-      const frames = await extractFrames(selectedFiles[0], Number(intervalInSeconds));
+      const frames = await extractFrames(
+        selectedFiles[0],
+        Number(intervalInSeconds),
+        {
+          maxWidth: 1280, // Mantém a proporção e não amplia vídeos menores.
+          quality: 0.8,
+          maxInFlight: 2, // Uma conversão ativa e, no máximo, uma captura esperando.
+          onProgress: (done, total) => {
+            setStatusMessage(`1/4 Extraindo frames: ${done}/${total}...`);
+          },
+        }
+      );
 
       setStatusMessage('2/4 Processando análise de visão computacional...');
       const formData = new FormData();
@@ -158,7 +132,7 @@ export default function UploadVideo() {
       setStatusMessage('Processamento concluído com sucesso!');
 
     } catch (error) {
-      console.error("Erro no processamento:", error);
+      if (error.code === 'FRAME_LIMIT') alert(error.message);
       setStatusMessage(`Erro: ${error.response?.data?.message || error.message}`);
     } finally {
       setLoading(false);
@@ -199,6 +173,8 @@ export default function UploadVideo() {
                   Intervalo (s):
                   <input
                     type="number"
+                    min="1"
+                    step="1"
                     value={intervalInSeconds}
                     onChange={(e) => setIntervalInSeconds(e.target.value)}
                     disabled={loading || !!visionData}

@@ -1,6 +1,8 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Form
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+from starlette.concurrency import run_in_threadpool
+import asyncio
 import uvicorn
 import shutil
 import os
@@ -49,6 +51,55 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+live_engine_lock = asyncio.Lock()
+MAX_FRAME_BYTES = 8 * 1024 * 1024
+
+@app.post('/processar-frame-tempo-real/')
+async def processar_frame_tempo_real(request: Request):
+    engine = model.get('foca_engine')
+    if engine is None:
+        raise HTTPException(status_code=503, detail='Modelo não inicializado.')
+    if request.headers.get('content-type', '').split(';')[0] != 'image/jpeg':
+        raise HTTPException(status_code=415, detail='Envie um corpo JPEG.')
+
+    # Corpo cru, limitado e recebido em memória: sem UploadFile/SpooledTemporaryFile.
+    contents = bytearray()
+    img = None
+    nparr = None
+    try:
+        async for chunk in request.stream():
+            if len(contents) + len(chunk) > MAX_FRAME_BYTES:
+                raise HTTPException(status_code=413, detail='Imagem acima de 8 MiB.')
+            contents.extend(chunk)
+        if not contents:
+            raise HTTPException(status_code=400, detail='Imagem vazia.')
+        nparr = np.frombuffer(contents, np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        if img is None:
+            raise HTTPException(status_code=400, detail='Imagem inválida.')
+        # Evita alocações excessivas no processamento de imagens grandes.
+        if img.shape[0] * img.shape[1] > 16_000_000:
+            raise HTTPException(status_code=413, detail='Resolução acima do limite de 16 megapixels.')
+        async with live_engine_lock:
+            resultado = await run_in_threadpool(engine.processar_frame, img)
+        linha = []
+        if resultado and resultado['total_alunos'] > 0:
+            linha.append({
+                'segundo_video': 0,
+                'media_momento': resultado['media_atencao'],
+                'total_focados': resultado['focados'],
+                'total_distraidos': resultado['distraidos'],
+            })
+        return {
+            'status': 'sucesso',
+            'media_global_aula': linha[0]['media_momento'] if linha else 0.0,
+            'linha_do_tempo': linha,
+        }
+    finally:
+        img = None
+        nparr = None
+        contents.clear()
 
 # Diretório para salvar os vídeos temporariamente antes de passar pra IA
 UPLOAD_DIR = "uploaded_videos"

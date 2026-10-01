@@ -146,7 +146,7 @@ export default function AnaliseTempoReal() {
       timerRef.current = setTimeout(() => sample(generation), 250);
       return;
     }
-    const capturedAt = Number(activeSeconds().toFixed(2));
+    const capturedAt = Math.floor(activeSeconds());
     const cycleStart = performance.now();
     const controller = new AbortController();
     requestRef.current = controller;
@@ -241,6 +241,7 @@ export default function AnaliseTempoReal() {
             // Mantém o contrato existente. Leituras sem detecção ficam apenas na tela.
             linha_do_tempo: valid,
           },
+          arquivoVideo: 'teste.mp4'
         });
         if (!mountedRef.current) return;
         setSaved(true);

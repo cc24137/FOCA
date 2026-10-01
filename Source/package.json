@@ -4,5 +4,8 @@
   "workspaces": [
     "API",
     "Front-end-web"
-  ]
+  ],
+  "dependencies": {
+    "asyncio": "^0.0.2"
+  }
 }

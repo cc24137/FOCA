@@ -97,6 +97,8 @@ export default function TesteVideo() {
             // 2. Monta o FormData contendo todos os frames
             const formData = new FormData();
 
+            //formData.append("usar_modelo_melhor", true);
+
             formData.append('intervalo_segundos', intervalInSeconds);
 
             frames.forEach((frameBlob, index) => {

@@ -15,7 +15,7 @@ class VideoRequest:
 
 class FocaEngine:
     def __init__(self, yolo_path):
-        print("[Foca Engine] A carregar modelo YOLOv8 ultraleve...")
+        print("[Foca Engine] A carregar modelo YOLOv8...")
         self.yolo = YOLO(yolo_path)
 
         # Filtro CLAHE configurado globalmente

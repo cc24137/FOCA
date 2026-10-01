@@ -15,6 +15,9 @@ import cv2
 REPO_ID = "rafafazion/foca-yolov8-nano"
 FILENAME = "best.pt"
 
+SECOND_REPO_ID = "rafafazion/foca-yolov8-small"
+SECOND_FILENAME = "best.pt"
+
 model = {}
 
 @asynccontextmanager
@@ -29,6 +32,14 @@ async def lifespan(app: FastAPI):
         model["foca_engine"] = FocaEngine(model_path)
         print("Modelo carregado na memória.")
 
+        second_model_path = hf_hub_download(
+            repo_id=SECOND_REPO_ID,
+            filename=SECOND_FILENAME
+        )
+        print("Segundo modelo (small) encontrado.")
+        model["foca_engine_small"] = FocaEngine(second_model_path)
+        print("Segundo modelo (small) carregado na memória.")
+
     except Exception as e:
         print(f"ERRO: Falha crítica ao carregar o modelo: {e}")
         raise e
@@ -36,7 +47,7 @@ async def lifespan(app: FastAPI):
     yield
 
     model.clear()
-    print("Modelo liberado")
+    print("Modelos liberados")
 
 app = FastAPI(
     title="API da IA FOCA",
@@ -56,8 +67,15 @@ live_engine_lock = asyncio.Lock()
 MAX_FRAME_BYTES = 8 * 1024 * 1024
 
 @app.post('/processar-frame-tempo-real/')
-async def processar_frame_tempo_real(request: Request):
-    engine = model.get('foca_engine')
+async def processar_frame_tempo_real(request: Request, usar_modelo_melhor: bool = False):
+    engine = None
+    if usar_modelo_melhor:
+        print("Analisa frame com engine small")
+        engine = model.get('foca_engine_small')
+    else:
+        print("Analisa frame com engine nano")
+        engine = model.get('foca_engine')
+
     if engine is None:
         raise HTTPException(status_code=503, detail='Modelo não inicializado.')
     if request.headers.get('content-type', '').split(';')[0] != 'image/jpeg':
@@ -106,11 +124,13 @@ UPLOAD_DIR = "uploaded_videos"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.post("/processar-frames/")
-async def processar_frames(intervalo_segundos: int = Form(...), frames: List[UploadFile] = File(...)):
-    if "foca_engine" not in model:
+async def processar_frames(usar_modelo_melhor: bool = Form(False), intervalo_segundos: int = Form(...), frames: List[UploadFile] = File(...)):
+    if "foca_engine" not in model or "foca_engine_small" not in model:
         raise HTTPException(status_code=503, detail="Modelo não inicializado.")
     if not frames:
         raise HTTPException(status_code=400, detail="Frames não recebidos.")
+
+    print(f"usar_modelo_melhor = {usar_modelo_melhor}")
 
     medias_temporais = []
     linha_do_tempo = []
@@ -123,7 +143,13 @@ async def processar_frames(intervalo_segundos: int = Form(...), frames: List[Upl
         nparr = np.frombuffer(contents, np.uint8)
         img_opencv = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-        resultado_frame = model["foca_engine"].processar_frame(img_opencv)
+        if not usar_modelo_melhor:
+            resultado_frame = model["foca_engine"].processar_frame(img_opencv)
+            print("Frame processado com modelo nano")
+        else:
+            resultado_frame = model["foca_engine_small"].processar_frame(img_opencv)
+            print("Frame processado com modelo small")
+
 
         if resultado_frame and resultado_frame["total_alunos"] > 0:
 

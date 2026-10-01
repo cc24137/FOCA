@@ -37,7 +37,7 @@ export default function AnaliseTempoReal() {
   const [deviceId, setDeviceId] = useState('');
   const [preview, setPreview] = useState(false);
   const [interval, setInterval] = useState(5);
-  const [model, setModel] = useState('MODELO_1');
+  const [model, setModel] = useState(false);
   const [points, setPoints] = useState([]);
   const [elapsed, setElapsed] = useState(0);
   const [message, setMessage] = useState('Selecione uma câmera para visualizar a sala.');
@@ -163,7 +163,7 @@ export default function AnaliseTempoReal() {
       if (!blob) throw new Error('Não foi possível capturar a imagem.');
       if (generation !== generationRef.current) return;
       const url = new URL(VISION_URL, window.location.origin);
-      url.searchParams.set('modelo', model);
+      url.searchParams.set('usar_modelo_melhor', model);
       const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'image/jpeg' }, body: blob, signal: controller.signal, cache: 'no-store' });
       if (!response.ok) {
         const detail = await response.json().catch(() => null);
@@ -172,7 +172,6 @@ export default function AnaliseTempoReal() {
       const result = await response.json();
       if (generation !== generationRef.current || !mountedRef.current) return;
       // Confirma o motor selecionado antes de incorporar a leitura.
-      if (model === 'MODELO_2' && result.modelo !== model) throw new Error('A API ainda não confirmou o MODELO 2. Integre a seleção de modelos no backend antes de utilizá-lo.');
       if (!Array.isArray(result.linha_do_tempo)) throw new Error('Resposta inválida: linha_do_tempo ausente.');
       const point = result.linha_do_tempo[0];
       if (point && (typeof point.media_momento !== 'number' || !Number.isFinite(point.media_momento))) throw new Error('Resposta inválida: atenção não numérica.');
@@ -190,7 +189,7 @@ export default function AnaliseTempoReal() {
       if (generation !== generationRef.current || !mountedRef.current) return;
       failuresRef.current += 1;
       setError(err.name === 'AbortError' ? 'O processamento excedeu 30 segundos.' : err.message);
-      if (model === 'MODELO_2' || failuresRef.current >= 3) {
+      if (model === true || failuresRef.current >= 3) {
         cancelAnalysis(); stopClock(); releaseCamera(); changeMode('paused');
         setMessage('Análise pausada após falha. Verifique a conexão e retome.');
       }
@@ -277,7 +276,7 @@ export default function AnaliseTempoReal() {
                 {devices.map((device, index) => <option key={device.deviceId || index} value={device.deviceId}>{device.label || `Câmera ${index + 1}`}</option>)}
               </select></label>
               <label>Intervalo (s)<input type="number" min="1" step="1" value={interval} disabled={locked} onChange={(event) => setInterval(event.target.value === '' ? '' : Number(event.target.value))} /></label>
-              <label>Modelo<select value={model} disabled={locked || valid.length > 0} onChange={(event) => setModel(event.target.value)}><option value="MODELO_1">MODELO 1</option><option value="MODELO_2">MODELO 2</option></select></label>
+              <label>Modelo<select value={String(model)} disabled={locked || valid.length > 0} onChange={(event) => setModel(event.target.value === 'true')}><option value="false">MODELO 1</option><option value="true">MODELO 2</option></select></label>
             </div>
             <div className="live-video">
               <video ref={videoRef} autoPlay playsInline muted hidden={!preview} />

@@ -6,7 +6,9 @@ import BookIcon from '../../assets/book.svg?react';
 import BookmarkIcon from '../../assets/bookmark.svg?react';
 import CheckIcon from '../../assets/check.svg?react';
 import LockIcon from '../../assets/lock.svg?react';
-import StudySeal from '../../assets/foca_estudos.png';
+import FocaImensa from '../../assets/foca_imensa.png';
+import CotucaLogo from '../../assets/logo-cotuca.png';
+import UnicampLogo from '../../assets/logo-unicamp.svg';
 import './sobre-projeto.css';
 
 const steps = [
@@ -63,6 +65,14 @@ export default function SobreProjeto() {
           </div>
           <aside className="project-about-institution" aria-label="Instituição de origem do projeto">
             <span className="project-about-label">Desenvolvido no</span>
+            <div className="project-about-institution-logos">
+              <a href="https://www.cotuca.unicamp.br/" target="_blank" rel="noopener noreferrer" className="project-about-logo-link">
+                <img src={CotucaLogo} className="project-about-logo project-about-logo-cotuca" alt="COTUCA — Colégio Técnico de Campinas" width="120" height="120" />
+              </a>
+              <a href="https://www.unicamp.br/" target="_blank" rel="noopener noreferrer" className="project-about-logo-link">
+                <img src={UnicampLogo} className="project-about-logo project-about-logo-unicamp" alt="UNICAMP — Universidade Estadual de Campinas" />
+              </a>
+            </div>
             <strong>COTUCA</strong>
             <span>Colégio Técnico de Campinas</span>
             <div className="project-about-university">
@@ -137,7 +147,7 @@ export default function SobreProjeto() {
               de acordo com seus respectivos perfis de acesso. A plataforma reúne
               os registros de aulas, turmas e disciplinas para facilitar o acompanhamento.
             </p>
-            <img src={StudySeal} className="project-about-study-seal" alt="" loading="lazy" />
+            <img src={FocaImensa} className="project-about-seal" alt="" width="411" height="194" loading="lazy" />
           </div>
           <ul className="project-about-feature-list">
             <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Gráficos temporais</strong><span>A evolução dos indicadores durante a aula.</span></div></li>

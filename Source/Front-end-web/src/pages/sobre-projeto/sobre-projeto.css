@@ -15,12 +15,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px clamp(16px, 5vw, 64px) 40px;
+  max-width: none;
+  margin: 0;
+  padding: 28px clamp(20px, 4vw, 72px) 48px;
   gap: clamp(30px, 5vw, 50px);
+  text-align: left;
 }
 
 .project-about-content > * { max-width: 100%; }
@@ -37,11 +38,11 @@
 
 .project-about-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   align-items: center;
-  gap: 30px;
+  gap: clamp(28px, 4vw, 56px);
   width: 100%;
-  padding: clamp(20px, 4vw, 40px) clamp(20px, 5vw, 50px);
+  padding: clamp(24px, 3vw, 40px);
   border-radius: 24px;
   background: var(--intro-gradient, linear-gradient(120deg, #e4f0f7, #f0f5f9));
   animation: projectAboutFadeIn 0.6s ease-out both;
@@ -81,14 +82,43 @@
 .project-about-institution {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 12px;
   min-width: 0;
   padding: clamp(20px, 3vw, 30px);
-  text-align: center;
+  text-align: left;
   border-radius: 20px;
   background: var(--transparent-light-blue, rgba(157, 205, 236, .25));
 }
+.project-about-institution-logos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding: 18px;
+  border-radius: 14px;
+  background: #fff;
+}
+.project-about-logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  border-radius: 4px;
+}
+.project-about-logo-link:focus-visible {
+  outline: 2px solid var(--deep-blue-accent, #174c78);
+  outline-offset: 6px;
+}
+.project-about-logo {
+  display: block;
+  width: 100%;
+  max-width: 110px;
+  height: 110px;
+  object-fit: contain;
+}
+.project-about-logo-unicamp { max-width: 96px; }
 .project-about-label { font-size: 14px; }
 .project-about-institution > strong {
   font-family: var(--font-scada, 'Scada', sans-serif);
@@ -97,7 +127,7 @@
   line-height: 1.1;
 }
 .project-about-institution > span:not(.project-about-label) { font-size: 16px; line-height: 1.5; }
-.project-about-university { display: flex; flex-direction: column; gap: 8px; width: 100%; padding-top: 18px; }
+.project-about-university { display: flex; flex-direction: column; gap: 8px; width: 100%; padding-top: 18px; border-top: 1px solid var(--transparent-grayish-blue, rgba(131, 158, 181, .18)); }
 .project-about-university strong { font-family: var(--font-scada, 'Scada', sans-serif); font-size: 28px; color: var(--deep-blue-accent, #174c78); }
 .project-about-university span { font-size: 16px; line-height: 1.5; }
 .project-about-badge { margin-top: 8px; font-weight: 500; }
@@ -134,8 +164,8 @@
 .project-about-card h3 { margin: 0 0 12px; font-size: clamp(18px, 2vw, 22px); font-weight: 500; line-height: 1.35; }
 .project-about-steps p { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; }
 
-.project-about-features { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: 35px; width: 100%; }
-.project-about-study-seal { display: block; width: 100%; max-width: 230px; height: auto; margin: 24px auto 0; }
+.project-about-features { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: center; gap: clamp(30px, 4vw, 60px); width: 100%; }
+.project-about-seal { display: block; width: 100%; max-width: 411px; height: auto; margin: 28px 0 0; object-fit: contain; }
 .project-about-feature-list { display: flex; flex-direction: column; gap: 25px; list-style: none; padding: clamp(25px, 4vw, 40px) clamp(20px, 3vw, 30px); margin: 0; border-radius: 20px; background: var(--transparent-light-blue, rgba(157, 205, 236, .25)); }
 .project-about-feature-list li { display: flex; align-items: flex-start; gap: 15px; }
 .project-about-check-icon { flex: 0 0 24px; width: 24px; height: 24px; margin-top: 3px; }
@@ -143,7 +173,7 @@
 .project-about-feature-list strong { margin-bottom: 6px; font-size: clamp(17px, 1.9vw, 21px); font-weight: 600; }
 .project-about-feature-list span { font-size: clamp(16px, 1.7vw, 19px); font-weight: 300; }
 
-.project-about-results { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: center; gap: 35px; width: 100%; }
+.project-about-results { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); align-items: center; gap: clamp(30px, 4vw, 60px); width: 100%; }
 .project-about-card .project-about-note { font-size: clamp(14px, 1.5vw, 16px); line-height: 1.6; }
 .project-about-table-wrapper { min-width: 0; padding: 20px; border-radius: 20px; background: var(--transparent-dark-grayish-blue, rgba(112, 146, 174, .2)); }
 .project-about-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
@@ -161,24 +191,27 @@
 .project-about-credits li { margin-bottom: 12px; font-size: 16px; line-height: 1.6; }
 .project-about-credits p { font-size: 16px; }
 .project-about-credits strong { font-size: 14px; font-weight: 600; }
-.project-about-academic-footer { width: 100%; text-align: center; }
+.project-about-academic-footer { width: 100%; text-align: left; }
 .project-about-academic-footer p { margin: 0 0 8px; font-size: 14px; line-height: 1.6; }
 
 @keyframes projectAboutFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .project-about-hero { animation: none; } }
 @media (max-width: 1000px) {
+  .project-about-hero { grid-template-columns: minmax(0, 1.3fr) minmax(260px, 1fr); gap: 25px; }
   .project-about-steps { grid-template-columns: minmax(0, 1fr); }
+  .project-about-features { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; }
+  .project-about-results { grid-template-columns: minmax(0, 1fr); gap: 25px; }
   .project-about-credits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .project-about-credits > div:first-child { grid-column: 1 / -1; }
 }
 @media (max-width: 768px) {
   .project-about-content { padding: 20px 16px 30px; gap: 25px; }
-  .project-about-hero { grid-template-columns: minmax(0, 1fr); padding: 30px 20px; text-align: center; gap: 25px; }
+  .project-about-hero { grid-template-columns: minmax(0, 1fr); padding: 30px 20px; text-align: left; gap: 25px; }
   .project-about-institution { width: 100%; }
   .project-about-two-columns, .project-about-features, .project-about-results, .project-about-credits { grid-template-columns: minmax(0, 1fr); gap: 25px; }
   .project-about-credits > div:first-child { grid-column: auto; }
   .project-about-card h2 { gap: 12px; }
-  .project-about-study-seal { max-width: 180px; margin-top: 20px; }
+  .project-about-seal { max-width: 340px; margin-top: 24px; }
   .project-about-steps .project-about-card { padding: 20px; }
   .project-about-table-wrapper { padding: 20px 16px; }
   .project-about-table td { font-size: 27px; }

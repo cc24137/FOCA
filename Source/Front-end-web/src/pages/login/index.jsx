@@ -1,17 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import "./login.css";
-import TituloLateral from "../../components/titulo-lateral";
-import HomeIcon from "../../assets/home.svg?react";
+import AuthLayout from "../../components/auth-layout";
 import EyeOnIcon from "../../assets/eye-on.svg?react"; // open eye
 import EyeOffIcon from "../../assets/eye-off.svg?react"; // closed eye
-import api from "../../services/api";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -20,11 +19,13 @@ export default function Login() {
   }
 
   async function formSubmit() {
+    if (isSubmitting) return;
     if (email === "" || password === "") {
       alert("Por favor, preencha todos os campos.");
       return;
     }
 
+    setIsSubmitting(true);
     try {
       const user = await login(email, password);
 
@@ -64,31 +65,13 @@ export default function Login() {
       } else {
         alert("Erro de conexão com o servidor.");
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   return (
-    <div className="login-body">
-      <TituloLateral />
-
-      <div className="login-right">
-        {/* O Top agora serve estritamente como a barra de navegação/header */}
-        <div className="top">
-          <div className="header-brand-mobile">
-            {/* Se o TituloLateral já renderizar o logo no mobile, podemos apenas 
-                usar o CSS para posicioná-lo. Mas se você quiser garantir que o texto 
-                e logo apareçam aqui, você pode deixar essa div vazia e controlaremos 
-                o TituloLateral para se comportar como o Header! */}
-          </div>
-
-          <button className="login-button" onClick={() => goTo("/")}>
-            <div className="login-content-button">
-              <HomeIcon className="login-home-icon" />
-              <span className="login-button-text">Início</span>
-            </div>
-          </button>
-        </div>
-
+    <AuthLayout pageClass="login-body">
         <div className="login-center">
           {/* O Título de Login agora fica aqui, logo acima dos campos */}
           <h2 className="login-title-text">Login</h2>
@@ -137,8 +120,8 @@ export default function Login() {
         </div>
 
         <div className="login-bottom">
-          <button className="login-submit-button" onClick={() => formSubmit()}>
-            Entrar
+          <button className="login-submit-button" onClick={() => formSubmit()} disabled={isSubmitting} aria-busy={isSubmitting}>
+            {isSubmitting ? "Entrando..." : "Entrar"}
           </button>
           <div className="text-to-cadastro">
             <p>
@@ -152,7 +135,6 @@ export default function Login() {
             </p>
           </div>
         </div>
-      </div>
-    </div>
+    </AuthLayout>
   );
 }

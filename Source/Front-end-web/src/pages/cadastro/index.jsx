@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import "./cadastro.css";
-import HomeIcon from "../../assets/home.svg?react";
 import SeletorTipo from "../../components/selecionar-tipo";
 import { useState, useEffect } from "react";
 import EyeOnIcon from "../../assets/eye-on.svg?react";
 import EyeOffIcon from "../../assets/eye-off.svg?react";
-import TituloLateral from "../../components/titulo-lateral";
+import AuthLayout from "../../components/auth-layout";
 import api from "../../services/api";
 import Asterisk from "../../assets/asterisk.svg?react";
 
@@ -15,6 +14,7 @@ export default function Cadastro() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     email: "",
@@ -49,6 +49,7 @@ export default function Cadastro() {
   }
 
   async function formSubmit() {
+    if (isSubmitting) return;
     if (
       form.password !== confirmarSenha ||
       form.password === "" ||
@@ -59,6 +60,7 @@ export default function Cadastro() {
       alert("As senhas não coincidem ou algum campo está inválido!");
       return;
     }
+    setIsSubmitting(true);
     try {
       const response = await api.post("/users/cadastro", form);
 
@@ -72,6 +74,8 @@ export default function Cadastro() {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -88,20 +92,7 @@ export default function Cadastro() {
   }
 
   return (
-    <div className="cadastro-body">
-      <TituloLateral />
-
-      <div className="right">
-        <div className="top">
-          <button className="sign-in-button" onClick={() => goTo("/")}>
-            <div className="sign-in-content-button">
-              <HomeIcon className="home-icon" />
-              <span className="sign-in-button-text">Início</span>
-            </div>
-          </button>
-        </div>
-
-        {/* ✨ TÍTULO MOVIDO PARA CIMA DO SELETOR ✨ */}
+    <AuthLayout pageClass="cadastro-body">
         <h2 className="sign-in-title-text">Cadastro</h2>
 
         <div className="seletor-cadastro-wrapper">
@@ -176,8 +167,8 @@ export default function Cadastro() {
         </div>
 
         <div className="sign-in-bottom">
-          <button className="sign-in-submit-button" onClick={() => formSubmit()}>
-            Criar
+          <button className="sign-in-submit-button" onClick={() => formSubmit()} disabled={isSubmitting} aria-busy={isSubmitting}>
+            {isSubmitting ? "Criando..." : "Criar"}
           </button>
           <div className="text-to-login">
             <p>
@@ -188,7 +179,6 @@ export default function Cadastro() {
             </p>
           </div>
         </div>
-      </div>
-    </div>
+    </AuthLayout>
   );
 }

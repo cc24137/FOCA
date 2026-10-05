@@ -86,7 +86,7 @@ export default function EditarDados() {
       <Header
         routes={[
           { textButton: "Início", routeButton: user?.isProfessor ? "/inicial-professor" : "/inicial-instituicao" },
-          { textButton: "Sobre o Projeto", routeButton: "/inicial" },
+          { textButton: "Sobre o Projeto", routeButton: "/" },
           { textButton: "Vínculos", routeButton: "/vinculos-professor" }
         ]}
       />

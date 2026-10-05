@@ -35,8 +35,8 @@ export default function InicialInstituicao(){
         <div className='inicial-instituicao-container'>
             <Header
                 routes = {[
-                    {textButton: "Início", routeButton: "/inicial"},
-                    {textButton: "Sobre o Projeto", routeButton: "/inicial"},
+                    {textButton: "Início", routeButton: "/inicial-instituicao"},
+                    {textButton: "Sobre o Projeto", routeButton: "/"},
                     {textButton: "Perfil"         , routeButton: "/editar-dados"}
                 ]}
             />

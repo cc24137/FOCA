@@ -8,7 +8,7 @@
     flex-direction: column;
     min-height: 100vh;
     font-family: var(--font-inter);
-    overflow-x: hidden; /* Evita scroll horizontal indesejado */
+    overflow-x: clip;
 }
 
 .inicial-content {
@@ -382,7 +382,7 @@
 
 .inicial-our-values-left-icon {
     width: 100%;
-    max-width: 220px;
+    max-width: 250px;
     height: auto;
 }
 
@@ -511,7 +511,7 @@
     }
 
     .inicial-our-values-left-icon {
-        max-width: 150px;
+        max-width: 170px;
     }
     
     .inicial-our-values-card {

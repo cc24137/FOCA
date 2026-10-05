@@ -2,54 +2,6 @@
    1. LAYOUT BASE E DESKTOP (MONITORES GRANDES)
    ========================================================================== */
 
-.login-body {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-.login-right {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  width: 70%;
-  min-height: 100vh;
-  padding: 40px clamp(24px, 5vw, 50px) 60px clamp(24px, 5vw, 50px);
-  box-sizing: border-box;
-}
-
-.top {
-  display: flex;
-  justify-content: flex-end; /* No desktop, empurra o botão Início para a direita */
-  align-items: center;
-  width: 100%;
-  height: 50px;
-}
-
-.login-center {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* Alinha o título "Login" e os campos à esquerda (padrão de mercado) */
-  gap: 24px;
-  width: 55%; 
-  max-width: 450px;
-  box-sizing: border-box;
-}
-
-.login-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  width: 100%;
-  max-width: 450px;
-}
-
 .login-field-group {
   display: flex;
   flex-direction: column;
@@ -118,27 +70,6 @@
   height: 22px;
 }
 
-.login-content-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 0 16px;
-  color: var(--black);
-  font-family: var(--font-inter);
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.login-button {
-  background: var(--transparent-grayish-blue);
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
 .login-submit-button {
   width: 100%;
   height: 50px;
@@ -149,6 +80,16 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-submit-button:hover:not(:disabled) {
+  background-color: var(--deep-blue-accent);
+}
+
+.login-submit-button:disabled {
+  background-color: var(--button-disabled-gray);
+  cursor: wait;
 }
 
 .text-to-cadastro {
@@ -170,78 +111,20 @@
   font-size: 14px;
 }
 
-.login-home-icon {
-  width: 18px;
-  height: 18px;
-}
-
 /* ==========================================================================
    💻 MEDIA QUERY 1: LAPTOPS PEQUENOS (Abaixo de 1024px)
    ========================================================================== */
 @media (max-width: 1024px) {
-  .login-body {
-    flex-direction: column;
-    justify-content: flex-start;
-  }
 
   /* 2. REORGANIZAÇÃO COMPLETA DA ÁREA DO FORMULÁRIO */
-  .login-right {
-    width: 100%;
-    margin-top: 60px; /* Recuo exato para não ficar por baixo da barra fixa */
-    min-height: calc(100vh - 60px);
-    padding: 40px 24px 40px 24px;
-    box-sizing: border-box;
-    justify-content: flex-start;
-    gap: 20px;
-  }
 
   /* Alinha a div .top no mesmo eixo do cabeçalho fixo */
-  .top {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: auto;
-    height: 60px;
-    z-index: 11;
-    display: flex;
-    align-items: center;
-    padding-right: 20px;
-    justify-content: flex-end;
-  }
 
   /* Oculta o título de dentro da div .top */
-  .top .login-title-text {
-    display: none !important;
-  }
 
   /* Botão início refinado para a barra superior */
-  .login-button {
-    background: rgba(255, 255, 255, 0.4) !important;
-    border-radius: 15px;
-    padding: 2px;
-  }
-
-  .login-content-button {
-    font-size: 14px !important;
-    min-height: 32px !important;
-    padding: 0 12px !important;
-    gap: 6px !important;
-  }
-
-  .login-home-icon {
-    width: 15px !important;
-    height: 15px !important;
-  }
 
   /* 3. FORMULÁRIO INTERNO NA ÁREA BRANCA */
-  .login-center {
-    width: 100%;
-    max-width: 450px; /* Impede que em tablets deitados os inputs fiquem gigantescos */
-    margin: 0 auto;  /* Centraliza horizontalmente o bloco de formulário */
-    padding-top: 20px;
-    gap: 22px;
-    align-items: flex-start;
-  }
 
   /* Destaca o título "Login" isolado na área branca */
   .login-center .login-title-text {
@@ -249,12 +132,6 @@
     font-size: 32px !important;
     margin-bottom: 5px;
     align-self: flex-start;
-  }
-
-  .login-bottom {
-    width: 100%;
-    max-width: 450px;
-    margin: 20px auto 0 auto;
   }
 }
 
@@ -265,72 +142,16 @@
    📱 MEDIA QUERY 2: SMARTPHONES (Abaixo de 768px)
    ========================================================================== */
 @media (max-width: 768px) {
-  .login-body {
-    flex-direction: column;
-    justify-content: flex-start;
-  }
 
   /* 2. REORGANIZA A ÁREA DA DIREITA (FORMULÁRIO) */
-  .login-right {
-    width: 100%;
-    margin-top: 60px; 
-    min-height: calc(100vh - 60px);
-    padding: 30px 24px 40px 24px;
-    box-sizing: border-box;
-    justify-content: flex-start;
-  }
 
   /* Botão início no canto superior direito */
-  .top {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: auto;
-    height: 60px;
-    z-index: 11;
-    display: flex;
-    align-items: center;
-    padding-right: 16px;
-    justify-content: flex-end;
-  }
-
-  .top .login-title-text {
-    display: none;
-  }
-
-  .login-button {
-    background: rgba(255, 255, 255, 0.4) !important;
-    border-radius: 15px;
-  }
-
-  .login-content-button {
-    font-size: 14px !important;
-    min-height: 32px !important;
-    padding: 0 10px !important;
-    gap: 4px !important;
-  }
-
-  .login-home-icon {
-    width: 14px !important;
-    height: 14px !important;
-  }
 
   /* 3. FORMULÁRIO DE LOGIN INTERNO */
-  .login-center {
-    width: 100%;
-    padding-top: 20px;
-    gap: 20px;
-    align-items: flex-start;
-  }
 
   .login-center .login-title-text {
     display: block !important;
     font-size: 32px !important;
     margin-bottom: 5px;
-  }
-
-  .login-bottom {
-    width: 100%;
-    margin-top: 40px;
   }
 }

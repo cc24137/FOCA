@@ -1,5 +1,5 @@
 import "./titulo-lateral.css";
-import SealIcon from "../../assets/seal.svg?react";
+import FocaLogoImg from "../../assets/foca_logo.png";
 
 export default function TituloLateral(){
     return(
@@ -7,7 +7,7 @@ export default function TituloLateral(){
         <aside className='titulo-lateral-container'>
             {/* O conteúdo interno será controlado pelo CSS do componente */}
             <div className='titulo-lateral-top-left'>
-                <SealIcon className='titulo-lateral-seal-icon' />
+                <img src={FocaLogoImg} alt="Logo Foca" className='titulo-lateral-seal-icon' />
                 <span className='titulo-lateral-title'>FOCA</span>
             </div>
             

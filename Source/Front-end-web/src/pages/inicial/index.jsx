@@ -47,10 +47,11 @@ export default function Inicial() {
     return (
         <div className='inicial-body'>
             <Header
+                sticky
                 titulo="FOCA"
                 routes={[
                         { textButton: "Início", routeButton: getHomePath() },
-                        { textButton: "Sobre o Projeto", routeButton: "/sobre" },
+                        { textButton: "Sobre o Projeto", routeButton: "/sobre-projeto" },
                         { textButton: getAccessText(), routeButton: getAccessPath() }
                     ]}
             />

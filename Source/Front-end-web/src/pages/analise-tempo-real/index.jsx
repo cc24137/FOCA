@@ -264,7 +264,7 @@ export default function AnaliseTempoReal() {
   if (!idAula) return null;
   return (
     <div className="live-page">
-      <Header routes={[{ textButton: 'Início', routeButton: '/inicial-professor' }, { textButton: 'Sobre o Projeto', routeButton: '/' }, { textButton: 'Perfil', routeButton: '/editar-dados' }]} />
+      <Header routes={[{ textButton: 'Início', routeButton: '/inicial-professor' }, { textButton: 'Sobre o Projeto', routeButton: "/" }, { textButton: 'Perfil', routeButton: '/editar-dados' }]} />
       <main className="live-content">
         <h1>Análise de Aula em Tempo Real</h1>
         <div className="live-grid">

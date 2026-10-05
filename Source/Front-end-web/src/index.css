@@ -21,6 +21,7 @@
   --card-gradient                : linear-gradient(180deg, #7A86AB 0%, #1A2968 100%);
   --intro-gradient               : linear-gradient(90deg, #3853EC42 0%, #2563CE4D 100%);
   --red                          : #ff0000;
+  --button-disabled-gray         : #6b7280;
 
   --shadow-panel                 : 0 4px 15px rgba(0, 0, 0, 0.11);
   --shadow-banner                : 0 4px 15px rgba(0, 0, 0, 0.17);

@@ -1,12 +1,11 @@
 import "./header.css";
 import { useNavigate } from "react-router-dom";
-import LogoIcon from "../../assets/seal.svg?react";
 import UserIcon from "../../assets/user.svg?react";
 import HomeIcon from "../../assets/home.svg?react";
 import InfoIcon from "../../assets/info.svg?react";
 import FocaLogoImg from "../../assets/foca_logo.png";
 
-export default function Header({ routes }) {
+export default function Header({ routes, sticky = false }) {
     const navigate = useNavigate();
 
     const rotasPadrao = [
@@ -16,6 +15,8 @@ export default function Header({ routes }) {
     ];
     
     const rotasAtivas = routes && routes.length > 0 ? routes : rotasPadrao;
+    const homeRoute = rotasAtivas.find(link => link.textButton === "Início")?.routeButton;
+    const hasDashboardHome = ["/inicial-professor", "/inicial-instituicao"].includes(homeRoute);
 
     function goTo(route) {
         if (route) navigate(route);
@@ -28,7 +29,7 @@ export default function Header({ routes }) {
     };
 
     return (
-        <header className="header">
+        <header className={`header${sticky ? " header--sticky" : ""}`}>
             <div className="header-elements">
                 <div className="header-left">
                     <img src={FocaLogoImg} alt="Logo Foca" className="header-logo" /> 
@@ -40,7 +41,7 @@ export default function Header({ routes }) {
                         <button
                             key={index}
                             className={index === 2 ? "header-button" : "header-link"}
-                            onClick={() => goTo(link.routeButton)}
+                            onClick={() => goTo(link.textButton === "Sobre o Projeto" && hasDashboardHome ? "/" : link.routeButton)}
                         >
                             <div className="content-button">
                                 {getIcon(index)}

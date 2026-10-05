@@ -2,43 +2,7 @@
    1. LAYOUT BASE E DESKTOP (Monitores Grandes e Notebooks)
    ========================================================================== */
 
-.alterar-senha-body {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch;
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-.alterar-senha-right {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 65%;
-  flex-grow: 1;
-  min-height: 100vh;
-  padding: 40px 60px;
-  box-sizing: border-box;
-  gap: 25px;
-}
-
 /* Limitação de largura padrão para garantir simetria */
-.alterar-senha-top,
-.alterar-senha-center,
-.alterar-senha-bottom {
-  width: 100%;
-  max-width: 560px;
-  box-sizing: border-box;
-}
-
-.alterar-senha-top {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
 
 .alterar-senha-box {
   display: flex;
@@ -61,13 +25,6 @@
   margin: 0;
 }
 
-.alterar-senha-center {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px; /* Distância uniforme entre cada input */
-}
-
 .alterar-senha-field-group {
   display: flex;
   flex-direction: column;
@@ -78,13 +35,6 @@
 .input-wrapper {
   position: relative;
   width: 100%;
-}
-
-.alterar-senha-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
 }
 
 /* --- Elementos de Interface, Inputs e Componentes --- */
@@ -117,31 +67,6 @@
 
 .text-field.with-icon {
   padding-right: 45px;
-}
-
-.alterar-senha-content-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 0px 16px;
-  color: var(--black);
-  font-family: var(--font-inter);
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.alterar-senha-button {
-  background: var(--transparent-grayish-blue);
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.alterar-senha-button:hover {
-  background: var(--transparent-dark-grayish-blue);
 }
 
 .alterar-senha-submit-button {
@@ -223,59 +148,8 @@
    📱 MEDIA QUERY (Telemóveis e Tablets - ABAIXO DE 1024px)
    ========================================================================= */
 @media (max-width: 1024px) {
-  .alterar-senha-body {
-    flex-direction: column;
-  }
 
-  .alterar-senha-top {
-    position: fixed !important;
-    top: 0 !important;
-    right: 0 !important;
-    width: auto !important;
-    height: 60px !important;
-    padding: 0 16px !important;
-    margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    z-index: 1000 !important;
-  }
-
-  .alterar-senha-button {
-    background: rgba(255, 255, 255, 0.6) !important;
-    border-radius: 12px !important;
-    padding: 2px !important;
-  }
-
-  .alterar-senha-content-button {
-    font-size: 14px !important;
-    min-height: 32px !important;
-    padding: 0 10px !important;
-    gap: 6px !important;
-  }
-
-  .alterar-senha-right {
-    width: 100% !important;
-    min-height: 100vh !important;
-    margin: 0 !important;
-    padding: 80px 20px 20px 20px !important; /* padding-top de 80px = 60px da barra + 20px de respiro */
-    flex-direction: column !important;
-    justify-content: space-between !important; 
-    align-items: center !important;
-    box-sizing: border-box !important;
-    gap: 16px !important;
-  }
-
-  .alterar-senha-center {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centraliza os inputs dentro da área que cresceu */
-  }
-
-  .alterar-senha-box,
-  .alterar-senha-center,
-  .alterar-senha-bottom {
+  .alterar-senha-box {
     width: 100% !important;
     max-width: 450px !important;
     margin: 0 auto !important;
@@ -284,10 +158,6 @@
   .alterar-senha-box {
     padding: 15px !important;
     font-size: 14px !important;
-  }
-
-  .alterar-senha-center {
-    gap: 20px !important;
   }
 
   .alterar-senha-field-group {

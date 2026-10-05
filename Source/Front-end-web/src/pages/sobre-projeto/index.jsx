@@ -40,9 +40,9 @@ export default function SobreProjeto() {
 
   return (
     <div className="project-about-page">
-      <Header titulo="FOCA" routes={[
+      <Header sticky titulo="FOCA" routes={[
         { textButton: 'Início', routeButton: homePath },
-        { textButton: 'Sobre o Projeto', routeButton: '/sobre' },
+        { textButton: 'Sobre o Projeto', routeButton: "/sobre-projeto" },
         { textButton: session.isLoggedIn ? 'Meu Perfil' : 'Login', routeButton: session.isLoggedIn ? '/editar-dados' : '/login' },
       ]} />
 

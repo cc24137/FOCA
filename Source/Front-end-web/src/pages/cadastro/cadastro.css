@@ -2,60 +2,7 @@
    1. LAYOUT BASE E DESKTOP (Ecrãs grandes e Portáteis)
    ========================================================================== */
 
-.cadastro-body {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: stretch;
-  width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-.right {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 65%; 
-  flex-grow: 1;
-  min-height: 100vh;
-  padding: clamp(20px, 4vh, 40px) 60px clamp(10px, 2vh, 40px) 60px; 
-  box-sizing: border-box;
-  gap: clamp(15px, 3.5vh, 35px); 
-}
-
 /* Largura máxima para os blocos */
-.top,
-.seletor-cadastro-wrapper,
-.sign-in-center,
-.sign-in-bottom {
-  width: 100%;
-  max-width: 560px; 
-  box-sizing: border-box;
-}
-
-.top {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: clamp(5px, 1vh, 10px);
-}
-
-.sign-in-center {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(12px, 2.5vh, 24px); 
-}
-
-.sign-in-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(12px, 2.5vh, 20px); 
-  margin-top: clamp(5px, 1.5vh, 15px);
-}
 
 .field-group {
   display: flex;
@@ -119,31 +66,6 @@
   padding-right: 45px;
 }
 
-.sign-in-content-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 0px 16px;
-  color: var(--black);
-  font-family: var(--font-inter);
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.sign-in-button {
-  background: var(--transparent-grayish-blue);
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.sign-in-button:hover {
-  background: var(--transparent-dark-grayish-blue);
-}
-
 .sign-in-submit-button {
   width: 100%;
   /* ✨ ADAPTA-SE À ALTURA: Botão de enviar acompanha as caixas de texto */
@@ -155,10 +77,16 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.sign-in-submit-button:hover {
+.sign-in-submit-button:hover:not(:disabled) {
   background-color: var(--deep-blue-accent);
+}
+
+.sign-in-submit-button:disabled {
+  background-color: var(--button-disabled-gray);
+  cursor: wait;
 }
 
 .text-to-login {
@@ -221,37 +149,8 @@
    📱 MEDIA QUERY (Telemóveis e Tablets - ABAIXO DE 1024px)
    ========================================================================= */
 @media (max-width: 1024px) {
-  .cadastro-body {
-    flex-direction: column;
-  }
 
   /* 2. BOTÃO INÍCIO FLUTUANDO */
-  .top {
-    position: fixed !important;
-    top: 0 !important;
-    right: 0 !important;
-    width: auto !important;
-    height: 60px !important;
-    padding: 0 16px !important;
-    margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    z-index: 1000 !important;
-  }
-
-  .sign-in-button {
-    background: rgba(255, 255, 255, 0.6) !important;
-    border-radius: 12px !important;
-    padding: 2px !important;
-  }
-
-  .sign-in-content-button {
-    font-size: 14px !important;
-    min-height: 32px !important;
-    padding: 0 10px !important;
-    gap: 6px !important;
-  }
 
   .home-icon {
     width: 14px !important;
@@ -259,30 +158,11 @@
   }
 
   /* 3. ÁREA DO FORMULÁRIO (Móvel) */
-  .right {
-    width: 100% !important;
-    min-height: 100vh !important;
-    margin: 0 !important;
-    padding: 80px 20px 20px 20px !important; /* padding-top de 80px = 60px da barra + 20px de respiro */
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important; 
-    align-items: center !important;
-    box-sizing: border-box !important;
-    gap: 16px !important; 
-  }
 
-  .seletor-cadastro-wrapper,
-  .sign-in-center,
-  .sign-in-bottom,
   .sign-in-title-text {
     width: 100% !important;
     max-width: 450px !important;
     margin: 0 auto !important;
-  }
-
-  .sign-in-center {
-    gap: 12px !important; 
   }
 
   .sign-in-title-text {
@@ -306,11 +186,6 @@
   .sign-in-submit-button {
     height: 44px !important;
     font-size: 17px !important;
-  }
-
-  .sign-in-bottom {
-    gap: 10px !important;
-    margin-top: 10px !important;
   }
   
   .text-to-login {

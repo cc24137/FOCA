@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./alterar-senha.css";
-import TituloLateral from "../../components/titulo-lateral";
-import HomeIcon from "../../assets/home.svg?react";
+import AuthLayout from "../../components/auth-layout";
 import { useState } from "react";
 import EyeOnIcon from "../../assets/eye-on.svg?react"; // open eye
 import EyeOffIcon from "../../assets/eye-off.svg?react"; // closed eye
@@ -71,19 +70,7 @@ export default function AlterarSenha() {
   }
 
   return (
-    <div className="alterar-senha-body">
-      <TituloLateral />
-
-      <div className="alterar-senha-right">
-        <div className="alterar-senha-top">
-          <button className="alterar-senha-button" onClick={() => goTo("/")}>
-            <div className="alterar-senha-content-button">
-              <HomeIcon className="home-icon" />
-              <span className="alterar-senha-button-text">Início</span>
-            </div>
-          </button>
-        </div>
-
+    <AuthLayout pageClass="alterar-senha-body">
         <div className="alterar-senha-center">
           <div className="alterar-senha-box">
             <p>Quase lá!</p>
@@ -186,7 +173,6 @@ export default function AlterarSenha() {
             Redefinir Senha
           </button>
         </div>
-      </div>
-    </div>
+    </AuthLayout>
   );
 }

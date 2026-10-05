@@ -76,16 +76,6 @@ class AulaController {
         }
     
         if (
-            arquivoVideo === undefined ||
-            arquivoVideo === null ||
-            arquivoVideo.trim() === ""
-        ) {
-            return res.status(400).json({
-                error: "arquivoVideo é obrigatório"
-            });
-        }
-    
-        if (
             analise === undefined ||
             analise === null ||
             typeof analise !== "object"

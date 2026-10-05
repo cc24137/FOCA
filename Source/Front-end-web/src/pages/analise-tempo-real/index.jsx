@@ -239,8 +239,7 @@ export default function AnaliseTempoReal() {
             media_global_aula: Number((valid.reduce((sum, point) => sum + point.media_momento, 0) / valid.length).toFixed(2)),
             // Mantém o contrato existente. Leituras sem detecção ficam apenas na tela.
             linha_do_tempo: valid,
-          },
-          arquivoVideo: 'teste.mp4'
+          }
         });
         if (!mountedRef.current) return;
         setSaved(true);

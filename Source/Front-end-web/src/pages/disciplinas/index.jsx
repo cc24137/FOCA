@@ -1,11 +1,14 @@
 import Header from '../../components/header';
+import GenericLineChart from '../../components/time-vs-value-chart';
 import './disciplinas.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from "../../services/api";
 
 export default function Disciplinas() {
     const [disciplinas, setDisciplinas] = useState([]);
     const [selectedDisciplina, setSelectedDisciplina] = useState(null);
+    const [atencaoDisciplina, setAtencaoDisciplina] = useState(null);
+    const cacheVinculos = useRef(new Map());
 
     // Estados para edição
     const [isEditing, setIsEditing] = useState(false);
@@ -15,36 +18,197 @@ export default function Disciplinas() {
     const [isAdding, setIsAdding] = useState(false);
     const [newDisciplinaName, setNewDisciplinaName] = useState('');
 
+    const disciplinaSelecionada = disciplinas[selectedDisciplina];
+    const nomeRepetido = disciplinaSelecionada && disciplinas.some(disciplina =>
+        String(disciplina.id) !== String(disciplinaSelecionada.id)
+        && disciplina.nome === disciplinaSelecionada.nome
+    );
+    const dadosAtencao = disciplinaSelecionada && atencaoDisciplina
+        && String(atencaoDisciplina.idDisciplina) === String(disciplinaSelecionada.id)
+        && atencaoDisciplina.nomeDisciplina === disciplinaSelecionada.nome
+        ? atencaoDisciplina
+        : null;
+    const statusAtencao = dadosAtencao?.status || (disciplinaSelecionada ? 'carregando' : 'vazio');
+    const mediaFormatada = statusAtencao === 'carregando' ? 'Carregando...'
+        : statusAtencao === 'erro' || statusAtencao === 'ambiguo' ? 'Indisponível'
+        : dadosAtencao?.mediaAtencao != null
+        ? `${dadosAtencao.mediaAtencao.toLocaleString('pt-BR', {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        })}%`
+        : 'Sem análises';
+    const turmasFormatadas = dadosAtencao?.turmas?.length > 0
+        ? dadosAtencao.turmas.join(', ')
+        : statusAtencao === 'carregando' ? 'Carregando...'
+        : statusAtencao === 'erro' || statusAtencao === 'ambiguo' ? 'Indisponível'
+        : 'Nenhum vínculo';
+    const dadosGrafico = (dadosAtencao?.aulas || []).map((aula, index) => {
+        const data = aula.data ? new Date(aula.data) : null;
+        const dataFormatada = data && !Number.isNaN(data.getTime())
+            ? data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+            : 'Data não informada';
+
+        return {
+            aula: `Aula ${index + 1} - ${dataFormatada} - ${aula.turma || 'Turma não informada'} (${aula.professor || 'Professor não informado'})`,
+            mediaAtencao: Number(aula.mediaAtencao.toFixed(2))
+        };
+    });
+
     // Carregar os dados ao entrar na tela
     useEffect(() => {
         loadData();
     }, []);
 
+    useEffect(() => {
+        let ativo = true;
+
+        if (!disciplinaSelecionada) {
+            setAtencaoDisciplina(null);
+            return;
+        }
+
+        const idDisciplina = disciplinaSelecionada.id;
+        const nomeDisciplina = disciplinaSelecionada.nome;
+        const dadosIniciais = { idDisciplina, nomeDisciplina, turmas: [], aulas: [], mediaAtencao: null };
+
+        // Os vínculos retornam o nome da disciplina, sem seu ID.
+        if (nomeRepetido) {
+            setAtencaoDisciplina({ ...dadosIniciais, status: 'ambiguo' });
+            return;
+        }
+
+        setAtencaoDisciplina({ ...dadosIniciais, status: 'carregando' });
+
+        async function consultarVinculos(url, params) {
+            const chave = `${url}:${JSON.stringify(params || {})}`;
+
+            if (!cacheVinculos.current.has(chave)) {
+                const consulta = api.get(url, params ? { params } : undefined)
+                    .then(response => response.data)
+                    .catch(error => {
+                        if (cacheVinculos.current.get(chave) === consulta) {
+                            cacheVinculos.current.delete(chave);
+                        }
+                        throw error;
+                    });
+                cacheVinculos.current.set(chave, consulta);
+            }
+
+            return cacheVinculos.current.get(chave);
+        }
+
+        const comoLista = data => Array.isArray(data) ? data : (data ? [data] : []);
+
+        async function carregarAtencao() {
+            let turmas = [];
+
+            try {
+                const dataTurmas = await consultarVinculos('/turmas/infosPorInstituicao');
+                if (!ativo) return;
+
+                const turmasUnicas = new Map();
+                comoLista(dataTurmas).forEach(turma => {
+                    if (turma.id != null) turmasUnicas.set(String(turma.id), turma);
+                });
+
+                const relacoesPorTurma = await Promise.all(
+                    Array.from(turmasUnicas.values()).map(async turma => {
+                        const data = await consultarVinculos('/turmaRelacao/porTurma', { idTurma: turma.id });
+                        return comoLista(data)
+                            .filter(relacao => relacao.id != null && relacao.nomeDisciplina === nomeDisciplina)
+                            .map(relacao => ({ ...relacao, turma: turma.nome }));
+                    })
+                );
+                if (!ativo) return;
+
+                const relacoesUnicas = new Map();
+                relacoesPorTurma.flat().forEach(relacao => {
+                    relacoesUnicas.set(String(relacao.id), relacao);
+                });
+                const relacoes = Array.from(relacoesUnicas.values());
+                turmas = Array.from(new Set(relacoes.map(relacao =>
+                    `${relacao.turma || 'Turma não informada'} (${relacao.nomeProfessor || 'Professor não informado'})`
+                )));
+                setAtencaoDisciplina({ ...dadosIniciais, status: 'carregando', turmas });
+
+                const aulasPorRelacao = await Promise.all(
+                    relacoes.map(async relacao => {
+                        const response = await api.get(`/aula/${relacao.id}`);
+                        return comoLista(response.data).map(aula => ({
+                            ...aula,
+                            turma: relacao.turma,
+                            professor: relacao.nomeProfessor
+                        }));
+                    })
+                );
+                if (!ativo) return;
+
+                const aulasUnicas = new Map();
+                aulasPorRelacao.flat().forEach(aula => {
+                    const valorMedia = aula.media_atencao_total;
+                    const mediaAtencao = typeof valorMedia === 'number'
+                        || (typeof valorMedia === 'string' && valorMedia.trim() !== '')
+                        ? Number(valorMedia)
+                        : NaN;
+
+                    // Uma média de 0% é válida; valores ausentes ficam fora do cálculo.
+                    if (aula.id != null && Number.isFinite(mediaAtencao)) {
+                        aulasUnicas.set(String(aula.id), {
+                            id: aula.id,
+                            data: aula.data,
+                            turma: aula.turma,
+                            professor: aula.professor,
+                            mediaAtencao
+                        });
+                    }
+                });
+
+                const aulas = Array.from(aulasUnicas.values()).sort((a, b) => {
+                    const dataA = a.data ? new Date(a.data).getTime() : 0;
+                    const dataB = b.data ? new Date(b.data).getTime() : 0;
+                    const diferenca = (Number.isFinite(dataA) ? dataA : 0)
+                        - (Number.isFinite(dataB) ? dataB : 0);
+
+                    return diferenca || String(a.id).localeCompare(String(b.id), 'pt-BR', { numeric: true });
+                });
+
+                setAtencaoDisciplina({
+                    idDisciplina,
+                    nomeDisciplina,
+                    status: 'pronto',
+                    turmas,
+                    aulas,
+                    mediaAtencao: aulas.length > 0
+                        ? aulas.reduce((soma, aula) => soma + aula.mediaAtencao, 0) / aulas.length
+                        : null
+                });
+            } catch {
+                if (ativo) {
+                    setAtencaoDisciplina({ ...dadosIniciais, status: 'erro', turmas });
+                }
+            }
+        }
+
+        carregarAtencao();
+
+        return () => {
+            ativo = false;
+        };
+    }, [disciplinaSelecionada, nomeRepetido]);
+
     async function loadData() {
         try {
+            cacheVinculos.current.clear();
             const response = await api.get("/disciplinas/porInstituicao");
 
             const data = response.data;
             const disciplinasAgrupadas = [];
 
-            // Lógica de agrupamento (preparada para quando o backend retornar as turmas e professores usando getInfoDisciplinasByInstitution)
             data.forEach(disc => {
-                const discExistente = disciplinasAgrupadas.find(e => e.id === disc.id);
-
-                const infoTurma = (disc.turma && disc.professor)
-                    ? `${disc.turma} (${disc.professor})`
-                    : null;
-
-                if (discExistente) {
-                    if (infoTurma && !discExistente.turmas.includes(infoTurma)) {
-                        discExistente.turmas.push(infoTurma);
-                    }
-                } else {
+                if (!disciplinasAgrupadas.some(e => String(e.id) === String(disc.id))) {
                     disciplinasAgrupadas.push({
                         id: disc.id,
-                        nome: disc.nome,
-                        turmas: infoTurma ? [infoTurma] : [],
-                        mediaDeAtencao: disc.media_atencao || 0
+                        nome: disc.nome
                     });
                 }
             });
@@ -222,16 +386,41 @@ export default function Disciplinas() {
                     <div>
                         {selectedDisciplina !== null && disciplinas[selectedDisciplina] ? (
                             <div className='disciplina-detalhes'>
-                                <p><strong>Turmas e Professores:</strong> {disciplinas[selectedDisciplina].turmas.join(', ') || 'Nenhum vínculo'}</p>
-                                <p><strong>Média de Atenção:</strong> {disciplinas[selectedDisciplina].mediaDeAtencao}%</p>
+                                <p><strong>Turmas e Professores:</strong> {turmasFormatadas}</p>
+                                <p><strong>Média de Atenção:</strong> {mediaFormatada}</p>
                             </div>
                         ) : (
                             <p className='disciplina-selecione'>Selecione uma disciplina para ver os detalhes</p>
                         )}
                     </div>
 
-                    <div className='disciplinas-historico-aulas-content'>
-                        {/* Conteúdo futuro do gráfico/histórico */}
+                    <div className='disciplinas-historico-aulas-content' aria-busy={statusAtencao === 'carregando'}>
+                        {disciplinaSelecionada ? (
+                            statusAtencao === 'carregando' ? (
+                                <p className='disciplinas-grafico-mensagem' role="status">Carregando atenção das aulas...</p>
+                            ) : statusAtencao === 'ambiguo' ? (
+                                <p className='disciplinas-grafico-mensagem' role="alert">Há disciplinas com o mesmo nome. Renomeie uma delas para consultar a atenção.</p>
+                            ) : statusAtencao === 'erro' ? (
+                                <p className='disciplinas-grafico-mensagem' role="alert">Não foi possível carregar os dados de atenção desta disciplina.</p>
+                            ) : dadosGrafico.length > 0 ? (
+                                <>
+                                    <p className='disciplinas-grafico-title'>Atenção média por aula</p>
+                                    <GenericLineChart
+                                        data={dadosGrafico}
+                                        xKey="aula"
+                                        yKey="mediaAtencao"
+                                        lines={[{ key: 'mediaAtencao', label: 'Atenção média (%)', color: '#4F46E5' }]}
+                                        formatXAxis={rotulo => rotulo.split(' - ')[0]}
+                                        height={230}
+                                        isAnimationActive={false}
+                                    />
+                                </>
+                            ) : (
+                                <p className='disciplinas-grafico-mensagem'>Nenhuma aula com atenção registrada para esta disciplina.</p>
+                            )
+                        ) : (
+                            <p className='disciplinas-grafico-mensagem'>Selecione uma disciplina para visualizar o gráfico.</p>
+                        )}
                     </div>
 
                     {/* Botões de Ação só aparecem se uma disciplina estiver selecionada */}

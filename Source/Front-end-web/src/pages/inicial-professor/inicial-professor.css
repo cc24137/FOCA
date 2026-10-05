@@ -57,6 +57,7 @@
 
 .inicial-professor-card {
   background: var(--card-gradient);
+  box-shadow: var(--shadow-navigation-card);
   padding: 1.5rem;
   border-radius: 18px;
   display: flex;
@@ -101,6 +102,7 @@
 
 .inicial-professor-middle-button {
   background: var(--button-dark-blue);
+  box-shadow: var(--shadow-action);
   color: var(--white);
   height: 48px; /* Altura fixa para consistência */
   padding: 0 1.5rem; /* Apenas padding horizontal */

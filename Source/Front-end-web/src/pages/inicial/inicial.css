@@ -44,6 +44,7 @@
     align-items: center;
     justify-content: space-between;
     background: var(--intro-gradient);
+    box-shadow: var(--shadow-banner);
     padding: clamp(20px, 4vw, 40px) clamp(20px, 5vw, 50px);
     border-radius: 24px;
     gap: 30px;
@@ -128,6 +129,7 @@
 .inicial-test-offer-button {
     margin-top: 15px;
     background: var(--button-dark-blue);
+    box-shadow: var(--shadow-action);
     color: var(--white);
     padding: 10px 20px;
     border-radius: 8px;
@@ -225,6 +227,7 @@
 .inicial-how-it-works-card {
     display: flex;
     background-color: var(--transparent-dark-grayish-blue);
+    box-shadow: var(--shadow-panel);
     padding: 20px;
     min-height: 90px; /* Mudado de height para min-height para aceitar textos longos sem quebrar */
     text-align: center;
@@ -271,6 +274,7 @@
     flex: 1;
     min-width: 300px;
     background-color: var(--transparent-light-blue);
+    box-shadow: var(--shadow-panel);
     padding: clamp(25px, 4vw, 50px) clamp(20px, 3vw, 30px);
     border-radius: 20px;
 }
@@ -324,6 +328,7 @@
     flex-direction: column;
     gap: 25px;
     background-color: var(--transparent-grayish-blue);
+    box-shadow: var(--shadow-panel);
     padding: clamp(20px, 4vw, 40px);
     border-radius: 20px;
     box-sizing: border-box;
@@ -392,6 +397,7 @@
 .inicial-our-values-card {
     display: flex;
     background-color: var(--transparent-dark-grayish-blue);
+    box-shadow: var(--shadow-panel);
     padding: 25px;
     min-height: 90px;
     text-align: center;

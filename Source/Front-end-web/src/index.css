@@ -22,6 +22,12 @@
   --intro-gradient               : linear-gradient(90deg, #3853EC42 0%, #2563CE4D 100%);
   --red                          : #ff0000;
 
+  --shadow-panel                 : 0 4px 15px rgba(0, 0, 0, 0.11);
+  --shadow-banner                : 0 4px 15px rgba(0, 0, 0, 0.17);
+  --shadow-action                : 0 4px 15px rgba(0, 0, 0, 0.15);
+  --shadow-profile               : 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-navigation-card       : 0 8px 20px rgba(0, 0, 0, 0.18);
+
   --font-inter              : 'Inter';
   --font-scada              : 'Scada';
 }

@@ -15,6 +15,7 @@
 
 .vinculos-title-wrapper {
   background-color: #dde3f0;
+  box-shadow: var(--shadow-panel);
   border-radius: 14px;
   padding: 12px 48px;
   margin-bottom: 40px;
@@ -38,6 +39,7 @@
 /* Card base */
 .vinculo-card {
   background: var(--card-gradient);
+  box-shadow: var(--shadow-navigation-card);
   border-radius: 18px;
   padding: 22px 22px 16px 22px;
   display: flex;

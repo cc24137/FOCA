@@ -1,8 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import Header from '../../components/header';
 import Combobox from '../../components/combobox-turmas'
-import './turmas.css'
+import GenericLineChart from '../../components/time-vs-value-chart';
+import './turmas.css';
 import api from "../../services/api";
 
 export default function Turmas(){
@@ -12,6 +12,8 @@ export default function Turmas(){
 
     // Armazena as relações (Professor/Disciplina) da turma selecionada
     const [relacoes, setRelacoes] = useState([]);
+    const [atencaoTurma, setAtencaoTurma] = useState(null);
+    const consultaAtual = useRef({ idTurma: null, versao: 0 });
 
     // Estados para armazenar os dados reais vindos da API para as caixas de seleção
     const [allProfessores, setAllProfessores] = useState([]);
@@ -29,6 +31,32 @@ export default function Turmas(){
     const [addingProf, setAddingProf] = useState(false);
     const [newProf, setNewProf] = useState({ nome: '', disciplina: '' });
 
+    const turmaSelecionada = turmas[selectedTurma];
+    const dadosAtencao = turmaSelecionada && atencaoTurma
+        && String(atencaoTurma.idTurma) === String(turmaSelecionada.id)
+        ? atencaoTurma
+        : null;
+    const statusAtencao = dadosAtencao?.status || (turmaSelecionada ? 'carregando' : 'vazio');
+    const mediaFormatada = statusAtencao === 'carregando' ? 'Carregando...'
+        : statusAtencao === 'erro' ? 'Indisponível'
+        : dadosAtencao?.mediaAtencao != null
+        ? `${dadosAtencao.mediaAtencao.toLocaleString('pt-BR', {
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1
+        })}%`
+        : 'Sem análises';
+    const dadosGrafico = (dadosAtencao?.aulas || []).map((aula, index) => {
+        const data = aula.data ? new Date(aula.data) : null;
+        const dataFormatada = data && !Number.isNaN(data.getTime())
+            ? data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+            : 'Data não informada';
+
+        return {
+            aula: `Aula ${index + 1} - ${dataFormatada} - ${aula.disciplina || 'Disciplina não informada'} (${aula.professor || 'Professor não informado'})`,
+            mediaAtencao: Number(aula.mediaAtencao.toFixed(2))
+        };
+    });
+
     // Carrega as turmas, professores e disciplinas ao montar a tela
     useEffect(() => {
         loadData();
@@ -36,12 +64,21 @@ export default function Turmas(){
 
     // Atualiza as relações sempre que a turma selecionada mudar
     useEffect(() => {
-        if (selectedTurma !== null && turmas[selectedTurma]) {
-            loadRelacoes(turmas[selectedTurma].id);
+        consultaAtual.current.idTurma = turmaSelecionada?.id ?? null;
+
+        if (turmaSelecionada) {
+            loadRelacoes(turmaSelecionada.id);
         } else {
+            consultaAtual.current.versao++;
             setRelacoes([]);
+            setAtencaoTurma(null);
         }
-    }, [selectedTurma]);
+
+        return () => {
+            consultaAtual.current.versao++;
+            consultaAtual.current.idTurma = null;
+        };
+    }, [turmaSelecionada]);
 
     async function loadData() {
         try {
@@ -83,15 +120,85 @@ export default function Turmas(){
         }
     }
 
-    // Função que busca a tabela de relações da Turma específica (TDP)
+    // Busca os vínculos e as médias das aulas da turma pelas rotas existentes.
     async function loadRelacoes(idTurma) {
+        if (String(consultaAtual.current.idTurma) !== String(idTurma)) return;
+
+        const versao = ++consultaAtual.current.versao;
+        const estaAtual = () => versao === consultaAtual.current.versao
+            && String(consultaAtual.current.idTurma) === String(idTurma);
+        const comoLista = data => Array.isArray(data) ? data : (data ? [data] : []);
+
+        setRelacoes([]);
+        setAtencaoTurma({ idTurma, status: 'carregando', aulas: [], mediaAtencao: null });
+
         try {
             const response = await api.get("/turmaRelacao/porTurma", {
                 params: { idTurma: idTurma }
             });
-            setRelacoes(response.data);
-        } catch (error) {
-            console.error("Erro ao carregar relações da turma:", error);
+            if (!estaAtual()) return;
+
+            const novasRelacoes = comoLista(response.data);
+            setRelacoes(novasRelacoes);
+
+            const relacoesUnicas = new Map();
+            novasRelacoes.forEach(relacao => {
+                if (relacao.id != null) relacoesUnicas.set(String(relacao.id), relacao);
+            });
+
+            const aulasPorRelacao = await Promise.all(
+                Array.from(relacoesUnicas.values()).map(async relacao => {
+                    const resAulas = await api.get(`/aula/${relacao.id}`);
+                    return comoLista(resAulas.data).map(aula => ({
+                        ...aula,
+                        professor: relacao.nomeProfessor,
+                        disciplina: relacao.nomeDisciplina
+                    }));
+                })
+            );
+            if (!estaAtual()) return;
+
+            const aulasUnicas = new Map();
+            aulasPorRelacao.flat().forEach(aula => {
+                const valorMedia = aula.media_atencao_total;
+                const mediaAtencao = typeof valorMedia === 'number'
+                    || (typeof valorMedia === 'string' && valorMedia.trim() !== '')
+                    ? Number(valorMedia)
+                    : NaN;
+
+                // Uma média de 0% é válida; valores ausentes ficam fora do cálculo.
+                if (aula.id != null && Number.isFinite(mediaAtencao)) {
+                    aulasUnicas.set(String(aula.id), {
+                        id: aula.id,
+                        data: aula.data,
+                        professor: aula.professor,
+                        disciplina: aula.disciplina,
+                        mediaAtencao
+                    });
+                }
+            });
+
+            const aulas = Array.from(aulasUnicas.values()).sort((a, b) => {
+                const dataA = a.data ? new Date(a.data).getTime() : 0;
+                const dataB = b.data ? new Date(b.data).getTime() : 0;
+                const diferenca = (Number.isFinite(dataA) ? dataA : 0)
+                    - (Number.isFinite(dataB) ? dataB : 0);
+
+                return diferenca || String(a.id).localeCompare(String(b.id), 'pt-BR', { numeric: true });
+            });
+
+            setAtencaoTurma({
+                idTurma,
+                status: 'pronto',
+                aulas,
+                mediaAtencao: aulas.length > 0
+                    ? aulas.reduce((soma, aula) => soma + aula.mediaAtencao, 0) / aulas.length
+                    : null
+            });
+        } catch {
+            if (estaAtual()) {
+                setAtencaoTurma({ idTurma, status: 'erro', aulas: [], mediaAtencao: null });
+            }
         }
     }
 
@@ -328,6 +435,7 @@ export default function Turmas(){
                                     <>
                                         <p><strong>Série:</strong> {turmas[selectedTurma].serie || 'Não informada'}</p>
                                         <p><strong>Alunos:</strong> {turmas[selectedTurma].numeroAlunos}</p>
+                                        <p><strong>Média de Atenção:</strong> {mediaFormatada}</p>
                                     </>
                                 )}
 
@@ -393,8 +501,31 @@ export default function Turmas(){
                         )}
                     </div>
 
-                    <div className='turmas-historico-aulas-content'>
-
+                    <div className='turmas-historico-aulas-content' aria-busy={statusAtencao === 'carregando'}>
+                        {turmaSelecionada ? (
+                            statusAtencao === 'carregando' ? (
+                                <p className='turmas-grafico-mensagem' role="status">Carregando atenção das aulas...</p>
+                            ) : statusAtencao === 'erro' ? (
+                                <p className='turmas-grafico-mensagem' role="alert">Não foi possível carregar os dados de atenção desta turma.</p>
+                            ) : dadosGrafico.length > 0 ? (
+                                <>
+                                    <p className='turmas-grafico-title'>Atenção média por aula</p>
+                                    <GenericLineChart
+                                        data={dadosGrafico}
+                                        xKey="aula"
+                                        yKey="mediaAtencao"
+                                        lines={[{ key: 'mediaAtencao', label: 'Atenção média (%)', color: '#4F46E5' }]}
+                                        formatXAxis={rotulo => rotulo.split(' - ')[0]}
+                                        height={230}
+                                        isAnimationActive={false}
+                                    />
+                                </>
+                            ) : (
+                                <p className='turmas-grafico-mensagem'>Nenhuma aula com atenção registrada para esta turma.</p>
+                            )
+                        ) : (
+                            <p className='turmas-grafico-mensagem'>Selecione uma turma para visualizar o gráfico.</p>
+                        )}
                     </div>
 
                     <div className='turmas-row'>

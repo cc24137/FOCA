@@ -1,18 +1,16 @@
-/* ==========================================================================
-   ESTRUTURA GLOBAL (Desktop)
-   ========================================================================== */
+/* Estrutura da tela */
 .turmas-body {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .turmas-content {
     display: flex;
-    flex-direction: row;
     gap: 20px;
-    padding: 40px 64px 80px 64px;
-    height: 100%;
+    padding: 40px 64px 80px;
+    flex: 1;
+    box-sizing: border-box;
 }
 
 .turmas-esquerda {
@@ -20,93 +18,38 @@
     flex-direction: column;
     gap: 20px;
     width: 35%;
-    height: 100%;
-}
-
-.turmas-esquerda-title {
-    font-size: 30px;
-    font-family: var(--font-scada);
-    color: var(--black);
-}
-
-.turmas-adicionar {
-    background-color: var(--button-light-blue);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    width: 200px;
-}
-
-.turmas-adicionar-text {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--black);
-}
-
-.turmas-remover {
-    background-color: var(--button-dark-blue);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    width: 200px;
-    align-self: flex-end;
-}
-
-.turmas-remover-text {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--white);
-}
-
-.turmas-editar {
-    background-color: var(--button-light-blue);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    width: 200px;
-    align-self: flex-end;
-}
-
-.turmas-editar-text {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--black);
-}
-
-.turmas-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    min-width: 0;
 }
 
 .turmas-direita {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 20px;
     width: 65%;
-    border-left: 2px solid var(--transparent-grayish-blue);
+    min-width: 0;
     padding-left: 50px;
-    justify-content: space-between;
+    border-left: 2px solid var(--transparent-grayish-blue);
+    box-sizing: border-box;
 }
 
+.turmas-esquerda-title,
 .turmas-direita-title {
-    font-size: 30px;
+    margin: 0;
     font-family: var(--font-scada);
+    font-size: 30px;
     color: var(--black);
 }
 
+/* Lista de turmas */
 .turmas-list-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    max-height: 600px;
     flex: 1;
-    min-height: 0;
-    overflow-y: auto;
     width: 100%;
+    min-height: 0;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
 .turmas-list-container::-webkit-scrollbar {
@@ -124,11 +67,11 @@
 
 .turma-item {
     padding: 10px 16px;
+    border-radius: 8px;
     cursor: pointer;
+    font-family: var(--font-inter);
     font-size: 15px;
     color: var(--black);
-    font-family: var(--font-inter);
-    border-radius: 8px;
     transition: background-color 0.2s;
 }
 
@@ -137,195 +80,227 @@
     color: var(--white);
 }
 
+.turma-selecione {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    color: var(--grayish-blue);
+}
+
+/* Dados e edição da turma */
 .turma-detalhes {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+    font-family: var(--font-inter);
+    font-size: 20px;
+    color: var(--black);
 }
 
 .turma-detalhes p {
-    font-family: var(--font-inter);
-    font-size: 18px;
-    padding: 4px 0;
-}
-
-/* --- TABELA DE PROFESSORES E DISCIPLINAS --- */
-
-.turma-professores-tabela {
-    width: 100%;
-    max-width: 600px;
-    border-collapse: collapse;
-    font-family: var(--font-inter);
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-.turma-professores-tabela thead tr {
-    border-bottom: 2px solid var(--transparent-grayish-blue);
-}
-
-.turma-professores-tabela th {
-    text-align: left;
-    padding: 8px 12px;
-    font-weight: 600;
-    color: var(--grayish-blue);
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-
-.turma-professores-tabela td {
-    padding: 8px 12px;
-    color: var(--black);
-    border-bottom: 1px solid var(--transparent-grayish-blue);
-    height: 40px;
-}
-
-.turma-professores-tabela tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.turma-professores-tabela tbody tr:hover td {
-    background-color: var(--transparent-light-blue);
-}
-
-.turma-prof-remover,
-.turma-prof-confirmar {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--grayish-blue);
-    font-size: 14px;
-    padding: 2px 6px;
-    border-radius: 4px;
-    transition: color 0.2s, background-color 0.2s;
-}
-
-.turma-prof-adicionar {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--grayish-blue);
-    font-size: 18px;
-    font-weight: 400;
-    padding: 0px 6px;
-    border-radius: 4px;
-    line-height: 1;
-    transition: color 0.2s, background-color 0.2s;
-}
-
-.turma-prof-adicionar:hover {
-    color: var(--button-dark-blue);
-    background-color: var(--transparent-light-blue);
-}
-
-.turma-prof-remover:hover {
-    color: var(--red);
-    background-color: rgba(255, 0, 0, 0.08);
-}
-
-.turma-prof-confirmar:hover {
-    color: #3a7d44;
-    background-color: rgba(58, 125, 68, 0.08);
-}
-
-.turma-prof-nova-linha td {
-    padding-top: 6px;
-    padding-bottom: 6px;
-}
-
-.turma-prof-nova-acoes {
-    display: flex;
-    gap: 2px;
-    align-items: center;
-}
-
-/* --- OUTROS ELEMENTOS DA TELA --- */
-
-.turmas-historico-aulas-content {
-    background-color: rgb(114, 116, 118);
-    height: 280px;
+    margin: 0;
+    padding: 8px 0;
 }
 
 .turmas-direita-title-input {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--black);
-    background-color: var(--white);
-    border: 2px solid #9b9fc4;
-    border-radius: 10px;
-    padding: 6px 14px;
     width: 100%;
-    max-width: 420px;
-    outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--transparent-grayish-blue);
+    border-radius: 8px;
+    background-color: var(--white);
+    color: var(--black);
+    font-family: var(--font-inter);
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
 .turmas-direita-title-input:focus {
-    border-color: var(--light-blue);
-    box-shadow: 0 0 0 3px rgba(107, 111, 168, 0.2);
+    outline: 2px solid var(--button-light-blue);
+    outline-offset: 1px;
 }
 
-/* ==========================================================================
-   RESPONSIVIDADE (Tablets e Celulares)
-   ========================================================================== */
+/* Professores e disciplinas vinculados */
+.turma-professores-tabela {
+    width: 100%;
+    margin-top: 16px;
+    border-collapse: collapse;
+    font-family: var(--font-inter);
+    font-size: 16px;
+}
+
+.turma-professores-tabela th,
+.turma-professores-tabela td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--transparent-grayish-blue);
+    text-align: left;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.turma-professores-tabela th {
+    font-weight: 600;
+}
+
+.turma-professores-tabela th:last-child,
+.turma-professores-tabela td:last-child {
+    width: 64px;
+    text-align: right;
+}
+
+.turma-prof-adicionar,
+.turma-prof-remover {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-inter);
+    font-size: 18px;
+}
+
+.turma-prof-adicionar {
+    background-color: var(--button-dark-blue);
+    color: var(--white);
+}
+
+.turma-prof-remover {
+    background-color: var(--button-light-blue);
+    color: var(--black);
+}
+
+.turma-prof-nova-acoes {
+    white-space: nowrap;
+}
+
+.turma-prof-nova-acoes .turma-prof-remover + .turma-prof-remover {
+    margin-left: 6px;
+}
+
+/* Botões da tela */
+.turmas-adicionar,
+.turmas-editar,
+.turmas-remover {
+    width: 200px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.turmas-adicionar,
+.turmas-editar {
+    background-color: var(--button-light-blue);
+}
+
+.turmas-remover {
+    background-color: var(--button-dark-blue);
+}
+
+.turmas-adicionar-text,
+.turmas-editar-text,
+.turmas-remover-text {
+    margin: 0;
+    font-family: var(--font-inter);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+}
+
+.turmas-remover-text {
+    color: var(--white);
+}
+
+.turmas-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* Gráfico de atenção */
+
+.turmas-body .turmas-historico-aulas-content {
+    display: block;
+    background-color: var(--white);
+    border: 1px solid var(--transparent-grayish-blue);
+    border-radius: 8px;
+    padding: 12px;
+    height: 280px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.turmas-grafico-title {
+    margin: 0;
+    font-family: var(--font-scada);
+    font-size: 18px;
+    line-height: 1.2;
+    color: var(--black);
+}
+
+.turmas-grafico-mensagem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    text-align: center;
+    font-family: var(--font-inter);
+    font-size: 14px;
+    color: var(--grayish-blue);
+}
+
+/* Tablets e celulares */
 @media (max-width: 850px) {
     .turmas-content {
-        flex-direction: column; /* Muda o layout para empilhado */
-        padding: 20px; 
-        height: auto; 
+        flex-direction: column;
         gap: 30px;
+        padding: 20px;
     }
 
-    .turmas-esquerda {
-        width: 100%; 
-        height: auto;
+    .turmas-esquerda,
+    .turmas-direita {
+        width: 100%;
     }
 
     .turmas-list-container {
-        max-height: 250px; /* Limita a altura da lista para usabilidade mobile */
-    }
-
-    .turmas-adicionar {
-        width: 100%; /* Botão em largura total */
+        max-height: 250px;
     }
 
     .turmas-direita {
-        width: 100%; 
-        border-left: none; /* Remove a linha vertical */
-        padding-left: 0; 
-        padding-top: 30px; 
-        border-top: 2px solid var(--transparent-grayish-blue); /* Adiciona a linha horizontal de separação */
-    }
-
-    .turmas-row {
-        flex-direction: column; /* Empilha os botões Editar e Remover */
-        gap: 15px;
-    }
-
-    .turmas-editar,
-    .turmas-remover {
-        width: 100%; /* Expandem para 100% para facilitar o toque */
-        align-self: center;
+        padding-left: 0;
+        padding-top: 30px;
+        border-left: none;
+        border-top: 2px solid var(--transparent-grayish-blue);
     }
 
     .turmas-esquerda-title,
     .turmas-direita-title {
-        font-size: 24px; /* Suaviza os títulos */
+        font-size: 24px;
     }
 
-    .turma-detalhes p {
+    .turma-detalhes {
         font-size: 16px;
     }
 
-    .turmas-direita-title-input {
-        max-width: 100%; 
-        font-size: 1.2rem;
+    .turma-professores-tabela {
+        font-size: 14px;
     }
 
-    /* Ajuste para a tabela rolar lateralmente caso os nomes sejam muito grandes */
-    .turma-professores-tabela-container {
-        overflow-x: auto;
+    .turma-professores-tabela th,
+    .turma-professores-tabela td {
+        padding: 8px 6px;
+    }
+
+    .turmas-row {
+        flex-direction: column;
+    }
+
+    .turmas-adicionar,
+    .turmas-editar,
+    .turmas-remover {
         width: 100%;
     }
 }

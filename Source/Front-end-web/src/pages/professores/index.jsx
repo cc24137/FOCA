@@ -1,50 +1,205 @@
-import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header';
+import GenericLineChart from '../../components/time-vs-value-chart';
 import './professores.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from "../../services/api";
 
 export default function Professores() {
-    const navigate = useNavigate();
-
     const [professores, setProfessores] = useState([]);
     const [selectedProfessor, setSelectedProfessor] = useState(null);
+    const [atencaoProfessor, setAtencaoProfessor] = useState(null);
+    const cacheVinculos = useRef(new Map());
 
     // Novos estados para a funcionalidade de adicionar professor
     const [isAddingProfessor, setIsAddingProfessor] = useState(false);
     const [newProfessorEmail, setNewProfessorEmail] = useState("");
 
+    const professorSelecionado = professores[selectedProfessor];
+    const dadosAtencao = professorSelecionado && atencaoProfessor
+        && String(atencaoProfessor.idProfessor) === String(professorSelecionado.id)
+        ? atencaoProfessor
+        : null;
+    const statusAtencao = dadosAtencao?.status || (professorSelecionado ? 'carregando' : 'vazio');
+    const dadosGrafico = (dadosAtencao?.aulas || []).map((aula, index) => {
+        const data = aula.data ? new Date(aula.data) : null;
+        const dataFormatada = data && !Number.isNaN(data.getTime())
+            ? data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
+            : 'Data não informada';
+
+        return {
+            aula: `Aula ${index + 1} - ${dataFormatada} - ${aula.turma || 'Turma não informada'}`,
+            mediaAtencao: Number(aula.mediaAtencao.toFixed(2))
+        };
+    });
+
     useEffect(() => {
         loadData();
     }, []);
 
+    useEffect(() => {
+        let ativo = true;
+
+        if (!professorSelecionado) {
+            setAtencaoProfessor(null);
+            return;
+        }
+
+        const idProfessor = professorSelecionado.id;
+        setAtencaoProfessor({ idProfessor, status: 'carregando', aulas: [], mediaAtencao: null });
+
+        async function consultarVinculos(url, params) {
+            const chave = `${url}:${JSON.stringify(params || {})}`;
+
+            if (!cacheVinculos.current.has(chave)) {
+                const consulta = api.get(url, params ? { params } : undefined)
+                    .then(response => response.data)
+                    .catch(error => {
+                        if (cacheVinculos.current.get(chave) === consulta) {
+                            cacheVinculos.current.delete(chave);
+                        }
+                        throw error;
+                    });
+                cacheVinculos.current.set(chave, consulta);
+            }
+
+            return cacheVinculos.current.get(chave);
+        }
+
+        const comoLista = data => Array.isArray(data) ? data : (data ? [data] : []);
+
+        async function carregarAtencao() {
+            try {
+                const dataTurmas = await consultarVinculos('/turmas/infosPorInstituicao');
+                if (!ativo) return;
+
+                const turmasUnicas = new Map();
+                comoLista(dataTurmas).forEach(turma => {
+                    if (turma.id != null && professorSelecionado.nomesTurmas.includes(turma.nome)) {
+                        turmasUnicas.set(String(turma.id), turma);
+                    }
+                });
+
+                const relacoesPorTurma = await Promise.all(
+                    Array.from(turmasUnicas.values()).map(async turma => {
+                        const data = await consultarVinculos('/turmaRelacao/porTurma', { idTurma: turma.id });
+                        return comoLista(data).filter(relacao =>
+                            relacao.id != null && relacao.nomeProfessor === professorSelecionado.nome
+                        );
+                    })
+                );
+                if (!ativo) return;
+
+                const relacoesUnicas = new Map();
+                relacoesPorTurma.flat().forEach(relacao => {
+                    relacoesUnicas.set(String(relacao.id), relacao);
+                });
+
+                // A listagem por turma traz o nome; o detalhe confirma o ID do professor.
+                const detalhesRelacoes = await Promise.all(
+                    Array.from(relacoesUnicas.values()).map(async relacao => {
+                        const detalhes = await consultarVinculos(`/turmaRelacao/${relacao.id}`);
+                        return { ...detalhes, idRelacao: relacao.id };
+                    })
+                );
+                if (!ativo) return;
+
+                const relacoesProfessor = detalhesRelacoes.filter(relacao =>
+                    String(relacao.idProfessor) === String(idProfessor)
+                );
+
+                const aulasPorRelacao = await Promise.all(
+                    relacoesProfessor.map(async relacao => {
+                        const response = await api.get(`/aula/${relacao.idRelacao}`);
+                        return comoLista(response.data).map(aula => ({
+                            ...aula,
+                            turma: `${relacao.nomeTurma} (${relacao.nomeDisciplina})`
+                        }));
+                    })
+                );
+                if (!ativo) return;
+
+                const aulasUnicas = new Map();
+                aulasPorRelacao.flat().forEach(aula => {
+                    const valorMedia = aula.media_atencao_total;
+                    const mediaAtencao = typeof valorMedia === 'number'
+                        || (typeof valorMedia === 'string' && valorMedia.trim() !== '')
+                        ? Number(valorMedia)
+                        : NaN;
+
+                    // Médias ausentes ficam fora do cálculo; uma média de 0% é válida.
+                    if (aula.id != null && Number.isFinite(mediaAtencao)) {
+                        aulasUnicas.set(String(aula.id), {
+                            id: aula.id,
+                            data: aula.data,
+                            turma: aula.turma,
+                            mediaAtencao
+                        });
+                    }
+                });
+
+                const aulas = Array.from(aulasUnicas.values()).sort((a, b) => {
+                    const dataA = a.data ? new Date(a.data).getTime() : 0;
+                    const dataB = b.data ? new Date(b.data).getTime() : 0;
+                    const diferenca = (Number.isFinite(dataA) ? dataA : 0)
+                        - (Number.isFinite(dataB) ? dataB : 0);
+
+                    return diferenca || String(a.id).localeCompare(String(b.id), 'pt-BR', { numeric: true });
+                });
+
+                setAtencaoProfessor({
+                    idProfessor,
+                    status: 'pronto',
+                    aulas,
+                    mediaAtencao: aulas.length > 0
+                        ? aulas.reduce((soma, aula) => soma + aula.mediaAtencao, 0) / aulas.length
+                        : null
+                });
+            } catch {
+                if (ativo) {
+                    setAtencaoProfessor({ idProfessor, status: 'erro', aulas: [], mediaAtencao: null });
+                }
+            }
+        }
+
+        carregarAtencao();
+
+        return () => {
+            ativo = false;
+        };
+    }, [professorSelecionado]);
+
     async function loadData() {
-        console.log("Loading data from api to professores");
         try {
+            cacheVinculos.current.clear();
             const response = await api.get("/professor/infosPorInstituicao");
             const data = response.data;
 
             const professoresAgrupados = [];
 
             data.forEach(prof => {
-                const professorExistente = professoresAgrupados.find(e => e.id === prof.id);
+                let professorExistente = professoresAgrupados.find(e => String(e.id) === String(prof.id));
 
                 const infoTurma = (prof.turma && prof.disciplina)
                     ? `${prof.turma} (${prof.disciplina})`
                     : null;
 
-                if (professorExistente) {
-                    if (infoTurma && !professorExistente.turmas.includes(infoTurma)) {
-                        professorExistente.turmas.push(infoTurma);
-                    }
-                } else {
-                    professoresAgrupados.push({
+                if (!professorExistente) {
+                    professorExistente = {
                         id: prof.id,
                         nome: prof.nome,
                         email: prof.email,
-                        turmas: infoTurma ? [infoTurma] : [],
-                        mediaAtencao: prof.media_atencao
-                    });
+                        turmas: [],
+                        nomesTurmas: []
+                    };
+                    professoresAgrupados.push(professorExistente);
+                }
+
+                if (infoTurma && !professorExistente.turmas.includes(infoTurma)) {
+                    professorExistente.turmas.push(infoTurma);
+                }
+
+                if (prof.turma && !professorExistente.nomesTurmas.includes(prof.turma)) {
+                    professorExistente.nomesTurmas.push(prof.turma);
                 }
             });
 
@@ -191,15 +346,48 @@ export default function Professores() {
                             <div className='professor-detalhes'>
                                 <p><strong>Email:</strong> {professores[selectedProfessor].email}</p>
                                 <p><strong>Turmas:</strong> {professores[selectedProfessor].turmas.join(', ') || 'Nenhuma'}</p>
-                                <p><strong>Média de Atenção:</strong> {professores[selectedProfessor].mediaAtencao || 0}%</p>
+                                <p>
+                                    <strong>Média de Atenção:</strong>{' '}
+                                    {statusAtencao === 'carregando' ? 'Carregando...'
+                                        : statusAtencao === 'erro' ? 'Indisponível'
+                                        : dadosAtencao?.mediaAtencao != null
+                                        ? `${dadosAtencao.mediaAtencao.toLocaleString('pt-BR', {
+                                            minimumFractionDigits: 1,
+                                            maximumFractionDigits: 1
+                                        })}%`
+                                        : 'Sem análises'}
+                                </p>
                             </div>
                         ) : (
                             <p className='professor-selecione'>Selecione um professor para ver os detalhes</p>
                         )}
                     </div>
 
-                    <div className='professores-historico-aulas-content'>
-
+                    <div className='professores-historico-aulas-content' aria-busy={statusAtencao === 'carregando'}>
+                        {professorSelecionado ? (
+                            statusAtencao === 'carregando' ? (
+                                <p className='professores-grafico-mensagem' role="status">Carregando atenção das aulas...</p>
+                            ) : statusAtencao === 'erro' ? (
+                                <p className='professores-grafico-mensagem' role="alert">Não foi possível carregar os dados de atenção deste professor.</p>
+                            ) : dadosGrafico.length > 0 ? (
+                                <>
+                                    <p className='professores-grafico-title'>Atenção média por aula</p>
+                                    <GenericLineChart
+                                        data={dadosGrafico}
+                                        xKey="aula"
+                                        yKey="mediaAtencao"
+                                        lines={[{ key: 'mediaAtencao', label: 'Atenção média (%)', color: '#4F46E5' }]}
+                                        formatXAxis={rotulo => rotulo.split(' - ')[0]}
+                                        height={230}
+                                        isAnimationActive={false}
+                                    />
+                                </>
+                            ) : (
+                                <p className='professores-grafico-mensagem'>Nenhuma aula com atenção registrada para este professor.</p>
+                            )
+                        ) : (
+                            <p className='professores-grafico-mensagem'>Selecione um professor para visualizar o gráfico.</p>
+                        )}
                     </div>
 
                     {/* Exibe o botão de remover apenas se houver um professor selecionado */}

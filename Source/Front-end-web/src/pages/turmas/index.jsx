@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import Header from '../../components/header';
+import ConfirmPopup from '../../components/confirm-popup';
 import Combobox from '../../components/combobox-turmas'
 import GenericLineChart from '../../components/time-vs-value-chart';
 import './turmas.css';
@@ -14,6 +15,10 @@ export default function Turmas(){
     const [relacoes, setRelacoes] = useState([]);
     const [atencaoTurma, setAtencaoTurma] = useState(null);
     const consultaAtual = useRef({ idTurma: null, versao: 0 });
+    const [confirmacaoRemocao, setConfirmacaoRemocao] = useState(null);
+    const [removendo, setRemovendo] = useState(false);
+    const [erroRemocao, setErroRemocao] = useState('');
+    const remocaoEmAndamento = useRef(false);
 
     // Estados para armazenar os dados reais vindos da API para as caixas de seleção
     const [allProfessores, setAllProfessores] = useState([]);
@@ -260,47 +265,74 @@ export default function Turmas(){
         }
     }
 
-    // Agora recebe o ID dinâmico da relação clicada para efetuar o DELETE
-    async function handleRemoveRelacao(idRelacao) {
-        if (selectedTurma === null) return;
+    function handleRemoveRelacao(idRelacao) {
+        const turma = turmas[selectedTurma];
+        const relacao = relacoes.find(item => String(item.id) === String(idRelacao));
+        if (!turma || !relacao || remocaoEmAndamento.current) return;
 
-        const confirmacao = window.confirm(`Tem certeza que deseja remover esta relação?`);
-
-        if (confirmacao) {
-            try {
-                await api.delete("/turmaRelacao/excluir", {
-                    data: { id: idRelacao }
-                });
-
-                // Recarrega as relações atualizadas dessa turma após a exclusão
-                loadRelacoes(turmas[selectedTurma].id);
-            } catch (error) {
-                console.error("Erro ao remover relação de professores:", error);
-                alert("Não foi possível remover a relação de professores desta turma.");
-            }
-        }
+        setErroRemocao('');
+        setConfirmacaoRemocao({
+            tipo: 'relacao',
+            id: relacao.id,
+            idTurma: turma.id,
+            titulo: 'Remover vínculo?',
+            mensagem: `Deseja remover o vínculo de ${relacao.nomeProfessor} com a disciplina ${relacao.nomeDisciplina} na turma ${turma.nome}?`,
+            textoConfirmar: 'Remover vínculo'
+        });
     }
 
-    async function handleRemoveTurma() {
-        if (selectedTurma === null) return;
-
+    function handleRemoveTurma() {
         const turma = turmas[selectedTurma];
-        const confirmacao = window.confirm(`Tem certeza que deseja remover a turma ${turma.nome}?`);
+        if (!turma || remocaoEmAndamento.current) return;
 
-        if (confirmacao) {
-            try {
-                await api.delete("/turmas/excluir", {
-                    data: { id: turma.id }
+        setErroRemocao('');
+        setConfirmacaoRemocao({
+            tipo: 'turma',
+            id: turma.id,
+            titulo: 'Remover turma?',
+            mensagem: `Tem certeza que deseja remover a turma ${turma.nome}?`,
+            textoConfirmar: 'Remover turma'
+        });
+    }
+
+    function cancelarRemocao() {
+        if (remocaoEmAndamento.current) return;
+        setConfirmacaoRemocao(null);
+        setErroRemocao('');
+    }
+
+    async function confirmarRemocao() {
+        if (!confirmacaoRemocao || remocaoEmAndamento.current) return;
+        const alvo = confirmacaoRemocao;
+        remocaoEmAndamento.current = true;
+        setRemovendo(true);
+        setErroRemocao('');
+
+        try {
+            if (alvo.tipo === 'relacao') {
+                await api.delete("/turmaRelacao/excluir", {
+                    data: { id: alvo.id }
                 });
-
-                alert("Turma removida com sucesso!");
+                setConfirmacaoRemocao(null);
+                loadRelacoes(alvo.idTurma);
+            } else {
+                await api.delete("/turmas/excluir", {
+                    data: { id: alvo.id }
+                });
+                setConfirmacaoRemocao(null);
                 setSelectedTurma(null);
                 setIsEditing(false);
                 loadData();
-            } catch (error) {
-                console.error("Erro ao remover turma:", error);
-                alert("Não foi possível remover esta turma.");
+                alert("Turma removida com sucesso!");
             }
+        } catch (error) {
+            console.error("Erro ao remover:", error);
+            setErroRemocao(alvo.tipo === 'relacao'
+                ? "Não foi possível remover o vínculo desta turma. Tente novamente."
+                : "Não foi possível remover esta turma. Tente novamente.");
+        } finally {
+            remocaoEmAndamento.current = false;
+            setRemovendo(false);
         }
     }
 
@@ -543,6 +575,16 @@ export default function Turmas(){
 
                 </div>
             </div>
+            <ConfirmPopup
+                isOpen={confirmacaoRemocao !== null}
+                title={confirmacaoRemocao?.titulo}
+                message={confirmacaoRemocao?.mensagem || ''}
+                confirmText={confirmacaoRemocao?.textoConfirmar}
+                onConfirm={confirmarRemocao}
+                onCancel={cancelarRemocao}
+                isLoading={removendo}
+                errorMessage={erroRemocao}
+            />
         </div>
     )
 }

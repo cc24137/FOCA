@@ -1,4 +1,5 @@
 import Header from '../../components/header';
+import ConfirmPopup from '../../components/confirm-popup';
 import GenericLineChart from '../../components/time-vs-value-chart';
 import './disciplinas.css';
 import { useState, useEffect, useRef } from 'react';
@@ -9,6 +10,10 @@ export default function Disciplinas() {
     const [selectedDisciplina, setSelectedDisciplina] = useState(null);
     const [atencaoDisciplina, setAtencaoDisciplina] = useState(null);
     const cacheVinculos = useRef(new Map());
+    const [confirmacaoRemocao, setConfirmacaoRemocao] = useState(null);
+    const [removendo, setRemovendo] = useState(false);
+    const [erroRemocao, setErroRemocao] = useState('');
+    const remocaoEmAndamento = useRef(false);
 
     // Estados para edição
     const [isEditing, setIsEditing] = useState(false);
@@ -280,28 +285,48 @@ export default function Disciplinas() {
         }
     }
 
-    // --- LÓGICA DE REMOVER ---
-    async function handleRemoveDisciplina() {
-        if (selectedDisciplina === null) return;
+    function handleRemoveDisciplina() {
+        const disciplina = disciplinas[selectedDisciplina];
+        if (!disciplina || remocaoEmAndamento.current) return;
 
-        const disc = disciplinas[selectedDisciplina];
-        const confirmacao = window.confirm(`Tem certeza que deseja remover a disciplina ${disc.nome}?`);
+        setErroRemocao('');
+        setConfirmacaoRemocao({
+            id: disciplina.id,
+            titulo: 'Remover disciplina?',
+            mensagem: `Tem certeza que deseja remover a disciplina ${disciplina.nome}?`,
+            textoConfirmar: 'Remover disciplina'
+        });
+    }
 
-        if (confirmacao) {
-            try {
-                // O backend espera { id } no body
-                await api.delete("/disciplinas/excluir", {
-                    data: { id: disc.id }
-                });
+    function cancelarRemocao() {
+        if (remocaoEmAndamento.current) return;
+        setConfirmacaoRemocao(null);
+        setErroRemocao('');
+    }
 
-                alert("Disciplina removida com sucesso!");
-                setSelectedDisciplina(null);
-                setIsEditing(false);
-                loadData();
-            } catch (error) {
-                console.log(error);
-                alert("Erro ao remover disciplina.");
-            }
+    async function confirmarRemocao() {
+        if (!confirmacaoRemocao || remocaoEmAndamento.current) return;
+        const alvo = confirmacaoRemocao;
+        remocaoEmAndamento.current = true;
+        setRemovendo(true);
+        setErroRemocao('');
+
+        try {
+            await api.delete("/disciplinas/excluir", {
+                data: { id: alvo.id }
+            });
+
+            setConfirmacaoRemocao(null);
+            setSelectedDisciplina(null);
+            setIsEditing(false);
+            loadData();
+            alert("Disciplina removida com sucesso!");
+        } catch (error) {
+            console.log(error);
+            setErroRemocao("Erro ao remover disciplina. Tente novamente.");
+        } finally {
+            remocaoEmAndamento.current = false;
+            setRemovendo(false);
         }
     }
 
@@ -440,6 +465,16 @@ export default function Disciplinas() {
                     )}
                 </div>
             </div>
+            <ConfirmPopup
+                isOpen={confirmacaoRemocao !== null}
+                title={confirmacaoRemocao?.titulo}
+                message={confirmacaoRemocao?.mensagem || ''}
+                confirmText={confirmacaoRemocao?.textoConfirmar}
+                onConfirm={confirmarRemocao}
+                onCancel={cancelarRemocao}
+                isLoading={removendo}
+                errorMessage={erroRemocao}
+            />
         </div>
     );
 }

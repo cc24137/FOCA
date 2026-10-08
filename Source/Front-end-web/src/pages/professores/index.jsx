@@ -1,4 +1,5 @@
 import Header from '../../components/header';
+import ConfirmPopup from '../../components/confirm-popup';
 import GenericLineChart from '../../components/time-vs-value-chart';
 import './professores.css';
 import { useState, useEffect, useRef } from 'react';
@@ -9,6 +10,10 @@ export default function Professores() {
     const [selectedProfessor, setSelectedProfessor] = useState(null);
     const [atencaoProfessor, setAtencaoProfessor] = useState(null);
     const cacheVinculos = useRef(new Map());
+    const [confirmacaoRemocao, setConfirmacaoRemocao] = useState(null);
+    const [removendo, setRemovendo] = useState(false);
+    const [erroRemocao, setErroRemocao] = useState('');
+    const remocaoEmAndamento = useRef(false);
 
     // Novos estados para a funcionalidade de adicionar professor
     const [isAddingProfessor, setIsAddingProfessor] = useState(false);
@@ -245,31 +250,47 @@ export default function Professores() {
         }
     }
 
-    // remover professor
-    async function handleRemoveProfessor() {
-        // Verifica se há alguém selecionado
-        if (selectedProfessor === null || !professores[selectedProfessor]) return;
+    function handleRemoveProfessor() {
+        const professor = professores[selectedProfessor];
+        if (!professor || remocaoEmAndamento.current) return;
 
-        const prof = professores[selectedProfessor];
+        setErroRemocao('');
+        setConfirmacaoRemocao({
+            id: professor.id,
+            titulo: 'Remover professor?',
+            mensagem: `Tem certeza que deseja remover o professor ${professor.nome} da instituição?`,
+            textoConfirmar: 'Remover professor'
+        });
+    }
 
-        // Mostra o alerta de confirmação do navegador
-        const confirmacao = window.confirm(`Tem certeza que deseja remover o professor ${prof.nome}?`);
+    function cancelarRemocao() {
+        if (remocaoEmAndamento.current) return;
+        setConfirmacaoRemocao(null);
+        setErroRemocao('');
+    }
 
-        if (confirmacao) {
-            try {
-                await api.delete("/instituicao/removerProfessor", {
-                    data: { idProfessor: prof.id }
-                });
+    async function confirmarRemocao() {
+        if (!confirmacaoRemocao || remocaoEmAndamento.current) return;
+        const alvo = confirmacaoRemocao;
+        remocaoEmAndamento.current = true;
+        setRemovendo(true);
+        setErroRemocao('');
 
-                alert("Professor removido com sucesso!");
+        try {
+            await api.delete("/instituicao/removerProfessor", {
+                data: { idProfessor: alvo.id }
+            });
 
-                // Tira a seleção do painel da direita e recarrega a lista
-                setSelectedProfessor(null);
-                loadData();
-            } catch (error) {
-                console.log(error);
-                alert("Erro ao remover professor: " + (error.response?.data?.message || "Tente novamente."));
-            }
+            setConfirmacaoRemocao(null);
+            setSelectedProfessor(null);
+            loadData();
+            alert("Professor removido com sucesso!");
+        } catch (error) {
+            console.log(error);
+            setErroRemocao("Erro ao remover professor: " + (error.response?.data?.message || "Tente novamente."));
+        } finally {
+            remocaoEmAndamento.current = false;
+            setRemovendo(false);
         }
     }
 
@@ -398,6 +419,16 @@ export default function Professores() {
                     )}
                 </div>
             </div>
+            <ConfirmPopup
+                isOpen={confirmacaoRemocao !== null}
+                title={confirmacaoRemocao?.titulo}
+                message={confirmacaoRemocao?.mensagem || ''}
+                confirmText={confirmacaoRemocao?.textoConfirmar}
+                onConfirm={confirmarRemocao}
+                onCancel={cancelarRemocao}
+                isLoading={removendo}
+                errorMessage={erroRemocao}
+            />
         </div>
     );
 }

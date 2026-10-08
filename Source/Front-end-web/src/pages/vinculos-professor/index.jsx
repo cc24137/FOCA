@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/header";
+import ConfirmPopup from "../../components/confirm-popup";
 import "./vinculos-professor.css";
 import api from "../../services/api";
 
@@ -12,6 +13,10 @@ export default function VinculosProfessor() {
 
   const [vinculos, setVinculos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [confirmacaoRemocao, setConfirmacaoRemocao] = useState(null);
+  const [removendo, setRemovendo] = useState(false);
+  const [erroRemocao, setErroRemocao] = useState('');
+  const remocaoEmAndamento = useRef(false);
 
   useEffect(() => {
     fetchVinculos();
@@ -57,40 +62,61 @@ export default function VinculosProfessor() {
     }
   }
 
-  async function handleRecusar(instituicaoId) {
-    try {
-      await api.delete("/professor/recusarConvite", {
-        data: { instituicaoId }
-      });
-
-      setVinculos(prevVinculos =>
-        prevVinculos.filter(v => v.id !== instituicaoId)
-      );
-    } catch (error) {
-      console.error("Erro ao recusar convite:", error);
-      alert("Erro ao recusar o convite. Tente novamente.");
-    }
+  function handleRecusar(instituicaoId) {
+    const vinculo = vinculos.find(item => item.id === instituicaoId);
+    if (!vinculo || remocaoEmAndamento.current) return;
+    setErroRemocao('');
+    setConfirmacaoRemocao({
+      tipo: 'recusar',
+      id: vinculo.id,
+      titulo: 'Recusar convite?',
+      mensagem: `Tem certeza que deseja recusar o convite de ${vinculo.nome}?`,
+      textoConfirmar: 'Recusar convite'
+    });
   }
 
-  async function handleSair(instituicaoId) {
-    const confirmacao = window.confirm(
-      "Tem certeza que deseja sair desta instituição? Você perderá o acesso às turmas."
-    );
+  function handleSair(instituicaoId) {
+    const vinculo = vinculos.find(item => item.id === instituicaoId);
+    if (!vinculo || remocaoEmAndamento.current) return;
+    setErroRemocao('');
+    setConfirmacaoRemocao({
+      tipo: 'sair',
+      id: vinculo.id,
+      titulo: 'Sair da instituição?',
+      mensagem: `Tem certeza que deseja sair de ${vinculo.nome}? Você perderá o acesso às turmas desta instituição.`,
+      textoConfirmar: 'Sair da instituição'
+    });
+  }
 
-    if (confirmacao) {
-      try {
-        await api.delete("/professor/recusarConvite", {
-          data: { instituicaoId }
-        });
+  function cancelarRemocao() {
+    if (remocaoEmAndamento.current) return;
+    setConfirmacaoRemocao(null);
+    setErroRemocao('');
+  }
 
-        setVinculos(prevVinculos =>
-          prevVinculos.filter(v => v.id !== instituicaoId)
-        );
-        alert("Você saiu da instituição.");
-      } catch (error) {
-        console.error("Erro ao sair da instituição:", error);
-        alert("Erro ao tentar sair. Tente novamente.");
-      }
+  async function confirmarRemocao() {
+    if (!confirmacaoRemocao || remocaoEmAndamento.current) return;
+    const alvo = confirmacaoRemocao;
+    remocaoEmAndamento.current = true;
+    setRemovendo(true);
+    setErroRemocao('');
+
+    try {
+      await api.delete("/professor/recusarConvite", {
+        data: { instituicaoId: alvo.id }
+      });
+
+      setVinculos(prevVinculos => prevVinculos.filter(v => v.id !== alvo.id));
+      setConfirmacaoRemocao(null);
+      if (alvo.tipo === 'sair') alert("Você saiu da instituição.");
+    } catch (error) {
+      console.error("Erro ao remover vínculo:", error);
+      setErroRemocao(alvo.tipo === 'recusar'
+        ? "Erro ao recusar o convite. Tente novamente."
+        : "Erro ao tentar sair. Tente novamente.");
+    } finally {
+      remocaoEmAndamento.current = false;
+      setRemovendo(false);
     }
   }
 
@@ -167,6 +193,16 @@ export default function VinculosProfessor() {
           )}
         </div>
       </div>
+      <ConfirmPopup
+        isOpen={confirmacaoRemocao !== null}
+        title={confirmacaoRemocao?.titulo}
+        message={confirmacaoRemocao?.mensagem || ''}
+        confirmText={confirmacaoRemocao?.textoConfirmar}
+        onConfirm={confirmarRemocao}
+        onCancel={cancelarRemocao}
+        isLoading={removendo}
+        errorMessage={erroRemocao}
+      />
     </div>
   );
 }

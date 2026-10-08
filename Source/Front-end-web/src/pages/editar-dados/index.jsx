@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/header";
+import ConfirmPopup from "../../components/confirm-popup";
 import api from "../../services/api";
 import "./editar-dados.css";
 import EyeOnIcon from "../../assets/eye-on.svg?react";
@@ -17,6 +18,10 @@ export default function EditarDados() {
   const [nome, setNome] = useState(user ? user.nome : "");
   const [senha, setSenha] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [confirmacaoRemocao, setConfirmacaoRemocao] = useState(null);
+  const [removendo, setRemovendo] = useState(false);
+  const [erroRemocao, setErroRemocao] = useState('');
+  const remocaoEmAndamento = useRef(false);
 
   useEffect(() => {
     if (!user) {
@@ -55,27 +60,48 @@ export default function EditarDados() {
     navigate("/login");
   }
 
-  async function handleExcluir() {
-    const confirmacao = window.confirm(
-      "Tem certeza que deseja excluir sua conta? Esta ação é irreversível e você perderá todas as suas informações."
-    );
+  function handleExcluir() {
+    if (!user || remocaoEmAndamento.current) return;
+    setErroRemocao('');
+    setConfirmacaoRemocao({
+      isProfessor: user.isProfessor,
+      titulo: 'Excluir conta?',
+      mensagem: 'Tem certeza que deseja excluir sua conta? Esta ação é irreversível e você perderá todas as suas informações.',
+      textoConfirmar: 'Excluir conta'
+    });
+  }
 
-    if (confirmacao) {
-      try {
-        if (user.isProfessor) {
-          await api.delete("/professor/excluir");
-        } else {
-          await api.delete("/instituicao/excluir");
-        }
+  function cancelarRemocao() {
+    if (remocaoEmAndamento.current) return;
+    setConfirmacaoRemocao(null);
+    setErroRemocao('');
+  }
 
-        alert("Conta excluída com sucesso.");
-        localStorage.removeItem("@FOCA:user");
-        localStorage.removeItem("@FOCA:token");
-        navigate("/login");
-      } catch (error) {
-        console.error("Erro ao excluir conta:", error);
-        alert("Erro ao excluir a conta. Tente novamente.");
+  async function confirmarRemocao() {
+    if (!confirmacaoRemocao || remocaoEmAndamento.current) return;
+    const alvo = confirmacaoRemocao;
+    remocaoEmAndamento.current = true;
+    setRemovendo(true);
+    setErroRemocao('');
+
+    try {
+      if (alvo.isProfessor) {
+        await api.delete("/professor/excluir");
+      } else {
+        await api.delete("/instituicao/excluir");
       }
+
+      setConfirmacaoRemocao(null);
+      localStorage.removeItem("@FOCA:user");
+      localStorage.removeItem("@FOCA:token");
+      alert("Conta excluída com sucesso.");
+      navigate("/login");
+    } catch (error) {
+      console.error("Erro ao excluir conta:", error);
+      setErroRemocao("Erro ao excluir a conta. Tente novamente.");
+    } finally {
+      remocaoEmAndamento.current = false;
+      setRemovendo(false);
     }
   }
 
@@ -156,6 +182,16 @@ export default function EditarDados() {
 
         </div>
       </div>
+      <ConfirmPopup
+        isOpen={confirmacaoRemocao !== null}
+        title={confirmacaoRemocao?.titulo}
+        message={confirmacaoRemocao?.mensagem || ''}
+        confirmText={confirmacaoRemocao?.textoConfirmar}
+        onConfirm={confirmarRemocao}
+        onCancel={cancelarRemocao}
+        isLoading={removendo}
+        errorMessage={erroRemocao}
+      />
     </div>
   );
 }

@@ -1,0 +1,102 @@
+.confirm-popup {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: min(460px, calc(100% - 32px));
+  max-width: calc(100% - 32px);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 28px;
+  overflow-y: auto;
+  border: 1px solid var(--transparent-grayish-blue, #d7dce5);
+  border-radius: 16px;
+  background: var(--white, #fff);
+  color: var(--black, #17212b);
+  font-family: var(--font-inter, 'Inter', sans-serif);
+  text-align: left;
+  box-shadow: 0 20px 60px rgba(23, 33, 43, 0.2);
+}
+
+.confirm-popup::backdrop {
+  background: rgba(23, 33, 43, 0.55);
+}
+
+.confirm-popup__title {
+  margin: 0 0 16px;
+  font-family: var(--font-scada, 'Scada', sans-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--deep-blue-accent, #174c78);
+  overflow-wrap: anywhere;
+}
+
+.confirm-popup__message {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.confirm-popup__error {
+  margin: 18px 0 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff1f0;
+  color: #a52727;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.confirm-popup__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.confirm-popup__button {
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.confirm-popup__button--cancel {
+  background: var(--button-light-blue, #d8e7f2);
+  color: var(--black, #17212b);
+}
+
+.confirm-popup__button--confirm {
+  background: var(--button-dark-blue, #174c78);
+  color: var(--white, #fff);
+}
+
+.confirm-popup__button:hover:not(:disabled) { opacity: 0.85; }
+.confirm-popup__button:disabled { opacity: 0.6; cursor: wait; }
+.confirm-popup__button:focus-visible {
+  outline: 3px solid var(--light-blue, #6b6fa8);
+  outline-offset: 3px;
+}
+
+@media (max-width: 420px) {
+  .confirm-popup { padding: 22px; }
+  .confirm-popup__title { font-size: 24px; }
+  .confirm-popup__actions { flex-direction: column; }
+  .confirm-popup__button { width: 100%; }
+}

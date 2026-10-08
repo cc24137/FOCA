@@ -38,7 +38,8 @@ export default function CodigoEmail() {
     navigate(path);
   }
 
-  async function formSubmit() {
+  async function formSubmit(event) {
+    event.preventDefault();
     if (code.length !== 6) {
       alert("Código inválido! O código deve conter 6 dígitos.");
       return;
@@ -100,8 +101,8 @@ export default function CodigoEmail() {
     <div className="codigo-email-body">
       <TituloLateral />
 
-      <div className="codigo-email-right">
-        <button className="codigo-email-button" onClick={() => goTo("/")}>
+      <form className="codigo-email-right" onSubmit={formSubmit} noValidate>
+        <button type="button" className="codigo-email-button" onClick={() => goTo("/")}>
           <div className="codigo-email-content-button">
             <HomeIcon className="home-icon" />
             <span className="codigo-email-button-text">Início</span>
@@ -134,8 +135,8 @@ export default function CodigoEmail() {
 
         <div className="codigo-email-bottom">
           <button
+            type="submit"
             className="codigo-email-submit-button"
-            onClick={() => formSubmit()}
           >
             Confirmar
           </button>
@@ -150,7 +151,7 @@ export default function CodigoEmail() {
             </span>
           </p>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

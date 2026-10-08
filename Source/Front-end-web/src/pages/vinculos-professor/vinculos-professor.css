@@ -74,6 +74,10 @@
 }
 
 /* Pedido de participação */
+.vinculo-card-pending-icon {
+  color: var(--white);
+}
+
 .vinculo-card-pending-label {
   font-size: 14px;
   font-weight: 700;

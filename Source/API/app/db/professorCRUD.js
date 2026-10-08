@@ -28,21 +28,23 @@ class ProfessorCRUD {
       const result = await pool.request()
         .input("id", sql.Int, id_institution)
         .query(`
-            SELECT P.id, P.nome, P.email, T.NOME as turma, D.NOME AS disciplina, sub.MEDIA_ATENCAO as media_atencao FROM FOCA.PROFESSOR P
-            LEFT JOIN FOCA.Turma_Disciplina_Professor TDP ON P.ID = TDP.ID_PROFESSOR
-            LEFT JOIN FOCA.DISCIPLINA D ON D.ID = TDP.ID_DISCIPLINA
-            LEFT JOIN FOCA.TURMA T ON T.ID = TDP.ID_TURMA
-            LEFT JOIN FOCA.INSTITUICAO_PROFESSOR IP ON IP.ID_PROFESSOR = P.ID
+            SELECT P.id, P.nome, P.email, vinculos.turma, vinculos.disciplina, sub.MEDIA_ATENCAO as media_atencao
+            FROM FOCA.PROFESSOR P
+            INNER JOIN FOCA.INSTITUICAO_PROFESSOR IP ON IP.ID_PROFESSOR = P.ID
+            LEFT JOIN (
+                SELECT TDP.ID, TDP.ID_PROFESSOR, T.NOME AS turma, D.NOME AS disciplina
+                FROM FOCA.Turma_Disciplina_Professor TDP
+                INNER JOIN FOCA.TURMA T ON T.ID = TDP.ID_TURMA
+                INNER JOIN FOCA.DISCIPLINA D ON D.ID = TDP.ID_DISCIPLINA
+                WHERE T.ID_INSTITUICAO = @id AND D.ID_INSTITUICAO = @id
+            ) vinculos ON vinculos.ID_PROFESSOR = P.ID
             LEFT JOIN (
             	SELECT A.ID_TURMA_DISCIPLINA_PROFESSOR AS ID_TDP, AVG(A.MEDIA_ATENCAO_TOTAL) AS MEDIA_ATENCAO 
             	FROM FOCA.AULA A
             	GROUP BY A.ID_TURMA_DISCIPLINA_PROFESSOR 
             ) sub
-            ON TDP.ID = sub.ID_TDP
-            WHERE 
-            IP.ID_INSTITUICAO = @id AND
-            T.ID_INSTITUICAO = @id AND
-            D.ID_INSTITUICAO = @id
+            ON vinculos.ID = sub.ID_TDP
+            WHERE IP.ID_INSTITUICAO = @id AND IP.professorAceitou = 1
           `)
       return result.recordset;
     }

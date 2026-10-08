@@ -144,7 +144,7 @@ export default function VinculosProfessor() {
                 vinculo.status === "pendente" ? (
                   <div key={vinculo.id} className="vinculo-card">
                     <div className="vinculo-card-header">
-                      <IconPendente />
+                      <IconPendente className="vinculo-card-pending-icon" />
                       <span className="vinculo-card-title">{vinculo.nome}</span>
                     </div>
                     <p className="vinculo-card-pending-label">

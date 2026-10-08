@@ -18,7 +18,8 @@ export default function Login() {
     navigate(path);
   }
 
-  async function formSubmit() {
+  async function formSubmit(event) {
+    event.preventDefault();
     if (isSubmitting) return;
     if (email === "" || password === "") {
       alert("Por favor, preencha todos os campos.");
@@ -71,7 +72,7 @@ export default function Login() {
   }
 
   return (
-    <AuthLayout pageClass="login-body">
+    <AuthLayout pageClass="login-body" onSubmit={formSubmit}>
         <div className="login-center">
           {/* O Título de Login agora fica aqui, logo acima dos campos */}
           <h2 className="login-title-text">Login</h2>
@@ -120,7 +121,7 @@ export default function Login() {
         </div>
 
         <div className="login-bottom">
-          <button className="login-submit-button" onClick={() => formSubmit()} disabled={isSubmitting} aria-busy={isSubmitting}>
+          <button type="submit" className="login-submit-button" disabled={isSubmitting} aria-busy={isSubmitting}>
             {isSubmitting ? "Entrando..." : "Entrar"}
           </button>
           <div className="text-to-cadastro">

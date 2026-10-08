@@ -48,7 +48,8 @@ export default function Cadastro() {
     }
   }
 
-  async function formSubmit() {
+  async function formSubmit(event) {
+    event.preventDefault();
     if (isSubmitting) return;
     if (
       form.password !== confirmarSenha ||
@@ -92,7 +93,7 @@ export default function Cadastro() {
   }
 
   return (
-    <AuthLayout pageClass="cadastro-body">
+    <AuthLayout pageClass="cadastro-body" onSubmit={formSubmit}>
         <h2 className="sign-in-title-text">Cadastro</h2>
 
         <div className="seletor-cadastro-wrapper">
@@ -167,7 +168,7 @@ export default function Cadastro() {
         </div>
 
         <div className="sign-in-bottom">
-          <button className="sign-in-submit-button" onClick={() => formSubmit()} disabled={isSubmitting} aria-busy={isSubmitting}>
+          <button type="submit" className="sign-in-submit-button" disabled={isSubmitting} aria-busy={isSubmitting}>
             {isSubmitting ? "Criando..." : "Criar"}
           </button>
           <div className="text-to-login">

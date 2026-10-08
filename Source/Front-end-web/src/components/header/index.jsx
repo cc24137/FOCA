@@ -1,5 +1,6 @@
 import "./header.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import UserIcon from "../../assets/user.svg?react";
 import HomeIcon from "../../assets/home.svg?react";
 import InfoIcon from "../../assets/info.svg?react";
@@ -7,6 +8,17 @@ import FocaLogoImg from "../../assets/foca_logo.png";
 
 export default function Header({ routes, sticky = false }) {
     const navigate = useNavigate();
+    const { pathname } = useLocation();
+    const { signed, user } = useAuth();
+    const dashboardPath = user?.isProfessor ? "/inicial-professor" : "/inicial-instituicao";
+    const isDashboardPage = pathname.replace(/\/+$/, "") === dashboardPath;
+    const showDashboardLink = signed && user && !isDashboardPage;
+    const homeLink = {
+        textButton: showDashboardLink
+            ? user.isProfessor ? "Inicial Professor" : "Inicial Instituição"
+            : "Inicial",
+        routeButton: showDashboardLink ? dashboardPath : "/"
+    };
 
     const rotasPadrao = [
         { textButton: "Início", routeButton: "/" },
@@ -14,9 +26,11 @@ export default function Header({ routes, sticky = false }) {
         { textButton: "Perfil", routeButton: "/perfil" }
     ];
     
-    const rotasAtivas = routes && routes.length > 0 ? routes : rotasPadrao;
-    const homeRoute = rotasAtivas.find(link => link.textButton === "Início")?.routeButton;
-    const hasDashboardHome = ["/inicial-professor", "/inicial-instituicao"].includes(homeRoute);
+    const rotasAtivas = (routes && routes.length > 0 ? routes : rotasPadrao).map((link, index) => {
+        if (index === 0) return homeLink;
+        if (index === 1) return { ...link, routeButton: "/sobre-projeto" };
+        return link;
+    });
 
     function goTo(route) {
         if (route) navigate(route);
@@ -41,7 +55,7 @@ export default function Header({ routes, sticky = false }) {
                         <button
                             key={index}
                             className={index === 2 ? "header-button" : "header-link"}
-                            onClick={() => goTo(link.textButton === "Sobre o Projeto" && hasDashboardHome ? "/" : link.routeButton)}
+                            onClick={() => goTo(link.routeButton)}
                         >
                             <div className="content-button">
                                 {getIcon(index)}

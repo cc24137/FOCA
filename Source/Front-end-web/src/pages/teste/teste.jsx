@@ -300,7 +300,7 @@ const styles = {
     maxWidth: '680px',
     margin: '30px auto',
     padding: '20px',
-    fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+    fontFamily: 'var(--font-inter), sans-serif',
     backgroundColor: '#f9f9f9',
     borderRadius: '12px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.1)',

@@ -3,7 +3,7 @@ import TituloLateral from "../titulo-lateral";
 import HomeIcon from "../../assets/home.svg?react";
 import "./auth-layout.css";
 
-export default function AuthLayout({ children, pageClass }) {
+export default function AuthLayout({ children, pageClass, onSubmit }) {
   const navigate = useNavigate();
 
   return (
@@ -18,7 +18,11 @@ export default function AuthLayout({ children, pageClass }) {
             </div>
           </button>
         </nav>
-        <div className="auth-form">{children}</div>
+        {onSubmit ? (
+          <form className="auth-form" onSubmit={onSubmit} noValidate>{children}</form>
+        ) : (
+          <div className="auth-form">{children}</div>
+        )}
       </div>
     </div>
   );

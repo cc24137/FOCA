@@ -18,6 +18,7 @@
 
 .informacoes-turma-box {
     background-color: var(--transparent-grayish-blue);
+    box-shadow: var(--shadow-panel);
     width: 90%;
     padding: 20px 40px;
     border-radius: 20px;
@@ -122,6 +123,24 @@
     padding: 10px 20px;
     border-radius: 10px;
     border: none;
+}
+
+.informacoes-turma-box-button,
+.informacoes-turma-box-comparacao-aulas-button {
+    box-shadow: var(--shadow-action);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.informacoes-turma-box-button:hover:not(:disabled),
+.informacoes-turma-box-comparacao-aulas-button:hover:not(:disabled) {
+    background-color: var(--deep-blue-accent);
+    transform: translateY(-1px);
+}
+
+.informacoes-turma-box-button:active:not(:disabled),
+.informacoes-turma-box-comparacao-aulas-button:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 .informacoes-turma-box-comparacao-aulas-button-text {

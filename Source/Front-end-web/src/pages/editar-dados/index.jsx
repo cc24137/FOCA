@@ -113,7 +113,10 @@ export default function EditarDados() {
         routes={[
           { textButton: "Início", routeButton: user?.isProfessor ? "/inicial-professor" : "/inicial-instituicao" },
           { textButton: "Sobre o Projeto", routeButton: "/" },
-          { textButton: "Vínculos", routeButton: "/vinculos-professor" }
+          {
+            textButton: user.isProfessor ? "Vínculos" : "Perfil",
+            routeButton: user.isProfessor ? "/vinculos-professor" : "/editar-dados"
+          }
         ]}
       />
 

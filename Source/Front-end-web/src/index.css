@@ -41,4 +41,12 @@
 
 body {
   background-color: var(--background-off-white);
+  font-family: var(--font-inter), sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }

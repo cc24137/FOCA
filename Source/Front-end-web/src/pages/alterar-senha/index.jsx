@@ -6,8 +6,10 @@ import EyeOnIcon from "../../assets/eye-on.svg?react"; // open eye
 import EyeOffIcon from "../../assets/eye-off.svg?react"; // closed eye
 import Asterisk from "../../assets/asterisk.svg?react";
 import api from "../../services/api";
+import { useToast } from '../../components/toast';
 
 export default function AlterarSenha() {
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +49,7 @@ export default function AlterarSenha() {
       email === "" ||
       verifyPassword() !== ""
     ) {
-      alert("As senhas não coincidem ou algum campo está inválido!");
+      showToast("As senhas não coincidem ou algum campo está inválido!", { type: 'warning' });
       return;
     }
 
@@ -58,14 +60,13 @@ export default function AlterarSenha() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      showToast("Código de recuperação enviado para seu e-mail.", { type: 'success' });
 
       // Redireciona enviando o email e a nova senha pelo router state
       goTo(`/codigo-email`, dadosParaEnviar);
     } catch (error) {
       console.error("Erro ao solicitar código de redefinição:", error);
-      alert(
-        "Ocorreu um erro ao enviar o código para o seu e-mail. Verifique se o endereço está correto."
-      );
+      showToast("Ocorreu um erro ao enviar o código para o seu e-mail. Verifique se o endereço está correto.", { type: 'error' });
     }
   }
 

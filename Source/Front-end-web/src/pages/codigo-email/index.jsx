@@ -5,8 +5,10 @@ import "./codigo-email.css";
 import OtpInput from "react-otp-input";
 import { useState } from "react";
 import api from "../../services/api";
+import { useToast } from '../../components/toast';
 
 export default function CodigoEmail() {
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,14 +43,12 @@ export default function CodigoEmail() {
   async function formSubmit(event) {
     event.preventDefault();
     if (code.length !== 6) {
-      alert("Código inválido! O código deve conter 6 dígitos.");
+      showToast("Código inválido! O código deve conter 6 dígitos.", { type: 'warning' });
       return;
     }
 
     if (!email) {
-      alert(
-        "Email não encontrado. Por favor, volte e faça o processo novamente."
-      );
+      showToast("Email não encontrado. Por favor, volte e faça o processo novamente.", { type: 'warning' });
       return;
     }
 
@@ -62,7 +62,7 @@ export default function CodigoEmail() {
         });
 
         console.log("Resposta alterar senha:", response.data);
-        alert("Senha redefinida com sucesso!");
+        showToast("Senha redefinida com sucesso!", { type: 'success' });
         goTo("/login");
       }
       // validar cadastro
@@ -73,27 +73,30 @@ export default function CodigoEmail() {
         });
 
         console.log("Resposta validar cadastro:", response.data);
-        alert("Conta validada com sucesso!");
+        showToast("Conta validada com sucesso!", { type: 'success' });
         goTo("/login");
       }
     } catch (error) {
       console.error(error);
       if (error.response?.status === 400 || error.code == 400) {
-        alert("Código inválido ou expirado, tente novamente.");
+        showToast("Código inválido ou expirado, tente novamente.", { type: 'warning' });
       } else {
-        alert("Erro ao validar o código. Verifique e tente novamente.");
+        showToast("Erro ao validar o código. Verifique e tente novamente.", { type: 'error' });
       }
     }
   }
 
   async function handleResendCode() {
-    if (!email) return;
+    if (!email) {
+      showToast("Email não encontrado. Por favor, volte e faça o processo novamente.", { type: 'warning' });
+      return;
+    }
     try {
       await api.post("/users/enviarCodigo", { email });
-      alert("Código reenviado para o seu e-mail!");
+      showToast("Código reenviado para o seu e-mail!", { type: 'success' });
     } catch (error) {
       console.error(error);
-      alert("Erro ao reenviar o código.");
+      showToast("Erro ao reenviar o código.", { type: 'error' });
     }
   }
 

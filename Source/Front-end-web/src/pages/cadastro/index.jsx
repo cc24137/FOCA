@@ -7,8 +7,10 @@ import EyeOffIcon from "../../assets/eye-off.svg?react";
 import AuthLayout from "../../components/auth-layout";
 import api from "../../services/api";
 import Asterisk from "../../assets/asterisk.svg?react";
+import { useToast } from '../../components/toast';
 
 export default function Cadastro() {
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const [selectedType, setSelectedType] = useState("professor");
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +60,7 @@ export default function Cadastro() {
       form.name === "" ||
       verifyPassword() !== ""
     ) {
-      alert("As senhas não coincidem ou algum campo está inválido!");
+      showToast("As senhas não coincidem ou algum campo está inválido!", { type: 'warning' });
       return;
     }
     setIsSubmitting(true);
@@ -69,12 +71,14 @@ export default function Cadastro() {
         const userEmail = form.email;
         setForm({ email: "", name: "", password: "", isProfessor: true });
         setConfirmarSenha("");
+        showToast("Conta criada! Verifique seu e-mail para concluir o cadastro.", { type: 'success' });
         goTo(`/codigo-email`, { email: userEmail });
       } else {
-        alert("Erro ao criar a conta.");
+        showToast("Erro ao criar a conta.", { type: 'error' });
       }
     } catch (error) {
       console.error(error);
+      showToast("Erro ao criar a conta. Verifique os dados e tente novamente.", { type: 'error' });
     } finally {
       setIsSubmitting(false);
     }

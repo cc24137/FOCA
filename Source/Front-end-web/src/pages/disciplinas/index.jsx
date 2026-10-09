@@ -2,10 +2,12 @@ import Header from '../../components/header';
 import ConfirmPopup from '../../components/confirm-popup';
 import GenericLineChart from '../../components/time-vs-value-chart';
 import './disciplinas.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import api from "../../services/api";
+import { useToast } from '../../components/toast';
 
 export default function Disciplinas() {
+    const { showToast } = useToast();
     const [disciplinas, setDisciplinas] = useState([]);
     const [selectedDisciplina, setSelectedDisciplina] = useState(null);
     const [atencaoDisciplina, setAtencaoDisciplina] = useState(null);
@@ -60,9 +62,37 @@ export default function Disciplinas() {
     });
 
     // Carregar os dados ao entrar na tela
+    const loadData = useCallback(async (estaAtiva = () => true) => {
+        try {
+            cacheVinculos.current.clear();
+            const response = await api.get("/disciplinas/porInstituicao");
+            if (!estaAtiva()) return;
+
+            const data = response.data;
+            const disciplinasAgrupadas = [];
+
+            data.forEach(disc => {
+                if (!disciplinasAgrupadas.some(e => String(e.id) === String(disc.id))) {
+                    disciplinasAgrupadas.push({
+                        id: disc.id,
+                        nome: disc.nome
+                    });
+                }
+            });
+
+            setDisciplinas(disciplinasAgrupadas);
+        } catch (error) {
+            if (!estaAtiva()) return;
+            console.log(error);
+            showToast("Erro ao carregar disciplinas.", { type: 'error' });
+        }
+    }, [showToast]);
+
     useEffect(() => {
-        loadData();
-    }, []);
+        let ativo = true;
+        loadData(() => ativo);
+        return () => { ativo = false; };
+    }, [loadData]);
 
     useEffect(() => {
         let ativo = true;
@@ -201,29 +231,7 @@ export default function Disciplinas() {
         };
     }, [disciplinaSelecionada, nomeRepetido]);
 
-    async function loadData() {
-        try {
-            cacheVinculos.current.clear();
-            const response = await api.get("/disciplinas/porInstituicao");
 
-            const data = response.data;
-            const disciplinasAgrupadas = [];
-
-            data.forEach(disc => {
-                if (!disciplinasAgrupadas.some(e => String(e.id) === String(disc.id))) {
-                    disciplinasAgrupadas.push({
-                        id: disc.id,
-                        nome: disc.nome
-                    });
-                }
-            });
-
-            setDisciplinas(disciplinasAgrupadas);
-        } catch (error) {
-            console.log(error);
-            alert("Erro ao carregar disciplinas.");
-        }
-    }
 
     // --- LÓGICA DE ADICIONAR ---
     async function handleAddDisciplina() {
@@ -241,13 +249,13 @@ export default function Disciplinas() {
             // O backend espera { name } no body
             await api.post("/disciplinas/cadastrar", { name: newDisciplinaName });
 
-            alert("Disciplina adicionada com sucesso!");
+            showToast("Disciplina adicionada com sucesso!", { type: 'success' });
             setNewDisciplinaName("");
             setIsAdding(false);
             loadData(); // Recarrega a lista
         } catch (error) {
             console.log(error);
-            alert("Erro ao adicionar disciplina.");
+            showToast("Erro ao adicionar disciplina.", { type: 'error' });
         }
     }
 
@@ -275,12 +283,12 @@ export default function Disciplinas() {
                     name: nomeDisciplina
                 });
 
-                alert("Disciplina atualizada com sucesso!");
+                showToast("Disciplina atualizada com sucesso!", { type: 'success' });
                 setIsEditing(false);
                 loadData(); // Atualiza a lista do banco
             } catch (error) {
                 console.log(error);
-                alert("Erro ao atualizar disciplina.");
+                showToast("Erro ao atualizar disciplina.", { type: 'error' });
             }
         }
     }
@@ -320,7 +328,7 @@ export default function Disciplinas() {
             setSelectedDisciplina(null);
             setIsEditing(false);
             loadData();
-            alert("Disciplina removida com sucesso!");
+            showToast("Disciplina removida com sucesso!", { type: 'success' });
         } catch (error) {
             console.log(error);
             setErroRemocao("Erro ao remover disciplina. Tente novamente.");

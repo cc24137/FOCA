@@ -5,6 +5,7 @@ import GenericLineChart from '../../components/time-vs-value-chart';
 import FeedbackCards from '../../components/feedback-cards';
 import api from '../../services/api';
 import './analise-tempo-real.css';
+import { useToast } from '../../components/toast';
 
 const VISION_URL = 'http://127.0.0.1:8000/processar-frame-tempo-real/';
 const formatTime = (seconds) => `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`;
@@ -17,6 +18,7 @@ const cameraError = (error) => ({
 }[error.name] || error.message || 'Não foi possível acessar a câmera.');
 
 export default function AnaliseTempoReal() {
+  const { showToast } = useToast();
   const { state } = useLocation();
   const navigate = useNavigate();
   const idAula = state?.idAula;
@@ -31,6 +33,7 @@ export default function AnaliseTempoReal() {
   const startedAtRef = useRef(null);
   const pointsRef = useRef([]);
   const failuresRef = useRef(0);
+  const avisoSemAula = useRef(false);
   const [mode, setMode] = useState('idle');
   const [busy, setBusy] = useState(false);
   const [devices, setDevices] = useState([]);
@@ -68,8 +71,14 @@ export default function AnaliseTempoReal() {
   };
 
   useEffect(() => {
-    if (!idAula) navigate('/cadastro-aula', { replace: true });
-  }, [idAula, navigate]);
+    if (idAula) {
+      avisoSemAula.current = false;
+    } else if (!avisoSemAula.current) {
+      avisoSemAula.current = true;
+      showToast('Aula não informada. Cadastre uma aula para iniciar a análise.', { type: 'warning' });
+      navigate('/cadastro-aula', { replace: true });
+    }
+  }, [idAula, navigate, showToast]);
   useEffect(() => {
     mountedRef.current = true;
     // Enumerar não liga a câmera nem pede permissão ao abrir a página.
@@ -127,6 +136,7 @@ export default function AnaliseTempoReal() {
       if (modeRef.current === 'running') { stopClock(); changeMode('paused'); }
       releaseCamera();
       setError('A câmera foi desconectada. Reconecte-a e retome a análise.');
+      showToast('A câmera foi desconectada. Reconecte-a e retome a análise.', { type: 'error' });
     }, { once: true });
     return true;
   };
@@ -134,7 +144,14 @@ export default function AnaliseTempoReal() {
   const previewCamera = async () => {
     setBusy(true); setError('');
     try { if (await openCamera()) setMessage('Câmera pronta. Inicie a análise quando desejar.'); }
-    catch (err) { releaseCamera(); setError(cameraError(err)); }
+    catch (err) {
+      releaseCamera();
+      if (mountedRef.current) {
+        const mensagem = cameraError(err);
+        setError(mensagem);
+        showToast(mensagem, { type: 'error' });
+      }
+    }
     finally { if (mountedRef.current) setBusy(false); }
   };
 
@@ -192,6 +209,7 @@ export default function AnaliseTempoReal() {
       if (model === true || failuresRef.current >= 3) {
         cancelAnalysis(); stopClock(); releaseCamera(); changeMode('paused');
         setMessage('Análise pausada após falha. Verifique a conexão e retome.');
+        showToast('A análise foi pausada após uma falha. Verifique a câmera e a conexão antes de retomar.', { type: 'error' });
       }
     } finally {
       clearTimeout(timeout);
@@ -206,7 +224,11 @@ export default function AnaliseTempoReal() {
   };
 
   const startAnalysis = async () => {
-    if (!Number.isInteger(Number(interval)) || Number(interval) < 1) { setError('Informe um intervalo inteiro de pelo menos 1 segundo.'); return; }
+    if (!Number.isInteger(Number(interval)) || Number(interval) < 1) {
+      setError('Informe um intervalo inteiro de pelo menos 1 segundo.');
+      showToast('Informe um intervalo inteiro de pelo menos 1 segundo.', { type: 'warning' });
+      return;
+    }
     setBusy(true); setError('');
     try {
       if (!streamRef.current && !(await openCamera())) return;
@@ -216,7 +238,14 @@ export default function AnaliseTempoReal() {
       setMessage('Análise em andamento.');
       const generation = ++generationRef.current;
       void sample(generation);
-    } catch (err) { releaseCamera(); setError(cameraError(err)); }
+    } catch (err) {
+      releaseCamera();
+      if (mountedRef.current) {
+        const mensagem = cameraError(err);
+        setError(mensagem);
+        showToast(mensagem, { type: 'error' });
+      }
+    }
     finally { if (mountedRef.current) setBusy(false); }
   };
   const pause = () => {
@@ -229,7 +258,13 @@ export default function AnaliseTempoReal() {
     }
     setBusy(true); setError('');
     const valid = pointsRef.current.filter((point) => point.media_momento != null);
-    if (!valid.length) { setMessage('Aula encerrada sem leituras válidas. Não há análise para salvar.'); setBusy(false); return; }
+    if (!valid.length) {
+      setMessage('Aula encerrada sem leituras válidas. Não há análise para salvar.');
+      showToast('A aula foi encerrada sem leituras válidas. Não há análise para salvar.', { type: 'warning' });
+      setBusy(false);
+      return;
+    }
+    let resultadosSalvos = saved;
     try {
       if (!saved) {
         setMessage('Salvando resultados numéricos da aula...');
@@ -243,12 +278,23 @@ export default function AnaliseTempoReal() {
         });
         if (!mountedRef.current) return;
         setSaved(true);
+        resultadosSalvos = true;
       }
       setMessage('Gerando feedbacks finais...');
       const response = await api.get(`/feedback/aula/${idAula}/completo`);
       if (!mountedRef.current) return;
       setFeedback(response.data); setMessage('Aula encerrada. Resultados salvos e feedbacks disponíveis.');
-    } catch (err) { if (mountedRef.current) { setError(err.response?.data?.message || err.message); setMessage('Aula encerrada. Tente concluir novamente pelo botão abaixo.'); } }
+      showToast('Aula encerrada! Resultados salvos e feedbacks disponíveis.', { type: 'success' });
+    } catch (err) {
+      if (mountedRef.current) {
+        setError(err.response?.data?.message || err.message);
+        setMessage('Aula encerrada. Tente concluir novamente pelo botão abaixo.');
+        showToast(resultadosSalvos
+          ? 'Os resultados foram salvos, mas não foi possível gerar os feedbacks. Tente novamente.'
+          : 'Não foi possível salvar os resultados da aula. Tente novamente.',
+        { type: 'error' });
+      }
+    }
     finally { if (mountedRef.current) setBusy(false); }
   };
 

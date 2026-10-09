@@ -5,8 +5,10 @@ import SelectCustomizado from '../../components/select-customizado';
 import './cadastro-aula.css';
 import { useState, useEffect } from 'react'; 
 import api from '../../services/api';
+import { useToast } from '../../components/toast';
 
 export default function CadastroAula() {
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -24,20 +26,24 @@ export default function CadastroAula() {
   const yyyy = selectedDate ? String(selectedDate.getFullYear()) : '';
 
   useEffect(() => {
+    let ativo = true;
     async function loadClassificacoes() {
       try {
         const response = await api.get('/aula/classificacao-conteudo');
+        if (!ativo) return;
         if (response.data && response.data.length > 0) {
           setClassificacoes(response.data);
           setClassificacao(response.data[0].idClassificacaoConteudo);
         }
       } catch (error) {
         console.error('Erro ao carregar classificações:', error);
+        if (ativo) showToast('Não foi possível carregar as classificações de conteúdo. Tente novamente.', { type: 'error' });
       }
     }
 
     loadClassificacoes();
-  }, []);
+    return () => { ativo = false; };
+  }, [showToast]);
 
   const handleSelectDate = (date) => {
     setSelectedDate(date);
@@ -48,12 +54,12 @@ export default function CadastroAula() {
     if (e) e.preventDefault();
 
     if (!selectedDate) {
-      alert('Por favor, selecione a data da aula.');
+      showToast('Por favor, selecione a data da aula.', { type: 'warning' });
       return;
     }
 
     if (!conteudo.trim()) {
-      alert('Por favor, descreva o conteúdo da aula.');
+      showToast('Por favor, descreva o conteúdo da aula.', { type: 'warning' });
       return;
     }
 
@@ -77,6 +83,7 @@ export default function CadastroAula() {
       if (response.status === 201) {
 
         const idAula = response.data.id;
+        showToast('Aula cadastrada com sucesso!', { type: 'success' });
 
         navigate('/upload-video', {
           state: {
@@ -84,12 +91,12 @@ export default function CadastroAula() {
           }
         });
       } else {
-        alert('Erro ao cadastrar a aula.');
+        showToast('Erro ao cadastrar a aula.', { type: 'error' });
       }
     } catch (error) {
       console.error('Erro no cadastro da aula:', error?.response?.data || error);
       const mensagem = error?.response?.data?.error || error?.response?.data?.message || 'Erro ao cadastrar aula.';
-      alert(Array.isArray(mensagem) ? mensagem.join('\n') : mensagem);
+      showToast(Array.isArray(mensagem) ? mensagem.join('\n') : mensagem, { type: 'error' });
     } finally {
       setLoading(false);
     }

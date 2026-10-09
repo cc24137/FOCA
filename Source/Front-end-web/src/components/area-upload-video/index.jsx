@@ -1,7 +1,9 @@
 import "./area-upload-video.css";
 import { useRef, useState } from "react";
+import { useToast } from '../toast';
 
 export default function AreaUploadVideo({ selectedFiles = [], setSelectedFiles }) {
+    const { showToast } = useToast();
     const inputRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
 
@@ -16,7 +18,7 @@ export default function AreaUploadVideo({ selectedFiles = [], setSelectedFiles }
         });
 
         if (validVideos.length === 0) {
-            alert("Apenas arquivos de vídeo são permitidos.");
+            showToast("Apenas arquivos de vídeo são permitidos.", { type: 'warning' });
             return;
         }
 

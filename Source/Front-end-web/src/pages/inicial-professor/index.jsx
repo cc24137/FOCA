@@ -5,8 +5,10 @@ import SearchIcon from "../../assets/search.svg?react";
 import Book from "../../assets/book.svg?react";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
+import { useToast } from '../../components/toast';
 
 export default function InicialProfessor() {
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const goTo = route => () => {
@@ -22,9 +24,11 @@ export default function InicialProfessor() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let ativo = true;
     async function fetchTurmas() {
       try {
         const response = await api.get("/turmaRelacao/porProfessor");
+        if (!ativo) return;
 
         const turmasFormatadas = response.data.map(item => ({
           id: item.id,
@@ -36,13 +40,15 @@ export default function InicialProfessor() {
         setItems(turmasFormatadas);
       } catch (error) {
         console.error("Erro ao buscar turmas:", error);
+        if (ativo) showToast("Não foi possível carregar suas turmas. Tente novamente.", { type: 'error' });
       } finally {
-        setLoading(false);
+        if (ativo) setLoading(false);
       }
     }
 
     fetchTurmas();
-  }, []);
+    return () => { ativo = false; };
+  }, [showToast]);
 
   const filteredItems = items.filter(
     item =>

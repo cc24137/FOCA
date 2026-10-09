@@ -7,8 +7,10 @@ import api from "../../services/api";
 
 import IconPendente from "../../assets/bookmark.svg?react";
 import IconVinculado from "../../assets/file-text.svg?react";
+import { useToast } from '../../components/toast';
 
 export default function VinculosProfessor() {
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const [vinculos, setVinculos] = useState([]);
@@ -19,32 +21,40 @@ export default function VinculosProfessor() {
   const remocaoEmAndamento = useRef(false);
 
   useEffect(() => {
-    fetchVinculos();
-  }, []);
+    let ativo = true;
 
-  async function fetchVinculos() {
-    try {
-      const response = await api.get("/professor/vinculosInstituicao");
+    async function fetchVinculos() {
+      try {
+        const response = await api.get("/professor/vinculosInstituicao");
+        if (!ativo) return;
 
-      const vinculosFormatados = response.data.map(v => ({
-        id: v.id,
-        nome: v.nome,
-        turmas: v.turmas || 0,
-        status: v.professorAceitou ? "vinculado" : "pendente"
-      }));
+        const vinculosFormatados = response.data.map(v => ({
+          id: v.id,
+          nome: v.nome,
+          turmas: v.turmas || 0,
+          status: v.professorAceitou ? "vinculado" : "pendente"
+        }));
 
-      setVinculos(vinculosFormatados);
-    } catch (error) {
-      console.error("Erro ao buscar vínculos:", error);
+        setVinculos(vinculosFormatados);
+      } catch (error) {
+        console.error("Erro ao buscar vínculos:", error);
+        if (!ativo) return;
 
-      // Se o token for inválido, não existir ou expirar (erro 401/403)
-      if (error.response?.status === 401 || error.response?.status === 403) {
-        navigate("/login");
+        // Se o token for inválido, não existir ou expirar (erro 401/403)
+        if (error.response?.status === 401 || error.response?.status === 403) {
+          showToast("Sua sessão expirou. Entre novamente para continuar.", { type: 'warning' });
+          navigate("/login");
+        } else {
+          showToast("Não foi possível carregar seus vínculos com as instituições. Tente novamente.", { type: 'error' });
+        }
+      } finally {
+        if (ativo) setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
-  }
+
+    fetchVinculos();
+    return () => { ativo = false; };
+  }, [navigate, showToast]);
 
   async function handleAceitar(instituicaoId) {
     try {
@@ -55,10 +65,10 @@ export default function VinculosProfessor() {
           v.id === instituicaoId ? { ...v, status: "vinculado" } : v
         )
       );
-      alert("Convite aceito com sucesso!");
+      showToast("Convite aceito com sucesso!", { type: 'success' });
     } catch (error) {
       console.error("Erro ao aceitar convite:", error);
-      alert("Erro ao aceitar o convite. Tente novamente.");
+      showToast("Erro ao aceitar o convite. Tente novamente.", { type: 'error' });
     }
   }
 
@@ -108,7 +118,7 @@ export default function VinculosProfessor() {
 
       setVinculos(prevVinculos => prevVinculos.filter(v => v.id !== alvo.id));
       setConfirmacaoRemocao(null);
-      if (alvo.tipo === 'sair') alert("Você saiu da instituição.");
+      showToast(alvo.tipo === 'sair' ? "Você saiu da instituição." : "Convite recusado com sucesso!", { type: 'success' });
     } catch (error) {
       console.error("Erro ao remover vínculo:", error);
       setErroRemocao(alvo.tipo === 'recusar'

@@ -8,6 +8,7 @@ import KpiCards from "../../components/kpi-cards";
 import { unificarLinhasDoTempo } from "../../utils/chartHelpers";
 import api from "../../services/api";
 import "./estatisticas.css";
+import { useToast } from '../../components/toast';
 
 const USE_MOCK = true;
 const MAX_SELECAO_COMPARACAO = 5;
@@ -47,6 +48,7 @@ const PALETA_CORES = [
 ];
 
 export default function Estatisticas() {
+    const { showToast } = useToast();
     const reportRef = useRef(null);
 
     const [option, setOption] = useState("Professores");
@@ -106,6 +108,7 @@ export default function Estatisticas() {
                     return;
                 }
 
+                let falhasCarregamento = 0;
                 const promessasAulas = vinculos.map(async (vinculo) => {
                     const linkId = vinculo.id;
 
@@ -131,6 +134,8 @@ export default function Estatisticas() {
                             };
                         }).filter(a => a.id);
                     } catch (err) {
+                        falhasCarregamento++;
+                        console.error("Erro ao carregar aulas para as estatísticas:", err);
                         return [];
                     }
                 });
@@ -141,11 +146,20 @@ export default function Estatisticas() {
                 if (isMounted) {
                     setMatriz(matrizFinal);
                     setKpis(prev => ({ ...prev, totalAulas: matrizFinal.length }));
+                    if (falhasCarregamento > 0) {
+                        showToast(falhasCarregamento === vinculos.length
+                            ? "Não foi possível carregar as aulas para as estatísticas. Tente novamente."
+                            : "Algumas aulas não puderam ser carregadas. As estatísticas podem estar incompletas.",
+                        { type: falhasCarregamento === vinculos.length ? 'error' : 'warning' });
+                    }
                 }
 
             } catch (error) {
                 console.error("Erro ao carregar estatísticas:", error);
-                if (isMounted) setMatriz([]);
+                if (isMounted) {
+                    setMatriz([]);
+                    showToast("Não foi possível carregar as estatísticas. Tente novamente.", { type: 'error' });
+                }
             } finally {
                 if (isMounted) setLoadingDados(false);
             }
@@ -153,7 +167,7 @@ export default function Estatisticas() {
 
         carregarEstatisticas();
         return () => { isMounted = false; };
-    }, []);
+    }, [showToast]);
 
     // Reset de seleção e gráficos ao alterar qualquer filtro
     useEffect(() => {
@@ -219,12 +233,16 @@ export default function Estatisticas() {
     const listagem = getListagem();
 
     const handleToggleItemComparacao = (item) => {
+        if (!itemsParaComparar.includes(item) && itemsParaComparar.length >= MAX_SELECAO_COMPARACAO) {
+            showToast(`Você pode comparar no máximo ${MAX_SELECAO_COMPARACAO} itens por vez para garantir a clareza do gráfico.`, { type: 'warning' });
+            return;
+        }
+
         setItemsParaComparar(prev => {
             if (prev.includes(item)) {
                 return prev.filter(i => i !== item);
             }
             if (prev.length >= MAX_SELECAO_COMPARACAO) {
-                alert(`Você pode comparar no máximo ${MAX_SELECAO_COMPARACAO} itens por vez para garantir a clareza do gráfico.`);
                 return prev;
             }
             return [...prev, item];
@@ -238,6 +256,7 @@ export default function Estatisticas() {
         try {
             const listaParaUnificar = [];
             const listaBarData = [];
+            let falhasLeituras = 0;
 
             let somaMedias = 0;
             let maiorMedia = -1;
@@ -256,7 +275,7 @@ export default function Estatisticas() {
                     const promessasLogs = aulasDoItem.map(item => 
                         api.get(`/leituraAtencao/${item.aulaId}`)
                            .then(res => res.data)
-                           .catch(() => [])
+                           .catch(() => { falhasLeituras++; return []; })
                     );
                     const resultados = await Promise.all(promessasLogs);
                     todosLogs = resultados.flat();
@@ -308,7 +327,10 @@ export default function Estatisticas() {
             }
 
             if (listaParaUnificar.length === 0) {
-                alert("Nenhum dado de atenção encontrado para os itens selecionados.");
+                showToast(falhasLeituras > 0
+                    ? "Não foi possível carregar os dados de atenção para os gráficos. Tente novamente."
+                    : "Nenhum dado de atenção encontrado para os itens selecionados.",
+                { type: falhasLeituras > 0 ? 'error' : 'info' });
                 setDadosComparativosLine([]);
                 setDadosBarChart([]);
                 setConfiguracaoLinhas([]);
@@ -332,10 +354,13 @@ export default function Estatisticas() {
                 mediaGeral: somaMedias / listaBarData.length,
                 melhorDesempenho: melhorNome
             }));
+            if (falhasLeituras > 0) {
+                showToast("Algumas leituras de atenção não puderam ser carregadas. Os gráficos podem estar incompletos.", { type: 'warning' });
+            }
 
         } catch (error) {
             console.error("Erro ao gerar gráficos:", error);
-            alert("Erro ao processar dados dos gráficos.");
+            showToast("Erro ao processar dados dos gráficos.", { type: 'error' });
         } finally {
             setLoadingGraficos(false);
         }
@@ -354,12 +379,18 @@ export default function Estatisticas() {
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
-        html2pdf()
+        return html2pdf()
             .set(options)
             .from(element)
             .save()
-            .then(() => setIsExporting(false))
-            .catch(() => setIsExporting(false));
+            .then(() => {
+                showToast("Relatório PDF gerado com sucesso!", { type: 'success' });
+            })
+            .catch(error => {
+                console.error("Erro ao exportar o relatório PDF:", error);
+                showToast("Não foi possível gerar o relatório PDF. Tente novamente.", { type: 'error' });
+            })
+            .finally(() => setIsExporting(false));
     };
 
     return (

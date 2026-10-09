@@ -2,10 +2,12 @@ import Header from '../../components/header';
 import ConfirmPopup from '../../components/confirm-popup';
 import GenericLineChart from '../../components/time-vs-value-chart';
 import './professores.css';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import api from "../../services/api";
+import { useToast } from '../../components/toast';
 
 export default function Professores() {
+    const { showToast } = useToast();
     const [professores, setProfessores] = useState([]);
     const [selectedProfessor, setSelectedProfessor] = useState(null);
     const [atencaoProfessor, setAtencaoProfessor] = useState(null);
@@ -37,9 +39,61 @@ export default function Professores() {
         };
     });
 
+    const loadData = useCallback(async (estaAtiva = () => true) => {
+        try {
+            cacheVinculos.current.clear();
+            const response = await api.get("/professor/infosPorInstituicao");
+            if (!estaAtiva()) return;
+            const data = response.data;
+
+            const professoresAgrupados = [];
+
+            data.forEach(prof => {
+                let professorExistente = professoresAgrupados.find(e => String(e.id) === String(prof.id));
+
+                const infoTurma = (prof.turma && prof.disciplina)
+                    ? `${prof.turma} (${prof.disciplina})`
+                    : null;
+
+                if (!professorExistente) {
+                    professorExistente = {
+                        id: prof.id,
+                        nome: prof.nome,
+                        email: prof.email,
+                        turmas: [],
+                        nomesTurmas: []
+                    };
+                    professoresAgrupados.push(professorExistente);
+                }
+
+                if (infoTurma && !professorExistente.turmas.includes(infoTurma)) {
+                    professorExistente.turmas.push(infoTurma);
+                }
+
+                if (prof.turma && !professorExistente.nomesTurmas.includes(prof.turma)) {
+                    professorExistente.nomesTurmas.push(prof.turma);
+                }
+            });
+
+            setProfessores(professoresAgrupados);
+
+        } catch (error) {
+            if (!estaAtiva()) return;
+            if (error.response) {
+                console.log("Erro na API: " + error.response.data.message);
+                showToast("Não foi possível carregar os professores. Tente novamente.", { type: 'error' });
+            } else {
+                console.log(error);
+                showToast("Erro de conexão com o servidor.", { type: 'error' });
+            }
+        }
+    }, [showToast]);
+
     useEffect(() => {
-        loadData();
-    }, []);
+        let ativo = true;
+        loadData(() => ativo);
+        return () => { ativo = false; };
+    }, [loadData]);
 
     useEffect(() => {
         let ativo = true;
@@ -173,52 +227,7 @@ export default function Professores() {
         };
     }, [professorSelecionado]);
 
-    async function loadData() {
-        try {
-            cacheVinculos.current.clear();
-            const response = await api.get("/professor/infosPorInstituicao");
-            const data = response.data;
 
-            const professoresAgrupados = [];
-
-            data.forEach(prof => {
-                let professorExistente = professoresAgrupados.find(e => String(e.id) === String(prof.id));
-
-                const infoTurma = (prof.turma && prof.disciplina)
-                    ? `${prof.turma} (${prof.disciplina})`
-                    : null;
-
-                if (!professorExistente) {
-                    professorExistente = {
-                        id: prof.id,
-                        nome: prof.nome,
-                        email: prof.email,
-                        turmas: [],
-                        nomesTurmas: []
-                    };
-                    professoresAgrupados.push(professorExistente);
-                }
-
-                if (infoTurma && !professorExistente.turmas.includes(infoTurma)) {
-                    professorExistente.turmas.push(infoTurma);
-                }
-
-                if (prof.turma && !professorExistente.nomesTurmas.includes(prof.turma)) {
-                    professorExistente.nomesTurmas.push(prof.turma);
-                }
-            });
-
-            setProfessores(professoresAgrupados);
-
-        } catch (error) {
-            if (error.response) {
-                console.log("Erro na API: " + error.response.data.message);
-            } else {
-                console.log(error);
-                alert("Erro de conexão com o servidor.");
-            }
-        }
-    }
 
     // convidar professor
     async function handleAddProfessor() {
@@ -238,7 +247,7 @@ export default function Professores() {
         try {
             await api.post("/instituicao/convidar", { emailProfessor: newProfessorEmail });
 
-            alert("Convite enviado com sucesso para o email: " + newProfessorEmail);
+            showToast("Convite enviado com sucesso para o email: " + newProfessorEmail, { type: 'success' });
 
             // Limpa os estados
             setNewProfessorEmail("");
@@ -246,7 +255,7 @@ export default function Professores() {
 
         } catch (error) {
             console.log(error);
-            alert("Erro ao convidar professor: " + (error.response?.data?.message || "Tente novamente."));
+            showToast("Erro ao convidar professor: " + (error.response?.data?.message || "Tente novamente."), { type: 'error' });
         }
     }
 
@@ -284,7 +293,7 @@ export default function Professores() {
             setConfirmacaoRemocao(null);
             setSelectedProfessor(null);
             loadData();
-            alert("Professor removido com sucesso!");
+            showToast("Professor removido com sucesso!", { type: 'success' });
         } catch (error) {
             console.log(error);
             setErroRemocao("Erro ao remover professor: " + (error.response?.data?.message || "Tente novamente."));

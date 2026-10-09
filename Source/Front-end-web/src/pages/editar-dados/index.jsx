@@ -6,8 +6,10 @@ import api from "../../services/api";
 import "./editar-dados.css";
 import EyeOnIcon from "../../assets/eye-on.svg?react";
 import EyeOffIcon from "../../assets/eye-off.svg?react";
+import { useToast } from '../../components/toast';
 
 export default function EditarDados() {
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const [user, setUser] = useState(() => {
@@ -31,7 +33,7 @@ export default function EditarDados() {
 
   async function handleSalvar() {
     if (!nome.trim()) {
-      alert("O campo Nome não pode ficar vazio!");
+      showToast("O campo Nome não pode ficar vazio!", { type: 'warning' });
       return;
     }
 
@@ -44,19 +46,19 @@ export default function EditarDados() {
         localStorage.setItem("@FOCA:user", JSON.stringify(updatedUser));
       }
 
-      alert("Perfil atualizado com sucesso!");
+      showToast("Perfil atualizado com sucesso!", { type: 'success' });
       setSenha("");
       setShowPassword(false);
     } catch (error) {
       console.error("Erro ao atualizar o perfil:", error);
-      alert("Erro ao atualizar os dados. Tente novamente.");
+      showToast("Erro ao atualizar os dados. Tente novamente.", { type: 'error' });
     }
   }
 
   function handleLogout() {
     localStorage.removeItem("@FOCA:user");
     localStorage.removeItem("@FOCA:token");
-    alert("Você foi desconectado com sucesso.");
+    showToast("Você foi desconectado com sucesso.", { type: 'success' });
     navigate("/login");
   }
 
@@ -94,7 +96,7 @@ export default function EditarDados() {
       setConfirmacaoRemocao(null);
       localStorage.removeItem("@FOCA:user");
       localStorage.removeItem("@FOCA:token");
-      alert("Conta excluída com sucesso.");
+      showToast("Conta excluída com sucesso.", { type: 'success' });
       navigate("/login");
     } catch (error) {
       console.error("Erro ao excluir conta:", error);

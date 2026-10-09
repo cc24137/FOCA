@@ -8,21 +8,29 @@ import api from '../../services/api';
 import './upload-video.css';
 
 import { extractFrames } from './extract-frames';
+import { useToast } from '../../components/toast';
+// Mantém a exportação já existente da função de extração.
+// eslint-disable-next-line react-refresh/only-export-components
 export { extractFrames } from './extract-frames';
 
 export default function UploadVideo() {
+  const { showToast } = useToast();
   const location = useLocation();
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const avisoSemAula = useRef(false);
 
   const { idAula } = location.state || {};
 
   useEffect(() => {
-    if (!idAula) {
-      alert('Aula não informada. Voltando para o cadastro...');
+    if (idAula) {
+      avisoSemAula.current = false;
+    } else if (!avisoSemAula.current) {
+      avisoSemAula.current = true;
+      showToast('Aula não informada. Voltando para o cadastro...', { type: 'warning' });
       navigate('/cadastro-aula');
     }
-  }, [idAula, navigate]);
+  }, [idAula, navigate, showToast]);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [videoUrl, setVideoUrl] = useState(null);
@@ -80,7 +88,7 @@ export default function UploadVideo() {
 
   const handleProcessar = async () => {
     if (!selectedFiles || selectedFiles.length === 0) {
-      alert("Selecione um vídeo primeiro.");
+      showToast("Selecione um vídeo primeiro.", { type: 'warning' });
       return;
     }
 
@@ -133,10 +141,12 @@ export default function UploadVideo() {
       
       setFeedbackData(responseFeedback.data);
       setStatusMessage('Processamento concluído com sucesso!');
+      showToast('Análise concluída! Os resultados foram salvos e os feedbacks estão disponíveis.', { type: 'success' });
 
     } catch (error) {
-      if (error.code === 'FRAME_LIMIT') alert(error.message);
-      setStatusMessage(`Erro: ${error.response?.data?.message || error.message}`);
+      const mensagem = error.response?.data?.message || error.message || 'Não foi possível processar o vídeo. Tente novamente.';
+      setStatusMessage(`Erro: ${mensagem}`);
+      showToast(String(mensagem), { type: error.code === 'FRAME_LIMIT' ? 'warning' : 'error' });
     } finally {
       setLoading(false);
     }

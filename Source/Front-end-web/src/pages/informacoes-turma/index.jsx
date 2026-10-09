@@ -7,6 +7,7 @@ import GenericBarChart from "../../components/bar-chart";
 import { unificarLinhasDoTempo } from "../../utils/chartHelpers"; 
 import api from "../../services/api";
 import "./informacoes-turma.css";
+import { useToast } from '../../components/toast';
 
 const PALETA_CORES = [
   '#4F46E5', 
@@ -36,6 +37,7 @@ function ClearIcon(props) {
 }
 
 export default function InformacoesTurma() {
+    const { showToast } = useToast();
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -60,6 +62,7 @@ export default function InformacoesTurma() {
     const [jaComparou, setJaComparou] = useState(false);
 
     useEffect(() => {
+        let ativo = true;
         async function fetchDetalhes() {
             setLoading(true);
             try {
@@ -70,6 +73,7 @@ export default function InformacoesTurma() {
                     api.get(`/turmaRelacao/${id}`),
                     api.get(`/aula/${id}`)
                 ]);
+                if (!ativo) return;
 
                 if (resTurma.data) {
                     if (String(resTurma.data.idProfessor) !== String(loggedUserId) || user?.isProfessor !== true) {
@@ -94,13 +98,15 @@ export default function InformacoesTurma() {
                 }
             } catch (error) {
                 console.error("Erro ao procurar as informações:", error);
+                if (ativo) showToast("Não foi possível carregar as informações desta turma. Tente novamente.", { type: 'error' });
             } finally {
-                setLoading(false);
+                if (ativo) setLoading(false);
             }
         }
 
         if (id) fetchDetalhes();
-    }, [id]);
+        return () => { ativo = false; };
+    }, [id, showToast]);
 
     const listaDeAulas = aulas.map((aula, index) => ({
         label: `Aula ${index + 1} - ${new Date(aula.data).toLocaleDateString('pt-PT')}`,
@@ -153,12 +159,17 @@ export default function InformacoesTurma() {
 
             const dadosUnificados = unificarLinhasDoTempo(listaParaUnificar);
 
+            if (dadosUnificados.length === 0) {
+                showToast("As aulas selecionadas não possuem dados de atenção para comparar.", { type: 'info' });
+            }
+
             setDadosComparativos(dadosUnificados);
             setConfiguracaoLinhas(linhasConfig);
             setJaComparou(true);
 
         } catch (error) {
             console.error("Erro ao buscar dados de atenção das aulas:", error);
+            showToast("Não foi possível carregar os dados de atenção para a comparação. Tente novamente.", { type: 'error' });
         } finally {
             setLoading(false);
         }

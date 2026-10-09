@@ -4,9 +4,11 @@ import { useAuth } from "../../contexts/AuthContext";
 import "./login.css";
 import AuthLayout from "../../components/auth-layout";
 import EyeOnIcon from "../../assets/eye-on.svg?react"; // open eye
-import EyeOffIcon from "../../assets/eye-off.svg?react"; // closed eye
+import EyeOffIcon from "../../assets/eye-off.svg?react";
+import { useToast } from '../../components/toast'; // closed eye
 
 export default function Login() {
+  const { showToast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +24,7 @@ export default function Login() {
     event.preventDefault();
     if (isSubmitting) return;
     if (email === "" || password === "") {
-      alert("Por favor, preencha todos os campos.");
+      showToast("Por favor, preencha todos os campos.", { type: 'warning' });
       return;
     }
 
@@ -44,27 +46,23 @@ export default function Login() {
         console.log("Erro da API:", errorMessage);
 
         if (errorMessage === "Email not verified") {
-          alert(
-            "Email não verificado. Por favor, verifique seu email para concluir o cadastro."
-          );
+          showToast("Email não verificado. Por favor, verifique seu email para concluir o cadastro.", { type: 'warning' });
           goTo("/codigo-email");
         } else if (errorMessage === "Incorrect password") {
-          alert("Senha incorreta. Por favor, tente novamente.");
+          showToast("Senha incorreta. Por favor, tente novamente.", { type: 'error' });
           setPassword("");
         } else if (
           errorMessage === "User not found" ||
           error.response.status === 404
         ) {
-          alert(
-            "Nenhum usuário encontrado com essas credenciais. Por favor, verifique seu email e senha."
-          );
+          showToast("Nenhum usuário encontrado com essas credenciais. Por favor, verifique seu email e senha.", { type: 'error' });
           setEmail("");
           setPassword("");
         } else {
-          alert("Ocorreu um erro inesperado. Tente novamente mais tarde.");
+          showToast("Ocorreu um erro inesperado. Tente novamente mais tarde.", { type: 'error' });
         }
       } else {
-        alert("Erro de conexão com o servidor.");
+        showToast("Erro de conexão com o servidor.", { type: 'error' });
       }
     } finally {
       setIsSubmitting(false);

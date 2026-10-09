@@ -1,12 +1,14 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import Header from '../../components/header';
 import ConfirmPopup from '../../components/confirm-popup';
 import Combobox from '../../components/combobox-turmas'
 import GenericLineChart from '../../components/time-vs-value-chart';
 import './turmas.css';
 import api from "../../services/api";
+import { useToast } from '../../components/toast';
 
 export default function Turmas(){
+    const { showToast } = useToast();
     const [turmas, setTurma] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [selectedTurma, setSelectedTurma] = useState(null);
@@ -63,35 +65,14 @@ export default function Turmas(){
     });
 
     // Carrega as turmas, professores e disciplinas ao montar a tela
-    useEffect(() => {
-        loadData();
-    }, []);
-
-    // Atualiza as relações sempre que a turma selecionada mudar
-    useEffect(() => {
-        consultaAtual.current.idTurma = turmaSelecionada?.id ?? null;
-
-        if (turmaSelecionada) {
-            loadRelacoes(turmaSelecionada.id);
-        } else {
-            consultaAtual.current.versao++;
-            setRelacoes([]);
-            setAtencaoTurma(null);
-        }
-
-        return () => {
-            consultaAtual.current.versao++;
-            consultaAtual.current.idTurma = null;
-        };
-    }, [turmaSelecionada]);
-
-    async function loadData() {
+    const loadData = useCallback(async (estaAtiva = () => true) => {
         try {
             const [turmasRes, disciplinasRes, professoresRes] = await Promise.all([
                 api.get("/turmas/infosPorInstituicao"),
                 api.get("/disciplinas/porInstituicao"),
                 api.get("/professor/infosPorInstituicao")
             ]);
+            if (!estaAtiva()) return;
 
             const dataTurmas = turmasRes.data;
             const deAgrupado = [];
@@ -120,10 +101,37 @@ export default function Turmas(){
             setAllProfessores(profsUnicos);
 
         } catch (error) {
+            if (!estaAtiva()) return;
             console.error("Erro ao carregar dados do banco:", error);
-            alert("Não foi possível carregar as informações da instituição.");
+            showToast("Não foi possível carregar as informações da instituição.", { type: 'error' });
         }
-    }
+    }, [showToast]);
+
+    useEffect(() => {
+        let ativo = true;
+        loadData(() => ativo);
+        return () => { ativo = false; };
+    }, [loadData]);
+
+    // Atualiza as relações sempre que a turma selecionada mudar
+    useEffect(() => {
+        consultaAtual.current.idTurma = turmaSelecionada?.id ?? null;
+
+        if (turmaSelecionada) {
+            loadRelacoes(turmaSelecionada.id);
+        } else {
+            consultaAtual.current.versao++;
+            setRelacoes([]);
+            setAtencaoTurma(null);
+        }
+
+        return () => {
+            consultaAtual.current.versao++;
+            consultaAtual.current.idTurma = null;
+        };
+    }, [turmaSelecionada]);
+
+
 
     // Busca os vínculos e as médias das aulas da turma pelas rotas existentes.
     async function loadRelacoes(idTurma) {
@@ -226,12 +234,12 @@ export default function Turmas(){
                         grade: serieTurma
                     });
 
-                    alert("Turma atualizada com sucesso!");
+                    showToast("Turma atualizada com sucesso!", { type: 'success' });
                     setIsEditing(false);
                     loadData();
                 } catch (error) {
                     console.error("Erro ao atualizar turma:", error);
-                    alert("Erro ao salvar as alterações da turma.");
+                    showToast("Erro ao salvar as alterações da turma.", { type: 'error' });
                 }
             }
         }
@@ -255,13 +263,13 @@ export default function Turmas(){
                 grade: ""
             });
 
-            alert("Turma adicionada com sucesso!");
+            showToast("Turma adicionada com sucesso!", { type: 'success' });
             setNewTurmaName("");
             setIsAdding(false);
             loadData();
         } catch (error) {
             console.error("Erro ao cadastrar turma:", error);
-            alert("Erro ao adicionar a nova turma.");
+            showToast("Erro ao adicionar a nova turma.", { type: 'error' });
         }
     }
 
@@ -315,6 +323,7 @@ export default function Turmas(){
                 });
                 setConfirmacaoRemocao(null);
                 loadRelacoes(alvo.idTurma);
+                showToast("Vínculo removido com sucesso!", { type: 'success' });
             } else {
                 await api.delete("/turmas/excluir", {
                     data: { id: alvo.id }
@@ -323,7 +332,7 @@ export default function Turmas(){
                 setSelectedTurma(null);
                 setIsEditing(false);
                 loadData();
-                alert("Turma removida com sucesso!");
+                showToast("Turma removida com sucesso!", { type: 'success' });
             }
         } catch (error) {
             console.error("Erro ao remover:", error);
@@ -345,7 +354,7 @@ export default function Turmas(){
         const turmaAtual = turmas[selectedTurma];
 
         if (!professorEncontrado || !disciplinaEncontrada) {
-            alert("Selecione um professor e uma disciplina válidos.");
+            showToast("Selecione um professor e uma disciplina válidos.", { type: 'warning' });
             return;
         }
 
@@ -356,7 +365,7 @@ export default function Turmas(){
                 idProfessor: professorEncontrado.id
             });
 
-            alert("Vínculo criado com sucesso!");
+            showToast("Vínculo criado com sucesso!", { type: 'success' });
             setNewProf({ nome: '', disciplina: '' });
             setAddingProf(false);
 
@@ -364,7 +373,7 @@ export default function Turmas(){
             loadRelacoes(turmaAtual.id);
         } catch (error) {
             console.error("Erro ao criar vínculo de turma/professor/disciplina:", error);
-            alert("Não foi possível criar a relação. Verifique as configurações do servidor.");
+            showToast("Não foi possível criar a relação. Verifique as configurações do servidor.", { type: 'error' });
         }
     }
 

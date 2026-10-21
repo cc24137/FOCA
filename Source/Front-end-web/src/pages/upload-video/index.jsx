@@ -203,8 +203,8 @@ export default function UploadVideo() {
                     disabled={loading || !!visionData}
                     className="select-model"
                   >
-                    <option value="false">MODELO 1</option>
-                    <option value="true">MODELO 2</option>
+                    <option value="false">Foca Fast</option>
+                    <option value="true">Foca Strong</option>
                   </select>
                 </label>
               </div>

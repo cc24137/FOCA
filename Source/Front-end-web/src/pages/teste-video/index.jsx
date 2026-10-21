@@ -168,7 +168,7 @@ export default function TesteVideo() {
       formData.append('intervalo_segundos', String(interval));
       frames.forEach((frame, index) => formData.append('frames', frame, `frame_${index}.jpg`));
 
-      const response = await fetch('http://127.0.0.1:8000/processar-frames', {
+      const response = await fetch('https://foca-ai-api.onrender.com/processar-frames', {
         method: 'POST',
         body: formData,
         signal: controller.signal,

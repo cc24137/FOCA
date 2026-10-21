@@ -7,11 +7,11 @@ import FeedbackCards from '../../components/feedback-cards';
 import api from '../../services/api';
 import './upload-video.css';
 
-import { extractFrames } from './extract-frames';
+import { extractFrames } from '../../utils/extract-frames';
 import { useToast } from '../../components/toast';
 // Mantém a exportação já existente da função de extração.
 // eslint-disable-next-line react-refresh/only-export-components
-export { extractFrames } from './extract-frames';
+export { extractFrames } from '../../utils/extract-frames';
 
 export default function UploadVideo() {
   const { showToast } = useToast();
@@ -120,7 +120,7 @@ export default function UploadVideo() {
         formData.append('frames', frameBlob, `frame_${index}.jpg`);
       });
 
-      const visionRes = await fetch('http://127.0.0.1:8000/processar-frames', {
+      const visionRes = await fetch('https://foca-ai-api.onrender.com/processar-frames', {
         method: 'POST',
         body: formData,
       });

@@ -1,32 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
-import Divider from '../../components/divider';
-import BookIcon from '../../assets/book.svg?react';
-import BookmarkIcon from '../../assets/bookmark.svg?react';
-import CheckIcon from '../../assets/check.svg?react';
-import LockIcon from '../../assets/lock.svg?react';
-import FocaImensa from '../../assets/foca_imensa.png';
-import CotucaLogo from '../../assets/logo-cotuca.png';
-import UnicampLogo from '../../assets/logo-unicamp.svg';
 import './sobre-projeto.css';
 
-const steps = [
-  {
-    title: 'Detecção de rostos',
-    text: 'Modelos de visão computacional baseados em YOLOv8 identificam os rostos presentes nas imagens. O treinamento utiliza o conjunto de dados WIDER FACE.',
-  },
-  {
-    title: 'Estimativa dos indicadores',
-    text: 'Um algoritmo analisa as proporções geométricas das regiões faciais e o comportamento coletivo para calcular indicadores visuais de atenção da turma.',
-  },
-  {
-    title: 'Interpretação dos resultados',
-    text: 'Os indicadores são organizados ao longo do tempo. Regras de análise identificam variações e tendências e produzem gráficos, feedbacks e recomendações para o professor.',
-  },
+const sections = [
+  { id: 'apresentacao', title: 'O que é o FOCA?' },
+  { id: 'motivacao', title: 'Motivação e contexto' },
+  { id: 'funcionamento', title: 'Como a análise funciona' },
+  { id: 'plataforma', title: 'A plataforma web' },
+  { id: 'resultados', title: 'Resultados obtidos' },
+  { id: 'limitacoes', title: 'Limitações e desafios' },
+  { id: 'privacidade', title: 'Privacidade e uso responsável' },
+  { id: 'perspectivas', title: 'Conclusão e próximos passos' },
+  { id: 'equipe', title: 'Equipe e orientação' },
+  { id: 'referencias', title: 'Referências' },
 ];
 
+function AboutSection({ id, children }) {
+  const section = sections.find((item) => item.id === id);
+
+  return (
+    <section
+      className="project-about-section"
+      id={id}
+      aria-labelledby={`${id}-title`}
+      tabIndex={-1}
+    >
+      <h2 id={`${id}-title`}>{section.title}</h2>
+      {children}
+    </section>
+  );
+}
+
 export default function SobreProjeto() {
+  const [activeSection, setActiveSection] = useState(sections[0].id);
+  const [isContentsOpen, setIsContentsOpen] = useState(false);
   const [session] = useState(() => {
     try {
       const isLoggedIn = !!localStorage.getItem('@FOCA:token');
@@ -36,219 +44,368 @@ export default function SobreProjeto() {
       return { isLoggedIn: false, isProfessor: false };
     }
   });
+
   const homePath = session.isLoggedIn
     ? session.isProfessor ? '/inicial-professor' : '/inicial-instituicao'
     : '/';
 
+  useEffect(() => {
+    const elements = sections
+      .map(({ id }) => document.getElementById(id))
+      .filter(Boolean);
+    let frameId;
+
+    const updateActiveSection = () => {
+      // A mesma distância usada nas âncoras mantém o título abaixo do Header.
+      const content = document.getElementById('project-about-content');
+      const offset = parseFloat(
+        getComputedStyle(content).getPropertyValue('--project-about-anchor-offset'),
+      ) || 128;
+      const current = [...elements]
+        .reverse()
+        .find((element) => element.getBoundingClientRect().top <= offset + 16);
+      const isAtBottom = window.scrollY > 0
+        && Math.ceil(window.innerHeight + window.scrollY)
+          >= document.documentElement.scrollHeight - 2;
+
+      setActiveSection(isAtBottom
+        ? sections[sections.length - 1].id
+        : current?.id || sections[0].id);
+    };
+
+    const scheduleUpdate = () => {
+      window.cancelAnimationFrame(frameId);
+      frameId = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+    };
+  }, []);
+
   return (
     <div className="project-about-page">
+      <a className="project-about-skip-link" href="#project-about-article">
+        Ir para o conteúdo do projeto
+      </a>
+
       <Header sticky titulo="FOCA" routes={[
         { textButton: 'Início', routeButton: homePath },
-        { textButton: 'Sobre o Projeto', routeButton: "/sobre-projeto" },
-        { textButton: session.isLoggedIn ? 'Meu Perfil' : 'Login', routeButton: session.isLoggedIn ? '/editar-dados' : '/login' },
+        { textButton: 'Sobre o Projeto', routeButton: '/sobre-projeto' },
+        {
+          textButton: session.isLoggedIn ? 'Meu Perfil' : 'Login',
+          routeButton: session.isLoggedIn ? '/editar-dados' : '/login',
+        },
       ]} />
 
-      <main className="project-about-content">
-        <h1 className="project-about-title">Sobre o <span>Projeto</span></h1>
+      <main className="project-about-content" id="project-about-content">
+        <header className="project-about-intro" id="topo-projeto">
+          <h1>Sobre o <span>projeto</span></h1>
+          <p className="project-about-lead">
+            Conheça o FOCA: a proposta, o desenvolvimento e os resultados de uma
+            ferramenta de apoio à observação de turmas em aulas presenciais.
+          </p>
+        </header>
 
-        <section className="project-about-hero" aria-labelledby="foca-title">
-          <div>
-            <span className="project-about-eyebrow">Pesquisa e desenvolvimento · COTUCA / Unicamp</span>
-            <h2 id="foca-title">FOCA</h2>
-            <p className="project-about-fullname">Ferramenta de Observação e Classificação de Atenção</p>
-            <p>
-              Um projeto de Trabalho de Conclusão de Curso desenvolvido por estudantes
-              do Colégio Técnico de Campinas, da Universidade Estadual de Campinas,
-              para apoiar professores na interpretação de indicadores visuais de
-              atenção em aulas presenciais.
-            </p>
-          </div>
-          <aside className="project-about-institution" aria-label="Instituição de origem do projeto">
-            <span className="project-about-label">Desenvolvido no</span>
-            <div className="project-about-institution-logos">
-              <a href="https://www.cotuca.unicamp.br/" target="_blank" rel="noopener noreferrer" className="project-about-logo-link">
-                <img src={CotucaLogo} className="project-about-logo project-about-logo-cotuca" alt="COTUCA — Colégio Técnico de Campinas" width="120" height="120" />
-              </a>
-              <a href="https://www.unicamp.br/" target="_blank" rel="noopener noreferrer" className="project-about-logo-link">
-                <img src={UnicampLogo} className="project-about-logo project-about-logo-unicamp" alt="UNICAMP — Universidade Estadual de Campinas" />
-              </a>
-            </div>
-            <strong>COTUCA</strong>
-            <span>Colégio Técnico de Campinas</span>
-            <div className="project-about-university">
-              <strong>Unicamp</strong>
-              <span>Universidade Estadual de Campinas</span>
-            </div>
-            <span className="project-about-badge">TCC · Campinas, SP · 2026</span>
+        <div className="project-about-layout">
+          <aside className="project-about-sidebar">
+            <nav className="project-about-toc" aria-label="Sumário do projeto">
+              <button
+                className="project-about-toc-toggle"
+                type="button"
+                aria-expanded={isContentsOpen}
+                aria-controls="project-about-toc-list"
+                onClick={() => setIsContentsOpen((isOpen) => !isOpen)}
+              >
+                <span>Sumário</span>
+                <span aria-hidden="true">{isContentsOpen ? '−' : '+'}</span>
+              </button>
+              <ol
+                className="project-about-toc-list"
+                id="project-about-toc-list"
+                data-open={isContentsOpen}
+              >
+                {sections.map((section, index) => (
+                  <li key={section.id}>
+                    <a
+                      href={`#${section.id}`}
+                      aria-current={activeSection === section.id ? 'location' : undefined}
+                      onClick={() => {
+                        setActiveSection(section.id);
+                        setIsContentsOpen(false);
+                      }}
+                    >
+                      <span className="project-about-toc-number" aria-hidden="true">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span>{section.title}</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
           </aside>
-        </section>
 
-        <Divider />
+          <article className="project-about-article" id="project-about-article" tabIndex={-1} aria-label="Sobre o projeto FOCA">
+            <AboutSection id="apresentacao">
+              <p>
+                O <strong>FOCA — Ferramenta de Observação e Classificação de Atenção</strong> é
+                um projeto desenvolvido no Colégio Técnico de Campinas (COTUCA),
+                da Universidade Estadual de Campinas. Sua proposta é transformar
+                indícios visuais de uma sala de aula em informações que ajudem
+                professores e instituições a acompanhar o comportamento coletivo
+                dos estudantes.
+              </p>
+              <p>
+                A partir de imagens e vídeos, o sistema detecta rostos, calcula
+                indicadores estimados de atenção e organiza sua evolução ao longo
+                da aula. Os resultados são apresentados em uma plataforma web,
+                com gráficos, histórico e feedbacks que complementam a observação
+                e a interpretação do professor.
+              </p>
+            </AboutSection>
 
-        <div className="project-about-two-columns">
-          <section className="project-about-card" aria-labelledby="origin-title">
-            <span className="project-about-eyebrow">Contexto acadêmico</span>
-            <h2 id="origin-title"><BookmarkIcon className="project-about-heading-icon" aria-hidden="true" />Um projeto construído no COTUCA</h2>
-            <p>
-              O FOCA nasceu no contexto da formação técnica e de ensino médio do
-              COTUCA, colégio vinculado à Unicamp. O trabalho reúne pesquisa,
-              experimentação e desenvolvimento de software em torno de um desafio
-              do ambiente escolar.
-            </p>
-            <p>
-              Sua construção envolveu levantamento bibliográfico, treinamento e
-              avaliação de modelos, testes de diferentes formas de análise visual
-              e desenvolvimento de uma plataforma web para apresentar os resultados.
-            </p>
-          </section>
-          <section className="project-about-card" aria-labelledby="motivation-title">
-            <span className="project-about-eyebrow">O problema investigado</span>
-            <h2 id="motivation-title">Acompanhar uma turma é um desafio</h2>
-            <p>
-              Durante uma aula, o professor precisa explicar o conteúdo, conduzir as
-              atividades e observar a reação dos estudantes. Em turmas numerosas,
-              acompanhar essas diferentes demandas ao mesmo tempo se torna ainda
-              mais difícil.
-            </p>
-            <p>
-              O projeto busca oferecer informações complementares sobre o
-              comportamento coletivo, ajudando a identificar momentos relevantes
-              e a refletir sobre as estratégias utilizadas em sala.
-            </p>
-          </section>
-        </div>
+            <AboutSection id="motivacao">
+              <p>
+                Explicar conteúdos, conduzir atividades e acompanhar a reação dos
+                alunos são tarefas que acontecem ao mesmo tempo. Em turmas
+                numerosas, perceber quando o comportamento do grupo muda pode
+                ser especialmente difícil. O FOCA surgiu do interesse em aplicar
+                inteligência artificial a esse desafio do ensino presencial.
+              </p>
+              <p>
+                A literatura discutida no trabalho relaciona o engajamento à
+                participação e à aprendizagem, mas também destaca suas dimensões
+                comportamentais, emocionais e cognitivas. Por isso, a atenção não
+                pode ser resumida à direção do rosto. O projeto se concentra em
+                tendências visuais da turma, que precisam ser interpretadas à luz
+                da atividade e do contexto da aula.
+              </p>
+            </AboutSection>
 
-        <Divider />
+            <AboutSection id="funcionamento">
+              <p>
+                A análise combina aprendizado de máquina e métodos matemáticos.
+                Cada etapa tem uma função específica, da localização dos rostos
+                à organização das informações para o docente.
+              </p>
+              <h3>Detecção de rostos</h3>
+              <p>
+                Modelos baseados na arquitetura YOLOv8, treinados no projeto com
+                o conjunto de dados WIDER FACE, localizam os rostos presentes
+                nas imagens. Nos vídeos, a análise utiliza quadros extraídos em
+                intervalos configuráveis, equilibrando o detalhamento temporal
+                e o tempo de processamento.
+              </p>
+              <h3>Estimativa dos indicadores</h3>
+              <p>
+                Um algoritmo geométrico analisa a proporção entre largura e
+                altura das regiões faciais detectadas e atribui um índice
+                estimado a cada uma. A análise também considera padrões
+                coletivos, como vários alunos se voltando para um mesmo ponto
+                lateral. A média dos índices compõe o indicador da turma em
+                cada instante analisado.
+              </p>
+              <h3>Interpretação ao longo do tempo</h3>
+              <p>
+                Os indicadores formam uma série temporal. Um conjunto de regras
+                identifica quedas, crescimentos, estabilidade e períodos
+                relevantes, além de comparar a aula com o histórico do mesmo
+                contexto. Os feedbacks são priorizados e recebem sugestões de
+                investigação, intervenção, reforço ou monitoramento.
+              </p>
+            </AboutSection>
 
-        <section className="project-about-section" aria-labelledby="how-title">
-          <div className="project-about-section-heading">
-            <h2 id="how-title"><BookIcon className="project-about-heading-icon" aria-hidden="true" />Como o FOCA funciona</h2>
-            <p>Da análise das imagens à apresentação de informações para o docente.</p>
-          </div>
-          <ol className="project-about-steps">
-            {steps.map((step, index) => (
-              <li className="project-about-card" key={step.title}>
-                <span className="project-about-step-number" aria-hidden="true">0{index + 1}</span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </li>
-            ))}
-          </ol>
-        </section>
+            <AboutSection id="plataforma">
+              <p>
+                A plataforma reúne o envio de vídeos, a consulta dos resultados
+                e o acompanhamento das aulas. Sua organização segue a ideia de
+                alfabetização de dados para educadores: apresentar informações
+                de forma clara para facilitar sua leitura e seu uso na reflexão
+                pedagógica.
+              </p>
+              <p>
+                <strong>Para professores,</strong> a interface oferece acesso às
+                turmas e às aulas, gráficos da evolução dos indicadores e
+                comparações com registros anteriores. <strong>Para instituições,</strong> reúne
+                a gestão de professores, turmas e disciplinas, além de análises
+                comparativas conforme as permissões de cada perfil.
+              </p>
+              <p>
+                O desenvolvimento partiu de wireframes e de um protótipo no
+                Figma. A solução integra uma interface em React, uma API em
+                Node.js, um banco de dados e um serviço de processamento em
+                Python com FastAPI.
+              </p>
+            </AboutSection>
 
-        <Divider />
+            <AboutSection id="resultados">
+              <p>
+                As variantes Nano e Small do YOLOv8 foram avaliadas no conjunto
+                oficial de validação do WIDER FACE, com 3.226 imagens e 39.707
+                rostos anotados. O modelo Small apresentou melhor desempenho
+                de detecção, enquanto o Nano exigiu menos tempo de inferência
+                nas condições dos testes.
+              </p>
+              <div className="project-about-table-wrapper">
+                <table className="project-about-table" aria-describedby="project-about-metric-note">
+                  <caption>Detecção de rostos · Validação WIDER FACE</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Modelo</th>
+                      <th scope="col">mAP@50</th>
+                      <th scope="col">Inferência média</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><th scope="row">YOLOv8 Nano</th><td>73,26%</td><td>10,52 ms/imagem</td></tr>
+                    <tr><th scope="row">YOLOv8 Small</th><td>78,00%</td><td>21,22 ms/imagem</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="project-about-note" id="project-about-metric-note">
+                <strong>Como ler esses resultados:</strong> mAP@50 é uma métrica
+                de qualidade da detecção de rostos. Os valores acima não
+                representam a precisão da estimativa de atenção ou uma medida
+                da aprendizagem dos estudantes.
+              </p>
+              <p>
+                A estimativa de atenção foi explorada em testes qualitativos
+                com imagens de diferentes orientações e enquadramentos.
+                A apresentação dos resultados e os feedbacks foram avaliados
+                quanto ao funcionamento e à coerência, sem um estudo formal
+                de usabilidade ou de impacto pedagógico em aulas reais.
+              </p>
+            </AboutSection>
 
-        <section className="project-about-card project-about-features" aria-labelledby="features-title">
-          <div>
-            <span className="project-about-eyebrow">Informações para a prática docente</span>
-            <h2 id="features-title">O que a plataforma apresenta</h2>
-            <p>
-              Os resultados podem ser consultados pelo professor e pela instituição,
-              de acordo com seus respectivos perfis de acesso. A plataforma reúne
-              os registros de aulas, turmas e disciplinas para facilitar o acompanhamento.
-            </p>
-            <img src={FocaImensa} className="project-about-seal" alt="" width="411" height="194" loading="lazy" />
-          </div>
-          <ul className="project-about-feature-list">
-            <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Gráficos temporais</strong><span>A evolução dos indicadores durante a aula.</span></div></li>
-            <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Histórico e comparações</strong><span>Resultados organizados para acompanhar diferentes aulas e contextos.</span></div></li>
-            <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Feedbacks priorizados</strong><span>Variações e períodos relevantes destacados para análise.</span></div></li>
-            <li><CheckIcon className="project-about-check-icon" aria-hidden="true" /><div><strong>Recomendações</strong><span>Sugestões de investigação, intervenção, reforço ou monitoramento.</span></div></li>
-          </ul>
-        </section>
+            <AboutSection id="limitacoes">
+              <p>
+                A orientação aparente do rosto é um indício visual e não permite
+                determinar diretamente a concentração de um estudante.
+                Um aluno pode olhar para baixo para fazer anotações ou
+                permanecer voltado para a frente sem acompanhar a explicação.
+                O contexto pedagógico é indispensável para interpretar os dados.
+              </p>
+              <p>
+                Iluminação, posição da câmera, rostos pequenos ou parcialmente
+                encobertos e variações nas regiões detectadas afetam a análise.
+                Na validação, o modelo Small encontrou 69,91% dos rostos
+                anotados, indicando que parte deles pode ficar fora do cálculo
+                coletivo. As regras de análise também precisam de calibração
+                para diferentes turmas e atividades.
+              </p>
+              <p>
+                Uma variação no indicador não explica, por si só, sua causa.
+                Os feedbacks apontam momentos que merecem investigação;
+                cabe ao professor relacioná-los ao que ocorria na aula e
+                decidir sobre possíveis mudanças em sua prática.
+              </p>
+            </AboutSection>
 
-        <Divider />
+            <AboutSection id="privacidade">
+              <p>
+                O projeto adota como diretriz o uso temporário das mídias durante
+                a análise e seu descarte após a extração das métricas. A proposta
+                documentada é manter, para consulta posterior, os resultados
+                derivados e os registros das aulas, sem utilizar os vídeos
+                enviados como material de treinamento do modelo.
+              </p>
+              <p>
+                O uso de imagens em ambientes escolares requer cuidados com
+                finalidade, acesso e proteção dos participantes. A continuidade
+                da pesquisa em salas de aula deve considerar os procedimentos
+                de autorização, consentimento e avaliação ética aplicáveis,
+                conforme discutido no relatório.
+              </p>
+            </AboutSection>
 
-        <section className="project-about-card project-about-results" aria-labelledby="research-title">
-          <div>
-            <span className="project-about-eyebrow">Resultados do relatório</span>
-            <h2 id="research-title">Pesquisa, testes e avaliação</h2>
-            <p>
-              Foram avaliadas as variantes Nano e Small do YOLOv8 na detecção de
-              rostos. A variante Small apresentou melhor desempenho de detecção,
-              enquanto a Nano exigiu menos tempo de processamento nos testes relatados.
-            </p>
-            <p className="project-about-note" id="metric-note">
-              A métrica mAP@50 avalia a detecção de rostos no conjunto de validação
-              WIDER FACE. Esses valores não representam a precisão da estimativa de
-              atenção dos estudantes.
-            </p>
-          </div>
-          <div className="project-about-table-wrapper">
-            <table className="project-about-table" aria-describedby="metric-note">
-              <caption>Detecção de rostos · WIDER FACE</caption>
-              <thead><tr><th scope="col">Modelo avaliado</th><th scope="col">mAP@50</th></tr></thead>
-              <tbody>
-                <tr><th scope="row">YOLOv8 Nano</th><td>73,26%</td></tr>
-                <tr><th scope="row">YOLOv8 Small</th><td>78,00%</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+            <AboutSection id="perspectivas">
+              <p>
+                O desenvolvimento do FOCA integrou detecção facial, análise
+                geométrica, interpretação temporal e uma interface destinada
+                a professores e instituições. Os experimentos evidenciam
+                possibilidades de transformar dados visuais em informações
+                acessíveis para acompanhar turmas presenciais.
+              </p>
+              <p>
+                Os próximos passos incluem testes sistemáticos em salas de aula,
+                avaliação com docentes, calibração dos indicadores e das regras
+                de feedback e investigação de novos sinais visuais compatíveis
+                com imagens de baixa resolução. O objetivo é aperfeiçoar a
+                ferramenta como apoio à reflexão e à tomada de decisão do professor.
+              </p>
+            </AboutSection>
 
-        <Divider />
+            <AboutSection id="equipe">
+              <p>
+                Trabalho de Conclusão de Curso desenvolvido no Colégio Técnico
+                de Campinas, da Universidade Estadual de Campinas, em 2026.
+              </p>
+              <dl className="project-about-credits">
+                <div>
+                  <dt>Autores</dt>
+                  <dd>
+                    <ul>
+                      <li>Eduardo Artigiani Lima Tribst</li>
+                      <li>Júlio Pacheco Stein</li>
+                      <li>Rafael Fazion Baldin Dias</li>
+                    </ul>
+                  </dd>
+                </div>
+                <div><dt>Orientadora</dt><dd>Andreia Cristina de Souza</dd></div>
+                <div><dt>Coorientador</dt><dd>Guilherme de Oliveira Macedo</dd></div>
+              </dl>
+            </AboutSection>
 
-        <div className="project-about-two-columns">
-          <section className="project-about-card" aria-labelledby="limits-title">
-            <span className="project-about-eyebrow">Interpretação dos indicadores</span>
-            <h2 id="limits-title">O contexto da aula importa</h2>
-            <p>
-              A orientação aparente do rosto é um indício visual. Ela não permite
-              determinar diretamente o estado de concentração ou a aprendizagem de
-              um estudante. Ângulo da câmera, iluminação, rostos parcialmente
-              encobertos e qualidade da imagem podem influenciar os resultados.
-            </p>
-            <p>
-              A avaliação descrita no relatório ainda não constitui uma comprovação
-              de impacto pedagógico em aulas reais. A interpretação dos dados e as
-              decisões sobre a prática de ensino permanecem com o professor.
-            </p>
-          </section>
-          <section className="project-about-card" aria-labelledby="privacy-title">
-            <span className="project-about-eyebrow">Responsabilidade e continuidade</span>
-            <h2 id="privacy-title"><LockIcon className="project-about-heading-icon" aria-hidden="true" />Cuidado com as imagens e com seu uso</h2>
-            <p>
-              A proposta descrita no relatório prioriza o uso temporário das imagens
-              durante o processamento e a manutenção dos resultados derivados para
-              consulta posterior. A utilização em ambientes escolares requer atenção
-              à privacidade e aos procedimentos de autorização aplicáveis.
-            </p>
-            <p>
-              Entre os próximos passos da pesquisa estão a realização de testes
-              sistemáticos em salas de aula, a calibração dos indicadores e o
-              aprimoramento das regras de feedback para diferentes contextos.
-            </p>
-          </section>
-        </div>
+            <AboutSection id="referencias">
+              <p>
+                Esta página sintetiza o projeto de pesquisa e o relatório de
+                desenvolvimento do FOCA. Entre as referências discutidas no
+                trabalho, destacam-se:
+              </p>
+              <ul className="project-about-references">
+                <li>
+                  FREDRICKS, J. A.; BLUMENFELD, P. C.; PARIS, A. H.
+                  {' '}<cite>School engagement: potential of the concept, state of the evidence.</cite>
+                  {' '}Review of Educational Research, 2004.
+                </li>
+                <li>
+                  WHITEHILL, J. et al.
+                  {' '}<cite>The Faces of Engagement: Automatic Recognition of Student Engagement from Facial Expressions.</cite>
+                  {' '}IEEE Transactions on Affective Computing, 2014.
+                </li>
+                <li>
+                  CANEDO, D.; TRIFAN, A.; NEVES, A. J. R.
+                  {' '}<cite>Monitoring Students’ Attention in a Classroom Through Computer Vision.</cite>
+                  {' '}The PAAMS Collection, 2018.
+                </li>
+                <li>
+                  REDMON, J. et al.
+                  {' '}<cite>You Only Look Once: Unified, Real-Time Object Detection.</cite>
+                  {' '}CVPR, 2016.
+                </li>
+                <li>
+                  YANG, S. et al.
+                  {' '}<cite>WIDER FACE: A Face Detection Benchmark.</cite>
+                  {' '}CVPR, 2016.
+                </li>
+              </ul>
+            </AboutSection>
 
-        <Divider />
-
-        <section className="project-about-card project-about-credits" aria-labelledby="credits-title">
-          <div>
-            <span className="project-about-eyebrow">Autoria e orientação</span>
-            <h2 id="credits-title">As pessoas por trás do FOCA</h2>
-            <p>Trabalho desenvolvido no COTUCA, da Unicamp, em 2026.</p>
-          </div>
-          <div>
-            <h3>Autores</h3>
-            <ul>
-              <li>Eduardo Artigiani Lima Tribst</li>
-              <li>Júlio Pacheco Stein</li>
-              <li>Rafael Fazion Baldin Dias</li>
-            </ul>
-          </div>
-          <div>
-            <h3>Orientação</h3>
-            <p><strong>Orientadora</strong><br />Andreia Cristina de Souza</p>
-            <p><strong>Coorientador</strong><br />Guilherme de Oliveira Macedo</p>
-          </div>
-        </section>
-
-        <div className="project-about-academic-footer">
-          <p>FOCA · Colégio Técnico de Campinas · Universidade Estadual de Campinas</p>
-          <p>Projeto de Trabalho de Conclusão de Curso · 2026</p>
+            <div className="project-about-article-end">
+              <p>FOCA · COTUCA / Unicamp · 2026</p>
+              <a href="#topo-projeto">Voltar ao topo <span aria-hidden="true">↑</span></a>
+            </div>
+          </article>
         </div>
       </main>
+
       <Footer />
     </div>
   );

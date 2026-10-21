@@ -3,12 +3,12 @@ import Header from '../../components/header';
 import AreaUploadVideo from '../../components/area-upload-video';
 import GenericLineChart from '../../components/time-vs-value-chart';
 import { useToast } from '../../components/toast';
-import { calculateFramePlan, extractFrames, MAX_FRAMES } from '../upload-video/extract-frames';
+import { calculateFramePlan, extractFrames, MAX_FRAMES } from '../../utils/extract-frames';
 import './teste-video.css';
 
 // Preserva a exportação que já existia nesta tela.
 // eslint-disable-next-line react-refresh/only-export-components
-export { extractFrames } from '../upload-video/extract-frames';
+export { extractFrames } from '../../utils/extract-frames';
 
 const formatValue = (value) => value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
 const formatTime = (seconds) => {

@@ -4,6 +4,8 @@ import numpy as np
 from ultralytics import YOLO
 import os
 
+import torch
+
 import foca_config as cfg
 
 class VideoRequest:
@@ -16,6 +18,9 @@ class VideoRequest:
 class FocaEngine:
     def __init__(self, yolo_path):
         print("[Foca Engine] A carregar modelo YOLOv8...")
+
+        self.device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
         self.yolo = YOLO(yolo_path)
 
         # Filtro CLAHE configurado globalmente
@@ -128,7 +133,7 @@ class FocaEngine:
     def processar_frame(self, img):
         if img is None: return None
 
-        resultados_yolo = self.yolo(img, conf=cfg.YOLO_CONFIDENCE, verbose=False)
+        resultados_yolo = self.yolo(img, conf=cfg.YOLO_CONFIDENCE, verbose=False, device=self.device)
         detalhes_alunos = []
 
         # dados do yolo

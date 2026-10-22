@@ -80,7 +80,7 @@ export default function InicialInstituicao(){
                             <p >Estatísticas Gerais</p>
                         </div>
                         <p className='inicial-instituicao-card-subtitle'>Compare os dados obtidos</p>
-                        <p className='inicial-instituicao-card-text'>Selecione as categorias e gere ps gráficos desejados com toda a instituição</p>
+                        <p className='inicial-instituicao-card-text'>Selecione as categorias e gere os gráficos desejados com toda a instituição</p>
                     </div>
                 </div>
             </div>

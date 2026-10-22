@@ -53,7 +53,7 @@ export default function InicialInstituicao(){
                             <p>Professores</p>
                         </div>
                         <p className='inicial-instituicao-card-subtitle'>Gerencie seus professores</p>
-                        <p className='inicial-instituicao-card-text'>Adicionar novos, editar, excluir, analisar gráficos ...</p>
+                        <p className='inicial-instituicao-card-text'>Adicionar novos, editar, excluir, analisar gráficos</p>
                     </div>
 
                     <div className='inicial-instituicao-card' onClick={() => goTo("/turmas")}>
@@ -62,7 +62,7 @@ export default function InicialInstituicao(){
                             <p>Turmas</p>
                         </div>
                         <p className='inicial-instituicao-card-subtitle'>Gerencie suas turmas</p>
-                        <p className='inicial-instituicao-card-text'>Adicionar novas, editar, excluir, analisar gráficos ...</p>
+                        <p className='inicial-instituicao-card-text'>Adicionar novas, editar, excluir, analisar gráficos</p>
                     </div>
 
                     <div className='inicial-instituicao-card' onClick={() => goTo("/disciplinas")}>

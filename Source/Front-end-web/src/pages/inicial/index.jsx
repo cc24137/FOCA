@@ -69,13 +69,13 @@ export default function Inicial() {
                     <div className='inicial-intro-right'>
                         <div className='inicial-intro-top'>
                             <p className='inicial-intro-top-title'>
-                                Uma Nova Forma de <span className='inicial-intro-top-title-span'>Entender</span> Suas Turmas
+                                Uma nova forma de <span className='inicial-intro-top-title-span'>Entender</span> suas turmas
                             </p>
                         </div>
 
                         <div className='inicial-intro-bottom'>
                             <p className='inicial-intro-text'>
-                                Identificação e análise de atenção que mostram a recepção da didática pela turma.
+                                Identificação e análise de atenção que mostram a recepção da didática pela turma
                             </p>
                         </div>
                     </div>
@@ -203,7 +203,7 @@ export default function Inicial() {
 
                         <div className='inicial-security-content-row'>
                             <CheckIcon className='inicial-security-content-row-icon' />
-                            <p className='inicial-security-content-row-text'>As imagens usadas não são armazenadas, são <br />apenas processadas localmente.</p>
+                            <p className='inicial-security-content-row-text'>As imagens usadas não são armazenadas, são <br />apenas processadas.</p>
                         </div>
 
                         <div className='inicial-security-content-row'>

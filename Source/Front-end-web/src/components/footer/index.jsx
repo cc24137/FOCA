@@ -10,7 +10,8 @@ export default function Footer(){
                     <p className='footer-title'>Sobre o projeto</p>
 
                     <p className='footer-text'>
-                        FOCA é um projeto que utiliza IA para analisar a atenção de uma sala de aula por imagens. A ferramenta integra visão computacional e análise de dados para proporcionar uma forma de professores e escolas 
+                        FOCA é um projeto que utiliza IA para analisar a atenção de uma sala de aula por imagens. 
+                        A ferramenta integra visão computacional e análise de dados para proporcionar uma forma de professores e escolas compreenderem seus alunos, a fim de melhorar o ensino.
                     </p>
                 </div>
 

@@ -41,7 +41,7 @@ export default function Inicial() {
     };
 
     const getAccessText = () => {
-        return isLoggedIn ? "Meu Perfil" : "Login";
+        return isLoggedIn ? "Perfil" : "Login";
     };
 
     return (

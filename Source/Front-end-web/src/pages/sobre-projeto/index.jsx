@@ -99,7 +99,7 @@ export default function SobreProjeto() {
         { textButton: 'Início', routeButton: homePath },
         { textButton: 'Sobre o Projeto', routeButton: '/sobre-projeto' },
         {
-          textButton: session.isLoggedIn ? 'Meu Perfil' : 'Login',
+          textButton: session.isLoggedIn ? 'Perfil' : 'Login',
           routeButton: session.isLoggedIn ? '/editar-dados' : '/login',
         },
       ]} />

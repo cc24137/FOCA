@@ -201,7 +201,11 @@ export default function TesteVideo() {
 
   return (
     <div className="teste-video-body">
-      <Header />
+      <Header routes={[
+        { textButton: 'Início', routeButton: '/' },
+        { textButton: 'Sobre o Projeto', routeButton: '/sobre-projeto' },
+        { textButton: 'Login', routeButton: '/login' },
+      ]} />
       <main className="teste-video-content">
         <div className="teste-video-heading">
           <h1>Teste a análise de vídeo</h1>

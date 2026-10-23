@@ -145,7 +145,8 @@
 }
 
 .turma-prof-adicionar,
-.turma-prof-remover {
+.turma-prof-remover,
+.turma-prof-confirmar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -159,7 +160,8 @@
     font-size: 18px;
 }
 
-.turma-prof-adicionar {
+.turma-prof-adicionar,
+.turma-prof-confirmar {
     background-color: var(--button-dark-blue);
     color: var(--white);
 }
@@ -173,7 +175,7 @@
     white-space: nowrap;
 }
 
-.turma-prof-nova-acoes .turma-prof-remover + .turma-prof-remover {
+.turma-prof-nova-acoes .turma-prof-remover + .turma-prof-confirmar {
     margin-left: 6px;
 }
 

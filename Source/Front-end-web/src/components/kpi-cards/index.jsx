@@ -1,4 +1,5 @@
 import React from 'react';
+import AnalysisDisclaimer from '../analysis-disclaimer';
 import './kpi-cards.css';
 
 export default function KpiCards({ 
@@ -9,7 +10,10 @@ export default function KpiCards({
   return (
     <div className="kpi-cards-grid">
       <div className="kpi-card">
-        <span className="kpi-title">Média Geral de Atenção</span>
+        <div className="analysis-disclaimer-heading">
+          <span className="kpi-title">Média Geral de Atenção</span>
+          <AnalysisDisclaimer label="Como interpretar os indicadores de atenção" />
+        </div>
         <div className="kpi-value-row">
           <p className="kpi-value">{mediaGeral.toFixed(1)}%</p>
         </div>

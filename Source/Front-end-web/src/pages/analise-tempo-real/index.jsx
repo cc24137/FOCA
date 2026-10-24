@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/header';
 import GenericLineChart from '../../components/time-vs-value-chart';
+import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import FeedbackCards from '../../components/feedback-cards';
 import api from '../../services/api';
 import './analise-tempo-real.css';
@@ -341,7 +342,13 @@ export default function AnaliseTempoReal() {
           </section>
           <section className="live-results" aria-label="Resultados da análise">
             <div className="live-card">
-              <div className="live-heading"><h2>{mode === 'ended' ? 'Resumo da Aula' : 'Resultados Parciais'}</h2><span>{formatTime(elapsed)} de análise</span></div>
+              <div className="live-heading">
+                <h2 className="analysis-disclaimer-heading">
+                  {mode === 'ended' ? 'Resumo da Aula' : 'Resultados Parciais'}
+                  <AnalysisDisclaimer align="end" label="Como interpretar os resultados da análise em tempo real" />
+                </h2>
+                <span>{formatTime(elapsed)} de análise</span>
+              </div>
               <div className="live-metrics"><div><span>Atenção atual</span><strong>{formatValue(last?.media_momento)}</strong></div><div><span>Média da aula</span><strong>{formatValue(average)}</strong></div></div>
               <p className="live-note">{valid.length} leituras válidas · {processing ? 'Processando captura...' : last ? `Última captura: ${formatTime(last.segundo_video)}` : 'Aguardando a primeira captura.'}</p>
               {last && <p className="live-note">Focados: {last.total_focados} · Distraídos: {last.total_distraidos}</p>}

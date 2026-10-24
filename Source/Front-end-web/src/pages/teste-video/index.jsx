@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Header from '../../components/header';
 import AreaUploadVideo from '../../components/area-upload-video';
 import GenericLineChart from '../../components/time-vs-value-chart';
+import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import { useToast } from '../../components/toast';
 import { calculateFramePlan, extractFrames, MAX_FRAMES } from '../../utils/extract-frames';
 import './teste-video.css';
@@ -271,7 +272,10 @@ export default function TesteVideo() {
           <section className="teste-video-results" aria-label="Resultados da análise" aria-busy={loading}>
             {summary ? <>
               <div className="teste-video-card">
-                <h2>Atenção ao longo do vídeo</h2>
+                <h2 className="analysis-disclaimer-heading">
+                  Atenção ao longo do vídeo
+                  <AnalysisDisclaimer align="end" label="Como interpretar os resultados da análise do vídeo" />
+                </h2>
                 <p className="teste-video-help">Clique em um ponto do gráfico para abrir esse momento no vídeo.</p>
                 <GenericLineChart data={timeline} xKey="segundo_video"
                   lines={[{ key: 'media_momento', label: 'Atenção Média', color: '#4F46E5' }]}

@@ -1,6 +1,7 @@
 import Header from '../../components/header';
 import ConfirmPopup from '../../components/confirm-popup';
 import GenericLineChart from '../../components/time-vs-value-chart';
+import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import './disciplinas.css';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import api from "../../services/api";
@@ -420,7 +421,10 @@ export default function Disciplinas() {
                         {selectedDisciplina !== null && disciplinas[selectedDisciplina] ? (
                             <div className='disciplina-detalhes'>
                                 <p><strong>Turmas e Professores:</strong> {turmasFormatadas}</p>
-                                <p><strong>Média de Atenção:</strong> {mediaFormatada}</p>
+                                <p className="analysis-disclaimer-heading">
+                                    <span><strong>Média de Atenção:</strong> {mediaFormatada}</span>
+                                    <AnalysisDisclaimer label="Como interpretar a atenção da disciplina" />
+                                </p>
                             </div>
                         ) : (
                             <p className='disciplina-selecione'>Selecione uma disciplina para ver os detalhes</p>

@@ -1,6 +1,7 @@
 import Header from '../../components/header';
 import ConfirmPopup from '../../components/confirm-popup';
 import GenericLineChart from '../../components/time-vs-value-chart';
+import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import './professores.css';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import api from "../../services/api";
@@ -376,16 +377,19 @@ export default function Professores() {
                             <div className='professor-detalhes'>
                                 <p><strong>Email:</strong> {professores[selectedProfessor].email}</p>
                                 <p><strong>Turmas:</strong> {professores[selectedProfessor].turmas.join(', ') || 'Nenhuma'}</p>
-                                <p>
-                                    <strong>Média de Atenção:</strong>{' '}
-                                    {statusAtencao === 'carregando' ? 'Carregando...'
-                                        : statusAtencao === 'erro' ? 'Indisponível'
-                                        : dadosAtencao?.mediaAtencao != null
-                                        ? `${dadosAtencao.mediaAtencao.toLocaleString('pt-BR', {
-                                            minimumFractionDigits: 1,
-                                            maximumFractionDigits: 1
-                                        })}%`
-                                        : 'Sem análises'}
+                                <p className="analysis-disclaimer-heading">
+                                    <span>
+                                        <strong>Média de Atenção:</strong>{' '}
+                                        {statusAtencao === 'carregando' ? 'Carregando...'
+                                            : statusAtencao === 'erro' ? 'Indisponível'
+                                            : dadosAtencao?.mediaAtencao != null
+                                            ? `${dadosAtencao.mediaAtencao.toLocaleString('pt-BR', {
+                                                minimumFractionDigits: 1,
+                                                maximumFractionDigits: 1
+                                            })}%`
+                                            : 'Sem análises'}
+                                    </span>
+                                    <AnalysisDisclaimer label="Como interpretar a atenção nas aulas do professor" />
                                 </p>
                             </div>
                         ) : (

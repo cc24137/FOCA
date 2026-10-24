@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/header';
 import AreaUploadVideo from '../../components/area-upload-video';
 import GenericLineChart from '../../components/time-vs-value-chart';
+import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import FeedbackCards from '../../components/feedback-cards';
 import api from '../../services/api';
 import './upload-video.css';
@@ -255,7 +256,10 @@ export default function UploadVideo() {
               <>
                 {visionData.linha_do_tempo && (
                   <div className="chart-card">
-                    <h3>Nível de Atenção ao Longo do Tempo</h3>
+                    <h3 className="analysis-disclaimer-heading">
+                      Nível de Atenção ao Longo do Tempo
+                      <AnalysisDisclaimer align="end" label="Como interpretar os resultados da análise do vídeo" />
+                    </h3>
                     <GenericLineChart
                       data={visionData.linha_do_tempo}
                       xKey="segundo_video"
@@ -267,7 +271,12 @@ export default function UploadVideo() {
 
                 {feedbackData && (
                   <div className="results-card">
-                    <h2>Resultados da Análise</h2>
+                    <h2 className="analysis-disclaimer-heading">
+                      Resultados da Análise
+                      {!visionData.linha_do_tempo && (
+                        <AnalysisDisclaimer align="end" label="Como interpretar os resultados da análise do vídeo" />
+                      )}
+                    </h2>
                     
                     <FeedbackCards
                       section={feedbackData.lesson}

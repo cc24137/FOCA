@@ -4,6 +4,7 @@ import Header from "../../components/header";
 import Combobox from "../../components/combobox";
 import GenericLineChart from "../../components/time-vs-value-chart";
 import GenericBarChart from "../../components/bar-chart";
+import AnalysisDisclaimer from "../../components/analysis-disclaimer";
 import { unificarLinhasDoTempo } from "../../utils/chartHelpers"; 
 import api from "../../services/api";
 import "./informacoes-turma.css";
@@ -241,7 +242,10 @@ export default function InformacoesTurma() {
 
                 {/* Comparação de Aulas */}
                 <div className='informacoes-turma-box-comparacao-aulas'>
-                    <p className='informacoes-turma-box-comparacao-aulas-title'>Comparação detalhada</p>
+                    <p className='informacoes-turma-box-comparacao-aulas-title analysis-disclaimer-heading'>
+                        Comparação detalhada
+                        <AnalysisDisclaimer label="Como interpretar os resultados e as comparações das aulas" />
+                    </p>
                     
                     <div className='informacoes-turma-box-comparacao-aulas-subtitle-row'>
                         <div className='informacoes-turma-box-comparacao-aulas-subtitle-row-right'>

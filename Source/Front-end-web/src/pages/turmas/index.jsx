@@ -3,6 +3,7 @@ import Header from '../../components/header';
 import ConfirmPopup from '../../components/confirm-popup';
 import Combobox from '../../components/combobox-turmas'
 import GenericLineChart from '../../components/time-vs-value-chart';
+import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import './turmas.css';
 import api from "../../services/api";
 import { useToast } from '../../components/toast';
@@ -476,7 +477,10 @@ export default function Turmas(){
                                     <>
                                         <p><strong>Série:</strong> {turmas[selectedTurma].serie || 'Não informada'}</p>
                                         <p><strong>Alunos:</strong> {turmas[selectedTurma].numeroAlunos}</p>
-                                        <p><strong>Média de Atenção:</strong> {mediaFormatada}</p>
+                                        <p className="analysis-disclaimer-heading">
+                                            <span><strong>Média de Atenção:</strong> {mediaFormatada}</span>
+                                            <AnalysisDisclaimer label="Como interpretar a atenção da turma" />
+                                        </p>
                                     </>
                                 )}
 

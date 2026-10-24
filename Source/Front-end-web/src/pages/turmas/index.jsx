@@ -91,7 +91,16 @@ export default function Turmas(){
                 }
             });
             setTurma(deAgrupado);
-            setAllDisciplinas(disciplinasRes.data);
+            // A API retorna uma linha por vínculo; a seleção precisa de um item por disciplina.
+            const disciplinasUnicas = Array.from(
+                new Map(
+                    disciplinasRes.data.map(disciplina => [
+                        String(disciplina.id),
+                        disciplina
+                    ])
+                ).values()
+            );
+            setAllDisciplinas(disciplinasUnicas);
 
             const profsUnicos = [];
             professoresRes.data.forEach(p => {

@@ -352,7 +352,8 @@ export default function InformacoesTurma() {
                                             <th>Data</th>
                                             <th>Conteúdo</th>
                                             <th>Classificação</th>
-                                            <th>Vídeo</th>
+                                            <th>Status do vídeo</th>
+                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -362,18 +363,18 @@ export default function InformacoesTurma() {
                                                 <td>{aula.conteudo}</td>
                                                 <td>{aula.nome_classificacao || 'Sem classificação'}</td>
                                                 <td>
-                                                    {aula.arquivo_video ? (
-                                                        <span className="status-badge cadastrado">
-                                                            Cadastrado
-                                                        </span>
-                                                    ) : (
-                                                        <button
-                                                            className="btn-enviar-video"
-                                                            onClick={() => goTo('/upload-video', { idAula: aula.id })}
-                                                        >
-                                                            Enviar vídeo
-                                                        </button>
-                                                    )}
+                                                    <span className={`status-badge ${aula.arquivo_video ? 'enviado' : 'nao-enviado'}`}>
+                                                        {aula.arquivo_video ? 'Enviado' : 'Não enviado'}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <button
+                                                        type="button"
+                                                        className="btn-enviar-video"
+                                                        onClick={() => goTo('/upload-video', { idAula: aula.id })}
+                                                    >
+                                                        Enviar vídeo
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))}

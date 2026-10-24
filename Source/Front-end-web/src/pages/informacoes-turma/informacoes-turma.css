@@ -20,6 +20,7 @@
     background-color: var(--transparent-grayish-blue);
     box-shadow: var(--shadow-panel);
     width: 90%;
+    min-width: 0;
     padding: 20px 40px;
     border-radius: 20px;
     display: flex;
@@ -32,12 +33,16 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
 
 .informacoes-turma-box-title {
     font-size: 40px;
     font-weight: 600;
     color: var(--black);
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .informacoes-turma-box-button {
@@ -46,6 +51,7 @@
     border-radius: 10px;
     border: none;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .informacoes-turma-box-button-text {
@@ -54,8 +60,8 @@
 }
 
 .informacoes-turma-box-container {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: 30px;
     font-size: 21px;
 }
@@ -63,7 +69,7 @@
 .informacoes-turma-box-container-column {
     display: flex;
     flex-direction: column;
-    width: 15%;
+    min-width: 0;
     gap: 15px;
 }
 
@@ -72,15 +78,20 @@
     flex-direction: row;
     justify-content: start;
     gap: 10px;
+    align-items: baseline;
+    min-width: 0;
 }
 
 .informacoes-turma-box-container-row-title {
     font-size: 21px;
+    flex-shrink: 0;
 }
 
 .informacoes-turma-box-container-row-text {
     font-size: 21px;
-    white-space: nowrap;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .informacoes-turma-box-comparacao-aulas {
@@ -361,7 +372,7 @@
     }
 
     .informacoes-turma-box-container {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 15px;
     }
 

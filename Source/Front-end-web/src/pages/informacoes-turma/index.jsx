@@ -109,6 +109,11 @@ export default function InformacoesTurma() {
         return () => { ativo = false; };
     }, [id, showToast]);
 
+    const aulasHistorico = [...aulas].sort((primeira, segunda) =>
+        new Date(segunda.data).getTime() - new Date(primeira.data).getTime() ||
+        Number(segunda.id) - Number(primeira.id)
+    );
+
     const listaDeAulas = aulas.map((aula, index) => ({
         label: `Aula ${index + 1} - ${new Date(aula.data).toLocaleDateString('pt-PT')}`,
         value: aula.id.toString()
@@ -357,7 +362,7 @@ export default function InformacoesTurma() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {aulas.map((aula) => (
+                                        {aulasHistorico.map((aula) => (
                                             <tr key={aula.id}>
                                                 <td>{new Date(aula.data).toLocaleDateString('pt-PT')}</td>
                                                 <td>{aula.conteudo}</td>

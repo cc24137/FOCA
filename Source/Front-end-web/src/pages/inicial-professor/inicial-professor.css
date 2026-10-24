@@ -49,8 +49,8 @@
 /* Grid responsivo para os cards */
 .inicial-professor-cards-container {
   display: grid;
-  /* Cria colunas automáticas com largura mínima de 280px e máxima de 1fr (fração do espaço) */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* Mantém as colunas vazias para um único resultado não ocupar toda a linha. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 1.5rem;
   width: 100%;
 }

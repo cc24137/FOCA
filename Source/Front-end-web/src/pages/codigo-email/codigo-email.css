@@ -238,7 +238,7 @@
         top: 14px;
         right: 16px;
         z-index: 1000;
-        background: rgba(255, 255, 255, 0.6) !important;
+        background: rgba(var(--white-rgb), 0.6) !important;
         border-radius: 12px !important;
         padding: 2px !important;
     }

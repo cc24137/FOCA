@@ -13,13 +13,13 @@ import CheckIcon from '../../assets/check-small.svg?react';
 import ClearIcon from '../../assets/close.svg?react';
 
 const PALETA_CORES = [
-  '#4F46E5', 
-  '#10B981', 
-  '#F59E0B', 
-  '#EF4444', 
-  '#8B5CF6', 
-  '#06B6D4', 
-  '#EC4899', 
+  'var(--indigo)', 
+  'var(--success-accent)', 
+  'var(--warning-accent)', 
+  'var(--error-accent)', 
+  'var(--chart-violet)', 
+  'var(--chart-cyan)', 
+  'var(--chart-pink)', 
 ];
 
 export default function InformacoesTurma() {
@@ -171,7 +171,7 @@ export default function InformacoesTurma() {
             <div className='informacoes-turma-container'>
                 <Header />
                 <div className='informacoes-turma-content' style={{ textAlign: 'center', marginTop: '100px' }}>
-                    <h2 style={{ color: '#d9534f', marginBottom: '20px' }}>Acesso Negado</h2>
+                    <h2 style={{ color: 'var(--error-muted)', marginBottom: '20px' }}>Acesso Negado</h2>
                     <p>Você não tem permissão para visualizar os dados desta turma.</p>
                     <button
                         onClick={() => goTo('/')}
@@ -266,8 +266,8 @@ export default function InformacoesTurma() {
                                         display: 'inline-flex',
                                         alignItems: 'center',
                                         gap: '6px',
-                                        backgroundColor: '#EEF2FF',
-                                        color: '#4F46E5',
+                                        backgroundColor: 'var(--transparent-light-blue)',
+                                        color: 'var(--indigo)',
                                         padding: '4px 10px',
                                         borderRadius: '16px',
                                         fontSize: '0.85rem',
@@ -294,11 +294,11 @@ export default function InformacoesTurma() {
                                 lines={configuracaoLinhas}
                             />
                         ) : jaComparou ? (
-                            <p style={{ textAlign: 'center', padding: '20px', color: '#6B7280' }}>
+                            <p style={{ textAlign: 'center', padding: '20px', color: 'var(--button-disabled-gray)' }}>
                                 Nenhuma medição/log disponível para as aulas selecionadas.
                             </p>
                         ) : (
-                            <p style={{ textAlign: 'center', padding: '30px', color: '#9CA3AF', fontSize: '0.9rem' }}>
+                            <p style={{ textAlign: 'center', padding: '30px', color: 'var(--text-subtle)', fontSize: '0.9rem' }}>
                                 Selecione uma ou mais aulas acima e clique em <strong>Comparar</strong> para visualizar o gráfico sobreposto.
                             </p>
                         )}
@@ -320,7 +320,7 @@ export default function InformacoesTurma() {
                                     }))}
                                     xKey="label"
                                     yKey="value"
-                                    barColor="#4F46E5"
+                                    barColor="var(--indigo)"
                                 />
                             )}
                             {!loading && aulas.length === 0 && (

@@ -1,10 +1,10 @@
 /* ── CALENDAR CARD ── */
 .calendar-card {
-  background: white;
+  background: var(--white);
   border-radius: 16px;
   padding: 20px;
   width: 280px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 24px rgba(var(--black-rgb), 0.1);
   user-select: none;
 }
 
@@ -18,11 +18,11 @@
 .cal-title {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--slate-900);
 }
 
 .cal-title .cal-arrow {
-  color: #3b5bdb;
+  color: var(--calendar-blue);
   font-size: 0.7rem;
   vertical-align: middle;
   margin-left: 2px;
@@ -43,13 +43,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #3b5bdb;
+  color: var(--calendar-blue);
   font-size: 1rem;
   transition: background 0.15s;
 }
 
 .cal-nav button:hover {
-  background: #eef1fb;
+  background: var(--transparent-light-blue);
 }
 
 .cal-grid {
@@ -62,7 +62,7 @@
   text-align: center;
   font-size: 0.68rem;
   font-weight: 600;
-  color: #aaa;
+  color: var(--gray-disabled);
   padding: 4px 0 8px;
   letter-spacing: 0.04em;
 }
@@ -73,13 +73,13 @@
   font-size: 0.82rem;
   border-radius: 50%;
   cursor: pointer;
-  color: #2a2a3e;
+  color: var(--slate-800);
   transition: background 0.15s, color 0.15s;
 }
 
 .cal-day:hover:not(.empty):not(.selected) {
-  background: #eef1fb;
-  color: #3b5bdb;
+  background: var(--transparent-light-blue);
+  color: var(--calendar-blue);
 }
 
 .cal-day.empty {
@@ -87,27 +87,27 @@
 }
 
 .cal-day.today {
-  background: #3b5bdb;
-  color: white;
+  background: var(--calendar-blue);
+  color: var(--white);
   font-weight: 600;
 }
 
 /* today loses highlight when any date is selected */
 .cal-day.today.date-selected-active {
   background: none;
-  color: #2a2a3e;
+  color: var(--slate-800);
   font-weight: 400;
 }
 
 .cal-day.selected {
   background: var(--light-blue);
-  color: white;
+  color: var(--white);
   font-weight: 600;
 }
 
 .cal-divider {
   border: none;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--gray-hover);
   margin: 14px 0 12px;
 }
 
@@ -119,15 +119,15 @@
 }
 
 .cal-time .time-label {
-  color: #555;
+  color: var(--gray-medium);
   font-weight: 500;
 }
 
 .cal-time .time-value {
-  background: #f3f4f6;
+  background: var(--gray-hover);
   border-radius: 8px;
   padding: 4px 10px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: var(--slate-900);
   font-size: 0.85rem;
 }

@@ -263,7 +263,7 @@ export default function UploadVideo() {
                     <GenericLineChart
                       data={visionData.linha_do_tempo}
                       xKey="segundo_video"
-                      lines={[{ key: 'media_momento', label: 'Atenção Média', color: '#4F46E5' }]}
+                      lines={[{ key: 'media_momento', label: 'Atenção Média', color: 'var(--indigo)' }]}
                       onClick={handleChartClick}
                     />
                   </div>

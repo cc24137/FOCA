@@ -20,29 +20,29 @@
 }
 
 .foca-toast {
-  --toast-color: #2b54b1;
-  --toast-tint: #edf2fc;
+  --toast-color: var(--bottom-gradient-blue);
+  --toast-tint: var(--transparent-light-blue);
   display: flex;
   align-items: flex-start;
   flex-shrink: 0;
   gap: 12px;
   box-sizing: border-box;
   padding: 16px 8px 16px 16px;
-  border: 1px solid var(--transparent-grayish-blue, #d7dce5);
+  border: 1px solid var(--transparent-grayish-blue);
   border-left: 4px solid var(--toast-color);
   border-radius: 14px;
-  background: var(--white, #fff);
-  color: var(--deep-blue-accent, #1a2968);
-  font-family: var(--font-inter, 'Inter'), sans-serif;
+  background: var(--white);
+  color: var(--deep-blue-accent);
+  font-family: var(--font-inter), sans-serif;
   text-align: left;
-  box-shadow: var(--shadow-panel, 0 4px 15px rgba(0, 0, 0, 0.11));
+  box-shadow: var(--shadow-panel);
   pointer-events: auto;
   animation: foca-toast-enter 180ms ease-out;
 }
 
-.foca-toast--success { --toast-color: #176b48; --toast-tint: #eaf6ef; }
-.foca-toast--error { --toast-color: #a52727; --toast-tint: #fff1f0; }
-.foca-toast--warning { --toast-color: #94600c; --toast-tint: #fff6e6; }
+.foca-toast--success { --toast-color: var(--success); --toast-tint: var(--success-background); }
+.foca-toast--error { --toast-color: var(--error); --toast-tint: var(--error-background); }
+.foca-toast--warning { --toast-color: var(--warning); --toast-tint: var(--warning-background); }
 
 .foca-toast__icon {
   display: grid;
@@ -60,7 +60,7 @@
 
 .foca-toast__title {
   margin: 0 0 5px;
-  font-family: var(--font-scada, 'Scada'), sans-serif;
+  font-family: var(--font-scada), sans-serif;
   font-size: 19px;
   font-weight: 600;
   line-height: 1.2;
@@ -86,14 +86,14 @@
   border: none;
   border-radius: 8px;
   background: transparent;
-  color: var(--button-dark-blue, #566399);
+  color: var(--button-dark-blue);
   cursor: pointer;
 }
 
 .foca-toast__close svg { width: 20px; height: 20px; }
-.foca-toast__close:hover { background: var(--transparent-light-blue, #2564ec1a); }
+.foca-toast__close:hover { background: var(--transparent-light-blue); }
 .foca-toast__close:focus-visible {
-  outline: 3px solid var(--light-blue, #a0afd1);
+  outline: 3px solid var(--light-blue);
   outline-offset: 1px;
 }
 

@@ -150,7 +150,7 @@
 .inicial-test-offer-button:hover {
     background-color: var(--deep-blue-accent); /* Altere se tiver uma variável de hover */
     transform: scale(1.04);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(var(--black-rgb), 0.15);
 }
 
 .inicial-test-offer-button:active {

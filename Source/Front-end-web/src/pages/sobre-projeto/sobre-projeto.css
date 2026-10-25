@@ -3,9 +3,9 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--white, #fff);
-  color: var(--black, #17212b);
-  font-family: var(--font-inter, 'Inter', sans-serif);
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-inter);
 }
 
 .project-about-content,
@@ -16,11 +16,11 @@
 .project-about-content {
   /* Ajuste este valor se a altura do Header global for alterada. */
   --project-about-anchor-offset: 128px;
-  --project-about-accent: var(--deep-blue-accent, #174c78);
-  --project-about-text: var(--black, #17212b);
-  --project-about-muted: #536476;
-  --project-about-line: #dde5ec;
-  --project-about-soft: #f2f6fa;
+  --project-about-accent: var(--deep-blue-accent);
+  --project-about-text: var(--black);
+  --project-about-muted: var(--slate-600);
+  --project-about-line: var(--slate-200);
+  --project-about-soft: var(--less-white);
   flex: 1;
   width: min(100%, 1240px);
   margin: 0 auto;
@@ -48,7 +48,7 @@
 .project-about-intro h1 {
   margin: 0 0 18px;
   color: var(--project-about-text);
-  font-family: var(--font-scada, 'Scada', sans-serif);
+  font-family: var(--font-scada);
   font-size: clamp(34px, 3.5vw, 46px);
   line-height: 1.15;
   font-weight: 400;
@@ -170,7 +170,7 @@
 .project-about-section h2 {
   margin: 0 0 19px;
   color: var(--project-about-accent);
-  font-family: var(--font-scada, 'Scada', sans-serif);
+  font-family: var(--font-scada);
   font-size: clamp(25px, 2.3vw, 30px);
   font-weight: 600;
   line-height: 1.3;
@@ -346,14 +346,14 @@
   max-width: calc(100vw - 32px);
   padding: 12px 18px;
   transform: translateY(-200%);
-  background: #fff;
-  color: #174c78;
+  background: var(--white);
+  color: var(--blue-heading);
   font-size: 14px;
 }
 
 .project-about-skip-link:focus {
   transform: translateY(0);
-  outline: 2px solid #174c78;
+  outline: 2px solid var(--blue-heading);
 }
 
 @media (max-width: 1050px) {

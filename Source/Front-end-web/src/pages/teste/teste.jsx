@@ -214,7 +214,7 @@ export default function CameraApp() {
           muted
           style={{ ...styles.video, display: isStreaming ? 'block' : 'none' }}
         />
-        {!isStreaming && <p style={{ color: '#aaa' }}>Câmera desligada</p>}
+        {!isStreaming && <p style={{ color: 'var(--gray-disabled)' }}>Câmera desligada</p>}
       </div>
 
       {/* Canvas invisível */}
@@ -278,7 +278,7 @@ export default function CameraApp() {
         </div>
 
         {capturedPhotos.length === 0 ? (
-          <p style={{ color: '#777', fontStyle: 'italic' }}>Nenhuma foto tirada ainda.</p>
+          <p style={{ color: 'var(--gray-muted)', fontStyle: 'italic' }}>Nenhuma foto tirada ainda.</p>
         ) : (
           <div style={styles.galleryGrid}>
             {capturedPhotos.map((photo) => (
@@ -301,39 +301,39 @@ const styles = {
     margin: '30px auto',
     padding: '20px',
     fontFamily: 'var(--font-inter), sans-serif',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: 'var(--less-white)',
     borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    boxShadow: '0 4px 12px rgba(var(--black-rgb), 0.1)',
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: 'var(--white)',
     padding: '12px 16px',
     borderRadius: '8px',
     marginBottom: '15px',
-    border: '1px solid #e2e8f0',
+    border: '1px solid var(--slate-200)',
   },
   label: {
     display: 'block',
     fontSize: '14px',
     fontWeight: 'bold',
     marginBottom: '6px',
-    color: '#333',
+    color: 'var(--gray-dark)',
   },
   input: {
     padding: '8px 12px',
     borderRadius: '6px',
-    border: '1px solid #ccc',
+    border: '1px solid var(--gray-border)',
   },
   select: {
     flex: 1,
     padding: '8px 12px',
     borderRadius: '6px',
-    border: '1px solid #ccc',
+    border: '1px solid var(--gray-border)',
   },
   videoContainer: {
     width: '100%',
     height: '380px',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: 'var(--video-background-soft)',
     borderRadius: '8px',
     display: 'flex',
     alignItems: 'center',
@@ -354,8 +354,8 @@ const styles = {
   buttonPrimary: {
     flex: 1,
     padding: '10px',
-    backgroundColor: '#2563eb',
-    color: '#fff',
+    backgroundColor: 'var(--blue-action)',
+    color: 'var(--white)',
     border: 'none',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -363,8 +363,8 @@ const styles = {
   },
   buttonSecondary: {
     padding: '10px 16px',
-    backgroundColor: '#475569',
-    color: '#fff',
+    backgroundColor: 'var(--slate-600)',
+    color: 'var(--white)',
     border: 'none',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -372,8 +372,8 @@ const styles = {
   buttonDanger: {
     flex: 1,
     padding: '10px',
-    backgroundColor: '#dc2626',
-    color: '#fff',
+    backgroundColor: 'var(--error-action)',
+    color: 'var(--white)',
     border: 'none',
     borderRadius: '6px',
     cursor: 'pointer',
@@ -381,8 +381,8 @@ const styles = {
   },
   clearButton: {
     padding: '4px 8px',
-    backgroundColor: '#ef4444',
-    color: '#fff',
+    backgroundColor: 'var(--error-accent)',
+    color: 'var(--white)',
     border: 'none',
     borderRadius: '4px',
     fontSize: '12px',
@@ -390,10 +390,10 @@ const styles = {
   },
   statusBox: {
     padding: '12px',
-    backgroundColor: '#e2e8f0',
+    backgroundColor: 'var(--slate-200)',
     borderRadius: '6px',
     fontSize: '13px',
-    color: '#334155',
+    color: 'var(--slate-700)',
   },
   galleryGrid: {
     display: 'grid',
@@ -402,10 +402,10 @@ const styles = {
     marginTop: '10px',
   },
   photoCard: {
-    backgroundColor: '#fff',
+    backgroundColor: 'var(--white)',
     padding: '6px',
     borderRadius: '6px',
-    border: '1px solid #ddd',
+    border: '1px solid var(--gray-border-light)',
     textAlign: 'center',
   },
   photoImg: {
@@ -416,7 +416,7 @@ const styles = {
   },
   photoTime: {
     fontSize: '11px',
-    color: '#666',
+    color: 'var(--gray-secondary)',
     marginTop: '4px',
     display: 'block',
   },

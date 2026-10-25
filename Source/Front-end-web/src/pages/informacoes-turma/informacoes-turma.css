@@ -202,7 +202,7 @@
 }
 
 .informacoes-turma-box-comparacao-aulas-content {
-    background-color: rgb(114, 116, 118);
+    background-color: var(--gray-muted);
     height: 280px;
 }
 
@@ -236,25 +236,25 @@
 }
 
 .informacoes-turma-box-atencao-media-content {
-    background-color: #ffffff;
+    background-color: var(--white);
     border-radius: 12px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--gray-divider);
     padding: 15px;
     min-height: 280px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(var(--black-rgb), 0.05);
 }
 
 /* Fundo neutro (branco) para o histórico de aulas */
 .informacoes-turma-box-historico-aulas-content {
-    background-color: #ffffff;
+    background-color: var(--white);
     border-radius: 12px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--gray-divider);
     padding: 15px;
     min-height: 280px;
     max-height: 380px;
     overflow-x: auto;
     overflow-y: auto;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(var(--black-rgb), 0.05);
 }
 
 /* Estilos para a tabela de histórico de aulas */
@@ -274,8 +274,8 @@
 
 .tabela-aulas td {
     padding: 12px;
-    border-bottom: 1px solid #e5e7eb;
-    color: #333;
+    border-bottom: 1px solid var(--gray-divider);
+    color: var(--gray-dark);
 }
 
 .tabela-aulas th:first-child {
@@ -287,7 +287,7 @@
 }
 
 .tabela-aulas tr:hover {
-    background-color: #f9fafb;
+    background-color: var(--less-white);
 }
 
 /* ==========================================================================
@@ -304,15 +304,15 @@
 
 .status-badge.cadastrado,
 .tabela-aulas .status-badge.enviado {
-    background-color: #E6F4EA;
-    color: #137333;
-    border: 1px solid #CEEAD6;
+    background-color: var(--success-background);
+    color: var(--success-label);
+    border: 1px solid var(--success-border);
 }
 
 .tabela-aulas .status-badge.nao-enviado {
-    background-color: #FEF3C7;
-    color: #92400E;
-    border: 1px solid #FDE68A;
+    background-color: var(--warning-highlight);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-border);
 }
 
 .tabela-aulas .status-badge,
@@ -322,7 +322,7 @@
 
 .btn-enviar-video {
     background-color: var(--button-dark-blue);
-    color: #ffffff;
+    color: var(--white);
     border: none;
     border-radius: 6px;
     padding: 6px 12px;

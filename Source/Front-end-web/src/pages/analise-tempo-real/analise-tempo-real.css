@@ -1,8 +1,8 @@
 .live-page {
     min-height: 100vh;
     width: 100%;
-    background: #f8fafc;
-    color: #334155;
+    background: var(--less-white);
+    color: var(--slate-700);
 }
 
 .live-content {
@@ -14,7 +14,7 @@
 .live-content h1 {
     font-size: 1.6rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--slate-800);
     margin: 0 0 36px;
 }
 
@@ -34,16 +34,16 @@
 
 .live-card {
     min-width: 0;
-    background: #fff;
+    background: var(--white);
     padding: 24px;
     border-radius: 10px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--slate-200);
 }
 
 .live-card h2 {
     margin: 0 0 20px;
     font-size: 1.15rem;
-    color: #0f172a;
+    color: var(--slate-900);
 }
 
 .live-inputs {
@@ -70,11 +70,11 @@
 .live-inputs input {
     box-sizing: border-box;
     max-width: 100%;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--slate-300);
     border-radius: 6px;
     padding: 8px 10px;
-    background: #fff;
-    color: #334155;
+    background: var(--white);
+    color: var(--slate-700);
     font: inherit;
 }
 
@@ -90,8 +90,8 @@
     aspect-ratio: 16 / 9;
     border-radius: 8px;
     overflow: hidden;
-    background: #0f172a;
-    color: #cbd5e1;
+    background: var(--slate-900);
+    color: var(--slate-300);
     text-align: center;
 }
 
@@ -117,8 +117,8 @@
     padding: 6px 10px;
     border-radius: 6px;
     font-size: .8rem;
-    background: #0f172ad9;
-    color: #fff;
+    background: rgba(var(--slate-900-rgb), 0.85098);
+    color: var(--white);
 }
 
 .live-buttons {
@@ -138,33 +138,33 @@
 }
 
 .live-primary {
-    background: #4f46e5;
-    color: #fff;
-    border: 1px solid #4f46e5;
+    background: var(--indigo);
+    color: var(--white);
+    border: 1px solid var(--indigo);
 }
 
 .live-primary:hover:not(:disabled) {
-    background: #4338ca;
+    background: var(--indigo-hover);
 }
 
 .live-secondary {
-    background: #fff;
-    color: #334155;
-    border: 1px solid #cbd5e1;
+    background: var(--white);
+    color: var(--slate-700);
+    border: 1px solid var(--slate-300);
 }
 
 .live-secondary:hover:not(:disabled) {
-    background: #f1f5f9;
+    background: var(--gray-hover);
 }
 
 .live-finish {
-    background: #fff;
-    color: #b91c1c;
-    border: 1px solid #fecaca;
+    background: var(--white);
+    color: var(--error-strong);
+    border: 1px solid var(--error-border);
 }
 
 .live-finish:hover:not(:disabled) {
-    background: #fef2f2;
+    background: var(--error-background);
 }
 
 .live-buttons button:disabled {
@@ -173,7 +173,7 @@
 }
 
 .live-page :focus-visible {
-    outline: 3px solid #a5b4fc;
+    outline: 3px solid var(--indigo-light);
     outline-offset: 3px;
 }
 
@@ -181,13 +181,13 @@
     margin: 14px 0 0;
     font-size: .9rem;
     font-weight: 600;
-    color: #475569;
+    color: var(--slate-600);
 }
 
 .live-error {
-    color: #b91c1c;
-    background: #fef2f2;
-    border: 1px solid #fecaca;
+    color: var(--error-strong);
+    background: var(--error-background);
+    border: 1px solid var(--error-border);
     border-radius: 6px;
     padding: 12px;
     overflow-wrap: anywhere;
@@ -196,7 +196,7 @@
 .live-note {
     margin: 12px 0 0;
     font-size: .85rem;
-    color: #64748b;
+    color: var(--slate-500);
     line-height: 1.5;
 }
 
@@ -209,7 +209,7 @@
 }
 
 .live-heading>span {
-    color: #64748b;
+    color: var(--slate-500);
     font-size: .85rem;
     margin-bottom: 16px;
 }
@@ -221,8 +221,8 @@
 }
 
 .live-metrics>div {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: var(--less-white);
+    border: 1px solid var(--slate-200);
     padding: 16px;
     border-radius: 8px;
 }
@@ -230,14 +230,14 @@
 .live-metrics span {
     display: block;
     font-size: .9rem;
-    color: #64748b;
+    color: var(--slate-500);
 }
 
 .live-metrics strong {
     display: block;
     margin-top: 8px;
     font-size: 1.8rem;
-    color: #4f46e5;
+    color: var(--indigo);
 }
 
 .live-placeholder {
@@ -249,9 +249,9 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    border: 2px dashed #cbd5e1;
+    border: 2px dashed var(--slate-300);
     border-radius: 8px;
-    color: #64748b;
+    color: var(--slate-500);
 }
 
 .live-placeholder>span {
@@ -260,7 +260,7 @@
 
 .live-placeholder h3 {
     margin: 12px 0 8px;
-    color: #334155;
+    color: var(--slate-700);
 }
 
 .live-placeholder p {

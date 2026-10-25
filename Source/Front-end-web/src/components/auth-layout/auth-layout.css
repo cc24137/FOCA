@@ -113,13 +113,13 @@
   }
 
   .auth-home-button {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(var(--white-rgb), 0.6);
     border-radius: 12px;
     padding: 2px;
   }
 
   .login-body .auth-home-button {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(var(--white-rgb), 0.4);
     border-radius: 15px;
   }
 

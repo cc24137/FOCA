@@ -16,7 +16,7 @@ export default function GenericBarChart({
   data = [],
   xKey = 'label',
   yKey = 'media',
-  barColor = '#4F46E5',
+  barColor = 'var(--indigo)',
   bars,
   colors = [],
   height = 400,
@@ -88,7 +88,7 @@ export default function GenericBarChart({
               minTickGap={24}
               tickMargin={10}
               height={45}
-              tick={{ fontSize: 12, fill: '#374151' }}
+              tick={{ fontSize: 12, fill: 'var(--slate-700)' }}
             />
             <YAxis width={60} tickFormatter={formatYAxis} domain={[0, 100]} />
             <Tooltip

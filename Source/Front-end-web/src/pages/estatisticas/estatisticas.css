@@ -98,7 +98,7 @@
     background-color: var(--white);
     padding: 16px;
     border-radius: 16px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(var(--black-rgb), 0.08);
 }
 
 .sidebar-subtitle {
@@ -209,7 +209,7 @@
     background-color: var(--white);
     padding: 10px 12px;
     border-radius: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(var(--black-rgb), 0.08);
     cursor: pointer;
     transition: all 0.2s ease;
     user-select: none;
@@ -282,19 +282,19 @@
 
 .estatisticas-average-attention-graph {
     background-color: var(--white);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(var(--black-rgb), 0.08);
     border-radius: 16px;
     padding: 20px;
     min-height: 340px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 12px rgba(var(--black-rgb), 0.03);
     box-sizing: border-box;
 }
 
 .graph-placeholder {
-    color: #6B7280;
+    color: var(--button-disabled-gray);
     font-size: 15px;
     text-align: center;
     line-height: 1.5;

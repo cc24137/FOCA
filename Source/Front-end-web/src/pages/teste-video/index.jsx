@@ -278,7 +278,7 @@ export default function TesteVideo() {
                 </h2>
                 <p className="teste-video-help">Clique em um ponto do gráfico para abrir esse momento no vídeo.</p>
                 <GenericLineChart data={timeline} xKey="segundo_video"
-                  lines={[{ key: 'media_momento', label: 'Atenção Média', color: '#4F46E5' }]}
+                  lines={[{ key: 'media_momento', label: 'Atenção Média', color: 'var(--indigo)' }]}
                   onClick={handleChartClick} />
               </div>
               <div className="teste-video-card">

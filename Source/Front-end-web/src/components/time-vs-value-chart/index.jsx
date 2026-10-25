@@ -32,7 +32,7 @@ export default function GenericLineChart({
   data = [],
   xKey = 'segundo_video',
   yKey = 'media_momento',
-  lineColor = '#4F46E5',
+  lineColor = 'var(--indigo)',
   lines,
   height = 300,
   formatXAxis,
@@ -133,7 +133,7 @@ export default function GenericLineChart({
             tickCount={isTimeAxis ? Math.max(2, Math.floor(plotWidth / (showHours ? 110 : 85))) : undefined}
             interval="preserveStartEnd"
             minTickGap={24}
-            tick={{ fontSize: 12, fill: '#374151' }}
+            tick={{ fontSize: 12, fill: 'var(--slate-700)' }}
             tickMargin={10}
             height={40}
           />
@@ -142,7 +142,7 @@ export default function GenericLineChart({
             labelFormatter={labelFormatter}
             formatter={formatYAxis ? (value, name) => [formatYAxis(value), name] : undefined}
             wrapperStyle={{ pointerEvents: 'none', maxWidth: '100%' }}
-            cursor={{ stroke: '#9CA3AF', strokeDasharray: '4 4' }}
+            cursor={{ stroke: 'var(--text-subtle)', strokeDasharray: '4 4' }}
           />
           {chartLines.length > 1 && <Legend />}
 

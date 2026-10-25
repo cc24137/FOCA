@@ -2,32 +2,122 @@
 @import url('https://fonts.googleapis.com/css2?family=Scada:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root{
-  --white                        : #ffffff;
+  --white                        : rgb(var(--white-rgb));
   --less-white                   : #f5f5f5;
   --background-off-white         : #f9f8f4;
-  --black                        : #000000;
+  --black                        : rgb(var(--black-rgb));
   --transparent-light-blue       : #2564ec1a;
   --transparent-grayish-blue     : #8d9fd840;
   --bar-light-blue               : #a0afd19d;
   --grayish-blue                 : #7a86ab;
   --button-dark-blue             : #566399;
   --button-light-blue            : #C5C6E0;
-  --deep-blue-accent             : #1A2968;
+  --deep-blue-accent             : rgb(var(--deep-blue-accent-rgb));
   --light-blue                   : #a0afd1;
-  --side-login-blue              : #a0afd1bf;
+  --side-login-blue              : #a1afd1bf;
   --top-gradient-blue            : #b8c4df;
   --bottom-gradient-blue         : #2b54b1;
   --transparent-dark-grayish-blue: #8085b44d;
-  --card-gradient                : linear-gradient(180deg, #7A86AB 0%, #1A2968 100%);
+  --card-gradient                : linear-gradient(180deg, var(--grayish-blue) 0%, var(--deep-blue-accent) 100%);
   --intro-gradient               : linear-gradient(90deg, #3853EC42 0%, #2563CE4D 100%);
   --red                          : #ff0000;
   --button-disabled-gray         : #6b7280;
 
-  --shadow-panel                 : 0 4px 15px rgba(0, 0, 0, 0.11);
-  --shadow-banner                : 0 4px 15px rgba(0, 0, 0, 0.17);
-  --shadow-action                : 0 4px 15px rgba(0, 0, 0, 0.15);
-  --shadow-profile               : 0 4px 20px rgba(0, 0, 0, 0.15);
-  --shadow-navigation-card       : 0 8px 20px rgba(0, 0, 0, 0.18);
+  /* Canais compartilhados para cores com transparência. */
+  --white-rgb                    : 255, 255, 255;
+  --black-rgb                    : 0, 0, 0;
+  --deep-blue-accent-rgb         : 26, 41, 104;
+  --slate-900-rgb                : 15, 23, 42;
+
+  /* Neutros para textos, campos, bordas e vídeo. */
+  --gray-dark                    : #333333;
+  --gray-strong                  : #444444;
+  --gray-medium                  : #555555;
+  --gray-secondary               : #666666;
+  --gray-muted                   : #777777;
+  --gray-placeholder             : #999999;
+  --gray-disabled                : #aaaaaa;
+  --gray-border                  : #cccccc;
+  --gray-border-light            : #dddddd;
+  --gray-divider                 : #e5e7eb;
+  --gray-hover                   : #f0f0f0;
+  --video-background             : #111111;
+  --video-background-soft        : #1a1a1a;
+  --icon-stroke                  : #1e1e1e;
+
+  /* Tons azulados para textos e superfícies de análise. */
+  --slate-900                    : rgb(var(--slate-900-rgb));
+  --slate-800                    : #1e293b;
+  --slate-700                    : #334155;
+  --slate-600                    : #475569;
+  --slate-500                    : #64748b;
+  --slate-400                    : #94a3b8;
+  --slate-300                    : #cbd5e1;
+  --slate-200                    : #e2e8f0;
+  --text-subtle                  : #9ca3af;
+
+  /* Acentos de campos, calendário e gráficos. */
+  --blue-link                    : #007bff;
+  --blue-link-hover              : #0056b3;
+  --blue-focus                   : #4a90e2;
+  --blue-action                  : #2563eb;
+  --blue-info                    : #3b82f6;
+  --blue-info-text               : #1d4ed8;
+  --blue-heading                 : #174c78;
+  --calendar-blue                : #3b5bdb;
+  --indigo                       : #4f46e5;
+  --indigo-hover                 : #4338ca;
+  --indigo-light                 : #a5b4fc;
+  --accent-border                : #9b9fc4;
+  --chart-violet                 : #8b5cf6;
+  --chart-cyan                   : #06b6d4;
+  --chart-pink                   : #ec4899;
+
+  /* Sucesso e indicadores positivos. */
+  --success-accent               : #10b981;
+  --success                      : #176b48;
+  --success-text                 : #047857;
+  --success-label                : #137333;
+  --success-action               : #059669;
+  --success-background           : #eaf6ef;
+  --success-surface              : #ecfdf5;
+  --success-border               : #ceead6;
+
+  /* Avisos e indicadores de atenção. */
+  --warning-accent               : #f59e0b;
+  --warning                      : #94600c;
+  --warning-text                 : #92400e;
+  --warning-emphasis             : #b45309;
+  --warning-background           : #fffbeb;
+  --warning-highlight            : #fef3c7;
+  --warning-border               : #fde68a;
+
+  /* Erros e ações destrutivas. */
+  --error-accent                 : #ef4444;
+  --error                        : #a52727;
+  --error-strong                 : #b91c1c;
+  --error-action                 : #dc2626;
+  --error-link                   : #cc0000;
+  --error-validation             : #dc3545;
+  --error-muted                  : #d9534f;
+  --error-background             : #fff1f0;
+  --error-border                 : #fecaca;
+
+  /* Anéis de foco e sobreposições. */
+  --focus-ring-primary           : rgba(0, 123, 255, 0.25);
+  --focus-ring-soft              : rgba(74, 144, 226, 0.2);
+  --focus-ring-dark              : rgba(0, 80, 150, 0.1);
+  --focus-ring-muted             : rgba(107, 111, 168, 0.2);
+  --focus-ring-light             : rgba(160, 175, 209, 0.2);
+  --focus-ring-slate             : rgba(30, 41, 59, 0.1);
+  --modal-backdrop               : rgba(23, 33, 43, 0.55);
+  --feedback-backdrop            : rgba(15, 23, 42, 0.4);
+
+  --shadow-panel                 : 0 4px 15px rgba(var(--black-rgb), 0.11);
+  --shadow-banner                : 0 4px 15px rgba(var(--black-rgb), 0.17);
+  --shadow-action                : 0 4px 15px rgba(var(--black-rgb), 0.15);
+  --shadow-profile               : 0 4px 20px rgba(var(--black-rgb), 0.15);
+  --shadow-navigation-card       : 0 8px 20px rgba(var(--black-rgb), 0.18);
 
   --font-inter              : 'Inter';
   --font-scada              : 'Scada';

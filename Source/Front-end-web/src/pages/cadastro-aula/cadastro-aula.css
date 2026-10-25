@@ -5,7 +5,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f4f6f9;
+  background-color: var(--less-white);
 }
 
 .cadastro-aula-content {
@@ -21,10 +21,10 @@
    CARD DE CADASTRO
    ========================================================================== */
 .cadastro-aula-card {
-  background-color: #ffffff;
+  background-color: var(--white);
   border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 25px rgba(var(--black-rgb), 0.05);
+  border: 1px solid rgba(var(--black-rgb), 0.06);
   padding: 40px;
   max-width: 760px;
   width: 100%;
@@ -40,7 +40,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid var(--gray-divider);
   padding-bottom: 20px;
 }
 
@@ -53,7 +53,7 @@
 
 .cadastro-aula-header .subtitle {
   font-size: 14px;
-  color: #666;
+  color: var(--gray-secondary);
   margin: 0;
 }
 
@@ -65,7 +65,7 @@
 }
 
 .badge {
-  background-color: var(--transparent-grayish-blue, #eef2f6);
+  background-color: var(--transparent-grayish-blue);
   color: var(--black);
   padding: 6px 14px;
   border-radius: 20px;
@@ -103,7 +103,7 @@
 .form-label {
   font-size: 14px;
   font-weight: 600;
-  color: #333333;
+  color: var(--gray-dark);
 }
 
 /* Trigger da Data */
@@ -111,8 +111,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
+  background-color: var(--white);
+  border: 1px solid var(--gray-border);
   border-radius: 8px;
   padding: 8px 12px;
   cursor: pointer;
@@ -121,7 +121,7 @@
 
 .date-inputs-wrapper:hover {
   border-color: var(--button-dark-blue);
-  box-shadow: 0 0 0 3px rgba(0, 80, 150, 0.1);
+  box-shadow: 0 0 0 3px var(--focus-ring-dark);
 }
 
 .date-inputs {
@@ -129,7 +129,7 @@
   align-items: center;
   gap: 4px;
   font-size: 14px;
-  color: #555;
+  color: var(--gray-medium);
 }
 
 .date-inputs input {
@@ -160,13 +160,13 @@
 /* Textarea do Conteúdo */
 .textarea-conteudo {
   width: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray-border);
   border-radius: 8px;
   padding: 12px 16px;
   font-size: 14px;
   font-family: var(--font-inter);
   color: var(--black);
-  background-color: #ffffff;
+  background-color: var(--white);
   resize: vertical;
   min-height: 120px;
   outline: none;
@@ -176,7 +176,7 @@
 
 .textarea-conteudo:focus {
   border-color: var(--button-dark-blue);
-  box-shadow: 0 0 0 3px rgba(0, 80, 150, 0.1);
+  box-shadow: 0 0 0 3px var(--focus-ring-dark);
 }
 
 /* ==========================================================================
@@ -190,7 +190,7 @@
 
 .btn-submit-aula {
   background-color: var(--button-dark-blue);
-  color: #ffffff;
+  color: var(--white);
   border: none;
   border-radius: 8px;
   padding: 14px 28px;
@@ -198,7 +198,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(var(--black-rgb), 0.1);
 }
 
 .btn-submit-aula:hover {
@@ -224,7 +224,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(var(--black-rgb), 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -232,10 +232,10 @@
 }
 
 .datepicker-popover-content {
-  background: #ffffff;
+  background: var(--white);
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(var(--black-rgb), 0.2);
   animation: fadeIn 0.2s ease-out;
 }
 

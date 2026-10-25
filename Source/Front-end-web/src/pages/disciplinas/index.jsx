@@ -446,7 +446,7 @@ export default function Disciplinas() {
                                         data={dadosGrafico}
                                         xKey="aula"
                                         yKey="mediaAtencao"
-                                        lines={[{ key: 'mediaAtencao', label: 'Atenção média (%)', color: '#4F46E5' }]}
+                                        lines={[{ key: 'mediaAtencao', label: 'Atenção média (%)', color: 'var(--indigo)' }]}
                                         formatXAxis={rotulo => rotulo.split(' - ')[0]}
                                         height={230}
                                         isAnimationActive={false}

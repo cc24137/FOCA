@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--less-white);
 }
 
 .editar-dados-middle {
@@ -45,7 +45,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(var(--black-rgb), 0.06);
   padding-bottom: 15px;
 }
 
@@ -62,11 +62,11 @@
   align-items: center;
   gap: 8px;
   background: none;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(var(--black-rgb), 0.15);
   border-radius: 8px;
   padding: 8px 14px;
   cursor: pointer;
-  color: #555;
+  color: var(--gray-medium);
   font-family: var(--font-inter);
   font-size: 14px;
   font-weight: 500;
@@ -74,7 +74,7 @@
 }
 
 .btn-logout-top:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(var(--black-rgb), 0.05);
   color: var(--red);
   border-color: var(--red);
 }
@@ -116,7 +116,7 @@
   font-family: var(--font-inter);
   font-size: 15px;
   background: var(--white);
-  border: 1px solid #ccc;
+  border: 1px solid var(--gray-border);
   border-radius: 8px;
   outline: none;
   transition: all 0.2s ease;
@@ -124,7 +124,7 @@
 
 .text-field:focus {
   border-color: var(--button-dark-blue);
-  box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+  box-shadow: 0 0 0 3px var(--focus-ring-slate);
 }
 
 .input-wrapper {
@@ -152,7 +152,7 @@
 .eye-button svg {
   width: 20px;
   height: 20px;
-  color: #777;
+  color: var(--gray-muted);
 }
 
 /* 👥 ÁREA DOS BOTÕES (Apenas os dois funcionais agora) */
@@ -183,7 +183,7 @@
 }
 
 .btn-excluir:hover {
-  background-color: #b0c2de;
+  background-color: var(--top-gradient-blue);
 }
 
 .btn-salvar {

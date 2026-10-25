@@ -1,7 +1,7 @@
 .teste-video-body {
   min-height: 100vh;
   width: 100%;
-  background-color: #f8fafc;
+  background-color: var(--less-white);
 }
 
 .teste-video-content {
@@ -16,14 +16,14 @@
 
 .teste-video-heading h1 {
   margin: 0 0 12px;
-  color: #1e293b;
+  color: var(--slate-800);
   font-size: 1.6rem;
   font-weight: 700;
 }
 
 .teste-video-heading p {
   margin: 0;
-  color: #475569;
+  color: var(--slate-600);
   line-height: 1.6;
 }
 
@@ -38,14 +38,14 @@
 .teste-video-card {
   min-width: 0;
   padding: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--slate-200);
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: var(--white);
 }
 
 .teste-video-card h2 {
   margin: 0 0 20px;
-  color: #0f172a;
+  color: var(--slate-900);
   font-size: 1.15rem;
 }
 
@@ -61,7 +61,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #334155;
+  color: var(--slate-700);
   font-size: 0.9rem;
   font-weight: 500;
 }
@@ -70,10 +70,10 @@
 .teste-video-config-row select {
   box-sizing: border-box;
   padding: 7px 10px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--slate-300);
   border-radius: 6px;
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--white);
+  color: var(--slate-900);
   font: inherit;
 }
 
@@ -86,7 +86,7 @@
   margin-bottom: 16px;
   overflow: hidden;
   border-radius: 8px;
-  background-color: #000000;
+  background-color: var(--black);
 }
 
 .teste-video-player {
@@ -97,7 +97,7 @@
 
 .teste-video-help {
   margin: 12px 0;
-  color: #64748b;
+  color: var(--slate-500);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -105,10 +105,10 @@
 .teste-video-notice {
   margin: 12px 0;
   padding: 12px;
-  border: 1px solid #fde68a;
+  border: 1px solid var(--warning-border);
   border-radius: 6px;
-  background-color: #fffbeb;
-  color: #92400e;
+  background-color: var(--warning-background);
+  color: var(--warning-text);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -134,23 +134,23 @@
 }
 
 .teste-video-primary {
-  background-color: #4f46e5;
-  color: #ffffff;
+  background-color: var(--indigo);
+  color: var(--white);
 }
 
 .teste-video-primary:hover:not(:disabled) {
-  background-color: #4338ca;
+  background-color: var(--indigo-hover);
 }
 
 .teste-video-secondary {
-  border-color: #cbd5e1;
-  background-color: #ffffff;
-  color: #334155;
+  border-color: var(--slate-300);
+  background-color: var(--white);
+  color: var(--slate-700);
 }
 
 .teste-video-secondary:hover:not(:disabled) {
-  border-color: #94a3b8;
-  background-color: #f1f5f9;
+  border-color: var(--slate-400);
+  background-color: var(--gray-hover);
 }
 
 .teste-video-primary:disabled,
@@ -165,7 +165,7 @@
 .teste-video-secondary:focus-visible,
 .teste-video-config-row input:focus-visible,
 .teste-video-config-row select:focus-visible {
-  outline: 3px solid #a5b4fc;
+  outline: 3px solid var(--indigo-light);
   outline-offset: 3px;
 }
 
@@ -177,10 +177,10 @@
   overflow-wrap: anywhere;
 }
 
-.teste-video-status-loading { color: #475569; }
-.teste-video-status-success { color: #047857; }
-.teste-video-status-warning { color: #92400e; }
-.teste-video-status-error { color: #b91c1c; }
+.teste-video-status-loading { color: var(--slate-600); }
+.teste-video-status-success { color: var(--success-text); }
+.teste-video-status-warning { color: var(--warning-text); }
+.teste-video-status-error { color: var(--error-strong); }
 
 .teste-video-placeholder {
   display: flex;
@@ -190,22 +190,22 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  border: 2px dashed #cbd5e1;
+  border: 2px dashed var(--slate-300);
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: var(--white);
   text-align: center;
 }
 
 .teste-video-placeholder h2 {
   margin: 0 0 8px;
-  color: #334155;
+  color: var(--slate-700);
   font-size: 1.15rem;
 }
 
 .teste-video-placeholder p {
   max-width: 360px;
   margin: 0;
-  color: #64748b;
+  color: var(--slate-500);
   font-size: 0.9rem;
   line-height: 1.6;
 }
@@ -219,20 +219,20 @@
 
 .teste-video-metrics div {
   padding: 16px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--slate-200);
   border-radius: 8px;
-  background-color: #f8fafc;
+  background-color: var(--less-white);
 }
 
 .teste-video-metrics dt {
-  color: #475569;
+  color: var(--slate-600);
   font-size: 0.85rem;
   line-height: 1.5;
 }
 
 .teste-video-metrics dd {
   margin: 8px 0 0;
-  color: #0f172a;
+  color: var(--slate-900);
   font-size: 1.4rem;
   font-weight: 700;
 }

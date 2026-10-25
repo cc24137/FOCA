@@ -7,17 +7,17 @@
 .foca-line-chart--empty {
   display: grid;
   place-items: center;
-  color: var(--grayish-blue, #6B7280);
+  color: var(--grayish-blue);
   font-size: 0.9rem;
-  border: 1px dashed var(--light-blue, #E5E7EB);
+  border: 1px dashed var(--light-blue);
   border-radius: 8px;
 }
 
 .foca-line-chart .recharts-default-tooltip {
-  background-color: #FFFFFF !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background-color: var(--white) !important;
+  border: 1px solid rgba(var(--black-rgb), 0.08) !important;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(var(--black-rgb), 0.08);
   padding: 10px 14px !important;
   white-space: normal !important;
   overflow-wrap: anywhere;
@@ -26,7 +26,7 @@
 .foca-line-chart .recharts-tooltip-label {
   font-size: 14px;
   font-weight: 600;
-  color: #111827;
+  color: var(--slate-900);
   margin-bottom: 4px !important;
 }
 
@@ -37,6 +37,6 @@
 }
 
 .foca-line-chart .recharts-legend-item-text {
-  color: #374151 !important;
+  color: var(--slate-700) !important;
   font-size: 13px;
 }

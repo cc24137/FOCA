@@ -70,7 +70,7 @@
 
 /* Efeito de feedback visual profissional nos links normais */
 .header-link:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(var(--black-rgb), 0.04);
   transform: translateY(-1px);
 }
 

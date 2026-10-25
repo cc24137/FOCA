@@ -183,7 +183,7 @@
     font-weight: 700;
     color: var(--black);
     background-color: var(--white);
-    border: 2px solid #9b9fc4;
+    border: 2px solid var(--accent-border);
     border-radius: 10px;
     padding: 6px 14px;
     width: 100%;
@@ -194,7 +194,7 @@
 
 .disciplinas-direita-title-input:focus {
     border-color: var(--light-blue);
-    box-shadow: 0 0 0 3px rgba(107, 111, 168, 0.2);
+    box-shadow: 0 0 0 3px var(--focus-ring-muted);
 }
 
 /* ==========================================================================

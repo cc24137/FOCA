@@ -44,13 +44,13 @@ const CONFIG_COMPARACAO = {
 };
 
 const PALETA_CORES = [
-    "#4F46E5",
-    "#10B981",
-    "#F59E0B",
-    "#EF4444",
-    "#8B5CF6",
-    "#06B6D4",
-    "#EC4899"
+    "var(--indigo)",
+    "var(--success-accent)",
+    "var(--warning-accent)",
+    "var(--error-accent)",
+    "var(--chart-violet)",
+    "var(--chart-cyan)",
+    "var(--chart-pink)"
 ];
 
 const comoLista = data =>
@@ -695,7 +695,18 @@ export default function Estatisticas() {
             html2canvas: {
                 scale: 2,
                 useCORS: true,
-                logging: false
+                logging: false,
+                onclone: clonedDocument => {
+                    // SVGs rasterizados separadamente precisam de cores resolvidas.
+                    clonedDocument.querySelectorAll("svg, svg [fill], svg [stroke]").forEach(element => {
+                        const styles = clonedDocument.defaultView.getComputedStyle(element);
+                        for (const attribute of ["fill", "stroke"]) {
+                            if (element.getAttribute(attribute)?.includes("var(")) {
+                                element.setAttribute(attribute, styles.getPropertyValue(attribute));
+                            }
+                        }
+                    });
+                }
             },
             jsPDF: {
                 unit: "mm",

@@ -14,8 +14,8 @@
 
     text-align: center;
 
-    background-color: #fafafa;
-    border: 2px dashed #999;
+    background-color: var(--less-white);
+    border: 2px dashed var(--gray-placeholder);
     border-radius: 12px;
 
     cursor: pointer;
@@ -38,7 +38,7 @@
 
     padding: 6px 10px;
 
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--gray-border-light);
     list-style: none;
 }
 
@@ -47,7 +47,7 @@
 ----------------------------------------- */
 
 .remove-btn {
-    color: #ff4d4d;
+    color: var(--error-accent);
     font-size: 18px;
 
     background: transparent;
@@ -62,10 +62,10 @@
 ----------------------------------------- */
 
 .dropzone.dragging {
-    background-color: #f0f0f0;
-    border: 2px dashed #555;
+    background-color: var(--gray-hover);
+    border: 2px dashed var(--gray-medium);
 }
 
 .remove-btn:hover {
-    color: #cc0000;
+    color: var(--error-link);
 }

@@ -78,17 +78,17 @@ export default function ReportTemplate({
           <div className="chart-container">
             <ResponsiveContainer width="100%" height={230}>
               <LineChart data={data} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.3} stroke="#7a86ab" />
+                <CartesianGrid strokeDasharray="3 3" opacity={0.3} stroke="var(--grayish-blue)" />
                 <XAxis 
                   dataKey={xKey} 
-                  tick={{ fontSize: 12, fill: '#566399' }}
+                  tick={{ fontSize: 12, fill: 'var(--button-dark-blue)' }}
                   tickFormatter={(val) => new Date(val).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 />
-                <YAxis tick={{ fontSize: 12, fill: '#566399' }} />
+                <YAxis tick={{ fontSize: 12, fill: 'var(--button-dark-blue)' }} />
                 <Line
                   type="monotone"
                   dataKey={yKey}
-                  stroke="#1A2968" 
+                  stroke="var(--deep-blue-accent)" 
                   strokeWidth={3}
                   dot={false}
                   isAnimationActive={false}

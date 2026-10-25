@@ -7,26 +7,26 @@
 }
 
 .kpi-card {
-    background: #FFFFFF;
-    border: 1px solid #E5E7EB;
+    background: var(--white);
+    border: 1px solid var(--gray-divider);
     border-radius: 12px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(var(--black-rgb), 0.05);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .kpi-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(var(--black-rgb), 0.08);
 }
 
 .kpi-title {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #6B7280;
+    color: var(--button-disabled-gray);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
@@ -38,21 +38,21 @@
 .kpi-value {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #111827;
+    color: var(--slate-900);
     line-height: 1.1;
 }
 
 .kpi-value.highlight {
-    color: #10B981;
+    color: var(--success-accent);
     font-size: 1.4rem;
 }
 
 .kpi-subtitle {
     font-size: 0.8rem;
-    color: #9CA3AF;
+    color: var(--text-subtle);
 }
 
 /* Borda de destaque para o card positivo */
 .kpi-card.positive {
-    border-left: 4px solid #10B981;
+    border-left: 4px solid var(--success-accent);
 }

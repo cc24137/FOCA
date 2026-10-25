@@ -3,7 +3,7 @@
    ========================================================================== */
 .vinculos-page {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--less-white);
 }
 
 .vinculos-body {
@@ -14,7 +14,7 @@
 }
 
 .vinculos-title-wrapper {
-  background-color: #dde3f0;
+  background-color: var(--slate-200);
   box-shadow: var(--shadow-panel);
   border-radius: 14px;
   padding: 12px 48px;
@@ -106,29 +106,29 @@
 }
 
 .btn-aceitar {
-  background: #ffffff22;
+  background: rgba(var(--white-rgb), 0.133333);
   color: var(--white);
-  border: 1.5px solid #ffffff55;
+  border: 1.5px solid rgba(var(--white-rgb), 0.333333);
 }
 
 .btn-aceitar:hover {
-  background: #ffffff44;
+  background: rgba(var(--white-rgb), 0.266667);
 }
 
 .btn-recusar {
   background: transparent;
   color: var(--white);
-  border: 1.5px solid #ffffff55;
+  border: 1.5px solid rgba(var(--white-rgb), 0.333333);
 }
 
 .btn-recusar:hover {
-  background: #ffffff11;
+  background: rgba(var(--white-rgb), 0.066667);
 }
 
 /* Card vinculado */
 .vinculo-card-info {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(var(--white-rgb), 0.8);
   font-family: var(--font-inter);
 }
 
@@ -146,14 +146,14 @@
   font-weight: 600;
   font-family: var(--font-inter);
   cursor: pointer;
-  border: 1.5px solid #ffffff55;
-  background: #ffffff15;
+  border: 1.5px solid rgba(var(--white-rgb), 0.333333);
+  background: rgba(var(--white-rgb), 0.082353);
   color: var(--white);
   transition: background 0.15s;
 }
 
 .btn-sair:hover {
-  background: #ffffff30;
+  background: rgba(var(--white-rgb), 0.188235);
 }
 
 .vinculo-card-icon {
@@ -164,7 +164,7 @@
 
 .no-vinculos-message {
   font-size: 16px;
-  color: var(--gray);
+  color: var(--button-disabled-gray);
   font-family: var(--font-inter);
   margin-top: 20px;
   font-style: italic;

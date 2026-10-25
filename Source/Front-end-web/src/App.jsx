@@ -18,6 +18,7 @@ import Login              from "./pages/login";
 import Professores        from "./pages/professores";
 import SobreProjeto       from "./pages/sobre-projeto";
 import TesteVideo         from "./pages/teste-video";
+import TesteTempoReal     from "./pages/teste-tempo-real";
 import Turmas             from "./pages/turmas";
 import UploadVideo        from "./pages/upload-video";
 import VinculosProfessor  from "./pages/vinculos-professor"
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/teste"                 element={<CameraApp />} />
                     <Route path="/sobre-projeto"         element={<SobreProjeto />} />
                     <Route path="/teste-video"           element={<TesteVideo />} />
+                    <Route path="/teste-tempo-real"      element={<TesteTempoReal />} />
                     <Route path="*"                      element={<Inicial />} /> {/*Fallback leva para a tela inicial*/}
     
                     <Route element={<ProtectedRoute />}>

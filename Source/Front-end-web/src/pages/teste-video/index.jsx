@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header';
 import AreaUploadVideo from '../../components/area-upload-video';
 import GenericLineChart from '../../components/time-vs-value-chart';
@@ -9,6 +10,7 @@ import { analysisPoints, lessonReportInformation } from '../../utils/report-data
 import { ANALYSIS_MODELS, analysisModelName, analysisModelDescription } from '../../utils/analysis-models';
 import AnalysisModelHelp from '../../components/analysis-model-help';
 import { useToast } from '../../components/toast';
+import { PUBLIC_FRAMES_URL } from '../../services/vision';
 import { calculateFramePlan, extractFrames, MAX_FRAMES } from '../../utils/extract-frames';
 import './teste-video.css';
 
@@ -56,6 +58,7 @@ function responseError(result, status) {
 }
 
 export default function TesteVideo() {
+  const navigate = useNavigate();
   const { showToast } = useToast();
   const videoRef = useRef(null);
   const reportRef = useRef(null);
@@ -176,7 +179,7 @@ export default function TesteVideo() {
       formData.append('intervalo_segundos', String(interval));
       frames.forEach((frame, index) => formData.append('frames', frame, `frame_${index}.jpg`));
 
-      const response = await fetch('https://foca-ai-api.onrender.com/processar-frames', {
+      const response = await fetch(PUBLIC_FRAMES_URL, {
         method: 'POST',
         body: formData,
         signal: controller.signal,
@@ -216,8 +219,13 @@ export default function TesteVideo() {
       ]} />
       <main className="teste-video-content">
         <div className="teste-video-heading">
-          <h1>Teste a análise de vídeo</h1>
-          <p>Experimente sem criar uma conta. Os resultados ficam nesta tela e não são adicionados a um histórico.</p>
+          <div className="teste-video-heading-row">
+            <div>
+              <h1>Teste a análise de vídeo</h1>
+              <p>Experimente sem criar uma conta. Os resultados ficam nesta tela e não são adicionados a um histórico.</p>
+            </div>
+            <button type="button" className="teste-video-secondary" disabled={loading} onClick={() => navigate('/teste-tempo-real')}>Testar com câmera ao vivo</button>
+          </div>
           {reportPoints.length > 0 && <ReportDownloadButton reportRef={reportRef}
             filename="relatorio-teste-video.pdf" disabled={loading} />}
         </div>

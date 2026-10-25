@@ -27,6 +27,19 @@
     margin-bottom: 36px;
 }
 
+.live-page-heading > div {
+    flex: 1 1 360px;
+    min-width: 0;
+}
+
+.live-intro {
+    max-width: 800px;
+    margin: 10px 0 0;
+    color: var(--slate-600);
+    font-size: .95rem;
+    line-height: 1.6;
+}
+
 .live-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);

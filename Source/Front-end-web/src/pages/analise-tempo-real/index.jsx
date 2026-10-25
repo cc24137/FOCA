@@ -12,10 +12,10 @@ import { analysisPoints, lessonReportInformation } from '../../utils/report-data
 import { ANALYSIS_MODELS, analysisModelName, analysisModelDescription } from '../../utils/analysis-models';
 import AnalysisModelHelp from '../../components/analysis-model-help';
 import api from '../../services/api';
+import { createRealtimeRequest } from '../../services/vision';
 import './analise-tempo-real.css';
 import { useToast } from '../../components/toast';
 
-const VISION_URL = 'http://127.0.0.1:8000/processar-frame-tempo-real/';
 const formatTime = (seconds) => `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${Math.floor(seconds % 60).toString().padStart(2, '0')}`;
 const formatValue = (value) => value == null ? '—' : value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
 const cameraError = (error) => ({
@@ -25,7 +25,7 @@ const cameraError = (error) => ({
   OverconstrainedError: 'A câmera selecionada não está mais disponível. Atualize a lista.',
 }[error.name] || error.message || 'Não foi possível acessar a câmera.');
 
-export default function AnaliseTempoReal() {
+export default function AnaliseTempoReal({ isDemo = false }) {
   const { showToast } = useToast();
   const { user } = useAuth();
   const { state } = useLocation();
@@ -83,14 +83,14 @@ export default function AnaliseTempoReal() {
   };
 
   useEffect(() => {
-    if (idAula) {
+    if (isDemo || idAula) {
       avisoSemAula.current = false;
     } else if (!avisoSemAula.current) {
       avisoSemAula.current = true;
       showToast('Aula não informada. Cadastre uma aula para iniciar a análise.', { type: 'warning' });
       navigate('/cadastro-aula', { replace: true });
     }
-  }, [idAula, navigate, showToast]);
+  }, [isDemo, idAula, navigate, showToast]);
   useEffect(() => {
     mountedRef.current = true;
     // Enumerar não liga a câmera nem pede permissão ao abrir a página.
@@ -179,7 +179,8 @@ export default function AnaliseTempoReal() {
     const cycleStart = performance.now();
     const controller = new AbortController();
     requestRef.current = controller;
-    const timeout = setTimeout(() => controller.abort(), 30000);
+    const timeoutMs = isDemo ? 120000 : 30000;
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
     setProcessing(true);
     let canvas = null;
     let blob = null;
@@ -191,9 +192,8 @@ export default function AnaliseTempoReal() {
       canvas.width = 0; canvas.height = 0; canvas = null;
       if (!blob) throw new Error('Não foi possível capturar a imagem.');
       if (generation !== generationRef.current) return;
-      const url = new URL(VISION_URL, window.location.origin);
-      url.searchParams.set('usar_modelo_melhor', model);
-      const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'image/jpeg' }, body: blob, signal: controller.signal, cache: 'no-store' });
+      const request = createRealtimeRequest({ frame: blob, model, interval, signal: controller.signal, isDemo });
+      const response = await fetch(request.url, request.options);
       if (!response.ok) {
         const detail = await response.json().catch(() => null);
         throw new Error(typeof detail?.detail === 'string' ? detail.detail : `Erro na análise (HTTP ${response.status}).`);
@@ -217,7 +217,7 @@ export default function AnaliseTempoReal() {
     } catch (err) {
       if (generation !== generationRef.current || !mountedRef.current) return;
       failuresRef.current += 1;
-      setError(err.name === 'AbortError' ? 'O processamento excedeu 30 segundos.' : err.message);
+      setError(err.name === 'AbortError' ? `O processamento excedeu ${timeoutMs / 1000} segundos.` : err.message);
       if (model === true || failuresRef.current >= 3) {
         cancelAnalysis(); stopClock(); releaseCamera(); changeMode('paused');
         setMessage('Análise pausada após falha. Verifique a conexão e retome.');
@@ -264,20 +264,23 @@ export default function AnaliseTempoReal() {
     cancelAnalysis(); stopClock(); releaseCamera(); changeMode('paused');
     setMessage('Câmera e análise pausadas. O tempo da pausa não será contado.');
   };
-  const returnToUpload = () => {
+  const returnToInput = () => {
     cancelAnalysis();
     stopClock();
     releaseCamera();
-    navigate('/upload-video', { replace: true, state: { idAula, dadosAula } });
+    navigate(isDemo ? '/teste-video' : '/upload-video', {
+      replace: true,
+      ...(isDemo ? {} : { state: { idAula, dadosAula } }),
+    });
   };
-  const handleReturnToUpload = () => {
+  const handleReturn = () => {
     if (busy) return;
     if (!saved && analysisPoints(pointsRef.current).length > 0) {
       if (modeRef.current === 'running') pause();
       setConfirmReturn(true);
       return;
     }
-    returnToUpload();
+    returnToInput();
   };
   const finalize = async () => {
     if (modeRef.current !== 'ended') {
@@ -286,8 +289,16 @@ export default function AnaliseTempoReal() {
     setBusy(true); setError('');
     const valid = pointsRef.current.filter((point) => point.media_momento != null);
     if (!valid.length) {
-      setMessage('Aula encerrada sem leituras válidas. Não há análise para salvar.');
-      showToast('A aula foi encerrada sem leituras válidas. Não há análise para salvar.', { type: 'warning' });
+      const mensagem = isDemo ? 'Teste encerrado sem leituras válidas. Não há resultados para exibir.'
+        : 'Aula encerrada sem leituras válidas. Não há análise para salvar.';
+      setMessage(mensagem);
+      showToast(mensagem, { type: 'warning' });
+      setBusy(false);
+      return;
+    }
+    if (isDemo) {
+      setMessage('Teste encerrado. Confira os resultados e baixe o relatório antes de sair desta tela.');
+      showToast('Teste concluído! Os resultados estão disponíveis nesta tela.', { type: 'success' });
       setBusy(false);
       return;
     }
@@ -325,6 +336,18 @@ export default function AnaliseTempoReal() {
     finally { if (mountedRef.current) setBusy(false); }
   };
 
+  const resetDemo = () => {
+    if (!isDemo || busy) return;
+    cancelAnalysis(); stopClock(); releaseCamera();
+    pointsRef.current = [];
+    elapsedRef.current = 0;
+    startedAtRef.current = null;
+    failuresRef.current = 0;
+    setPoints([]); setElapsed(0); setFeedback(null); setSaved(false); setError('');
+    setMessage('Selecione uma câmera para iniciar um novo teste.');
+    changeMode('idle');
+  };
+
   const valid = points.filter((point) => point.media_momento != null);
   const reportPoints = useMemo(() => analysisPoints(points), [points]);
   const last = points[points.length - 1];
@@ -334,15 +357,20 @@ export default function AnaliseTempoReal() {
   const difference = previous.length === 5 && recent.length === 5
     ? recent.reduce((sum, point) => sum + point.media_momento, 0) / 5 - previous.reduce((sum, point) => sum + point.media_momento, 0) / 5 : null;
   const locked = busy || mode === 'running' || mode === 'ended';
-  if (!idAula) return null;
+  if (!isDemo && !idAula) return null;
   return (
     <div className="live-page">
-      <Header routes={[{ textButton: 'Início', routeButton: '/inicial-professor' }, { textButton: 'Sobre o Projeto', routeButton: "/" }, { textButton: 'Perfil', routeButton: '/editar-dados' }]} />
+      <Header routes={isDemo
+        ? [{ textButton: 'Início', routeButton: '/' }, { textButton: 'Sobre o Projeto', routeButton: '/sobre-projeto' }, { textButton: 'Login', routeButton: '/login' }]
+        : [{ textButton: 'Início', routeButton: '/inicial-professor' }, { textButton: 'Sobre o Projeto', routeButton: '/' }, { textButton: 'Perfil', routeButton: '/editar-dados' }]} />
       <main className="live-content">
         <div className="live-page-heading">
-          <h1>Análise de Aula em Tempo Real</h1>
-          <button type="button" className="live-secondary live-back-button" disabled={busy} onClick={handleReturnToUpload}>
-            Voltar para o upload
+          <div>
+            <h1>{isDemo ? 'Teste a análise em tempo real' : 'Análise de Aula em Tempo Real'}</h1>
+            {isDemo && <p className="live-intro">Experimente a análise pela câmera sem criar uma conta. Os resultados ficam apenas nesta tela e podem ser baixados em PDF, sem salvar no histórico.</p>}
+          </div>
+          <button type="button" className="live-secondary live-back-button" disabled={busy} onClick={handleReturn}>
+            {isDemo ? 'Voltar para o teste de vídeo' : 'Voltar para o upload'}
           </button>
         </div>
         <div className="live-grid">
@@ -363,15 +391,16 @@ export default function AnaliseTempoReal() {
             </div>
             <div className="live-video">
               <video ref={videoRef} autoPlay playsInline muted hidden={!preview} />
-              {!preview && <div><strong>{mode === 'paused' ? 'Câmera pausada' : mode === 'ended' ? 'Aula encerrada' : 'Câmera desligada'}</strong><p>{mode === 'idle' ? 'Visualize a sala antes de iniciar a análise.' : 'A câmera está desligada.'}</p></div>}
+              {!preview && <div><strong>{mode === 'paused' ? 'Câmera pausada' : mode === 'ended' ? (isDemo ? 'Teste encerrado' : 'Aula encerrada') : 'Câmera desligada'}</strong><p>{mode === 'idle' ? 'Visualize a câmera antes de iniciar a análise.' : 'A câmera está desligada.'}</p></div>}
               {preview && <span className="live-badge">{mode === 'running' ? 'Analisando' : 'Prévia da câmera'}</span>}
             </div>
             <div className="live-buttons">
               {mode === 'idle' && <><button className="live-secondary" disabled={busy} onClick={previewCamera}>{preview ? 'Atualizar câmeras / prévia' : 'Visualizar câmera'}</button><button className="live-primary" disabled={busy} onClick={startAnalysis}>Iniciar análise</button></>}
               {mode === 'running' && <button className="live-secondary" disabled={busy} onClick={pause}>Pausar</button>}
               {mode === 'paused' && <button className="live-primary" disabled={busy} onClick={startAnalysis}>Retomar análise</button>}
-              {(mode === 'running' || mode === 'paused') && <button className="live-finish" disabled={busy} onClick={finalize}>Encerrar aula</button>}
-              {mode === 'ended' && !feedback && valid.length > 0 && <button className="live-primary" disabled={busy} onClick={finalize}>{busy ? 'Concluindo...' : saved ? 'Buscar feedbacks novamente' : 'Tentar salvar e concluir'}</button>}
+              {(mode === 'running' || mode === 'paused') && <button className="live-finish" disabled={busy} onClick={finalize}>{isDemo ? 'Encerrar teste' : 'Encerrar aula'}</button>}
+              {!isDemo && mode === 'ended' && !feedback && valid.length > 0 && <button className="live-primary" disabled={busy} onClick={finalize}>{busy ? 'Concluindo...' : saved ? 'Buscar feedbacks novamente' : 'Tentar salvar e concluir'}</button>}
+              {isDemo && mode === 'ended' && <button className="live-primary" disabled={busy} onClick={resetDemo} title="Limpa os resultados atuais e prepara um novo teste.">Novo teste</button>}
             </div>
             <p className="live-status" role="status">{message}</p>
             {error && <p className="live-error" role="alert">{error}</p>}
@@ -381,16 +410,16 @@ export default function AnaliseTempoReal() {
             <div className="live-card">
               <div className="live-heading">
                 <h2 className="analysis-disclaimer-heading">
-                  {mode === 'ended' ? 'Resumo da Aula' : 'Resultados Parciais'}
+                  {mode === 'ended' ? (isDemo ? 'Resumo do Teste' : 'Resumo da Aula') : 'Resultados Parciais'}
                   <AnalysisDisclaimer align="end" label="Como interpretar os resultados da análise em tempo real" />
                 </h2>
                 <span>{formatTime(elapsed)} de análise</span>
               </div>
               {reportPoints.length > 0 && <ReportDownloadButton reportRef={reportRef}
-                filename={`relatorio-tempo-real-aula-${idAula}.pdf`} disabled={busy || mode === 'running'}
+                filename={isDemo ? 'relatorio-teste-tempo-real.pdf' : `relatorio-tempo-real-aula-${idAula}.pdf`} disabled={busy || mode === 'running'}
                 title={mode === 'running' ? 'Pause ou encerre a análise para baixar o relatório.' : undefined} />}
               {reportPoints.length > 0 && mode === 'running' && <p className="live-note">Pause ou encerre a análise para baixar o relatório.</p>}
-              <div className="live-metrics"><div><span>Atenção atual</span><strong>{formatValue(last?.media_momento)}</strong></div><div><span>Média da aula</span><strong>{formatValue(average)}</strong></div></div>
+              <div className="live-metrics"><div><span>Atenção atual</span><strong>{formatValue(last?.media_momento)}</strong></div><div><span>{isDemo ? 'Média do teste' : 'Média da aula'}</span><strong>{formatValue(average)}</strong></div></div>
               <p className="live-note">{valid.length} leituras válidas · {processing ? 'Processando captura...' : last ? `Última captura: ${formatTime(last.segundo_video)}` : 'Aguardando a primeira captura.'}</p>
               {last && <p className="live-note">Focados: {last.total_focados} · Distraídos: {last.total_distraidos}</p>}
             </div>
@@ -398,23 +427,27 @@ export default function AnaliseTempoReal() {
               {points.length ? <GenericLineChart data={points} xKey="segundo_video" lines={[{ key: 'media_momento', label: 'Atenção média', color: 'var(--indigo)' }]} formatXAxis={formatTime} isAnimationActive={false} connectNulls={false} /> : <div className="live-placeholder"><span>📊</span><h3>Aguardando Análise</h3><p>O gráfico será atualizado conforme as imagens forem processadas.</p></div>}
               <p className="live-note">Tempo ativo da análise, sem contar pausas. Valores na escala retornada pelo modelo.</p>
             </div>
-            {difference != null && <div className="live-card"><h2>Comparativo da Aula Atual</h2><p>A média das últimas 5 leituras {difference > 0 ? 'aumentou' : difference < 0 ? 'diminuiu' : 'se manteve'}{difference !== 0 ? ` em ${formatValue(Math.abs(difference))} pontos` : ''} em relação às 5 anteriores.</p><p className="live-note">Comparação descritiva de leituras válidas; não é uma recomendação automática.</p></div>}
-            {mode === 'ended' && feedback && <div className="live-card"><h2>Resultados da Análise</h2><FeedbackCards section={feedback.lesson} sectionTitle="Feedbacks da Aula Atual" /><FeedbackCards section={feedback.history} sectionTitle="Comparativo do Histórico" /></div>}
+            {difference != null && <div className="live-card"><h2>{isDemo ? 'Comparativo do Teste' : 'Comparativo da Aula Atual'}</h2><p>A média das últimas 5 leituras {difference > 0 ? 'aumentou' : difference < 0 ? 'diminuiu' : 'se manteve'}{difference !== 0 ? ` em ${formatValue(Math.abs(difference))} pontos` : ''} em relação às 5 anteriores.</p><p className="live-note">Comparação descritiva de leituras válidas; não é uma recomendação automática.</p></div>}
+            {!isDemo && mode === 'ended' && feedback && <div className="live-card"><h2>Resultados da Análise</h2><FeedbackCards section={feedback.lesson} sectionTitle="Feedbacks da Aula Atual" /><FeedbackCards section={feedback.history} sectionTitle="Comparativo do Histórico" /></div>}
           </section>
         </div>
       </main>
       {mode !== 'running' && <AnalysisReport refProp={reportRef} pontos={reportPoints}
-        titulo="Relatório de análise em tempo real" feedback={feedback}
-        nomeInstituicao={dadosAula.nomeInstituicao || 'Análise FOCA'}
-        observacao={mode === 'paused' ? 'Relatório parcial: a análise está pausada e pode ser retomada.'
+        titulo={isDemo ? 'Relatório de teste em tempo real' : 'Relatório de análise em tempo real'} feedback={isDemo ? null : feedback}
+        nomeInstituicao={isDemo ? 'Demonstração FOCA' : dadosAula.nomeInstituicao || 'Análise FOCA'}
+        observacao={isDemo
+          ? `Demonstração sem cadastro. Os resultados não são salvos no histórico.${mode === 'paused' ? ' Relatório parcial: o teste pode ser retomado.' : ''}`
+          : mode === 'paused' ? 'Relatório parcial: a análise está pausada e pode ser retomada.'
           : saved ? 'Aula encerrada. Os resultados numéricos foram salvos no histórico.'
             : 'Os resultados estão disponíveis nesta tela, mas o salvamento no histórico ainda não foi concluído.'}
-        informacoes={lessonReportInformation({ idAula, dadosAula, professor: user?.nome, origem: 'Câmera em tempo real',
+        informacoes={lessonReportInformation({ idAula: isDemo ? undefined : idAula, dadosAula: isDemo ? {} : dadosAula,
+          professor: isDemo ? undefined : user?.nome, origem: isDemo ? 'Teste de câmera em tempo real' : 'Câmera em tempo real',
           modelo: analysisModelName(model), intervalo: interval })} />}
-      <ConfirmPopup isOpen={confirmReturn} title="Voltar para o upload?"
-        message="Os resultados desta análise ainda não foram salvos. Você pode continuar na análise e encerrar a aula para salvá-los antes de voltar."
-        confirmText="Voltar sem salvar" cancelText="Continuar na análise"
-        onConfirm={returnToUpload} onCancel={() => setConfirmReturn(false)} />
+      <ConfirmPopup isOpen={confirmReturn} title={isDemo ? 'Voltar para o teste de vídeo?' : 'Voltar para o upload?'}
+        message={isDemo ? 'Os resultados deste teste serão descartados ao sair. Você pode continuar no teste e baixar o relatório antes de voltar.'
+          : 'Os resultados desta análise ainda não foram salvos. Você pode continuar na análise e encerrar a aula para salvá-los antes de voltar.'}
+        confirmText={isDemo ? 'Voltar e descartar resultados' : 'Voltar sem salvar'} cancelText={isDemo ? 'Continuar no teste' : 'Continuar na análise'}
+        onConfirm={returnToInput} onCancel={() => setConfirmReturn(false)} />
     </div>
   );
 }

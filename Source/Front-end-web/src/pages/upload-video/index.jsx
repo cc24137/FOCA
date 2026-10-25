@@ -12,6 +12,7 @@ import { analysisPoints, lessonReportInformation } from '../../utils/report-data
 import { ANALYSIS_MODELS, analysisModelName, analysisModelDescription } from '../../utils/analysis-models';
 import AnalysisModelHelp from '../../components/analysis-model-help';
 import api from '../../services/api';
+import { PUBLIC_FRAMES_URL } from '../../services/vision';
 import './upload-video.css';
 
 import { extractFrames } from '../../utils/extract-frames';
@@ -131,7 +132,7 @@ export default function UploadVideo() {
         formData.append('frames', frameBlob, `frame_${index}.jpg`);
       });
 
-      const visionRes = await fetch('https://foca-ai-api.onrender.com/processar-frames', {
+      const visionRes = await fetch(PUBLIC_FRAMES_URL, {
         method: 'POST',
         body: formData,
       });

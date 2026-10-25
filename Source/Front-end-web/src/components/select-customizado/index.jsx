@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './select-customizado.css';
+import ChevronDownIcon from '../../assets/chevron-down-bold.svg?react';
 
 export default function SelectCustomizado({ options, value, onChange, placeholder }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -26,9 +27,7 @@ export default function SelectCustomizado({ options, value, onChange, placeholde
                 <span className={itemSelecionado ? 'custom-select-value' : 'custom-select-placeholder'}>
                     {itemSelecionado ? itemSelecionado.label : placeholder || 'Selecione...'}
                 </span>
-                <svg className={`custom-select-chevron ${isOpen ? 'rotated' : ''}`} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 9l6 6 6-6"/>
-                </svg>
+                <ChevronDownIcon className={`custom-select-chevron ${isOpen ? 'rotated' : ''}`} />
             </div>
 
             {/* Lista de Opções (Dropdown) */}

@@ -1,6 +1,11 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import './toast.css';
+import ToastSuccessIcon from '../../assets/toast-success.svg?react';
+import ToastErrorIcon from '../../assets/toast-error.svg?react';
+import ToastInfoIcon from '../../assets/toast-info.svg?react';
+import ToastWarningIcon from '../../assets/toast-warning.svg?react';
+import ToastCloseIcon from '../../assets/toast-close.svg?react';
 
 const ToastContext = createContext(null);
 
@@ -12,19 +17,15 @@ const TOAST_TYPES = {
 };
 
 function ToastIcon({ type }) {
-  const paths = {
-    success: 'M22 11.1V12a10 10 0 1 1-5.93-9.14 M22 4 12 14.01l-3-3',
-    error: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20 M9 9l6 6 M15 9l-6 6',
-    info: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20 M12 11v6 M12 7h.01',
-    warning: 'M10.3 3.9 1.8 18.5A2 2 0 0 0 3.5 21h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0 M12 9v4 M12 17h.01',
+  const icons = {
+    success: ToastSuccessIcon,
+    error: ToastErrorIcon,
+    info: ToastInfoIcon,
+    warning: ToastWarningIcon,
   };
+  const Icon = icons[type];
 
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-      <path d={paths[type]} />
-    </svg>
-  );
+  return <Icon aria-hidden="true" focusable="false" />;
 }
 
 function ToastCard({ toast, onClose }) {
@@ -63,10 +64,7 @@ function ToastCard({ toast, onClose }) {
       </div>
       <button type="button" className="foca-toast__close" aria-label="Fechar notificação"
         onClick={() => onClose(toast.id)}>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-          strokeLinecap="round" aria-hidden="true" focusable="false">
-          <path d="m6 6 12 12 M18 6 6 18" />
-        </svg>
+        <ToastCloseIcon aria-hidden="true" focusable="false" />
       </button>
     </li>
   );

@@ -2,21 +2,7 @@ import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import './report-template.css';
 import SealIconImg from "../../assets/foca_logo.png";
-
-function SparklesIcon(props) {
-  return (
-    <svg 
-      width="20" 
-      height="20" 
-      viewBox="0 0 24 24" 
-      fill="currentColor" 
-      {...props}
-    >
-      <path d="M12 0L14.59 8.41L23 11L14.59 13.59L12 22L9.41 13.59L1 11L9.41 8.41L12 0Z" />
-      <path d="M19 16L20.25 19.75L24 21L20.25 22.25L19 26L17.75 22.25L14 21L17.75 19.75L19 16Z" opacity="0.6"/>
-    </svg>
-  );
-}
+import SparklesIcon from '../../assets/sparkles.svg?react';
 
 export default function ReportTemplate({
   refProp,

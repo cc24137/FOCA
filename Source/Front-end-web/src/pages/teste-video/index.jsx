@@ -6,7 +6,8 @@ import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import ReportDownloadButton from '../../components/report-download-button';
 import AnalysisReport from '../../components/analysis-report';
 import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
-import { ANALYSIS_MODELS, analysisModelName } from '../../utils/analysis-models';
+import { ANALYSIS_MODELS, analysisModelName, analysisModelDescription } from '../../utils/analysis-models';
+import AnalysisModelHelp from '../../components/analysis-model-help';
 import { useToast } from '../../components/toast';
 import { calculateFramePlan, extractFrames, MAX_FRAMES } from '../../utils/extract-frames';
 import './teste-video.css';
@@ -230,13 +231,17 @@ export default function TesteVideo() {
                 <input type="number" min="1" step="1" value={intervalInSeconds} disabled={loading}
                   onChange={(event) => { setIntervalInSeconds(event.target.value); clearResults(); }} />
               </label>
+              <div className="analysis-model-control">
               <label>
                 Modelo:
                 <select value={String(selectedModel)} disabled={loading}
+                  title={analysisModelDescription(selectedModel)}
                   onChange={(event) => { setSelectedModel(event.target.value === 'true'); clearResults(); }}>
-                  {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+                  {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value} title={option.description}>{option.label}</option>)}
                 </select>
               </label>
+              <AnalysisModelHelp />
+              </div>
             </div>
 
             {videoUrl ? (

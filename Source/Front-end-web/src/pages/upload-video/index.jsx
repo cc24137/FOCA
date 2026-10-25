@@ -9,7 +9,8 @@ import ReportDownloadButton from '../../components/report-download-button';
 import AnalysisReport from '../../components/analysis-report';
 import { useAuth } from '../../contexts/AuthContext';
 import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
-import { ANALYSIS_MODELS, analysisModelName } from '../../utils/analysis-models';
+import { ANALYSIS_MODELS, analysisModelName, analysisModelDescription } from '../../utils/analysis-models';
+import AnalysisModelHelp from '../../components/analysis-model-help';
 import api from '../../services/api';
 import './upload-video.css';
 
@@ -207,17 +208,21 @@ export default function UploadVideo() {
                   />
                 </label>
 
+                <div className="analysis-model-control">
                 <label className="config-label">
                   Modelo:
                   <select
                     value={selectedModel}
+                    title={analysisModelDescription(selectedModel)}
                     onChange={(e) => setSelectedModel(e.target.value)}
                     disabled={loading || !!visionData}
                     className="select-model"
                   >
-                    {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+                    {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value} title={option.description}>{option.label}</option>)}
                   </select>
                 </label>
+                <AnalysisModelHelp />
+                </div>
               </div>
 
               {videoUrl ? (

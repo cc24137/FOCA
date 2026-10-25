@@ -9,7 +9,8 @@ import AnalysisReport from '../../components/analysis-report';
 import ConfirmPopup from '../../components/confirm-popup';
 import { useAuth } from '../../contexts/AuthContext';
 import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
-import { ANALYSIS_MODELS, analysisModelName } from '../../utils/analysis-models';
+import { ANALYSIS_MODELS, analysisModelName, analysisModelDescription } from '../../utils/analysis-models';
+import AnalysisModelHelp from '../../components/analysis-model-help';
 import api from '../../services/api';
 import './analise-tempo-real.css';
 import { useToast } from '../../components/toast';
@@ -353,9 +354,12 @@ export default function AnaliseTempoReal() {
                 {devices.map((device, index) => <option key={device.deviceId || index} value={device.deviceId}>{device.label || `Câmera ${index + 1}`}</option>)}
               </select></label>
               <label>Intervalo (s)<input type="number" min="1" step="1" value={interval} disabled={locked} onChange={(event) => setInterval(event.target.value === '' ? '' : Number(event.target.value))} /></label>
-              <label>Modelo<select value={String(model)} disabled={locked || valid.length > 0} onChange={(event) => setModel(event.target.value === 'true')}>
-                {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+              <div className="analysis-model-control">
+              <label>Modelo<select value={String(model)} title={analysisModelDescription(model)} disabled={locked || valid.length > 0} onChange={(event) => setModel(event.target.value === 'true')}>
+                {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value} title={option.description}>{option.label}</option>)}
               </select></label>
+              <AnalysisModelHelp />
+              </div>
             </div>
             <div className="live-video">
               <video ref={videoRef} autoPlay playsInline muted hidden={!preview} />

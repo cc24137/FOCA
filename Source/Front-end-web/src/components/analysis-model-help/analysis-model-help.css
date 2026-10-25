@@ -1,0 +1,23 @@
+.analysis-model-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.analysis-model-help__list {
+  margin: 0;
+}
+
+.analysis-model-help__list > div + div {
+  margin-top: 12px;
+}
+
+.analysis-model-help__list dt {
+  color: var(--deep-blue-accent);
+  font-weight: 600;
+}
+
+.analysis-model-help__list dd {
+  margin: 3px 0 0;
+}

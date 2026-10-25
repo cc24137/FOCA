@@ -71,8 +71,12 @@
     min-width: 0;
 }
 
-.live-inputs label:first-child {
+.live-inputs > label:first-child {
     flex: 1 1 180px;
+}
+
+.live-inputs .analysis-model-control {
+    align-items: flex-end;
 }
 
 .live-inputs select,

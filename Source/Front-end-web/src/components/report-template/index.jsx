@@ -17,11 +17,22 @@ export default function ReportTemplate({
   dataAula,
   classificacao,
   conteudo,
-  nomeInstituicao = 'Instituição'
+  nomeInstituicao = 'Instituição',
+  titulo,
+  informacoes,
+  className = '',
+  children,
 }) {
+  const campos = informacoes ?? [
+    { label: 'Turma', valor: nomeTurma || 'Não informada' },
+    { label: 'Quantidade de Alunos', valor: quantidadeAlunos || 'Não informada' },
+    { label: 'Disciplina', valor: nomeDisciplina || 'Não informada' },
+    { label: 'Professor', valor: nomeProfessor || 'Não informado' },
+  ];
+
   return (
-    <div className="report-offscreen">
-      <div ref={refProp} className="report-paper">
+    <div className="report-offscreen" aria-hidden="true">
+      <div ref={refProp} className={`report-paper ${className}`}>
         
         {/* Cabeçalho */}
         <header className="report-header-top">
@@ -42,26 +53,16 @@ export default function ReportTemplate({
         {/* Informações da Aula */}
         <section className="report-info-section">
           <h1 className="report-main-title">
-            Relatório da aula - <span className="highlight-tag">{classificacao || 'Classificação'}</span>
+            {titulo ?? <>Relatório da aula - <span className="highlight-tag">{classificacao || 'Classificação'}</span></>}
           </h1>
 
           <div className="report-grid">
-            <div className="info-item">
-              <span className="info-label">Turma</span>
-              <span className="info-value">{nomeTurma || 'Não informada'}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Quantidade de Alunos</span>
-              <span className="info-value">{quantidadeAlunos || 'Não informada'}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Disciplina</span>
-              <span className="info-value">{nomeDisciplina || 'Não informada'}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Professor</span>
-              <span className="info-value">{nomeProfessor || 'Não informado'}</span>
-            </div>
+            {campos.map(campo => (
+              <div className="info-item" key={campo.label}>
+                <span className="info-label">{campo.label}</span>
+                <span className="info-value">{campo.valor ?? 'Não informado'}</span>
+              </div>
+            ))}
           </div>
 
           {conteudo && (
@@ -72,6 +73,7 @@ export default function ReportTemplate({
           )}
         </section>
 
+        {children ?? <>
         {/* Gráfico de Atenção */}
         <section className="report-box report-chart-box">
           <h3 className="box-title">Gráfico de atenção</h3>
@@ -108,6 +110,7 @@ export default function ReportTemplate({
             <p>{feedback || 'Nenhum feedback gerado para esta aula.'}</p>
           </div>
         </section>
+        </>}
 
       </div>
     </div>

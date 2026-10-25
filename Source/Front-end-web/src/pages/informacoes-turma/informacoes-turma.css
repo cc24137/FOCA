@@ -291,7 +291,7 @@
 }
 
 /* ==========================================================================
-   STATUS E BOTÃO DE VÍDEO NA TABELA DE HISTÓRICO
+   STATUS DA ANÁLISE E BOTÃO DE VÍDEO NA TABELA DE HISTÓRICO
    ========================================================================== */
 .status-badge {
     display: inline-flex;
@@ -303,13 +303,13 @@
 }
 
 .status-badge.cadastrado,
-.tabela-aulas .status-badge.enviado {
+.tabela-aulas .status-badge.com-analise {
     background-color: var(--success-background);
     color: var(--success-label);
     border: 1px solid var(--success-border);
 }
 
-.tabela-aulas .status-badge.nao-enviado {
+.tabela-aulas .status-badge.sem-analise {
     background-color: var(--warning-highlight);
     color: var(--warning-text);
     border: 1px solid var(--warning-border);

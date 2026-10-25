@@ -22,6 +22,17 @@ const PALETA_CORES = [
   'var(--chart-pink)', 
 ];
 
+function possuiResultadoAnalise(aula) {
+    const media = aula.media_atencao_total;
+    if (typeof media !== 'number' && (typeof media !== 'string' || media.trim() === '')) {
+        return false;
+    }
+
+    // A média de 0% também representa uma análise válida.
+    const valor = Number(media);
+    return Number.isFinite(valor) && valor >= 0 && valor <= 100;
+}
+
 export default function InformacoesTurma() {
     const { showToast } = useToast();
     const { id } = useParams();
@@ -342,19 +353,21 @@ export default function InformacoesTurma() {
                                             <th>Data</th>
                                             <th>Conteúdo</th>
                                             <th>Classificação</th>
-                                            <th>Status do vídeo</th>
+                                            <th>Resultado da análise</th>
                                             <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {aulasHistorico.map((aula) => (
+                                        {aulasHistorico.map((aula) => {
+                                            const temResultado = possuiResultadoAnalise(aula);
+                                            return (
                                             <tr key={aula.id}>
                                                 <td>{new Date(aula.data).toLocaleDateString('pt-PT')}</td>
                                                 <td>{aula.conteudo}</td>
                                                 <td>{aula.nome_classificacao || 'Sem classificação'}</td>
                                                 <td>
-                                                    <span className={`status-badge ${aula.arquivo_video ? 'enviado' : 'nao-enviado'}`}>
-                                                        {aula.arquivo_video ? 'Enviado' : 'Não enviado'}
+                                                    <span className={`status-badge ${temResultado ? 'com-analise' : 'sem-analise'}`}>
+                                                        {temResultado ? 'Disponível' : 'Sem resultado'}
                                                     </span>
                                                 </td>
                                                 <td>
@@ -367,7 +380,8 @@ export default function InformacoesTurma() {
                                                     </button>
                                                 </td>
                                             </tr>
-                                        ))}
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             ) : (

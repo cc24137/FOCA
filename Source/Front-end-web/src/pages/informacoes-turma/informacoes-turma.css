@@ -37,6 +37,14 @@
     gap: 20px;
 }
 
+.informacoes-turma-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
 .informacoes-turma-box-title {
     font-size: 40px;
     font-weight: 600;
@@ -383,6 +391,11 @@
     .informacoes-turma-box-button {
         width: 100%;
         text-align: center;
+    }
+
+    .informacoes-turma-actions,
+    .informacoes-turma-actions .report-download-button {
+        width: 100%;
     }
 
     .informacoes-turma-box-container {

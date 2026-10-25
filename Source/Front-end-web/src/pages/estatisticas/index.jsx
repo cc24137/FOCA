@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import html2pdf from "html2pdf.js";
 import Header from "../../components/header";
 import Combobox from "../../components/combobox-turmas";
 import GenericLineChart from "../../components/time-vs-value-chart";
 import GenericBarChart from "../../components/bar-chart";
 import KpiCards from "../../components/kpi-cards";
 import StatisticsReport from "../../components/statistics-report";
+import ReportDownloadButton from "../../components/report-download-button";
 import { useAuth } from "../../contexts/AuthContext";
 import { unificarLinhasDoTempo } from "../../utils/chartHelpers";
 import api from "../../services/api";
@@ -344,7 +344,6 @@ export default function Estatisticas() {
     const [dadosBarChart, setDadosBarChart] = useState([]);
 
     const [loadingGraficos, setLoadingGraficos] = useState(false);
-    const [isExporting, setIsExporting] = useState(false);
     const [contextoRelatorio, setContextoRelatorio] = useState(null);
 
     const [kpis, setKpis] = useState({
@@ -701,86 +700,6 @@ export default function Estatisticas() {
         }
     };
 
-    const handleExportarPDF = async () => {
-        if (!reportRef.current || !contextoRelatorio || isExporting || loadingGraficos) return;
-
-        setIsExporting(true);
-
-        try {
-            await document.fonts.ready;
-            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-            if (!reportRef.current) return;
-            await Promise.all(Array.from(reportRef.current.querySelectorAll('img'), image => image.decode()));
-            const report = reportRef.current.cloneNode(true);
-
-            const options = {
-                margin: 10,
-                filename:
-                    `relatorio-estatisticas-${contextoRelatorio.tipo.toLowerCase()}.pdf`,
-                pagebreak: {
-                    mode: ['css', 'legacy'],
-                    before: '.statistics-report__timeline',
-                    avoid: ['.statistics-report__metrics', '.statistics-report__chart', '.statistics-report__table tr'],
-                },
-                image: {
-                    type: "jpeg",
-                    quality: 0.98
-                },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    onclone: clonedDocument => {
-                        // SVGs rasterizados separadamente precisam de cores resolvidas.
-                        clonedDocument.querySelectorAll("svg, svg [fill], svg [stroke]").forEach(element => {
-                            const styles = clonedDocument.defaultView.getComputedStyle(element);
-                            for (const attribute of ["fill", "stroke"]) {
-                                if (element.getAttribute(attribute)?.includes("var(")) {
-                                    element.setAttribute(attribute, styles.getPropertyValue(attribute));
-                                }
-                            }
-                        });
-                    }
-                },
-                jsPDF: {
-                    unit: "mm",
-                    format: "a4",
-                    orientation: "portrait"
-                }
-            };
-
-            await html2pdf()
-                .set(options)
-                .from(report)
-                .toPdf()
-                .get('pdf')
-                .then(pdf => {
-                    const pages = pdf.internal.getNumberOfPages();
-                    for (let page = 1; page <= pages; page++) {
-                        pdf.setPage(page);
-                        pdf.setFontSize(9);
-                        pdf.text(`FOCA - ${page}/${pages}`, 105, 292, { align: 'center' });
-                    }
-                })
-                .save();
-            showToast(
-                "Relatório PDF gerado com sucesso!",
-                { type: "success" }
-            );
-        } catch (error) {
-            console.error(
-                "Erro ao exportar o relatório PDF:",
-                error
-            );
-
-            showToast(
-                "Não foi possível gerar o relatório PDF. Tente novamente.",
-                { type: "error" }
-            );
-        } finally {
-            setIsExporting(false);
-        }
-    };
 
     return (
         <div className="estatisticas-body">
@@ -808,17 +727,12 @@ export default function Estatisticas() {
                     <h2>Estatísticas da Instituição</h2>
 
                     {dadosBarChart.length > 0 && contextoRelatorio && (
-                        <button
-                            type="button"
+                        <ReportDownloadButton
                             className="estatisticas-btn-pdf"
-                            onClick={handleExportarPDF}
-                            disabled={isExporting || loadingGraficos || loadingDados}
-                            aria-busy={isExporting}
-                        >
-                            {isExporting
-                                ? "Gerando PDF..."
-                                : "Baixar relatório PDF"}
-                        </button>
+                            reportRef={reportRef}
+                            filename={`relatorio-estatisticas-${contextoRelatorio.tipo.toLowerCase()}.pdf`}
+                            disabled={loadingGraficos || loadingDados}
+                        />
                     )}
                 </div>
 

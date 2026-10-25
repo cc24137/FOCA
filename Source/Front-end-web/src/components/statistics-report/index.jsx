@@ -100,6 +100,7 @@ export default function StatisticsReport({
             xKey="tempoFormatado"
             lines={series}
             height={300}
+            yDomain={[0, 100]}
             formatYAxis={value => `${value}%`}
             showDots={false}
             isAnimationActive={false}

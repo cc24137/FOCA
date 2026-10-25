@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../../components/header';
 import GenericLineChart from '../../components/time-vs-value-chart';
 import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import FeedbackCards from '../../components/feedback-cards';
+import ReportDownloadButton from '../../components/report-download-button';
+import AnalysisReport from '../../components/analysis-report';
+import { useAuth } from '../../contexts/AuthContext';
+import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
 import api from '../../services/api';
 import './analise-tempo-real.css';
 import { useToast } from '../../components/toast';
@@ -20,9 +24,12 @@ const cameraError = (error) => ({
 
 export default function AnaliseTempoReal() {
   const { showToast } = useToast();
+  const { user } = useAuth();
   const { state } = useLocation();
   const navigate = useNavigate();
   const idAula = state?.idAula;
+  const dadosAula = state?.dadosAula || {};
+  const reportRef = useRef(null);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const timerRef = useRef(null);
@@ -300,6 +307,7 @@ export default function AnaliseTempoReal() {
   };
 
   const valid = points.filter((point) => point.media_momento != null);
+  const reportPoints = useMemo(() => analysisPoints(points), [points]);
   const last = points[points.length - 1];
   const average = valid.length ? valid.reduce((sum, point) => sum + point.media_momento, 0) / valid.length : null;
   const recent = valid.slice(-5);
@@ -349,6 +357,10 @@ export default function AnaliseTempoReal() {
                 </h2>
                 <span>{formatTime(elapsed)} de análise</span>
               </div>
+              {reportPoints.length > 0 && <ReportDownloadButton reportRef={reportRef}
+                filename={`relatorio-tempo-real-aula-${idAula}.pdf`} disabled={busy || mode === 'running'}
+                title={mode === 'running' ? 'Pause ou encerre a análise para baixar o relatório.' : undefined} />}
+              {reportPoints.length > 0 && mode === 'running' && <p className="live-note">Pause ou encerre a análise para baixar o relatório.</p>}
               <div className="live-metrics"><div><span>Atenção atual</span><strong>{formatValue(last?.media_momento)}</strong></div><div><span>Média da aula</span><strong>{formatValue(average)}</strong></div></div>
               <p className="live-note">{valid.length} leituras válidas · {processing ? 'Processando captura...' : last ? `Última captura: ${formatTime(last.segundo_video)}` : 'Aguardando a primeira captura.'}</p>
               {last && <p className="live-note">Focados: {last.total_focados} · Distraídos: {last.total_distraidos}</p>}
@@ -362,6 +374,14 @@ export default function AnaliseTempoReal() {
           </section>
         </div>
       </main>
+      {mode !== 'running' && <AnalysisReport refProp={reportRef} pontos={reportPoints}
+        titulo="Relatório de análise em tempo real" feedback={feedback}
+        nomeInstituicao={dadosAula.nomeInstituicao || 'Análise FOCA'}
+        observacao={mode === 'paused' ? 'Relatório parcial: a análise está pausada e pode ser retomada.'
+          : saved ? 'Aula encerrada. Os resultados numéricos foram salvos no histórico.'
+            : 'Os resultados estão disponíveis nesta tela, mas o salvamento no histórico ainda não foi concluído.'}
+        informacoes={lessonReportInformation({ idAula, dadosAula, professor: user?.nome, origem: 'Câmera em tempo real',
+          modelo: model ? 'MODELO 2' : 'MODELO 1', intervalo: interval })} />}
     </div>
   );
 }

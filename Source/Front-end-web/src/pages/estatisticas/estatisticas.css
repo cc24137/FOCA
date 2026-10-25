@@ -41,27 +41,6 @@
     margin: 0;
 }
 
-.estatisticas-btn-pdf {
-    background-color: var(--indigo);
-    color: var(--white);
-    border: none;
-    padding: 10px 22px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.estatisticas-btn-pdf:hover:not(:disabled) {
-    background-color: var(--indigo-hover);
-}
-
-.estatisticas-btn-pdf:disabled {
-    background-color: var(--slate-400);
-    cursor: not-allowed;
-}
-
 /* ==========================================================================
    3. GRID DO DASHBOARD (2 COLUNAS NO DESKTOP)
    ========================================================================== */

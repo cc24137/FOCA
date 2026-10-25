@@ -3,6 +3,9 @@ import Header from '../../components/header';
 import AreaUploadVideo from '../../components/area-upload-video';
 import GenericLineChart from '../../components/time-vs-value-chart';
 import AnalysisDisclaimer from '../../components/analysis-disclaimer';
+import ReportDownloadButton from '../../components/report-download-button';
+import AnalysisReport from '../../components/analysis-report';
+import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
 import { useToast } from '../../components/toast';
 import { calculateFramePlan, extractFrames, MAX_FRAMES } from '../../utils/extract-frames';
 import './teste-video.css';
@@ -53,6 +56,7 @@ function responseError(result, status) {
 export default function TesteVideo() {
   const { showToast } = useToast();
   const videoRef = useRef(null);
+  const reportRef = useRef(null);
   const requestRef = useRef(null);
   const processIdRef = useRef(0);
   const processingRef = useRef(false);
@@ -123,6 +127,7 @@ export default function TesteVideo() {
   const framePlan = duration && validInterval ? calculateFramePlan(duration, interval) : null;
   const exceedsLimit = framePlan?.count > MAX_FRAMES;
   const timeline = visionData?.linha_do_tempo || [];
+  const reportPoints = analysisPoints(timeline);
   const summary = timeline.length ? timeline.reduce((current, point) => ({
     sum: current.sum + point.media_momento,
     highest: point.media_momento > current.highest.media_momento ? point : current.highest,
@@ -211,6 +216,8 @@ export default function TesteVideo() {
         <div className="teste-video-heading">
           <h1>Teste a análise de vídeo</h1>
           <p>Experimente sem criar uma conta. Os resultados ficam nesta tela e não são adicionados a um histórico.</p>
+          {reportPoints.length > 0 && <ReportDownloadButton reportRef={reportRef}
+            filename="relatorio-teste-video.pdf" disabled={loading} />}
         </div>
 
         <div className="teste-video-grid">
@@ -305,6 +312,10 @@ export default function TesteVideo() {
           </section>
         </div>
       </main>
+      <AnalysisReport refProp={reportRef} pontos={reportPoints} titulo="Relatório de teste de vídeo"
+        nomeInstituicao="Demonstração FOCA" observacao="Análise de teste, sem cadastro de aula. Os resultados deste relatório não foram salvos em um histórico."
+        informacoes={lessonReportInformation({ origem: 'Teste de vídeo', arquivo: selectedFiles[0]?.name,
+          modelo: selectedModel ? 'Foca Strong' : 'Foca Fast', intervalo: intervalInSeconds })} />
     </div>
   );
 }

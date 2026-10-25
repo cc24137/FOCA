@@ -1,28 +1,31 @@
 .report-offscreen {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: -9999px;
   visibility: visible;
 }
 
 .report-paper {
-  width: 794px; 
-  padding: 40px;
+  width: 190mm;
+  padding: 0;
   background-color: var(--white);
   color: var(--black);
   font-family: var(--font-inter), sans-serif;
   box-sizing: border-box;
+  overflow-wrap: anywhere;
 }
 
 /* Header */
 .report-header-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   color: var(--deep-blue-accent);
+  align-items: flex-start;
+  gap: 18px;
 }
 
 .report-logo {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -37,14 +40,21 @@
 
 .report-institution h2 {
   margin: 0;
-  font-size: 20px;
   font-weight: 600;
   color: var(--button-dark-blue);
+  font-size: 17px;
+}
+
+.report-institution {
+  flex: 1;
+  text-align: center;
 }
 
 .report-date {
-  font-size: 15px;
   color: var(--grayish-blue);
+  max-width: 130px;
+  text-align: right;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -172,4 +182,116 @@
   line-height: 1.6;
   color: var(--deep-blue-accent);
   min-height: 70px;
+}
+
+.report-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+  break-inside: avoid;
+}
+
+.report-summary-grid > div {
+  padding: 14px;
+  background: var(--less-white);
+  border: 1px solid var(--button-light-blue);
+  border-radius: 10px;
+}
+
+.report-summary-grid span,
+.report-summary-grid p,
+.report-caption {
+  color: var(--button-dark-blue);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.report-summary-grid strong {
+  display: block;
+  margin: 8px 0;
+  font-size: 25px;
+  color: var(--deep-blue-accent);
+}
+
+.report-chart {
+  padding: 18px;
+  break-inside: avoid;
+  pointer-events: none;
+}
+
+.report-notice {
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--warning-border);
+  border-radius: 6px;
+  background: var(--warning-background);
+  color: var(--warning-text);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.report-feedback-section {
+  margin-bottom: 24px;
+  break-inside: avoid;
+}
+
+.report-interpretation {
+  break-inside: avoid;
+}
+
+.report-feedback-item {
+  padding: 14px 16px;
+  margin: 12px 0;
+  border: 1px solid var(--button-light-blue);
+  border-radius: 8px;
+  break-inside: avoid;
+}
+
+.report-feedback-item h3,
+.report-paper .report-section-subtitle {
+  margin-bottom: 8px;
+  color: var(--deep-blue-accent);
+  font-size: 14px;
+}
+
+.report-feedback-item p,
+.report-feedback-item li {
+  color: var(--button-dark-blue);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.report-feedback-item ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+.report-table {
+  width: 100%;
+  margin-bottom: 24px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: var(--deep-blue-accent);
+  font-size: 12px;
+}
+
+.report-table th,
+.report-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--button-light-blue);
+  text-align: left;
+  vertical-align: top;
+}
+
+.report-table th {
+  background: var(--less-white);
+}
+
+.report-table tr {
+  break-inside: avoid;
+}
+
+.report-page-break {
+  margin-top: 24px;
 }

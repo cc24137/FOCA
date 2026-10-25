@@ -31,7 +31,7 @@ export default function ReportTemplate({
   ];
 
   return (
-    <div className="report-offscreen" aria-hidden="true">
+    <div className="report-offscreen" aria-hidden="true" inert>
       <div ref={refProp} className={`report-paper ${className}`}>
         
         {/* Cabeçalho */}

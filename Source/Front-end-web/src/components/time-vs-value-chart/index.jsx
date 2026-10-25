@@ -37,6 +37,7 @@ export default function GenericLineChart({
   height = 300,
   formatXAxis,
   formatYAxis,
+  yDomain,
   formatTooltipLabel,
   isAnimationActive = true,
   onClick,
@@ -137,7 +138,7 @@ export default function GenericLineChart({
             tickMargin={10}
             height={40}
           />
-          <YAxis width={60} tickFormatter={formatYAxis} />
+          <YAxis width={60} tickFormatter={formatYAxis} {...(yDomain ? { domain: yDomain } : {})} />
           <Tooltip
             labelFormatter={labelFormatter}
             formatter={formatYAxis ? (value, name) => [formatYAxis(value), name] : undefined}

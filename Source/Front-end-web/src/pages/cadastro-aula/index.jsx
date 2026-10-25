@@ -12,7 +12,7 @@ export default function CadastroAula() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { idRelacao, nomeTurma, nomeDisciplina } = location.state || {};
+  const { idRelacao, nomeTurma, nomeDisciplina, instituicao, quantidadeAlunos } = location.state || {};
 
   const [classificacoes, setClassificacoes] = useState([]);
   const [classificacao, setClassificacao] = useState('');
@@ -87,7 +87,9 @@ export default function CadastroAula() {
 
         navigate('/upload-video', {
           state: {
-            idAula
+            idAula,
+            dadosAula: { nomeTurma, nomeDisciplina, nomeInstituicao: instituicao, quantidadeAlunos,
+              dataAula: dateFormatted, conteudo },
           }
         });
       } else {

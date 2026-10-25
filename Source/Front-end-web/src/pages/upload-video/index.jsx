@@ -5,6 +5,10 @@ import AreaUploadVideo from '../../components/area-upload-video';
 import GenericLineChart from '../../components/time-vs-value-chart';
 import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import FeedbackCards from '../../components/feedback-cards';
+import ReportDownloadButton from '../../components/report-download-button';
+import AnalysisReport from '../../components/analysis-report';
+import { useAuth } from '../../contexts/AuthContext';
+import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
 import api from '../../services/api';
 import './upload-video.css';
 
@@ -16,12 +20,15 @@ export { extractFrames } from '../../utils/extract-frames';
 
 export default function UploadVideo() {
   const { showToast } = useToast();
+  const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const reportRef = useRef(null);
   const avisoSemAula = useRef(false);
 
   const { idAula } = location.state || {};
+  const dadosAula = location.state?.dadosAula || {};
 
   useEffect(() => {
     if (idAula) {
@@ -41,6 +48,7 @@ export default function UploadVideo() {
   const [statusMessage, setStatusMessage] = useState('');
   const [feedbackData, setFeedbackData] = useState(null);
   const [visionData, setVisionData] = useState(null);
+  const reportPoints = analysisPoints(visionData?.linha_do_tempo);
 
   useEffect(() => {
     if (selectedFiles && selectedFiles.length > 0) {
@@ -166,11 +174,13 @@ export default function UploadVideo() {
       <div className="upload-page-content">
         <div className="upload-page-heading">
           <h1 className="page-title">Upload e Análise de Vídeo</h1>
+          {reportPoints.length > 0 && <ReportDownloadButton reportRef={reportRef}
+            filename={`relatorio-aula-${idAula}.pdf`} disabled={loading} />}
           <button
             type="button"
             className="btn-live-analysis"
             disabled={loading || !idAula}
-            onClick={() => navigate('/analise-tempo-real', { state: { idAula } })}
+            onClick={() => navigate('/analise-tempo-real', { state: { idAula, dadosAula } })}
           >
             Analisar com câmera ao vivo
           </button>
@@ -303,6 +313,10 @@ export default function UploadVideo() {
 
         </div>
       </div>
+      <AnalysisReport refProp={reportRef} pontos={reportPoints} feedback={feedbackData}
+        nomeInstituicao={dadosAula.nomeInstituicao || 'Análise FOCA'}
+        informacoes={lessonReportInformation({ idAula, dadosAula, professor: user?.nome, origem: 'Análise de vídeo',
+          arquivo: selectedFiles[0]?.name, modelo: String(selectedModel) === 'true' ? 'Foca Strong' : 'Foca Fast', intervalo: intervalInSeconds })} />
     </div>
   );
 }

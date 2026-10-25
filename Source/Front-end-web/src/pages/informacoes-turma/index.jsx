@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../../components/header";
 import Combobox from "../../components/combobox";
@@ -11,6 +11,10 @@ import "./informacoes-turma.css";
 import { useToast } from '../../components/toast';
 import CheckIcon from '../../assets/check-small.svg?react';
 import ClearIcon from '../../assets/close.svg?react';
+import ReportDownloadButton from '../../components/report-download-button';
+import ClassReport from '../../components/class-report';
+import { useAuth } from '../../contexts/AuthContext';
+import { hasAnalysisResult as possuiResultadoAnalise } from '../../utils/report-data';
 
 const PALETA_CORES = [
   'var(--indigo)', 
@@ -22,19 +26,10 @@ const PALETA_CORES = [
   'var(--chart-pink)', 
 ];
 
-function possuiResultadoAnalise(aula) {
-    const media = aula.media_atencao_total;
-    if (typeof media !== 'number' && (typeof media !== 'string' || media.trim() === '')) {
-        return false;
-    }
-
-    // A média de 0% também representa uma análise válida.
-    const valor = Number(media);
-    return Number.isFinite(valor) && valor >= 0 && valor <= 100;
-}
-
 export default function InformacoesTurma() {
     const { showToast } = useToast();
+    const { user } = useAuth();
+    const reportRef = useRef(null);
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -212,9 +207,13 @@ export default function InformacoesTurma() {
                         <p className='informacoes-turma-box-title'>
                             {loading && !turma.nome ? "A carregar..." : turma.nome}
                         </p>
+                        <div className="informacoes-turma-actions">
+                        {aulas.some(possuiResultadoAnalise) && <ReportDownloadButton reportRef={reportRef}
+                            filename={`relatorio-turma-${id}.pdf`} disabled={loading} />}
                         <button className='informacoes-turma-box-button' onClick={() => goTo('/cadastro-aula', { idRelacao: id, nomeTurma: turma.nome, nomeDisciplina: turma.disciplina, instituicao: turma.instituicao, quantidadeAlunos: turma.alunos})}>
                             <p className='informacoes-turma-box-button-text'>Nova Aula</p>
                         </button>
+                        </div>
                     </div>
 
                     <div className='informacoes-turma-box-container'>
@@ -374,7 +373,11 @@ export default function InformacoesTurma() {
                                                     <button
                                                         type="button"
                                                         className="btn-enviar-video"
-                                                        onClick={() => goTo('/upload-video', { idAula: aula.id })}
+                                                        onClick={() => goTo('/upload-video', { idAula: aula.id, dadosAula: {
+                                                            nomeTurma: turma.nome, nomeDisciplina: turma.disciplina,
+                                                            nomeInstituicao: turma.instituicao, quantidadeAlunos: turma.alunos,
+                                                            dataAula: aula.data, conteudo: aula.conteudo,
+                                                        } })}
                                                     >
                                                         Enviar vídeo
                                                     </button>
@@ -392,6 +395,8 @@ export default function InformacoesTurma() {
                 </div>
 
             </div>
+            <ClassReport refProp={reportRef} turma={turma} aulas={aulas} comparacao={dadosComparativos}
+                linhas={configuracaoLinhas} professor={user?.nome} />
         </div>
     );
 }

@@ -328,6 +328,26 @@
     white-space: nowrap;
 }
 
+.aula-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.aula-actions > button {
+    flex-shrink: 0;
+}
+
+.tabela-aulas .aula-report-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+}
+
 .btn-enviar-video {
     background-color: var(--button-dark-blue);
     color: var(--white);

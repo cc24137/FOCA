@@ -13,6 +13,7 @@ import CheckIcon from '../../assets/check-small.svg?react';
 import ClearIcon from '../../assets/close.svg?react';
 import ReportDownloadButton from '../../components/report-download-button';
 import ClassReport from '../../components/class-report';
+import SavedLessonReportButton from '../../components/saved-lesson-report-button';
 import { useAuth } from '../../contexts/AuthContext';
 import { hasAnalysisResult as possuiResultadoAnalise } from '../../utils/report-data';
 
@@ -370,17 +371,21 @@ export default function InformacoesTurma() {
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <button
-                                                        type="button"
-                                                        className="btn-enviar-video"
-                                                        onClick={() => goTo('/upload-video', { idAula: aula.id, dadosAula: {
-                                                            nomeTurma: turma.nome, nomeDisciplina: turma.disciplina,
-                                                            nomeInstituicao: turma.instituicao, quantidadeAlunos: turma.alunos,
-                                                            dataAula: aula.data, conteudo: aula.conteudo,
-                                                        } })}
-                                                    >
-                                                        Enviar vídeo
-                                                    </button>
+                                                    <div className="aula-actions">
+                                                        <button
+                                                            type="button"
+                                                            className="btn-enviar-video"
+                                                            onClick={() => goTo('/upload-video', { idAula: aula.id, dadosAula: {
+                                                                nomeTurma: turma.nome, nomeDisciplina: turma.disciplina,
+                                                                nomeInstituicao: turma.instituicao, quantidadeAlunos: turma.alunos,
+                                                                dataAula: aula.data, conteudo: aula.conteudo,
+                                                            } })}
+                                                        >
+                                                            Enviar vídeo
+                                                        </button>
+                                                        {temResultado && <SavedLessonReportButton aula={aula} turma={turma}
+                                                            professor={user?.nome} disabled={loading} />}
+                                                    </div>
                                                 </td>
                                             </tr>
                                             );

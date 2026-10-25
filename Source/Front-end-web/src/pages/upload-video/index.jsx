@@ -9,6 +9,7 @@ import ReportDownloadButton from '../../components/report-download-button';
 import AnalysisReport from '../../components/analysis-report';
 import { useAuth } from '../../contexts/AuthContext';
 import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
+import { ANALYSIS_MODELS, analysisModelName } from '../../utils/analysis-models';
 import api from '../../services/api';
 import './upload-video.css';
 
@@ -214,8 +215,7 @@ export default function UploadVideo() {
                     disabled={loading || !!visionData}
                     className="select-model"
                   >
-                    <option value="false">Foca Fast</option>
-                    <option value="true">Foca Strong</option>
+                    {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                   </select>
                 </label>
               </div>
@@ -316,7 +316,7 @@ export default function UploadVideo() {
       <AnalysisReport refProp={reportRef} pontos={reportPoints} feedback={feedbackData}
         nomeInstituicao={dadosAula.nomeInstituicao || 'Análise FOCA'}
         informacoes={lessonReportInformation({ idAula, dadosAula, professor: user?.nome, origem: 'Análise de vídeo',
-          arquivo: selectedFiles[0]?.name, modelo: String(selectedModel) === 'true' ? 'Foca Strong' : 'Foca Fast', intervalo: intervalInSeconds })} />
+          arquivo: selectedFiles[0]?.name, modelo: analysisModelName(selectedModel), intervalo: intervalInSeconds })} />
     </div>
   );
 }

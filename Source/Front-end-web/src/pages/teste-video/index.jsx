@@ -6,6 +6,7 @@ import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import ReportDownloadButton from '../../components/report-download-button';
 import AnalysisReport from '../../components/analysis-report';
 import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
+import { ANALYSIS_MODELS, analysisModelName } from '../../utils/analysis-models';
 import { useToast } from '../../components/toast';
 import { calculateFramePlan, extractFrames, MAX_FRAMES } from '../../utils/extract-frames';
 import './teste-video.css';
@@ -233,8 +234,7 @@ export default function TesteVideo() {
                 Modelo:
                 <select value={String(selectedModel)} disabled={loading}
                   onChange={(event) => { setSelectedModel(event.target.value === 'true'); clearResults(); }}>
-                  <option value="false">Foca Fast</option>
-                  <option value="true">Foca Strong</option>
+                  {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
                 </select>
               </label>
             </div>
@@ -315,7 +315,7 @@ export default function TesteVideo() {
       <AnalysisReport refProp={reportRef} pontos={reportPoints} titulo="Relatório de teste de vídeo"
         nomeInstituicao="Demonstração FOCA" observacao="Análise de teste, sem cadastro de aula. Os resultados deste relatório não foram salvos em um histórico."
         informacoes={lessonReportInformation({ origem: 'Teste de vídeo', arquivo: selectedFiles[0]?.name,
-          modelo: selectedModel ? 'Foca Strong' : 'Foca Fast', intervalo: intervalInSeconds })} />
+          modelo: analysisModelName(selectedModel), intervalo: intervalInSeconds })} />
     </div>
   );
 }

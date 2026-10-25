@@ -6,8 +6,10 @@ import AnalysisDisclaimer from '../../components/analysis-disclaimer';
 import FeedbackCards from '../../components/feedback-cards';
 import ReportDownloadButton from '../../components/report-download-button';
 import AnalysisReport from '../../components/analysis-report';
+import ConfirmPopup from '../../components/confirm-popup';
 import { useAuth } from '../../contexts/AuthContext';
 import { analysisPoints, lessonReportInformation } from '../../utils/report-data';
+import { ANALYSIS_MODELS, analysisModelName } from '../../utils/analysis-models';
 import api from '../../services/api';
 import './analise-tempo-real.css';
 import { useToast } from '../../components/toast';
@@ -56,6 +58,7 @@ export default function AnaliseTempoReal() {
   const [feedback, setFeedback] = useState(null);
   const [saved, setSaved] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [confirmReturn, setConfirmReturn] = useState(false);
 
   const changeMode = (value) => { modeRef.current = value; setMode(value); };
   const activeSeconds = () => (elapsedRef.current + (startedAtRef.current == null ? 0 : performance.now() - startedAtRef.current)) / 1000;
@@ -260,6 +263,21 @@ export default function AnaliseTempoReal() {
     cancelAnalysis(); stopClock(); releaseCamera(); changeMode('paused');
     setMessage('Câmera e análise pausadas. O tempo da pausa não será contado.');
   };
+  const returnToUpload = () => {
+    cancelAnalysis();
+    stopClock();
+    releaseCamera();
+    navigate('/upload-video', { replace: true, state: { idAula, dadosAula } });
+  };
+  const handleReturnToUpload = () => {
+    if (busy) return;
+    if (!saved && analysisPoints(pointsRef.current).length > 0) {
+      if (modeRef.current === 'running') pause();
+      setConfirmReturn(true);
+      return;
+    }
+    returnToUpload();
+  };
   const finalize = async () => {
     if (modeRef.current !== 'ended') {
       cancelAnalysis(); stopClock(); releaseCamera(); changeMode('ended');
@@ -320,7 +338,12 @@ export default function AnaliseTempoReal() {
     <div className="live-page">
       <Header routes={[{ textButton: 'Início', routeButton: '/inicial-professor' }, { textButton: 'Sobre o Projeto', routeButton: "/" }, { textButton: 'Perfil', routeButton: '/editar-dados' }]} />
       <main className="live-content">
-        <h1>Análise de Aula em Tempo Real</h1>
+        <div className="live-page-heading">
+          <h1>Análise de Aula em Tempo Real</h1>
+          <button type="button" className="live-secondary live-back-button" disabled={busy} onClick={handleReturnToUpload}>
+            Voltar para o upload
+          </button>
+        </div>
         <div className="live-grid">
           <section className="live-card">
             <h2>Configurações da Análise</h2>
@@ -330,7 +353,9 @@ export default function AnaliseTempoReal() {
                 {devices.map((device, index) => <option key={device.deviceId || index} value={device.deviceId}>{device.label || `Câmera ${index + 1}`}</option>)}
               </select></label>
               <label>Intervalo (s)<input type="number" min="1" step="1" value={interval} disabled={locked} onChange={(event) => setInterval(event.target.value === '' ? '' : Number(event.target.value))} /></label>
-              <label>Modelo<select value={String(model)} disabled={locked || valid.length > 0} onChange={(event) => setModel(event.target.value === 'true')}><option value="false">MODELO 1</option><option value="true">MODELO 2</option></select></label>
+              <label>Modelo<select value={String(model)} disabled={locked || valid.length > 0} onChange={(event) => setModel(event.target.value === 'true')}>
+                {ANALYSIS_MODELS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+              </select></label>
             </div>
             <div className="live-video">
               <video ref={videoRef} autoPlay playsInline muted hidden={!preview} />
@@ -381,7 +406,11 @@ export default function AnaliseTempoReal() {
           : saved ? 'Aula encerrada. Os resultados numéricos foram salvos no histórico.'
             : 'Os resultados estão disponíveis nesta tela, mas o salvamento no histórico ainda não foi concluído.'}
         informacoes={lessonReportInformation({ idAula, dadosAula, professor: user?.nome, origem: 'Câmera em tempo real',
-          modelo: model ? 'MODELO 2' : 'MODELO 1', intervalo: interval })} />}
+          modelo: analysisModelName(model), intervalo: interval })} />}
+      <ConfirmPopup isOpen={confirmReturn} title="Voltar para o upload?"
+        message="Os resultados desta análise ainda não foram salvos. Você pode continuar na análise e encerrar a aula para salvá-los antes de voltar."
+        confirmText="Voltar sem salvar" cancelText="Continuar na análise"
+        onConfirm={returnToUpload} onCancel={() => setConfirmReturn(false)} />
     </div>
   );
 }

@@ -15,7 +15,16 @@
     font-size: 1.6rem;
     font-weight: 700;
     color: var(--slate-800);
-    margin: 0 0 36px;
+    margin: 0;
+}
+
+.live-page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 36px;
 }
 
 .live-grid {
@@ -128,7 +137,8 @@
     margin-top: 20px;
 }
 
-.live-buttons button {
+.live-buttons button,
+.live-back-button {
     padding: 10px 22px;
     border-radius: 6px;
     cursor: pointer;
@@ -167,7 +177,8 @@
     background: var(--error-background);
 }
 
-.live-buttons button:disabled {
+.live-buttons button:disabled,
+.live-back-button:disabled {
     opacity: .55;
     cursor: not-allowed;
 }
@@ -280,6 +291,9 @@
 }
 
 @media (max-width: 480px) {
+    .live-back-button {
+        width: 100%;
+    }
     .live-content {
         padding: 20px 16px;
     }

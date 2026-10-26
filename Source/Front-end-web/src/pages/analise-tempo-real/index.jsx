@@ -424,7 +424,7 @@ export default function AnaliseTempoReal({ isDemo = false }) {
               {last && <p className="live-note">Focados: {last.total_focados} · Distraídos: {last.total_distraidos}</p>}
             </div>
             <div className="live-card"><h2>Nível de Atenção ao Longo do Tempo</h2>
-              {points.length ? <GenericLineChart data={points} xKey="segundo_video" lines={[{ key: 'media_momento', label: 'Atenção média', color: 'var(--indigo)' }]} formatXAxis={formatTime} isAnimationActive={false} connectNulls={false} /> : <div className="live-placeholder"><span>📊</span><h3>Aguardando Análise</h3><p>O gráfico será atualizado conforme as imagens forem processadas.</p></div>}
+              {points.length ? <GenericLineChart data={points} xKey="segundo_video" lines={[{ key: 'media_momento', label: 'Atenção média', color: 'var(--indigo)' }]} formatXAxis={formatTime} isAnimationActive={false} connectNulls={false} /> : <div className="live-placeholder"><h3>Aguardando Análise</h3><p>O gráfico será atualizado conforme as imagens forem processadas.</p></div>}
               <p className="live-note">Tempo ativo da análise, sem contar pausas. Valores na escala retornada pelo modelo.</p>
             </div>
             {difference != null && <div className="live-card"><h2>{isDemo ? 'Comparativo do Teste' : 'Comparativo da Aula Atual'}</h2><p>A média das últimas 5 leituras {difference > 0 ? 'aumentou' : difference < 0 ? 'diminuiu' : 'se manteve'}{difference !== 0 ? ` em ${formatValue(Math.abs(difference))} pontos` : ''} em relação às 5 anteriores.</p><p className="live-note">Comparação descritiva de leituras válidas; não é uma recomendação automática.</p></div>}

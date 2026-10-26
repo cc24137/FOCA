@@ -1,9 +1,10 @@
 .report-download-button {
   padding: 10px 22px;
-  background-color: var(--indigo);
+  background-color: var(--button-dark-blue);
   color: var(--white);
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-action);
   cursor: pointer;
   font: inherit;
   font-size: 0.95rem;
@@ -12,15 +13,16 @@
 }
 
 .report-download-button:hover:not(:disabled) {
-  background-color: var(--indigo-hover);
+  background-color: var(--deep-blue-accent);
 }
 
 .report-download-button:disabled {
-  background-color: var(--slate-400);
+  background-color: var(--button-disabled-gray);
+  box-shadow: none;
   cursor: not-allowed;
 }
 
 .report-download-button:focus-visible {
-  outline: 3px solid var(--indigo-light);
+  outline: 3px solid var(--light-blue);
   outline-offset: 3px;
 }

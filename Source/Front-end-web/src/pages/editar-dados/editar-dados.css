@@ -79,6 +79,18 @@
   border-color: var(--red);
 }
 
+.btn-logout-top--confirmar {
+  background-color: var(--error-action);
+  color: var(--white);
+  border-color: var(--error-action);
+}
+
+.btn-logout-top--confirmar:hover {
+  background-color: var(--error-strong);
+  color: var(--white);
+  border-color: var(--error-strong);
+}
+
 .logout-icon {
   width: 18px;
   height: 18px;
@@ -224,6 +236,8 @@
   .editar-dados-header-zone {
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .editar-dados-title {
@@ -232,6 +246,10 @@
 
   .btn-logout-top span {
     display: none; /* Deixa apenas o ícone no mobile para poupar espaço */
+  }
+
+  .btn-logout-top--confirmar span {
+    display: inline;
   }
   
   .btn-logout-top {

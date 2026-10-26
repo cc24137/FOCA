@@ -187,7 +187,3 @@ O FOCA foi desenvolvido como projeto de pesquisa e desenvolvimento no:
 - MANDINACH, E. B.; GUMMER, E. S. **A Systemic View of Implementing Data Literacy in Educator Preparation.** Educational Researcher, 2016.
 
 ---
-
-## 📄 Licença
-
-Definir a licença do projeto antes da distribuição pública.

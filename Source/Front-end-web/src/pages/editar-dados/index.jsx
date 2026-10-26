@@ -21,6 +21,7 @@ export default function EditarDados() {
   const [nome, setNome] = useState(user ? user.nome : "");
   const [senha, setSenha] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [confirmandoLogout, setConfirmandoLogout] = useState(false);
   const [confirmacaoRemocao, setConfirmacaoRemocao] = useState(null);
   const [removendo, setRemovendo] = useState(false);
   const [erroRemocao, setErroRemocao] = useState('');
@@ -57,6 +58,11 @@ export default function EditarDados() {
   }
 
   function handleLogout() {
+    if (!confirmandoLogout) {
+      setConfirmandoLogout(true);
+      return;
+    }
+
     localStorage.removeItem("@FOCA:user");
     localStorage.removeItem("@FOCA:token");
     showToast("Você foi desconectado com sucesso.", { type: 'success' });
@@ -129,9 +135,15 @@ export default function EditarDados() {
           {/* TOPO DO CARD: Título + Botão Sair com Ícone */}
           <div className="editar-dados-header-zone">
             <h1 className="editar-dados-title">Edite seus dados</h1>
-            <button className="btn-logout-top" onClick={handleLogout} title="Sair da Conta">
+            <button
+              type="button"
+              className={`btn-logout-top${confirmandoLogout ? ' btn-logout-top--confirmar' : ''}`}
+              onClick={handleLogout}
+              title={confirmandoLogout ? "Confirmar saída da conta" : "Sair da conta"}
+              aria-label={confirmandoLogout ? "Confirmar saída da conta" : "Sair da conta"}
+            >
               <LogoutIcon className="logout-icon" />
-              <span>Sair</span>
+              <span>{confirmandoLogout ? "Confirmar" : "Sair"}</span>
             </button>
           </div>
 

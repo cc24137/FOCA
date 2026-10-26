@@ -1,5 +1,5 @@
 export const PUBLIC_FRAMES_URL = 'https://foca-ai-api.onrender.com/processar-frames';
-const REALTIME_URL = 'http://127.0.0.1:8000/processar-frame-tempo-real/';
+const REALTIME_URL = 'https://foca-ai-api.onrender.com/processar-frame-tempo-real/';
 
 export function createRealtimeRequest({ frame, model, interval, signal, isDemo = false }) {
   if (isDemo) {
